@@ -1,0 +1,4 @@
+#!/bin/sh
+/usr/bin/mega-sync -r 0
+sleep 1
+/usr/bin/mega-sync -r 1

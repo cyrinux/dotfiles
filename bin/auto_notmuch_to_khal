@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+SEARCH="tag:inbox AND not tag:calendar AND text/calendar"
+
+notmuch search --output=messages $SEARCH | while read message; do
+    TMP=`mktemp`
+    TMP_CLEAN=`mktemp`
+    trap "rm -r $TMP $TMP_CLEAN" 0 1 15
+    notmuch show --format=json $message | 
+        jq -r '.. | select(."content-type"? == "text/calendar") | .content' > $TMP
+    ics_splitter $TMP $TMP_CLEAN
+    khal import --batch -a personal $TMP_CLEAN
+    notmuch tag +calendar $message
+    rm -f $TMP $TMP_CLEAN
+done

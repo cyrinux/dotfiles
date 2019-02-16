@@ -1,0 +1,8 @@
+[Unit]
+Description=Vault
+
+[Path]
+PathModified=/home/cyril/Vault
+
+[Install]
+WantedBy=multi-user.target

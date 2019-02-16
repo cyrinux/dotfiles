@@ -1,0 +1,60 @@
+[alias]
+  lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
+  bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
+  pushall = !git remote | xargs -L1 git push --all
+[branch]
+  autosetuprebase = always
+[color "branch"]
+  current = green reverse
+  local = green
+  remote = yellow
+[color "status"]
+  added = green
+  changed = yellow
+  untracked = blue
+[core]
+  autocrlf = input
+  filemode = true
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  excludesfile = ~/.gitignore
+  sshCommand = /usr/bin/ssh
+[merge]
+  conflictstyle = diff3
+  tool = env LOCAL="$LOCAL" BASE="$BASE" REMOTE="$REMOTE" MERGED="$MERGED" kakmerge
+[mergetool]
+  keepBackup = false
+  prompt = false
+[mergetool "kakmerge"]
+  cmd = kakmerge
+  trustExitCode = true
+[diff "gpg"]
+  binary = true
+  textconv = gpg2 --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+[push]
+  default = current
+[rebase]
+  autostash = true
+  autosquash = true
+[commit]
+  gpgsign = true
+[diff]
+  tool = kitty
+[difftool]
+  prompt = false
+  trustExitCode = true
+[difftool "kitty"]
+  cmd = kitty +kitten diff $LOCAL $REMOTE
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[color]
+  ui = auto
+[user]
+  signingkey = 0x8538D68543979A20
+	name = Cyril Levis
+  email = levis.cyril@gmail.com
+  useConfigOnly = true
+[includeIf "gitdir:~/library/src/work/"]
+  path = ~/.gitconfig.work

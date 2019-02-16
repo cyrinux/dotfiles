@@ -1,0 +1,39 @@
+[general]
+# A folder where vdirsyncer can store some metadata about each pair.
+status_path = "~/.vdirsyncer/status/"
+
+[pair my_contacts]
+a = "my_contacts_local"
+b = "my_contacts_remote"
+collections = ["from a", "from b"]
+conflict_resolution = ["command", "nvim", "-d"]
+
+
+[storage my_contacts_local]
+type = "filesystem"
+path = "~/.contacts/"
+fileext = ".vcf"
+
+[storage my_contacts_remote]
+type = "carddav"
+url.fetch = ["command", "vdirsyncer-get-creds", "contacts_url"]
+username.fetch = ["command", "vdirsyncer-get-creds", "username"]
+password.fetch = ["command", "vdirsyncer-get-creds", "password"]
+
+
+[pair my_calendars]
+a = "my_calendars_local"
+b = "my_calendars_remote"
+collections = ["from a", "from b"]
+metadata = ["color"]
+
+[storage my_calendars_local]
+type = "filesystem"
+path = "~/.calendars/"
+fileext = ".ics"
+
+[storage my_calendars_remote]
+type = "caldav"
+url.fetch = ["command", "vdirsyncer-get-creds", "calendars_url"]
+username.fetch = ["command", "vdirsyncer-get-creds", "username"]
+password.fetch = ["command", "vdirsyncer-get-creds", "password"]

@@ -1,0 +1,2 @@
+error: missing 'rubygems' dependency for 'ruby2.5'
+error: missing 'noto-fonts-alpha' dependency for 'ttfautohint'

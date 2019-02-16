@@ -1,0 +1,109 @@
+name: "Kitty config"
+url: "https://sw.kovidgoyal.net/kitty/_downloads/fdd5fc58492b70fe2188716f86e7ff87/kitty.conf"
+max_tries: 3
+---
+name: "Kitty changelog"
+url: "https://raw.githubusercontent.com/kovidgoyal/kitty/master/docs/changelog.rst"
+max_tries: 3
+---
+name: "kitty"
+url: "https://github.com/kovidgoyal/kitty/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "EmojiOne font"
+url: "https://github.com/emojione/emojione-assets/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "New emojis"
+url: "https://raw.githubusercontent.com/emojione/emojione/master/extras/alpha-codes/eac.json"
+max_tries: 3
+---
+name: "Chromium"
+url: "https://git.archlinux.org/svntogit/packages.git/plain/chromium/repos/extra-x86_64/PKGBUILD"
+max_tries: 3
+---
+name: "py3status changelog"
+url: "https://raw.githubusercontent.com/ultrabug/py3status/master/CHANGELOG"
+max_tries: 3
+---
+name: "py3status"
+url: "https://github.com/ultrabug/py3status/releases/latest"
+filter: css:.release-timeline-tags .release-entry:first-child h4 a,html2text,strip
+max_tries: 3
+---
+name: "mailcow"
+url: "https://mailcow.email/category/news/"
+filter: css:.entry-content,html2text
+max_tries: 3
+---
+name: "prettier"
+url: "https://github.com/prettier/prettier/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "istio"
+url: "https://github.com/istio/istio/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "i3ipc-python"
+url: "https://github.com/acrisci/i3ipc-python/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "docker-compose"
+url: "https://github.com/docker/compose/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "kakoune"
+url: "https://github.com/mawww/kakoune/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "kak-lsp"
+url: "https://github.com/ul/kak-lsp/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "wire-desktop"
+url: "https://github.com/wireapp/wire-desktop/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "wire-webapp"
+url: "https://github.com/wireapp/wire-webapp/releases/latest"
+filter: css:.markdown-body,html2text
+max_tries: 3
+---
+name: "gocryptfs"
+url: "https://github.com/rfjakob/gocryptfs/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "skaffold"
+url: "https://github.com/GoogleContainerTools/skaffold/releases/latest"
+filter: css:.release-header>div>div>a,html2text
+max_tries: 3
+---
+name: "bash-language-server"
+url: "https://github.com/mads-hartmann/bash-language-server/releases/latest"
+filter: css:.release-timeline-tags .release-entry:first-child h4 a,html2text,strip
+max_tries: 3
+---
+name: "urlwatch"
+url: "https://github.com/thp/urlwatch/releases/latest"
+filter: css:.release-timeline-tags .release-entry:first-child h4 a,html2text,strip
+max_tries: 3
+---
+name: "python-black"
+url: "https://github.com/ambv/black/releases/latest"
+filter: css:.release-timeline-tags .release-entry:first-child h4 a,html2text,strip
+max_tries: 3
+---
+name: "megacmd"
+url: "https://github.com/meganz/MEGAcmd/releases/latest"
+filter: css:.release-timeline-tags .release-entry:first-child h4 a,html2text,strip
+max_tries: 3

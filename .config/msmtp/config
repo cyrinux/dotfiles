@@ -1,0 +1,16 @@
+defaults
+protocol smtp
+auth on
+tls on
+tls_min_dh_prime_bits 512
+tls_starttls off
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+syslog LOG_USER
+logfile ~/.msmtp.log
+port 465
+timeout 10
+
+account personal
+host mail.levis.name
+user cyril@levis.name
+passwordeval "pass show mail/mailcow"

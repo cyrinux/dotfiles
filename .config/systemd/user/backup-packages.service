@@ -1,0 +1,6 @@
+[Unit]
+Description=Backup list of installed packages
+
+[Service]
+ExecStart=/home/cyril/bin/backup-packages
+

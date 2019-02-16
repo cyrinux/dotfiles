@@ -1,0 +1,11 @@
+noblacklist ${HOME}/.password-store
+whitelist ${HOME}/.password-store
+read-only ${HOME}/.password-store
+
+noblacklist ${HOME}/SynologyDrive/Drive/password-store
+whitelist ${HOME}/SynologyDrive/Drive/password-store
+read-only ${HOME}/SynologyDrive/Drive/password-store
+
+noblacklist ${HOME}/.gnupg
+whitelist ${HOME}/.gnupg
+read-only ${HOME}/.gnupg

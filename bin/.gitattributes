@@ -1,0 +1,3 @@
+mailsync-personal filter=git-crypt diff=git-crypt
+jira-popup filter=git-crypt diff=git-crypt
+exploit filter=git-crypt diff=git-crypt

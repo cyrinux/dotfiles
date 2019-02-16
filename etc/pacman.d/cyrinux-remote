@@ -1,0 +1,3 @@
+[cyrinux-remote]
+SigLevel = Required
+Server = https://aur.levis.ws

@@ -1,0 +1,38 @@
+#!/bin/bash
+# {{ ansible_managed }}
+
+menu=$(echo -e "disposable without network\ndisposable\nchromium personal\nchromium work\nfirefox personal\nfirefox work\ntor browser\nqcode\ncopy to clipboard\nplay\n" | rofi -dmenu -p "browser")
+
+case $menu in
+    "disposable without network")
+        eval firewarden -n chromium $@ >/dev/null 2>&1 &
+    ;;
+    "disposable")
+        eval firewarden chromium $@ >/dev/null 2>&1 &
+    ;;
+    "tor browser")
+        eval tor-browser-en $@ >/dev/null 2>&1 &
+    ;;
+    "chromium personal")
+        eval chromium --profile=Cyril $@ >/dev/null 2>&1 &
+    ;;
+    "chromium work")
+        eval chromium --profile=Work $@ >/dev/null 2>&1 &
+    ;;
+    "firefox personal")
+        eval firefox -P default $@ >/dev/null 2>&1 &
+    ;;
+    "firefox work")
+        eval firefox -P work $@ >/dev/null 2>&1 &
+    ;;
+    "copy to clipboard")
+       eval echo \"$@\" | xclip -selection -c
+    ;;
+    "play")
+        eval mpv $@ >/dev/null 2>&1 &
+    ;;
+    *)
+        echo $menu $@ >/dev/null 2>&1 &
+    ;;
+esac
+

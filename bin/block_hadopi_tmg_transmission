@@ -1,0 +1,33 @@
+#!/bin/bash
+
+H1=~/.hadopi/IPhadopi.txt
+H2=~//hadopi/IPhadopiOld.txt
+lvl2=~/.hadopi/lvl2
+lvl3=~/.hadopi/lvl3
+
+unset resultat
+
+mkdir -p ~/.hadopi
+rm $H1 2>/dev/null && touch $H1
+curl --silent 'https://apps.db.ripe.net/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(hadopi)&start=0&wt=json' | xmllint --format - | grep 'str name="inetnum"' | sed 's/.*">/HADOPI:/' | sed 's/<.*//' | sed 's/\ //g' >> "${H1}"
+curl --silent 'https://apps.db.ripe.net/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(trident+AND+mediaguard)&start=0&wt=json' | xmllint --format - | grep 'str name="inetnum"' | sed 's/.*">/TMG:/' | sed 's/<.*//' | sed 's/\ //g' >> "${H1}"
+curl --silent /dev/null 'https://apps.db.ripe.net/db-web-ui/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(trident+AND+media+AND+guard)&start=0&wt=json' | xmllint --format - | grep 'str name="inetnum"' | sed 's/.*">/TMG:/' | sed 's/<.*//' | sed 's/\ //g' >> "${H1}"
+
+sort -n $H1 -o $H1
+cmp $H1 $H2 1>/dev/null 2>&1; resultat=$?
+
+if [ $resultat -eq 0 ]; then
+    rm $H1
+elif [ $resultat -eq 1 ]; then
+    cp $H1 $H2
+    wget -q -O ~/.hadopi/lvl2.gz "http://list.iblocklist.com/?list=gyisgnzbhppbvsphucsw&fileformat=p2p&archiveformat=gz"
+    gunzip ~/.hadopi/lvl2.gz
+    tail -n +3 $lvl2 > $lvl3
+    cat $lvl3 >> $H1
+    cp $H1 ~/.hadopi/ip
+    cp ~/.hadopi/ip ~/.config/transmission/blocklists/tmg_hadopi.txt
+    rm $lvl2 $lvl3 $H1 ~/.hadopi/ip
+    logger "Update blocklists successfully"
+else
+  logger "Error while update blocklists"
+fi

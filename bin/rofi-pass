@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+copyq disable
+/usr/bin/rofi-pass "$@"
+copyq enable

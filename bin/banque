@@ -1,0 +1,2 @@
+#!/bin/sh
+firewarden -d chromium https://ca-paris.fr/

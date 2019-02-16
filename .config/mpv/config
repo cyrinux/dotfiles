@@ -1,0 +1,33 @@
+# Misc
+sub-auto=fuzzy
+save-position-on-quit=yes
+ignore-path-in-watch-later-config=yes
+write-filename-in-watch-later-config=yes
+
+# Enable OpenGL and VA-API hardware decoding.
+vo=gpu,vx
+hwdec=vaapi
+# Start in full screen.
+fs=yes
+# Stop screensaver (xautolock).
+stop-screensaver=yes
+# Do not display audio file images.
+audio-display=no
+# Set default languages.
+alang=eng
+slang=fr
+# Show progress bar for audio files.
+term-osd-bar=yes
+screenshot-directory=~/tmp/
+# Loop all the gifs.
+[extension.gif]
+loop-file=yes
+
+[extension.webm]
+loop-file=inf
+
+[extension.jpg]
+pause
+
+[extension.png]
+pause

@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+# This script will run offlineimap and check
+# for new email if there is an internet connection.
+# abort as soon as something fails
+set -e
+
+export DISPLAY=:0
+
+# abort if not online
+nm-online -x -t 0
+
+# Sync mail
+mbsync -a personal: 
+
+# Tag as new
+notmuch new
+
+# Tag mailing list
+notmuch tag +github-issues tag:tofilter and from:github.com
+notmuch tag +frnog tag:tofilter and subject:'[FRnOG]' or to:frnog or cc:frnog
+notmuch tag +frsag tag:tofilter and subject:'[FRSAG]' or to:frsag or cc:frsag
+notmuch tag +py3status-issues tag:tofilter and from:github.com and to:py3status@noreply.github.com
+notmuch tag +newsletter +unread 'tag:tofilter and (subject:newsletter or from:newsletter)'
+
+# Tag shopping
+notmuch tag +amazon tag:tofilter and from:amazon
+notmuch tag +buy tag:tofilter and subject:'sequent watch'
+
+# Tag family
+notmuch tag +family tag:tofilter and from:evelinelevis@hotmail.com
+notmuch tag +family tag:tofilter and from:levis.eveline@gmail.com
+notmuch tag +family tag:tofilter and from:levis.florian@gmail.com
+notmuch tag +family tag:tofilter and from:levis.alain95470@gmail.com
+notmuch tag +family tag:tofilter and from:alain.levis@gmail.com
+notmuch tag +family tag:tofilter and from:gounlaf@gmail.com
+notmuch tag +family tag:tofilter and from:isabelle.lagneau@free.fr
+notmuch tag +family tag:tofilter and from:isabelle.lagneau@gmail.com
+
+# Tag friends
+notmuch tag +friend tag:tofilter and from:@maximbaz.com
+notmuch tag +friend tag:tofilter and from:coffin.stephane@gmail.com
+notmuch tag +friend tag:tofilter and from:sc_steff@hotmail.com
+
+# Tag from me
+notmuch tag -tofilter tag:tofilter and from:cyril@levis.name
+
+# Remove to filter tag
+notmuch tag -tofilter tag:tofilter
+
+# Mark emails archived on phone as read and processed
+notmuch tag -unread 'tag:unread AND NOT folder:INBOX'
+notmuch tag -inbox 'NOT folder:INBOX'
+
+# add meeting invite to calendar
+~/bin/auto_notmuch_to_khal
+
+# alert on new mail
+count=$(notmuch count 'tag:unread AND tag:inbox')
+notmuch tag -inbox '*'
+
+[ "$count" != "0" ] && notify-send --icon /usr/share/icons/Adwaita/256x256/actions/mail-message-new.png 'Email' "There are $count new message(s)"

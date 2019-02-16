@@ -1,0 +1,24 @@
+[Default Applications]
+application/x-shellscript=visual-studio-code.desktop
+application/x-yaml=visual-studio-code.desktop
+text/markdown=visual-studio-code.desktop
+application/vnd.ms-word.document.macroenabled.12=libreoffice-writer.desktop
+application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
+text/html=browser.desktop
+x-scheme-handler/about=browser.desktop
+x-scheme-handler/unknown=browser.desktop
+x-scheme-handler/http=browser.desktop
+x-scheme-handler/https=browser.desktop
+application/xml=browser.desktop
+application/xhtml+xml=browser.desktop
+text/mml=browser.desktop
+text/xml=browser.desktop
+text/html=browser.desktop
+application/lrf=calibre-lrfviewer.desktop
+image/gif=feh.desktop
+image/png=feh.desktop
+text/plain=visual-studio-code.desktop
+application/vnd.comicbook+zip=mcomix.desktop
+application/vnd.comicbook-rar=mcomix.desktop
+image/jpeg=feh.desktop

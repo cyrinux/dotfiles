@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily pacman cache cleanup
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+AccuracySec=12h
+
+[Install]
+WantedBy=timers.target

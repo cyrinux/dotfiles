@@ -1,0 +1,5 @@
+[Unit]
+Description=Mount Vault
+
+[Service]
+ExecStart=/usr/bin/gocryptfs -nonempty -extpass "/usr/bin/pass gocryptfs-mega" /home/cyril/Mega/encrypted_gocryptfs /home/cyril/Vault
