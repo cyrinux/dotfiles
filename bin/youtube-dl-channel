@@ -1,0 +1,2 @@
+#!/bin/bash
+youtube-dl -f best -ciw -o "$(pwd)/%(title)s.%(ext)s" -v  --external-downloader aria2c --external-downloader-args "-x 16 -s 16 --async-dns=false" --sub-lang fr,en "$1"

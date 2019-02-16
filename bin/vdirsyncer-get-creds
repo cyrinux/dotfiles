@@ -1,0 +1,2 @@
+#!/bin/sh
+/bin/grep $1 /home/cyril/.cache/mailservers | cut -d':' -f2-3

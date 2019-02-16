@@ -1,0 +1,5 @@
+#!/bin/bash
+gocryptfs -extpass "pass gocryptfs-mega" -noprealloc ~/Seafile/datas/encrypted_gocryptfs ~/Vault 2>/dev/null || true
+py3-cmd refresh decrypted_documents
+[ -f ~/Vault/.lock ] && tarsnap --keyfile ~/.tarsnap.key --cachedir /tmp/tarsnap-cache --fsck
+[ -f ~/Vault/.lock ] && tarsnap --keyfile ~/.tarsnap.key -c --cachedir /tmp/tarsnap-cache -f "$(uname -n)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/.contacts ~/.calendars

@@ -1,0 +1,463 @@
+# vi: ft=sh
+
+general {
+  colors = true
+  color_good = '#ebdbb2'
+  color_degraded = '#fabd2f'
+  color_bad = '#fb4934'
+  interval = 1
+}
+
+
+systemd_suspend_inhibitor {
+    format = "[\?color=state [\?if=state 󰁄|󰁅]]"
+}
+
+order += 'mpris'
+order += 'khal_calendar'
+order += 'external_script new_email'
+order += 'external_script trash'
+order += 'gitlab puppetwork'
+# order += 'taskwarrior'
+order += 'air_quality'
+order += 'external_script clipboard_count'
+order += 'yubikey'
+order += 'external_script pacdiff'
+order += 'external_script checkofficial'
+order += 'external_script checkupdates'
+order += 'external_script checkupdates_aur'
+order += 'external_script checkupdates_vcs'
+order += 'external_script checkrebuild'
+order += 'external_script checkfirmware'
+order += 'scratchpad_async'
+# order += 'external_script firejail'
+order += 'process_status restic'
+order += 'file_status decrypted_shared'
+order += 'file_status decrypted_documents'
+order += 'diskdata'
+order += 'conky diskio_sda'
+order += 'conky diskio_sdb'
+order += 'sysdata'
+order += 'group cpu'
+order += 'group ram'
+order += 'networkmanager'
+order += 'frame wwan_frame'
+order += 'external_script nmtrust'
+order += 'bluetooth'
+order += 'file_status PIA'
+order += 'whatismyip'
+order += 'file_status HOME'
+order += 'file_status WORK'
+order += 'backlight'
+order += 'xkb_layouts'
+order += 'external_script date'
+order += 'clock'
+order += 'volume_status'
+order += 'frame hidden'
+order += 'battery_level'
+order += 'getjson infra_healthcheck'
+order += 'systemd_suspend_inhibitor'
+order += 'do_not_disturb'
+order += 'usbguard'
+
+khal_calendar {}
+
+external_script trash {
+  cache_timeout = 1800
+  script_path = "trash-list |wc -l | tail -1"
+  format = '\?if=lines>10&color=degraded   {lines}'
+  button_show_notification = 1
+}
+
+backlight {
+  cache_timeout = -1
+  brightness_delta = 10
+  low_tune_threshold = 10
+  command = 'light'
+  format = '[\?color=good 󰀅  {level}%]'
+  on_udev_backlight = "refresh_and_freeze"
+}
+
+battery_level  {
+  cache_timeout = 60
+  on_udev_power_supply = 'refresh'
+  blocks = '󰀙󰀘󰀗󰀖󰀕'
+  charging_character = '󰀔'
+  color_charging = '#fabd2f'
+  format = '{icon}   {percent}%'
+  notify_low_level = true
+  notification = true
+  battery_id = 0
+  measurement_mode = 'sys'
+  on_click 3 = 'exec kitty sudo powertop'
+}
+
+clock {
+    cache_timeout = 60
+    format = '{Europe/Paris}'
+    format_time = '  %H:%M'
+}
+
+frame wwan_frame {
+  format = '{output}{button}'
+  open = false
+
+  wwan {
+    on_udev_rfkill = 'refresh'
+    cache_timeout = 30
+    allow_urgent = false
+    format_message = '[\?if=index=1 {number} {text}]'
+    format_notification = '[\?if=message>0 {format_message}]'
+    format_notification += '[\?if=signal_quality_0>80 High signal]'
+    format = '\?color=state   '
+    format += '[\?color=access_technologies {access_technologies_name} ]'
+    format += '[\?if=state_name=connected ({signal_quality_0}% '
+    format += '[\?if=signal_quality_1=False&color=signal_quality_1 \[!\]|] '
+    format += ')|{state_name}][ ({message}/{messages} sms)]'
+    on_click 2 = 'exec wwan toggle'
+  }
+
+  group netrate {
+    button_next = 1
+    button_prev = 0
+
+    net_rate {
+      cache_timeout = 2
+      format = '[\?color=total 󰀑 {total}]'
+      format_value = '{value:.0f} {unit}'
+      thresholds = {'total': [(0, 'hidden'), (1499500, 'degraded'), (14995000, 'bad')]} # 8 mbit, 80 mbit
+      unit = 'MB/s'
+    }
+
+    vnstat {
+        format = ' {total}'
+        statistics_type = 'm'
+    }
+
+    tor_rate {
+        cache_timeout = 2
+        hide_socket_errors = true
+        format = "󰁃 in:{down} out:{up}"
+        control_port = 1337
+        control_password = "08QL7b9B7EvxMZGL4BKboaYc"
+        si_units = True
+    }
+  }
+
+}
+
+frame hidden {
+  format = '{output}{button}'
+  open = false
+
+  weather_owm paris {
+    api_key = "09cf1f33ee32ab050d94c12d783edda8"
+    cache_timeout = 7200
+    city = "Paris"
+    forecast_include_today = True
+    format = "{forecast}"
+    icon_rain = "☂"
+    icon_thunderstorm = "☔"
+    on_click 1 = "exec chromium http://www.meteo.fr"
+  }
+
+  clock {
+    cache_timeout = 60
+    format = '{US/Central}'
+    format_time = 'CT %H:%M'
+  }
+
+}
+
+file_status decrypted_documents {
+  paths = '~/Vault/.lock'
+  format = '\?if=path&color=degraded  Documents'
+}
+
+file_status decrypted_shared {
+  paths = '~/Vault-Share/.lock'
+  format = '\?if=path&color=degraded  Shared'
+}
+
+diskdata {
+  disk = '/dev/mapper/luks'
+  format = '[\?color=free 󰀇  {free} GB]'
+  format_space = '{value:.0f}'
+  thresholds = {'free': [(0, 'bad'), (10, 'degraded'), (20, 'good')]}
+  on_click 3 = 'exec nautilus /home/cyril'
+}
+
+external_script firejail {
+  cache_timeout = 60
+  script_path = "sudo firemon --list |grep firejail"
+  format = '\?if=lines=0&color=bad   {lines}'
+  format += '|\?color=good&show   {lines}'
+  button_show_notification = 1
+}
+
+external_script checkofficial {
+  cache_timeout = 84600
+  script_path = "check-aur-became-official"
+  button_show_notification = 1
+  format = '\?if=lines&color=degraded 󰀽  official {lines}'
+}
+
+external_script checkupdates {
+  cache_timeout = 84600
+  button_show_notification = 1
+  script_path = "is_online && checkupdates || true"
+  format = '\?if=lines&color=degraded 󰀾  {lines}'
+}
+
+external_script checkupdates_aur {
+  cache_timeout = 84600
+  button_show_notification = 1
+  script_path = "is_online && nmtrust -q && aur repo -u || true"
+  format = '\?if=lines&color=degraded 󰀽  {lines}'
+}
+
+external_script checkupdates_vcs {
+  cache_timeout = 84600
+  button_show_notification = 1
+  script_path = "is_online && nmtrust -q && run-on-ac aur vercmp-devel || true"
+  format = '\?if=lines&color=degraded 󰀼  {lines}'
+}
+
+external_script checkrebuild {
+  cache_timeout = -1
+  button_show_notification = 1
+  script_path = "is_online && nmtrust -q && run-on-ac checkrebuild | grep cyrinux || true"
+  format = '[\?if=line [\?color=degraded 󰁂 {lines}]]'
+}
+
+external_script pacdiff {
+  cache_timeout = -1
+  button_show_notification = 1
+  script_path = "pacdiff -o"
+  format = '\?if=lines&color=degraded   {lines}'
+}
+
+external_script date {
+  script_path = 'date +"%a, %d %b"'
+  format = '󰀛  {output}'
+  on_click 1 = 'exec gsimplecal'
+}
+
+file_status PIA {
+  on_udev_net = 'refresh'
+  cache_timeout = -1
+  paths = ['/proc/sys/net/ipv4/conf/tun-pia*']
+  format = '\?color=path  '
+  thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
+}
+
+file_status HOME {
+  on_udev_net = 'refresh'
+  cache_timeout = -1
+  paths = ['/proc/sys/net/ipv4/conf/tun-home']
+  format = '\?if=path&color=path  '
+  thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
+}
+
+file_status WORK {
+  on_udev_net = 'refresh'
+  cache_timeout = -1
+  paths = ['/proc/sys/net/ipv4/conf/tap-ooprod*']
+  format = '\?if=path&color=path  '
+  thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
+}
+
+sysdata {
+  cache_timeout = 5
+  mem_htop = true
+  thresholds = {
+    'cpu_temp': [(0, 'good'), (75, 'degraded'), (90, 'bad')],
+  }
+  format = '\?color=cpu_temp  {cpu_temp:.0f}°C   {cpu_freq_avg}ghz'
+  on_click 3 = 'exec kitty glances'
+}
+
+group cpu {
+  button_next = 1
+  button_prev = 0
+
+  sysdata {
+    cache_timeout = 5
+    thresholds = { 'cpu': [(0, 'good'), (75, 'degraded'), (95, 'bad')] }
+    format = '[\?color=cpu 󰀐   {cpu_usage:.0f}%]'
+  }
+
+  conky {
+    format = '󰀐  {top name 1} {top cpu 1}%'
+  }
+}
+
+group ram {
+  button_next = 1
+  button_prev = 0
+
+  sysdata {
+    cache_timeout = 1
+    thresholds = { 'mem': [(0, 'good'), (60, 'degraded'), (80, 'bad')] }
+    format = '[\?color=mem 󰀌   {mem_used_percent:.0f}%]'
+  }
+
+  conky {
+    format = '󰀌  {top_mem name 1} {top_mem mem 1}%'
+  }
+}
+
+hddtemp {
+  format_hdd = '\?color=temperature {temperature}°C'
+}
+
+do_not_disturb {
+   server = 'dunst'
+   format = '[\?if=state&color=bad 󰀊|\?color=good 󰀉]'
+}
+
+volume_status {
+  on_udev_sound = 'refresh'
+  device = '@DEFAULT_SINK@'
+  max_volume = 100
+  command = 'pamixer'
+  format = '󰀃  {percentage}%'
+  format_muted = '󰀂  0%'
+  thresholds = [(0, 'bad'), (1, 'good'), (101, 'degraded')]
+  on_click 3 = 'exec pavucontrol'
+}
+
+whatismyip  {
+  format = '[{country_iso}]'
+  url_geo = 'https://ifconfig.co/json'
+  expected = {'country_iso': 'FR'}
+  hide_when_offline = true
+}
+
+networkmanager {
+  on_udev_rfkill = 'refresh'
+  format_device = '[\?if=general_connection [\?if=general_type=ethernet 󰀍][\?soft  ][\?if=general_type=wifi 󰀆][\?soft  ][\?color=ap1_signal {ap1_signal}%]]'
+  format_device_separator = '  |  '
+}
+
+scratchpad_async {
+  format = '[\?if=counter>2&color=degraded 󰀿 {counter}|󰀿 {counter}]'
+}
+
+yubikey {
+  format = '[[\?if=is_gpg ][\?if=is_u2f ]  ]'
+}
+
+taskwarrior {
+  cache_timeout = 60
+  format = '[ {task}]'
+  filter = '+ACTIVE'
+}
+
+process_status restic {
+  cache_timeout = 5
+  process = 'restic'
+  color_bad = 'good'
+  color_good = 'degraded'
+  full = true
+  icon_on = ' running'
+  icon_off = ''
+  format = '{icon}'
+}
+
+external_script nmtrust {
+    cache_timeout = -1
+    script_path = 'nmtrust -q && echo   trusted || echo   untrusted'
+    format = '\?if=output~untrusted&color=degraded&show {output}|{output}'
+}
+
+
+external_script new_email {
+  cache_timeout = 2
+  script_path = "notmuch count tag:unread"
+  format = '\?if=output&color=good    {output}'
+  on_click 1 = 'exec notify_last_mail'
+}
+
+
+bluetooth {
+    on_udev_rfkill = 'refresh'
+    on_udev_bluetooth = 'refresh'
+    cache_timeout = 60
+    format_separator = ' '
+    format = '\?if=format_device {format_device} '
+    format_device = '[[\?if=mac=00:0E:DD:06:24:1C   {name} ]'
+    format_device += '[\?if=mac=20:74:CF:3B:36:A9   {name} ]'
+    format_device += '[\?if=mac=88:BD:45:02:38:3A   {name} ]'
+    format_device += '[\?if=mac=CD:07:D0:2D:BB:D1  {name} ]]'
+    format_device += '|\?show  {name}'
+    color_bad = 'good'
+    color_good = 'degraded'
+    on_click 2 = 'exec echo disconnect | bluetoothctl && py3-cmd refresh bluetooth'
+    on_click 3 = 'exec connect_a2dp 20:74:CF:3B:36:A9'
+}
+
+air_quality {
+  auth_token = 'e9086302d25272486899ff6aaeb43ae9d09421b4'
+  location = '@3090'
+  format = '[\?if=aqi>100&color=aqi  {aqi}]'
+}
+
+external_script clipboard_count {
+  cache_timeout = 3600
+  strip_output = True
+  script_path = "greenclip print | wc -l 2>/dev/null"
+  format = '\?if=lines>200&color=degraded  {lines:.0f}'
+}
+
+gitlab puppetwork {
+    cache_timeout = 60
+    auth_token = ***REMOVED***
+    project = '***REMOVED***'
+    format = '[\?if=open_merge_requests_count>4 [\?color=orangered&show ] [{open_merge_requests_count}]]'
+}
+
+mpris {
+  player_priority = "[mpv, vlc, mellowplayer, spotify, *]"
+  format = "{title} from [{artist}][{artists}]"
+  format_none = ""
+}
+
+usbguard {
+  format_button_allow = '  '
+  format_button_reject = '  '
+}
+
+order += 'getjson blog'
+getjson blog {
+  cache_timeout = 240
+  url = 'https://stats.levis.ws/index.php?module=API&method=Live.getCounters&idSite=5&lastMinutes=30&format=JSON&token_auth=a52abd2d14678485d51d90d0d55a0dfe'
+  format = '[\?if=0-visitors>0  Visitors: {0-visitors} Visits: {0-visits}]'
+}
+
+conky diskio_sda {
+    format = ' {diskio sda}'
+    config = {'short_units': True}
+}
+
+conky diskio_sdb {
+    format = ' {diskio sdb}'
+    config = {'short_units': True}
+}
+
+twitchy {
+}
+
+external_script checkfirmware {
+  cache_timeout = 43200 # twice a day
+  script_path = "nmtrust -q && fwupdmgr refresh >/dev/null; fwupdmgr get-updates 2>/dev/null"
+  format = '\?if=lines&color=degraded '
+  on_click 1 = 'exec notify-send "Firmware updates" "What\'s new: $ fwupdmgr get-updates\\nTo update: $ fwupdmgr update"'
+}
+
+getjson infra_healthcheck {
+  allow_urgent = true
+  cache_timeout = 300
+  url = 'https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json'
+  format = '[\?if=!status=up&color=bad   {status}]'
+}

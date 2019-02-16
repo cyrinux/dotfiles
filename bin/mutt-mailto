@@ -1,0 +1,3 @@
+#!/bin/sh
+
+i3-sensible-terminal -T Mutt -e "mutt $*"

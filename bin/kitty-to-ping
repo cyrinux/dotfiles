@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+echo "pinging $1 ..."
+kitty ping $1

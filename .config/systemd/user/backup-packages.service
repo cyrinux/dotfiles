@@ -1,0 +1,6 @@
+[Unit]
+Description=Backup private thing to mega
+
+[Service]
+ExecStart=/home/cyril/bin/backup
+

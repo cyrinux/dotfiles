@@ -1,0 +1,18 @@
+! vim:ft=xdefaults
+rofi.modi: file-browser,json-dict,ssh,calc:rofi-calc,hex:rofi-int-to-hex,run,drun
+rofi.theme: gruvbox-dark.rasi
+rofi.terminal: kitty
+rofi.ssh-client:           ssh
+rofi.ssh-command:          {terminal} {ssh-client} {host}
+rofi.run-command:          {cmd}
+rofi.run-shell-command:    {terminal} {cmd}
+rofi.hide-scrollbar:       false
+rofi.show-icons: false
+rofi.show-match: true
+rofi.window-format: {c} {t}
+rofi.window-match-fields: name,title
+rofi.drun-match-fields: name
+rofi.matching: fuzzy
+rofi.kb-remove-char-back: BackSpace,Shift+BackSpace,Control+h
+rofi.kb-move-word-back: Alt+b,Ctrl+Left
+rofi.kb-move-word-forward: Alt+f,Ctrl+Right

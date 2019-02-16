@@ -1,0 +1,17 @@
+#!/bin/sh
+# bring the USB virtual Ethernet interface up
+
+ip link set $1 up
+ip addr add 10.0.0.2/24 dev $1
+
+sudo systemctl restart firewalld
+sudo firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.0.0.1/32 -o $2 -j MASQUERADE
+sudo firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i $1 -o $2 -j ACCEPT
+sudo firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i $2 -o $1  -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# enable IP forwarding
+sudo sysctl net.ipv4.ip_forward=1
+
+# connect
+ssh -v -o PreferredAuthentications=password -p 22  root@10.0.0.1
+
