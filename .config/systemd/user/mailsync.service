@@ -1,0 +1,8 @@
+[Unit]
+Description=Run mbsync and notmuch then auto add cal events
+After=graphical.target
+
+[Service]
+Type=oneshot
+Environment=DISPLAY=:0
+ExecStart=%h/bin/mailsync

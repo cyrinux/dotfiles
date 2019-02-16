@@ -1,0 +1,2 @@
+#!/bin/bash
+pgrep rofi && killall rofi || LC_MONETARY=fr_FR.UTF-8 LC_ALL= rofi -normal-window -show calc -modi calc -no-show-match -no-sort -calc-command \"echo '{result}' | xclip -selection clipboard\"

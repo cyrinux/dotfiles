@@ -1,0 +1,64 @@
+#!/usr/bin/zsh
+
+VPN_NAME="France"
+ESSID=$(iwgetid -r | tr '[:upper:]' '[:lower:]')
+
+INTERFACE="$1"
+STATUS=$2
+
+case $STATUS in
+  up)
+    if [[ ${INTERFACE:0:3} != "tun" && ${INTERFACE:0:3} != "tap"
+          && ${INTERFACE:0:2} != "vm" && ${INTERFACE:0:6} != "docker"
+          && ${INTERFACE:0:11} != "enp59s0u1u2" && ${INTERFACE:0:5} != "virbr"
+          && ${INTERFACE:0:5} != "vmnet"
+          && ${INTERFACE:0:14} != "wwp0s20f0u2i12"
+          && ${ESSID:0:9} != "trucmuche" && ${ESSID:0:6} != "mobile"
+          && ${ESSID:0:7} != "Oodrive" && ${ESSID:0:6} != "phonux" ]]; then
+      nmcli con up "$VPN_NAME" 2>/dev/null
+    fi
+    systemctl restart systemd-resolved
+    resolvectl flush-caches
+    py3-cmd refresh "whatismyip" "wifi brief" "weather_owm paris"
+    ;;
+  down)
+    if nmcli con show --active | grep "$VPN_NAME"; then
+      nmcli con down "$VPN_NAME" 2>/dev/null
+    fi
+    systemctl restart systemd-resolved
+    resolvectl flush-caches
+    py3-cmd refresh "whatismyip" "wifi brief"
+    ;;
+  vpn-up)
+    if [[ $INTERFACE == "tun-pia-hard" ]]; then
+      chattr -i /etc/resolv.conf
+      echo "nameserver 127.0.0.1" > /etc/resolv.conf
+      chattr +i /etc/resolv.conf
+      nmcli con down tun-pia 2>/dev/null
+      sysctl -w net.ipv6.conf.all.disable_ipv6=1
+    fi
+    if [[ $INTERFACE == "tun-pia" ]]; then
+      nmcli con down tun-pia-hard 2>/dev/null
+      sysctl -w net.ipv6.conf.all.disable_ipv6=1
+    fi
+    if [[ $INTERFACE == "tap-ooprod" || ${INTERFACE} == "tap-oorgs" ]]; then
+      py3-cmd refresh "gitlab"
+    fi
+    systemctl restart systemd-resolved
+    resolvectl flush-caches
+    py3-cmd refresh "whatismyip"
+    ;;
+  vpn-down)
+    if [[ $INTERFACE == "tun-pia-hard" ]]; then
+      chattr -i /etc/resolv.conf
+      cp /run/NetworkManager/resolv.conf /etc/resolv.conf
+      sysctl -w net.ipv6.conf.all.disable_ipv6=0
+    fi
+    if [[ $INTERFACE == "tun-pia" ]]; then
+      sysctl -w net.ipv6.conf.all.disable_ipv6=0
+    fi
+    systemctl restart systemd-resolved
+    resolvectl flush-caches
+    py3-cmd refresh "whatismyip"
+    ;;
+esac

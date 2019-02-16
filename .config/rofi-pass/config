@@ -1,0 +1,93 @@
+# permanently set alternative root dir
+# root=/path/to/root
+
+# rofi command. Make sure to have "$@" as last argument
+_rofi () {
+    rofi -i -no-auto-select -no-levenshtein-sort "$@"
+}
+
+
+# default command to generate passwords
+_pwgen () {
+	pwgen -y "$@"
+}
+
+# image viewer to display qrcode of selected entry
+# qrencode is needed to generate the image and a viewer
+# that can read from pipes. Known viewers to work are feh and display
+_image_viewer () {
+    feh -
+#    display
+}
+
+# xdotool needs the keyboard layout to be set using setxkbmap
+# You can do this in your autostart scripts (e.g. xinitrc)
+
+# If for some reason, you cannot do this, you can set the command here.
+# and set fix_layout to true
+fix_layout=true
+
+layout_cmd () {
+  #setxkbmap fr
+  xkb-switch -s "fr(azerty)" && xmodmap ~/.Xmodmap
+}
+
+# fields to be used
+URL_field='url'
+USERNAME_field='user'
+AUTOTYPE_field='autotype'
+
+# delay to be used for :delay keyword
+delay=2
+
+# rofi-pass needs to close itself before it can type passwords. Set delay here.
+wait=0.2
+
+## Programs to be used
+# Editor
+EDITOR='kitty nvim'
+
+# Browser
+BROWSER='browser'
+
+## Misc settings
+
+default_do='copyPass' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
+auto_enter='false'
+notify='true'
+default_autotype='user :tab pass'
+
+# color of the help messages
+# leave empty for autodetection
+help_color="#4872FF"
+help_header='false'
+
+# Clipboard settings
+# Possible options: primary, clipboard, both
+clip=clipboard
+
+# Seconds before clearing pass from clipboard
+clip_clear=45
+
+# Options for generating new password entries
+# default_user is also used for password files that have no user field.
+default_user=cyril
+password_length=32
+
+# Custom Keybindings
+autotype="Alt+ampersand"
+type_user="Alt+eacute"
+type_pass="Alt+quotedbl"
+open_url="Alt+apostrophe"
+copy_name="Alt+u"
+copy_url="Alt+l"
+copy_pass="Alt+p"
+show="Alt+o"
+copy_entry="Alt+eacute"
+type_entry="Alt+ampersand"
+copy_menu="Alt+c"
+action_menu="Alt+a"
+type_menu="Alt+t"
+help="Alt+h"
+switch="Alt+x"
+insert_pass="Alt+n"

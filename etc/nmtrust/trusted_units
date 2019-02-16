@@ -1,0 +1,14 @@
+mailsync.timer,user:cyril
+vdirsyncer.timer,user:cyril
+tarsnap.timer,user:cyril
+tarsnapper.timer
+pinboard-backup.timer,user:cyril
+tor.service
+library-repos.timer,user:cyril
+sshd.service
+restic.timer,user:cyril
+restic-check.timer,user:cyril
+update_blocklist.timer
+reflector.timer
+seaf-cli@cyril.service
+pkgfile-update.timer

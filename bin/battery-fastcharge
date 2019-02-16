@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo cctk --PrimaryBattChargeCfg=Express --ValSetupPwd=$(pass personal/bios)

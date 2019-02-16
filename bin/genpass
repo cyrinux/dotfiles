@@ -1,0 +1,85 @@
+#!/usr/bin/python3
+"""Little password generator, with very small amount of features, but funny ones:
+
+usage:
+    genpass.py   # yield four lines
+    genpass.py <alphabet> [+<char to add>] [-<char to remove>]
+
+exemple:
+    genpass.py
+    genpass.py numeric +@
+    genpass.py numeric -0 +0  # 0 included ; last is right
+    genpass.py ascii +ℂℕℚℝℤ
+    genpass.py ascii -a +ℂℕℚℝℤ -a +a  # a included ; last is right
+    genpass.py numeric ++
+    genpass.py numeric +-
+    genpass.py ascii --+
+    genpass.py unicode
+    genpass.py any_unicode
+
+
+- output 4 lines, each having its own properties:
+    - numeric
+    - ascii alphanum
+    - full ascii
+    - unicode
+- use SystemRandom, which is non-predictible/reproductible
+
+the unicode is based on [Markus Kuhn’s UTF-8 decoder stress test](https://www.w3.org/2001/06/utf-8-test/UTF-8-demo.html)
+found at https://www.w3.org/2001/06/utf-8-test/UTF-8-demo.html,
+plus some alphabets found at [unicode-table](http://unicode-table.com/en/):
+old-italic, tibetan, russian, arab, braille
+
+Some of them are filtered because all characters have not a width of 1.
+(it's the reason why many asian characters are not present)
+
+"""
+
+import sys
+import shutil
+from random import SystemRandom as Random
+from itertools import islice
+
+
+ALPHABETS = {
+    'numeric': '0123456789',
+    'alphanum': '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+    'ascii': """!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~""",
+    'unicode': """!"&'()+,-./0123456789:;<=>@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]`abcdefghijklmnopqrstuvwxyz|£©¬´µÀÆÖÞßæéðöüÿıœŠŸžɐɑɔəɛʃʊʏʳˈː·๏ཀཁགངཅཆཇཉཏཐདནཔཕབམཙཚཛཝཞཟའཡརལཤསཧཨཀྵཪཫཬაბგდევზთიკლმნოპრსტუფქყშცწხჰሀሄህሆለላሌልሎሕመሙማምሞሥረሩሪራርሮሰሲሳስሶሽቀቁቅቆበቢባቤብተቱታቴትነናንኝአእከካክወዋውዓዕዘዜዞየዩያይደዳድጄጅገጉጋጌግጎጠጣጥጨፈፉፋፍ።፥ᚢᚦᚩᚪᚫᚱᚳᚹᚻᚾᛁᛏᛒᛖᛗᛚᛞᛥḂẄἀἁἄἐἔἠἡἢἧἰἱἶὀὁὃὄὅὐὑὓὖὥὦὰάὲέὴήὶίὸόὺύὼώ᾿ῃῆῇῖῦῶ´῾–—‘’‚“”„†‡•…‰‾₀₂€ℂℕℚℝ™ℤ←↑→↗↨↻⇌⇒⇔⇣∀∂∆∇∈∏∑−∞∧∨∪∮≠≡≤≪⊂⊃⊆⊤⊥⋅⌀⌈⌉⌊⌋⌷⍎⍕⍳⍴⑀─━│┃┄┅┆┇┊┋┌┍┎┏┐┑┒┓└┕┖┗┘┙┚┛├┝┠┣┤┥┨┫┬┯┰┳┴┷┸┻┼┿╀╁╂╃╄╅╆╋╌╍╎╏═║╒╓╔╕╖╗╘╙╚╛╜╝╞╟╠╡╢╣╤╥╦╧╨╩╪╫╭╮╯╰╱╲╳╴╵╶╷╸╹╺╻╼╽╾╿▁▂▃▄▅▆▇█▉▊▋▌▍▎▏░▒▓►☺♀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿⡀⡁⡂⡃⡄⡅⡆⡇⡈⡉⡊⡋⡌⡍⡎⡏⡐⡑⡒⡓⡔⡕⡖⡗⡘⡙⡚⡛⡜⡝⡞⡟⡠⡡⡢⡣⡤⡥⡦⡧⡨⡩⡪⡫⡬⡭⡮⡯⡰⡱⡲⡳⡴⡵⡶⡷⡸⡹⡺⡻⡼⡽⡾⡿⢀⢁⢂⢃⢄⢅⢆⢇⢈⢉⢊⢋⢌⢍⢎⢏⢐⢑⢒⢓⢔⢕⢖⢗⢘⢙⢚⢛⢜⢝⢞⢟⢠⢡⢢⢣⢤⢥⢦⢧⢨⢩⢪⢫⢬⢭⢮⢯⢰⢱⢲⢳⢴⢵⢶⢷⢸⢹⢺⢻⢼⢽⢾⢿⣀⣁⣂⣃⣄⣅⣆⣇⣈⣉⣊⣋⣌⣍⣎⣏⣐⣑⣒⣓⣔⣕⣖⣗⣘⣙⣚⣛⣜⣝⣞⣟⣠⣡⣢⣣⣤⣥⣦⣧⣨⣩⣪⣫⣬⣭⣮⣯⣰⣱⣲⣳⣴⣵⣶⣷⣸⣹⣺⣻⣼⣽⣾ⴰⴱⴲⴳⴴⴵⴶⴷⴸⴹⴺⴻⴼⴽⴾⴿⵀⵁⵂⵃⵄⵅⵆⵇⵈⵉⵊⵋⵌⵍⵎⵏⵐⵑⵒⵓⵔⵕⵖⵗⵘⵙⵚⵛⵜⵝⵞⵟⵠⵡⵢⵣⵤⵥﬁﺍﺎﺏﺐﺑﺒﺕﺖﺗﺘﺙﺚﺛﺜﺝﺞﺟﺠﺡﺢﺣﺤﺥﺦﺧﺨﺩﺪﺫﺬﺭﺮﺯﺰﺱﺲﺳﺴﺵﺶﺷﺸﺹﺺﺻﺼﺽﺾﺿﻀﻁﻂﻃﻄﻅﻆﻇﻈﻉﻊﻋﻌﻍﻎﻏﻐﻑﻒﻓﻔﻕﻖﻗﻘﻙﻚﻛﻜﻝﻞﻟﻠﻡﻢﻣﻤﻥﻦﻧﻨﻩﻪﻫﻬﻭﻮﻱﻲﻳﻴ�𐌀𐌁𐌂𐌃𐌄𐌅𐌆𐌇𐌈𐌉𐌊𐌋𐌌𐌍𐌎𐌏𐌐𐌑𐌒𐌓𐌔𐌕𐌖𐌗𐌘𐌙𐌚𐌛𐌜𐌝𐌞𐌠𐌡𐌢𐌣""",
+}
+
+
+def validate(char:str) -> bool:
+    return char.isprintable() and not char.isspace()
+
+def password(size:int, alphabet:str) -> str:
+    return ''.join(islice(gen_from(alphabet), 0, size))
+
+def gen_from(alphabet:str) -> iter:
+    random = Random()
+    while True:
+        yield random.choice(alphabet)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:  # no CLI parameter
+        print('\n'.join(
+            password(shutil.get_terminal_size().columns, alphabet)
+            for alphabet in ALPHABETS.values()
+        ))
+    else:  # parse CLI, output only one line
+        # constraints
+        if sys.argv[1] not in ALPHABETS:
+            print('first arg should be in {}'.format(ALPHABETS.keys()))
+        alphabet = set(ALPHABETS[sys.argv[1]])
+        bonus, malus = '', ''
+        for mod in sys.argv[2:]:
+            if mod.startswith('+'):
+                alphabet |= set(mod[1:])
+            elif mod.startswith('-'):
+                alphabet -= set(mod[1:])
+            else:
+                print("One parameter doesn't start with a + or a -."
+                      " Will be ignored.")
+        print(password(shutil.get_terminal_size().columns, tuple(alphabet)))
+

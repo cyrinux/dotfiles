@@ -1,0 +1,8 @@
+# Locale
+LANG=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+LANGUAGE=en_US
+
+# Scale all GTK3 apps for HiDPI screen
+GDK_SCALE=1
+GDK_DPI_SCALE=1

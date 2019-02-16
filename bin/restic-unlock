@@ -1,0 +1,11 @@
+#!/bin/bash
+credentials=$(pass backup/restic-synology)
+
+RESTIC_PASSWORD=$(echo "$credentials" | head -n1)
+RESTIC_REPOSITORY=$(echo "$credentials" | grep RESTIC_REPOSITORY | awk '{ print $2 }')
+
+export RESTIC_PASSWORD="$RESTIC_PASSWORD"
+export RESTIC_REPOSITORY="$RESTIC_REPOSITORY"
+
+echo "Unlocking..."
+restic unlock

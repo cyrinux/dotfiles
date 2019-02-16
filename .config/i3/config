@@ -1,0 +1,552 @@
+# i3 config file (v4)
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# Set mod key (Mod1=<Alt>, Mod4=<Super>, Mod3=<Hyper(CapsLocks)>)
+set $alt Mod1
+set $numlock Mod2
+set $hyper Mod3
+set $win Mod4
+
+# set default desktop layout (default is tiling)
+# workspace_layout tabbed <stacking|tabbed>
+workspace_layout tabbed
+
+# Configure border style <normal|1pixel|pixel xx|none|pixel>
+new_window pixel 1
+new_float pixel 0
+
+# Hide borders
+hide_edge_borders both
+
+# change borders
+# (u)
+#bindcode $hyper+30 border none
+# (y)
+#bindcode $hyper+29 border pixel 1
+# (n)
+#bindcode $hyper+57 border normal
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+font pango: Taskbar, FontAwesome, Cantarell 8
+
+# Use Mouse+$hyper to drag floating windows
+floating_modifier $hyper
+
+# start a terminal
+bindsym $hyper+Return exec kitty
+bindsym $win+Return exec kitty
+
+# kill focused window (q)
+bindcode $win+38 kill
+
+# Fetch mail (shift+F1)
+bindcode Shift+67 exec "notify-send -i /usr/share/doc/neomutt/logo/neomutt-128.png 'Mbsync' 'fetching mail...'; systemctl --user start mailsync.service; systemctl --user start mbsync.service"
+# Open vault (shift+F2)
+bindcode Shift+68 exec "open-vault 7200 &"
+# Nautilus (shift+F3)
+bindcode Shift+69 exec "nautilus &"
+
+# Start a launcher (=)(d)(o)(w)(p)
+# Mod+=
+bindcode $hyper+21 exec "calc"
+# Hyper+Tab
+bindcode $hyper+23 exec "rofi -normal-window -show file-browser"
+# Hyper+u
+bindcode $hyper+30 exec "rofimoji --rofi-args='-normal-window -matching normal -columns 3'"
+
+# Hyper+w
+bindcode $hyper+52 exec "surfraw-rofi"
+# Mod+w
+bindcode $win+52 exec "surfraw duckduckgo -j $(xclip -o -selection clipboard)"
+# Hyper+p
+bindcode $hyper+33 exec "rofi-pass &"
+# Hyper+b
+bindcode $hyper+56 exec "notify-send 'Opening bookmarks...'; rofi-pinboard"
+# square key
+bindcode 49 exec "rofi-todoist"
+# Alt+Tab
+bindcode $alt+23 exec "rofi -show window"
+# Hyper+d
+bindcode $hyper+40 exec "pgrep rofi && killall rofi || rofi -combi-modi window,drun,ssh -show combi -modi combi -columns 2"
+
+################################################################################################
+# sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> +Pulseaudio later!   #
+################################################################################################
+# Audio settings
+bindcode $win+33 mode "$mode_audio"
+set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
+mode "$mode_audio" {
+    # (p)
+    bindcode 33 exec pavucontrol, mode "default"
+    # (e)
+    bindcode 26 exec pulseeffects, mode "default"
+    # (s)
+    bindcode 39 exec connect-shure-bt1, mode "default"
+    # (a)
+    bindcode 24 exec connect-aeropex, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym XF86AudioMute         exec py3-cmd click 1 volume_status
+bindsym Shift+XF86AudioMute   exec pamute
+bindsym XF86AudioRaiseVolume  exec py3-cmd click 4 volume_status
+bindsym XF86AudioLowerVolume  exec py3-cmd click 5 volume_status
+bindsym XF86AudioPlay exec playerctl -p $(tail -1 /tmp/player-last) play-pause
+bindsym XF86AudioPrev exec playerctl -p $(tail -1 /tmp/player-last) previous
+bindsym XF86AudioNext exec playerctl -p $(tail -1 /tmp/player-last) next
+
+################################################################################################
+
+# Screen brightness controls
+bindsym XF86MonBrightnessUp   exec set-brightness inc
+bindsym XF86MonBrightnessDown exec set-brightness dec
+bindsym Shift+XF86MonBrightnessUp   exec set-brightness inc
+bindsym Shift+XF86MonBrightnessDown exec set-brightness dec
+
+# Start Applications
+# mod+n
+bindcode $hyper+57 exec networkmanager_dmenu
+# mod+m
+bindcode $hyper+47 exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -p "Mount" -matching regex -dmenu -i -no-custom -multi-select
+# mod+F1
+bindcode $hyper+67 exec "autorandr --change --force; resolvectl flush-caches; sudo -A systemctl stop pcscd.service; sudo  -A systemctl restart systemd-resolved.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
+bindcode $win+67 exec "autorandr --change --force; resolvectl flush-caches; sudo -A systemctl stop pcscd.service; sudo -A systemctl restart systemd-resolved.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
+# display
+bindsym XF86Display --release exec autorandr --change
+# mod+Shift+d
+bindcode $win+40 --release exec "killall dunst; exec notify-send 'restart dunst'"
+# mod+scroll_lock
+bindsym $hyper+Scroll_Lock exec "killall screenkey || screenkey"
+# printscreen
+bindsym Print exec "flameshot full -p ~/Pictures/Screenshots -c"
+# mod+printscreen
+bindsym $hyper+Print exec "flameshot gui"
+
+# Refresh py3status module after switching keyboard layout (Shift+Shift)
+bindcode Shift+50 exec "py3-cmd refresh xkb_layouts"
+bindcode Shift+62 exec "py3-cmd refresh xkb_layouts"
+
+# calendar (c)
+bindcode $hyper+54 exec gsimplecal
+
+# mod+F7
+bindcode $hyper+73 exec feh /home/cyril/Pictures/ru.png
+# mod+F8
+bindcode $hyper+74 exec feh /home/cyril/Pictures/kak_keybinding.png
+
+# search
+bindsym XF86Search exec brave https://search.levis.ws/
+
+# Workspaces
+focus_follows_mouse no
+
+set $workspace1 workspace number 1
+set $workspace2 workspace number 2
+set $workspace3 workspace number 3
+set $workspace4 workspace number 4
+set $workspace5 workspace number 5
+set $workspace6 workspace number 6
+set $workspace7 workspace number 7
+set $workspace8 workspace number 8
+set $workspace9 workspace number 9
+set $workspace0 workspace number 10
+
+# Switch to workspace using keypad
+bindcode $numlock+$hyper+87 $workspace1
+bindcode $numlock+$hyper+88 $workspace2
+bindcode $numlock+$hyper+89 $workspace3
+bindcode $numlock+$hyper+83 $workspace4
+bindcode $numlock+$hyper+84 $workspace5
+bindcode $numlock+$hyper+85 $workspace6
+bindcode $numlock+$hyper+79 $workspace7
+bindcode $numlock+$hyper+80 $workspace8
+bindcode $numlock+$hyper+81 $workspace9
+bindcode $numlock+$hyper+90 $workspace0
+
+# Switch to workspace using number row
+bindsym $hyper+1 $workspace1
+bindsym $hyper+2 $workspace2
+bindsym $hyper+3 $workspace3
+bindsym $hyper+4 $workspace4
+bindsym $hyper+5 $workspace5
+bindsym $hyper+6 $workspace6
+bindsym $hyper+7 $workspace7
+bindsym $hyper+8 $workspace8
+bindsym $hyper+9 $workspace9
+bindsym $hyper+0 $workspace0
+
+# Move window to workspace using keypad
+bindcode $numlock+$win+87 move container to $workspace1
+bindcode $numlock+$win+88 move container to $workspace2
+bindcode $numlock+$win+89 move container to $workspace3
+bindcode $numlock+$win+83 move container to $workspace4
+bindcode $numlock+$win+84 move container to $workspace5
+bindcode $numlock+$win+85 move container to $workspace6
+bindcode $numlock+$win+79 move container to $workspace7
+bindcode $numlock+$win+80 move container to $workspace8
+bindcode $numlock+$win+81 move container to $workspace9
+bindcode $numlock+$win+90 move container to $workspace0
+
+# Move window to workspace using number row
+bindsym $win+1 move container to $workspace1
+bindsym $win+2 move container to $workspace2
+bindsym $win+3 move container to $workspace3
+bindsym $win+4 move container to $workspace4
+bindsym $win+5 move container to $workspace5
+bindsym $win+6 move container to $workspace6
+bindsym $win+7 move container to $workspace7
+bindsym $win+8 move container to $workspace8
+bindsym $win+9 move container to $workspace9
+bindsym $win+0 move container to $workspace0
+
+
+# alternatively, you can use the cursor keys:
+bindsym $hyper+Left focus left
+bindsym $hyper+Down focus down
+bindsym $hyper+Up focus up
+bindsym $hyper+Right focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $win+Left move left
+bindsym $win+Down move down
+bindsym $win+Up move up
+bindsym $win+Right move right
+
+# workspace back and forth (with/without active container)
+workspace_auto_back_and_forth yes
+
+# split orientation
+# (mod+h)
+bindcode $hyper+43 split h;exec notify-send 'tile horizontally'
+# (mod+v)
+bindcode $hyper+55 split v;exec notify-send 'tile vertically'
+# (mod+q)
+bindcode $hyper+38 split toggle;exec notify-send 'toggle split'
+
+# move workspace to the right monitor
+# mod+Shift+BackSpace
+bindcode $win+22 move workspace to output right
+# mod+BackSpace
+bindcode $hyper+22 move container to output right
+
+# toggle fullscreen mode for the focused container
+# (mod+f)
+bindcode $win+41 fullscreen toggle
+
+# (mod+s)
+bindcode $hyper+39 layout stacked
+# (mod+t)
+bindcode $hyper+28 layout tabbed
+# (hyper+e)
+bindcode $hyper+26 layout toggle tabbed splith splitv stacked
+
+# toggle tiling / floating
+bindsym $win+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $hyper+space focus mode_toggle
+
+# toggle sticky (Shift+s)
+bindcode $win+39 sticky toggle
+
+# focus the parent container (hyper+a)
+bindcode $hyper+24 focus parent
+
+# Focus the child container (hyper+z)
+bindcode $hyper+25 focus child
+
+# move the currently focused window to the scratchpad
+# (mod+Shift+²)
+bindcode $win+49 move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+# (mod+²)
+bindcode $hyper+49 scratchpad show
+
+#navigate workspaces next / previous
+bindsym $hyper+Ctrl+Right workspace next
+bindsym $hyper+Ctrl+Left workspace prev
+
+# display exploit_menu (mod+Control+u)
+bindcode $hyper+Ctrl+30 exec exploit_menu
+
+# autoname workspaces
+exec_always i3-autoname-workspaces &
+
+# Specific window configuration
+# Bindings to make the webcam float and stick.
+# # float edit_text windows
+for_window [title="^edit_text$"] floating enable
+for_window    [window_role="pop-up"] floating enable
+for_window    [class="Peek"] floating enable
+for_window    [class="Rofi"] floating enable
+for_window    [class="Tor Browser"] move container to $workspace8, floating enable border normal
+for_window    [class="(?i)chromium"] move window to workspace current, title_format "Chromium"
+for_window    [class="Wire"] move container to $workspace1
+for_window    [class="zoom"] floating enable, sticky disable
+for_window    [class="xfreerdp"] move container to $workspace9
+for_window    [class="seafile-applet"] floating enable
+for_window    [class="com-sun-javaws-Main"] floating enable
+for_window    [class="feh|Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
+for_window    [class="com-stonesoft-client-launcher-SmcClient|sun-awt-X11-XDialogPeer"] floating enable
+for_window    [title="Event Tester"] floating enable
+for_window    [class="neomutt"] move container to $workspace4
+for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
+for_window    [class="seafile-applet"] floating enable
+for_window    [title="^Qalculate!$"] floating enable
+for_window    [title="Preferences$"] floating enable
+
+# switch to workspace with urgent window automatically
+bindcode $win+53 [urgent=latest] focus
+
+# reload the configuration file
+bindcode $win+54 reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindcode $win+27 restart
+
+# Set shut down, restart and locking features
+bindsym $hyper+Escape mode "$mode_system"
+set $mode_system (l)ock, (e)xit, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
+mode "$mode_system" {
+    # (l)
+    bindcode 46 exec i3exit lock, mode "default"
+    # (s)
+    bindcode 39 exec i3exit suspend, mode "default"
+    # (g)
+    bindcode 42 exec i3exit greeter, mode "default"
+    # (e)
+    bindcode 26 exec i3exit logout, mode "default"
+    # (r)
+    bindcode 27 exec i3exit reboot, mode "default"
+    # (s)
+    bindcode Shift+39 exec i3exit shutdown, mode "default"
+    # (t)
+    bindcode 28 exec ttoggle -t, mode "default"
+    # (u)
+    bindcode 30 exec ttoggle -x, mode "default"
+    # (x)
+    bindcode 53 --release exec xkill, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# Resize window (you can also use the mouse for that)
+# (r)
+bindcode $hyper+27 mode "resize"
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        # (j)
+        bindcode 44 resize shrink width 5 px or 5 ppt
+        # (k)
+        bindcode 45 resize grow height 5 px or 5 ppt
+        # (l)
+        bindcode 46 resize shrink height 5 px or 5 ppt
+        # (semicolon)
+        bindcode 59 resize grow width 5 px or 5 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # exit resize mode: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+# Lock screen
+# (l)
+bindcode $win+46 exec i3exit lock
+bindcode $hyper+46 exec i3exit lock
+bindcode Control+$alt+46 exec i3exit lock
+
+# Clipboard manager
+# (hyper+f)
+bindcode $hyper+41 exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+# Make floater
+# (mod+Control+m)
+bindcode $win+Control+47 floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
+
+# Color palette used for i3
+# Variables are set based on the documentation:
+# https://i3wm.org/dovs/userguide.html#variables
+# Changing the value of one of the variables will
+# effect all the areas with the same color.
+# Color scheme (Gruvbox dark)
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #202020
+set $color_bright_gray   #3c3836
+set $color_bright_yellow #d79921
+set $color_normal_black  #282828
+set $color_unused        #ff0000
+
+# Colors                  border                 background             text                   indicator       child_border
+client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_white
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_black
+client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_unused   $color_normal_black
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused   $color_unused
+client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused   $color_unused
+
+# Start i3bar to display a workspace bar (plus the system information i3status if available)
+bar {
+        status_command py3status --dbus-notify
+	position top
+        hidden_state hide
+	i3bar_command i3bar
+	tray_output none
+	strip_workspace_numbers no
+  	separator_symbol " | "
+        output eDP-1
+        output DP-1-1
+
+	colors {
+	    # Whole color settings
+	    background $color_normal_gray
+	    separator  $color_bright_gray
+	    statusline $color_bright_white
+
+	    # Type             border                 background              font
+	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+	    active_workspace   $color_unused          $color_unused           $color_unused
+	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+        }
+}
+
+bar {
+	position top
+        hidden_state hide
+	i3bar_command i3bar
+	tray_output none
+	strip_workspace_numbers no
+  	separator_symbol " | "
+        output DP-1-2
+        output DP-1-3
+
+	colors {
+	    # Whole color settings
+	    background $color_normal_gray
+	    separator  $color_bright_gray
+	    statusline $colmmor_bright_white
+
+	    # Type             border                 background              font
+	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+	    active_workspace   $color_unused          $color_unused           $color_unused
+	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+        }
+}
+
+# hide/unhide i3status bar
+# (win+Shift+m)
+bindcode $win+Shift+47 bar mode toggle
+
+#############################
+### settings for i3-gaps: ###
+#############################
+# Set inner/outer gaps
+gaps inner 5
+smart_gaps on
+
+# Smart borders (draw borders around container only if it is not the only container on this workspace)
+# on|no_gaps (on=always activate and no_gaps=only activate if the gap size to the edge of the screen is 0)
+#smart_borders on
+
+# Press $win+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+# (mod+Shift+g)
+bindcode $win+42 mode "$mode_gaps"
+
+mode "$mode_gaps" {
+        # (o)
+        bindcode 32 mode "$mode_gaps_outer"
+        # (i)
+        bindcode 31 mode "$mode_gaps_inner"
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+        # (plus)
+        bindcode 21 gaps inner current plus 5
+        # (minus)
+        bindcode 15 gaps inner current minus 5
+        # (0)
+        bindcode 19 gaps inner current set 0
+
+        # (plus)
+        bindcode Shift+21 gaps inner all plus 5
+        # (minus)
+        bindcode Shift+15 gaps inner all minus 5
+        # (0)
+        bindcode Shift+19 gaps inner all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+        bindcode 21 gaps outer current plus 5
+        bindcode 15 gaps outer current minus 5
+        bindcode 19 gaps outer current set 0
+
+        bindcode Shift+21 gaps outer all plus 5
+        bindcode Shift+15 gaps outer all minus 5
+        bindcode Shift+19 gaps outer all set 0
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+
+# Move workspaces between monitors (m)
+set $mode_workspaces_monitors Move workspace between monitors
+mode "$mode_workspaces_monitors" {
+  # (h)
+  bindcode 43 exec i3-msg move workspace to output left, mode "default"
+  # (l)
+  bindcode 46 exec i3-msg move workspace to output right, mode "default"
+
+  # back to normal: Enter or Escape
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+bindcode $win+47 mode $mode_workspaces_monitors
+
+
+# Cycle through workspaces with mouse.
+bindsym --whole-window $hyper+button6 workspace next
+bindsym --whole-window $hyper+button7 workspace prev
+
+exec_always hsetroot -solid '#333333' &
+exec_always wallpaper &
+exec_always numlockx &
+exec syndaemon -d -i 0.2 -t
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec "pgrep -x neomutt || (kitty --class neomutt --title neomutt neomutt &)"
+exec "pgrep -x wire-desktop || (wire-desktop &)"
+exec_always "pgrep -x xss-lock || (xset s 300 5; xss-lock -n /usr/lib/xsecurelock/dimmer -l -- i3exit lock &)"
+exec_always "pgrep -x solaar || (solaar --restart-on-wake-up &)"
+exec_always "pgrep -x nm-applet || (nm-applet &)"
+exec_always "killall compton; compton &"
+exec_always "pgrep -x udiskie || (udiskie &)"
+exec_always "pgrep -x unclutter || (unclutter -b)"
+exec_always "pgrep -x playerctl || (playerctl status --format '{{ playerName  }}' --follow > /tmp/player-last &)"
+exec_always "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer normal 1800 'run-on-bat i3exit suspend' '' &)"
+exec_always py3-cmd refresh xkb_layouts
+exec_always (sleep 5 && xmodmap ~/.Xmodmap)&
+exec kitty &

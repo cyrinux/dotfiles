@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+ 
+ESSID=$(iwgetid -r | tr '[:upper:]' '[:lower:]')
+
+interface="$1"
+status=$2
+
+case $status in
+  up)
+    if [[ ${interface::3} == "wlp" && ${ESSID::8} == "freewifi" ]]; then
+      . /etc/freewifi.conf
+      wget -O - --post-data="login=$LOGIN&password=$PASSWORD" "https://wifi.free.fr/Auth" 2>/dev/null | grep "CONNEXION AU SERVICE REUSSIE" 1>/dev/null 2>&1 
+      logger "Connection FreeWifi OK"
+    fi
+    ;;
+esac
+ 

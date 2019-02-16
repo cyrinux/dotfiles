@@ -1,0 +1,9 @@
+[Unit]
+Description=Tarsnap timer
+
+[Timer]
+Unit=tarsnap.service
+OnCalendar=daily
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,41 @@
+#!/bin/bash
+credentials=$(pass backup/restic-synology)
+
+RESTIC_PASSWORD=$(echo "$credentials" | head -n1)
+RESTIC_REPOSITORY=$(echo "$credentials" | grep RESTIC_REPOSITORY | awk '{ print $2 }')
+
+export RESTIC_PASSWORD="$RESTIC_PASSWORD"
+export RESTIC_REPOSITORY="$RESTIC_REPOSITORY"
+
+echo "Backup..."
+ionice -c2 nice -n19 \
+restic backup \
+--tag home \
+-e .snapshots \
+-e .cache \
+-e cache \
+-e .ccache \
+-e Coffre \
+-e CacheStorage \
+-e Téléchargements \
+-e Downloads \
+-e tmp \
+-e temp \
+-e .minikube \
+-e syncthing \
+-e *.part \
+-e *.vmem \
+-x \
+/home
+
+echo "Cleaning old backup..."
+ionice -c2 nice -n19 \
+restic forget \
+--tag home \
+--keep-last 48 \
+--keep-daily 7 \
+--keep-weekly 4 \
+--keep-monthly 3 \
+--keep-yearly 10
+
+echo "Backup successfull!"

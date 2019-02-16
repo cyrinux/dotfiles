@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+SOURCE="/home/cyril/.dotfiles /home/cyril/.go/src/github.com/cyrinux /home/cyril/.ssh /home/cyril/.cache/mail* /home/cyril/.tarsnap.key /home/cyril/.tarsnap-backup /home/cyril/.config/weechat/sec.conf /home/cyril/.config/weechat/irc.conf /home/cyril/.pinboard"
+BACKUP_PATH="/home/cyril/Vault/backup_cyril_laptop_DONTREMOVE"
+BACKUP_DIR="$BACKUP_PATH/$(date +%Y-%m-%d)"
+
+if [ ! -d $BACKUP_PATH ]; then
+  echo "Backup device '$BACKUP_PATH' does not exist, aborting. Start 'open-vault 120'"
+  exit 1
+fi
+
+if [ -d $BACKUP_DIR ]; then
+  read -p "Backup directory '$BACKUP_DIR' already exists, merge? [y/n] " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+fi
+
+echo -e "\nBackup STARTED\n\nSource(s):   $SOURCE\nDestination: $BACKUP_DIR\n"
+rsync -a --info=progress2 $SOURCE $BACKUP_DIR
+exitcode=$?
+
+if [ "$exitcode" -eq "0" ]; then
+  echo -e "\nBackup SUCCESSFUL"
+else
+  echo -e "\nBackup FAILED"
+fi
+
+echo -e "\n-------------------------------------------------------------------"
+
+echo -e "\nBackup size:\n"
+du -hs $BACKUP_DIR
+
+echo -e "\nRemaining disk space\n"
+df -kh $BACKUP_PATH
+
+exit $exitcode

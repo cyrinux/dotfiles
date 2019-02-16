@@ -1,0 +1,7 @@
+[Unit]
+Description=Pacman cache cleanup
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/paccache -r -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
+ExecStart=/usr/bin/paccache -ruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur

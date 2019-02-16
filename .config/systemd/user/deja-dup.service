@@ -1,0 +1,9 @@
+[Unit]
+Description=Backup my laptop
+
+[Service]
+Type=simple
+Nice=19
+IOSchedulingClass=2
+IOSchedulingPriority=7
+ExecStart=/usr/bin/deja-dup --backup --display=:0
