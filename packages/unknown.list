@@ -17,10 +17,10 @@ iwd
 libresample
 libva-intel-driver
 libva-utils
+magic-wormhole
 mfcuk-git
 mfoc
 mopidy
-mopidy-mpris
 mopidy-podcast
 mopidy-scrobbler
 mopidy-soundcloud
@@ -29,8 +29,8 @@ mopidy-spotify-web
 mpc
 mpdmenu-git
 mpd-sima
-mpv-mpris
 ncmpc
+ncmpcpp
 networkmanager-openvpn
 oomox
 pinboard

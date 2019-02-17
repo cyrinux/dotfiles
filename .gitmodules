@@ -6,3 +6,7 @@
 	path = .config/kak/auto-pairs
 	url = https://github.com/alexherbo2/auto-pairs.kak
 	branch = master
+[submodule ".config/kak/livedown"]
+	path = .config/kak/livedown
+	url = https://github.com/Delapouite/kakoune-livedown
+	branch = master

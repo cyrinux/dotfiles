@@ -26,7 +26,7 @@ hide_edge_borders both
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango: Taskbar, FontAwesome, Cantarell 10
+font pango: Taskbar, FontAwesome, Cantarell 8
 
 # Use Mouse+$mod to drag floating windows
 floating_modifier $mod
@@ -115,17 +115,15 @@ bindcode $mod+67 exec "autorandr --change; sudo systemctl stop pcscd.service 2>/
 # display
 bindsym XF86Display --release exec autorandr --change
 # mod+control+t
-bindcode $mod+Ctrl+28 exec "killall compton; compton --no-fading-openclose &"
+bindcode $mod+Ctrl+28 exec "killall compton; compton &"
 # mod+Shift+d
 bindcode $mod+Shift+40 --release exec "killall dunst; exec notify-send 'restart dunst'"
-# printscreen
-bindsym Print exec i3-scrot
 # mod+scroll_lock
 bindsym $mod+Scroll_Lock exec --no-startup-id "killall screenkey || screenkey"
+# printscreen
+bindsym Print exec flameshot full -p ~/Pictures/Screenshots  -c
 # mod+printscreen
-bindsym $mod+Print --release exec "i3-scrot -w"
-# mod+Shift+printscreen
-bindsym $mod+Shift+Print exec "flameshot gui"
+bindsym $mod+Print exec "flameshot gui"
 
 # Refresh py3status module after switching keyboard layout (Shift+Shift)
 bindcode Shift+50 exec "py3-cmd refresh keyboard_layout"
@@ -405,7 +403,6 @@ client.placeholder        $color_unused          $color_normal_black    $color_u
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
-	# status_command py3status --dbus-notify --gevent
         status_command py3status --dbus-notify --config ~/.config/i3/i3status.conf
 	position top
 	# position bottom
@@ -432,14 +429,13 @@ bar {
 }
 
 bar {
-	# status_command py3status --dbus-notify --gevent
 	position top
 	# position bottom
 	i3bar_command i3bar
 	tray_output none
 	# tray_output primary
 	strip_workspace_numbers no
-  	separator_symbol "|"
+  	separator_symbol " | "
         output DP-1-2
         output DP-1-3
 
@@ -550,7 +546,7 @@ exec  "(sleep 1 && autorandr --change) &"
 exec_always  "pgrep -x solaar || (solaar &)"
 exec_always  "pgrep -x nm-applet || (nm-applet &)"
 exec_always  numlockx &
-exec_always  "killall compton; compton --no-fading-openclose &"
+exec_always  "killall compton; compton &"
 exec_always  "pgrep -x copyq || (copyq &)"
 exec_always  "pgrep -x udiskie || (udiskie &)"
 exec_always  "pgrep -x unclutter || (unclutter &)"

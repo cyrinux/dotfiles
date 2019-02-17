@@ -9,29 +9,6 @@ radio_state() {
  bluetooth $1
 }
 
-before_lock() {
-  # setxkbmap -layout fr azerty; sleep 0.2; setxkbmap fr,us,fr,ru azerty,,bepo, -option "grp:shifts_toggle,compose:caps"
-  pauseallmpv
-  py3-cmd refresh keyboard_layout
-  usbguard set-parameter InsertedDevicePolicy $POLICY_LOCKED
-  killall compton
-  sudo systemctl stop pcscd.service
-  playerctl pause 2>/dev/null
-  light -O
-  sleep 0.1
-  light -S 10
-  fusermount -u ~/Vault &
-  fusermount -u ~/Vault-Share &
-  py3-cmd refresh backlight
-}
-
-after_lock() {
-  light -I
-  py3-cmd refresh backlight keyboard_layout
-  usbguard_unlock
-  compton --no-fading-openclose & disown
-}
-
 stop_vpn() {
   nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
@@ -44,6 +21,25 @@ stop_wlan() {
   nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
 
+before_lock() {
+  usbguard set-parameter InsertedDevicePolicy $POLICY_LOCKED
+  killall compton
+  pauseallmpv 2>/dev/null
+  playerctl pause 2>/dev/null
+  fusermount -u ~/Vault &
+  fusermount -u ~/Vault-Share &
+  physlock -lms
+  sudo systemctl stop pcscd.service
+}
+
+after_lock() {
+  physlock -L
+  py3-cmd refresh backlight keyboard_layout
+  usbguard_unlock
+  compton & disown
+}
+
+
 usbguard_unlock(){
   usbguard set-parameter InsertedDevicePolicy $POLICY_UNLOCKED
 }
@@ -53,9 +49,7 @@ trap usbguard_unlock SIGHUP SIGINT SIGTERM
 case "$1" in
   lock)
     before_lock
-    physlock -lms
     xsecurelock
-    physlock -L
     after_lock
     ;;
   logout)
@@ -66,30 +60,22 @@ case "$1" in
     dm-tool switch-to-greeter
     ;;
   suspend)
-    notify-send "Suspending" "in progess.."
-    physlock -lms
     before_lock
     stop_vpn
-    stop_wlan
     stop_wwan
-    radio_state off
-    sleep 2
     systemctl -i suspend
-    radio_state on
     xsecurelock
-    physlock -L
     after_lock
+    nmcli device wifi rescan
     ;;
   reboot)
     stop_vpn
     stop_wwan
-    stop_wlan
     systemctl -i reboot
     ;;
   shutdown)
     stop_vpn
     stop_wwan
-    stop_wlan
     systemctl -i poweroff
     ;;
   *)
