@@ -35,6 +35,7 @@ notmuch tag +family tag:tofilter and from:alain.levis@gmail.com
 notmuch tag +family tag:tofilter and from:gounlaf@gmail.com
 notmuch tag +family tag:tofilter and from:isabelle.lagneau@free.fr
 notmuch tag +family tag:tofilter and from:isabelle.lagneau@gmail.com
+notmuch tag +family tag:tofilter and from:daniel.barriere@vignes84.fr
 
 # Tag friends
 notmuch tag +friend tag:tofilter and from:@maximbaz.com

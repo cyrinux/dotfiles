@@ -1,6 +1,6 @@
 ! vim:ft=xdefaults
 rofi.modi: drun,run,window,ssh,calc:rofi-calc,hex:rofi-int-to-hex
-rofi.theme: /usr/share/rofi/themes/gruvbox-dark.rasi
+rofi.theme: gruvbox-dark.rasi
 rofi.terminal: kitty
 rofi.ssh-client:           ssh
 rofi.ssh-command:          {terminal} {ssh-client} {host}
@@ -8,7 +8,7 @@ rofi.run-command:          {cmd}
 rofi.run-shell-command:    {terminal} {cmd}
 rofi.hide-scrollbar:       false
 rofi.show-icons: false
-rofi.show-match: false
+rofi.show-match: true
 rofi.window-format: {c} {t}
 rofi.window-match-fields: name,title
 rofi.drun-match-fields: name

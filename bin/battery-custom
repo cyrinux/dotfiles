@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo cctk --PrimaryBattChargeCfg=Custom:50-70 --ValSetupPwd=$(pass personal/bios)

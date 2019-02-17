@@ -4,6 +4,7 @@ biber
 buku
 bum-git
 compton
+dell-command-configure
 ffmpeg0.10
 geoclue
 git-crypt
@@ -45,9 +46,11 @@ qt4
 qutebrowser
 ruby2.5
 screencast
+scrot
 slop
 sonata
 systemd-resolvconf
 twitchy-git
 usbguard
 xcape
+xdg-user-dirs
