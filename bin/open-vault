@@ -1,6 +1,6 @@
 #!/bin/sh
 gocryptfs -extpass "pass gocryptfs-mega" /home/cyril/Mega/encrypted_gocryptfs ~/Vault
 py3-cmd refresh decrypted_documents
-notify-send 'Vault' 'Unmounted!'
 sleep ${1:-10}m
 fusermount -u ~/Vault
+notify-send 'Vault' 'Unmounted!'

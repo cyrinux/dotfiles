@@ -1,5 +1,5 @@
 ! vim:ft=xdefaults
-rofi.modi: drun,run,window,ssh,calc:rofi-calc,hex:rofi-int-to-hex
+rofi.modi: drun,run,window,dict,ssh,calc:rofi-calc,hex:rofi-int-to-hex
 rofi.theme: gruvbox-dark.rasi
 rofi.terminal: kitty
 rofi.ssh-client:           ssh

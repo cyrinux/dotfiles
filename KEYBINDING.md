@@ -33,9 +33,9 @@
 
 ## Neomutt
 
-- _o_ fetch mail
+- _o_ sync mail, calendars, contacts
 - _m_ write mail, then _p_ to privacy
--
+- _y_ add, remove tags to mail
 
 # Misc
 

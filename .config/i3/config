@@ -79,10 +79,12 @@ bindcode $alt+23 exec "pgrep rofi && killall rofi || rofi -normal-window -show w
 ################################################################################################
 # Audio settings
 bindsym $mod+Shift+p mode "$mode_audio"
-set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1
+set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, pulse(e)ffects
 mode "$mode_audio" {
     # (p)
     bindcode 33 exec pavucontrol, mode "default"
+    # (e)
+    bindcode 26 exec pulseeffects, mode "default"
     # (s)
     bindcode 39 exec connect-shure-bt1, mode "default"
 

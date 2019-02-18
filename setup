@@ -131,8 +131,8 @@ if [ "$(whoami)" != "root" ]; then
     link ".mbsyncrc"
     link ".config/vdirsyncer"
     link ".config/firejail"
-    link ".config/mopidy/mopidy.conf"
     link ".cheat"
+    link ".config/PulseEffects"
     link ".icons"
     link ".config/systemd/user/mega-sync-resume.service"
     link ".config/systemd/user/tarsnap.timer"
@@ -153,6 +153,7 @@ if [ "$(whoami)" != "root" ]; then
     link ".config/systemd/user/urlwatch.timer"
     link ".config/systemd/user/bum.service"
 
+    link ".local/share/dicts"
     link ".local/share/fonts/taskbar.ttf"
     link ".local/share/applications/neomutt.desktop"
     link ".local/share/applications/browser.desktop"

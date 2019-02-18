@@ -1,3 +1,4 @@
+error: missing 'pulseaudio-equalizer-ladspa' dependency for 'cyrinux-desktop'
 error: missing 'radare2-cutter' dependency for 'cyrinux-desktop'
 error: missing 'rubygems' dependency for 'ruby2.5'
 error: missing 'noto-fonts-alpha' dependency for 'ttfautohint'

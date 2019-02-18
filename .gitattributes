@@ -22,4 +22,6 @@ etc/tor/torrc filter=git-crypt diff=git-crypt
 .gitconfig.work filter=git-crypt diff=git-crypt
 .pinboardrc filter=git-crypt diff=git-crypt
 .config/mopidy/mopidy.conf filter=git-crypt diff=git-crypt
+.config/spotifyd/spotifyd.conf filter=git-crypt diff=git-crypt
+
 
