@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-SEARCH="tag:inbox AND not tag:calendar AND text/calendar"
+SEARCH="tag:inbox AND not tag:archive AND not tag:calendar AND text/calendar"
 
 notmuch search --output=messages $SEARCH | while read message; do
     TMP=`mktemp`
@@ -13,3 +13,5 @@ notmuch search --output=messages $SEARCH | while read message; do
     notmuch tag +calendar $message
     rm -f $TMP $TMP_CLEAN
 done
+
+exit 0

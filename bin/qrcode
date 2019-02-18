@@ -1,0 +1,3 @@
+#!/bin/sh
+
+qrencode -o - "$@" --foreground=E5AE2E --background=242424 | feh -

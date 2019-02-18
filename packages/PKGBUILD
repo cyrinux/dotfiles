@@ -1,6 +1,6 @@
 pkgbase='cyrinux'
 pkgname=('cyrinux-base' 'cyrinux-desktop' 'cyrinux-remote' 'cyrinux-android' 'cyrinux-work')
-pkgver=1.7.5
+pkgver=1.7.6
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -591,8 +591,6 @@ package_cyrinux-desktop() {
       'pepper-flash'
       'qemu'
       'qrencode'
-      'radare2-cutter'
-      'radare2-git'
       'ranger'
       'rapid-photo-downloader'
       'rebuild-detector'
@@ -724,6 +722,7 @@ package_cyrinux-work() {
     'vint'
     'virt-manager'
     'visual-studio-code-bin'
+    'radare2-git'
     'go-jira'
     'goland'
     'rockyou'

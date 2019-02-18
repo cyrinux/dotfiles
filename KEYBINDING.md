@@ -2,6 +2,8 @@
 
 ## i3 window manager
 
+- _Shift+F1_ sync mail, calendars, contacts
+- _Shift+F2_ prompt mount Vault
 - _Mod+F1_ restart gpg, fix yubikey issue
 - _Mod+F2_ start personal chromium
 - _Mod+F2_ open nautilus
@@ -24,6 +26,8 @@
 - _Mod+Shift+m_ hide menu bar
 - _Mod+Shift+q_ quit application
 - _Mod+Escape_ exit menu
+- _Mod+²_ show scratchpad
+- _Mod+Shift+²_ move application to scratchpad
 
 ## Neovim
 

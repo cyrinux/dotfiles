@@ -109,19 +109,19 @@ bindsym Shift+XF86MonBrightnessDown exec set-brightness dec
 # mod+n
 bindcode $mod+57 exec networkmanager_dmenu
 # mod+m
-bindcode $mod+47 exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -p "mount" -matching regex -dmenu -i -no-custom -multi-select
+bindcode $mod+47 exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -p "Mount" -matching regex -dmenu -i -no-custom -multi-select
 # mod+F1
 bindcode $mod+67 exec "autorandr --change; sudo systemctl stop pcscd.service 2>/dev/null"
 # display
 bindsym XF86Display --release exec autorandr --change
 # mod+control+t
-bindcode $mod+Ctrl+28 exec "killall compton; compton &"
+bindcode $mod+Ctrl+28 --release exec "killall compton; compton &; notify-send 'restart compton'"
 # mod+Shift+d
 bindcode $mod+Shift+40 --release exec "killall dunst; exec notify-send 'restart dunst'"
 # mod+scroll_lock
-bindsym $mod+Scroll_Lock exec --no-startup-id "killall screenkey || screenkey"
+bindsym $mod+Scroll_Lock exec "killall screenkey || screenkey"
 # printscreen
-bindsym Print exec flameshot full -p ~/Pictures/Screenshots  -c
+bindsym Print exec flameshot full -p ~/Pictures/Screenshots -c
 # mod+printscreen
 bindsym $mod+Print exec "flameshot gui"
 
