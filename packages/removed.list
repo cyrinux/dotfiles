@@ -1,4 +1,5 @@
 error: missing 'gcolor2' dependency for 'cyrinux-desktop'
 error: missing 'gnokii' dependency for 'cyrinux-desktop'
+error: missing 'simplescreenrecorder' dependency for 'cyrinux-desktop'
 error: missing 'rubygems' dependency for 'ruby2.5'
 error: missing 'noto-fonts-alpha' dependency for 'ttfautohint'

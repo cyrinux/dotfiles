@@ -15,26 +15,51 @@ output := docs
 # All markdown files in src/ are considered sources
 sources := $(wildcard $(source)/*.md)
 
+all: doc install
+
+doc: lualatex wkhtmltopdf
+
 # Convert the list of source files (Markdown files in directory src/)
 # into a list of output files (PDFs in directory print/).
-objects := $(patsubst %.md,%.pdf,$(subst $(source),$(output),$(sources)))
+objects := $(patsubst %.md,%-lualatex.pdf,$(subst $(source),$(output),$(sources)))
 
-all: $(objects)
+lualatex: $(objects)
 
 # Recipe for converting a Markdown file into PDF using Pandoc
-$(output)/%.pdf: $(source)/%.md
+$(output)/%-lualatex.pdf: $(source)/%.md
 	pandoc \
 		--variable mainfont="DejaVu Sans" \
 		--variable monofont="DejaVu Sans Mono" \
 		--variable fontsize=11pt \
 		--variable geometry:"top=1.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm" \
 		--variable geometry:a4paper \
-		--variable css="https://cdn.jsdelivr.net/gh/cyrinux/github-markdown-css@gh-pages/github-markdown.css" \
+		--metadata pagetitle="$<" \
+		--metadata title="$<" \
 		--table-of-contents \
 		--number-sections \
 		-f markdown  $< \
 		--pdf-engine=lualatex \
 		-o $@
+
+objects := $(patsubst %.md,%-wkhtmltopdf.pdf,$(subst $(source),$(output),$(sources)))
+
+wkhtmltopdf: $(objects)
+
+$(output)/%-wkhtmltopdf.pdf: $(source)/%.md
+	pandoc \
+		--variable mainfont="DejaVu Sans" \
+		--variable monofont="DejaVu Sans Mono" \
+		--variable fontsize=11pt \
+		--variable geometry:a4paper \
+		--variable css="$(output)/src/pandoc.css" \
+		--metadata pagetitle="$<" \
+		--metadata title="$<" \
+		-f markdown  $< \
+		--pdf-engine=wkhtmltopdf \
+		-o $@
+
+install: setup
+		./setup
 
 .PHONY : clean
 

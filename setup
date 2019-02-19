@@ -332,7 +332,7 @@ if [[ "$(whoami)" == "root" ]]; then
   systemctl_enable_start "system" "macchiato.service"
   systemctl_enable_start "system" "iwd.service"
   systemctl_enable_start "system" "NetworkManager.service"
-  systemctl_enable_start "system" "NetworkManager-dispatcher.service"
+  # systemctl_enable_start "system" "NetworkManager-dispatcher.service"
   systemctl_enable_start "system" "bluetooth.service"
   systemctl_enable_start "system" "paccache.timer"
   systemctl_enable_start "system" "docker.service"
