@@ -2,45 +2,50 @@
 
 ## i3 window manager
 
-- _Shift+F1_ sync mail, calendars, contacts
-- _Shift+F2_ prompt mount Vault
-- _Mod+F1_ restart gpg, fix yubikey issue
-- _Mod+F2_ start personal chromium
-- _Mod+F2_ open nautilus
-- _Mod+number_ switch to workspace
-- _Mod+Shift+number_ send application to workspace
-- _Mod+!_ dmenu mpc
-- _Mod+n_ dmenu NetworkManager
-- _Mod+d_ dmenu application launcher
-- _Mod+=_ dmenu calculator
-- _Alt+Tab_ dmenu window
-- _Mod+p_ dmenu pass password manager
-- _Mod+Shift+p_ dmenu keepassx password manager
-- _Mod+Shift+p_ audio menu
-- _Mod+w_ dmenu web search / browser launcher
-- _Mod+t_ i3 tabbed view
-- _Mod+s_ i3 stacked view
-- _Mod+e_ i3 tiled view
-- _Mod+Print_ flameshot gui screenshot
-- _Print_ flameshot full screenshot
-- _Mod+Shift+m_ hide menu bar
-- _Mod+Shift+q_ quit application
-- _Mod+Escape_ exit menu
-- _Mod+²_ show scratchpad
-- _Mod+Shift+²_ move application to scratchpad
+- <kbd>Shift</kbd>+<kbd>F1</kbd> - sync mail, calendars, contacts
+- <kbd>Shift</kbd>+<kbd>F2</kbd> - prompt mount Vault
+- <kbd>Mod</kbd>+<kbd>F1</kbd> - restart gpg, fix yubikey issue
+- <kbd>Mod</kbd>+<kbd>F2</kbd> - start personal chromium
+- <kbd>Mod</kbd>+<kbd>F2</kbd> - open nautilus
+- <kbd>Mod</kbd>+<kbd>number</kbd> - switch to workspace
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>number</kbd> - send application to workspace
+- <kbd>Mod</kbd>+<kbd>!</kbd> - rofi mpc
+- <kbd>Mod</kbd>+<kbd>n</kbd> - rofi NetworkManager
+- <kbd>Mod</kbd>+<kbd>d</kbd> - rofi application launcher
+- <kbd>Mod</kbd>+<kbd>=</kbd> - rofi calculator
+- <kbd>Alt</kbd>+<kbd>Tab</kbd> - rofi window
+- <kbd>Mod</kbd>+<kbd>p</kbd> - rofi pass password manager
+- <kbd>Mod</kbd>+<kbd>Control</kbd>+<kbd>p</kbd> - rofi keepassx password manager
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd> - audio menu
+- <kbd>Mod</kbd>+<kbd>w</kbd> - rofi web search / browser launcher
+- <kbd>Mod</kbd>+<kbd>t</kbd> - i3 tabbed view
+- <kbd>Mod</kbd>+<kbd>s</kbd> - i3 stacked view
+- <kbd>Mod</kbd>+<kbd>e</kbd> - i3 tiled view
+- <kbd>Mod</kbd>+<kbd>PrintScr</kbd> - flameshot gui screenshot
+- <kbd>PrintScr</kbd> - flameshot full screenshot
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>m</kbd> - hide menu bar
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>q</kbd> - quit application
+- <kbd>Mod</kbd>+<kbd>Escape</kbd> - exit menu
+- <kbd>Mod</kbd>+<kbd>²</kbd> - show scratchpad
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd> - reload i3 config
+- <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>r</kbd> - restart i3
+
+## rofi application launcher
+
+- <kbd>Control</kbd>+<kbd>Tab</kbd> - switch between rofi modules
 
 ## Neovim
 
 ## Neomutt
 
-- _o_ sync mail, calendars, contacts
-- _m_ write mail, then _p_ to privacy
-- _y_ add, remove tags to mail
+- <kbd>o</kbd> - sync mail, calendars, contacts
+- <kbd>m</kbd> - write mail, then _p_ to privacy
+- <kbd>y</kbd> - add, remove tags to mail
 
 # Misc
 
 ## Pass
 
-Add a password
+- Add a password
 
 `addpass --name "My new Site" +user "zeltak" +branch "branch" +custom "foobar" +autotype "branch :tab user :tab pass"`

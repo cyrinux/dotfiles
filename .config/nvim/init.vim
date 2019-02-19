@@ -432,6 +432,9 @@ call deoplete#custom#source('ultisnips', 'rank', 200)
 """" Deoplete-jedi (Python completion)
 let deoplete#sources#jedi#show_docstring = 1
 
+"""" Closetag
+let g:closetag_filetypes  = 'html,xhtml,phtml,md,markdown'
+
 """" Deoplete-ternjs (JS completion)
 let g:tern_request_timeout = 1
 let g:tern#command = ["tern"]

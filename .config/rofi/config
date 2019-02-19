@@ -7,7 +7,7 @@ rofi.ssh-command:          {terminal} {ssh-client} {host}
 rofi.run-command:          {cmd}
 rofi.run-shell-command:    {terminal} {cmd}
 rofi.hide-scrollbar:       false
-rofi.show-icons: true
+rofi.show-icons: false
 rofi.show-match: true
 rofi.window-format: {c} {t}
 rofi.window-match-fields: name,title

@@ -14,6 +14,7 @@ alias pacq='pacman -Si'
 alias pacQ='pacman -Qo'
 alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; py3-cmd refresh "external_script pacdiff"'
+alias lsp="pacman -Qett --color=always | more"
 
 pac() {
   sudo pacman "$@"

@@ -140,6 +140,7 @@ alias hacklab-pia-shell='cd ~/library/src/personal/docker-hacklab && sudo docker
 
 alias stego-tools='mkdir -p ~/pentest; sudo docker run -it --rm -v $(pwd)/pentest:/data dominicbreuker/stego-toolkit /bin/bash'
 
+
 # fix
 ironkey() {
   sudo ironkey $@
@@ -154,3 +155,5 @@ website_aspirator() {
 screencasting() {
  screencast -u -v hevc_nvenc -W -w @cyrinux -g optipng -o ~/Movies/Screencasts -t /dev/shm/ -v h264_vaapi -A /dev/dri/renderD128 -1 $@
 }
+
+alias ffmpeg="ffmpeg -hide_banner"
