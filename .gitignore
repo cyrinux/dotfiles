@@ -21,3 +21,4 @@ watch_later
 **/.stfolder
 .ssh/known_hosts
 *.pyc
+*.pdf
