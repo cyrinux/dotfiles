@@ -1,8 +1,8 @@
 [Unit]
-Description=Periodically backup list of installed packages
+Description=Daily backup of private data
 
 [Timer]
-OnCalendar=hourly
+OnCalendar=daily
 Persistent=true
 
 [Install]

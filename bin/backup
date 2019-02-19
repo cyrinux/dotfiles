@@ -1,13 +1,11 @@
 #!/usr/bin/bash
 
-SOURCE="/home/cyril/.dotfiles /home/cyril/.go/src/github.com/cyrinux /home/cyril/.ssh /home/cyril/.cache/mail* /home/cyril/.tarsnap.key /home/cyril/.tarsnap-backup /home/cyril/.weechat/sec.conf /home/cyril/.weechat/irc.conf /home/cyril/.pinboard"
+SOURCE="/home/cyril/.dotfiles /home/cyril/.go/src/github.com/cyrinux /home/cyril/.ssh /home/cyril/.cache/mail* /home/cyril/.tarsnap.key /home/cyril/.tarsnap-backup /home/cyril/.config/weechat/sec.conf /home/cyril/.config/weechat/irc.conf /home/cyril/.pinboard"
 BACKUP_PATH="/home/cyril/Vault/backup_cyril_laptop_DONTREMOVE"
 BACKUP_DIR="$BACKUP_PATH/$(date +%Y-%m-%d)"
 
-open-vault 120 &
-
 if [ ! -d $BACKUP_PATH ]; then
-  echo "Backup device '$BACKUP_PATH' does not exist, aborting."
+  echo "Backup device '$BACKUP_PATH' does not exist, aborting. Start 'open-vault 120'"
   exit 1
 fi
 

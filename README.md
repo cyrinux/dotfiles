@@ -29,7 +29,7 @@
 
 ☑ Automatically start tmux on the remote hosts.
 
-- Every connection joins the same single tmux session, allowing to easily reconnect after a network failure, your work stays as you left it.
+> Every connection joins the same single tmux session, allowing to easily reconnect after a network failure, your work stays as you left it.
 
 ☑ More secure gpg and ssh configuration.
 
@@ -59,6 +59,10 @@
 
 > Comes bundled with a script to prevent DNS leaks on NetworkManager.
 
+☑ Auto start/stop of network services based on connection.
+
+> Comes with nmtrust package
+
 ☑ Lazy sourcing scripts to speedup terminal startup.
 
 > This is useful for rvm, source it the first time you use `rvm` command.
@@ -71,23 +75,13 @@
 
 > This script is safe to re-run at any time.
 
-☑ Compete and very detailed installation instructions for Arch Linux.
+☑ Complete and very detailed installation instructions for Arch Linux.
 
 > Step-by-step description of how I install Arch Linux from scratch.
 
 ## Installation:
 
 ```
-$ git clone https://github.com/maximbaz/dotfiles.git ~/.dotfiles
+$ git clone https://github.com/cyrinux/dotfiles.git ~/.dotfiles
 $ ~/.dotfiles/setup
 ```
-
-## Awesome AUR packages that I help maintaining:
-
-- [chromium-vaapi](https://aur.archlinux.org/packages/chromium-vaapi) and [chromium-vaapi-bin](https://aur.archlinux.org/packages/chromium-vaapi-bin) - chromium with hardware video acceleration.
-- [ttf-emojione](https://aur.archlinux.org/packages/ttf-emojione) - latest EmojiOne font that provides colorful emojis for almost all apps on Linux.
-- [yubikey-touch-detector](https://aur.archlinux.org/packages/yubikey-touch-detector) - a tool that can detect when your YubiKey is waiting for a touch.
-- [browserpass](https://aur.archlinux.org/packages/browserpass) - browser extension for pass and gopass.
-- [wire-desktop](https://aur.archlinux.org/packages/wire-desktop) and [wire-desktop-beta](https://aur.archlinux.org/packages/wire-desktop-beta) - end-to-end encrypted chat app.
-- [rmtrash](https://aur.archlinux.org/packages/rmtrash) - trash bin for CLI made compatible to GNUs rm and rmdir.
-- [snap-pac-grub](https://aur.archlinux.org/packages/snap-pac-grub) - updates GRUB for grub-btrfs with snapshots made by snap-pac.

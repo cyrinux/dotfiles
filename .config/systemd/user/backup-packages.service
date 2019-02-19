@@ -1,6 +1,6 @@
 [Unit]
-Description=Backup list of installed packages
+Description=Backup private thing to mega
 
 [Service]
-ExecStart=/home/cyril/bin/backup-packages
+ExecStart=/home/cyril/bin/backup
 

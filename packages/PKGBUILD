@@ -619,7 +619,6 @@ package_cyrinux-desktop() {
       'siege'
       'signal-desktop-bin'
       'simple-scan'
-      'simplescreenrecorder'
       'sipcalc'
       'skaffold'
       'skypeforlinux-stable-bin'

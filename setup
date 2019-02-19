@@ -133,6 +133,7 @@ if [ "$(whoami)" != "root" ]; then
     link ".config/firejail"
     link ".cheat"
     link ".config/PulseEffects"
+    link ".config/oomox/colors/arc-gruvbox-Darker"
     link ".icons"
     link ".config/systemd/user/mega-sync-resume.service"
     link ".config/systemd/user/tarsnap.timer"

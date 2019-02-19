@@ -70,7 +70,7 @@ alias toa='todoist q "$@"'
 alias minikube-start='minikube --vm-driver=kvm2 start --insecure-registry localhost:5000 && sleep 5 && minikube dashboard; eval $(minikube docker-env)'
 alias minikube-stop='eval $(minikube docker-env -u); minikube stop'
 alias update='PATH="/bin" auru -Tcs $KEYID; pacu'
-alias syncrepo='gio mount smb://192.168.42.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://nasux/web/aur/'
+alias syncrepo='gio mount smb://192.168.42.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.42.39/web/aur/'
 alias rsyncrepo='rsync --delete /var/cache/pacman/cyrinux-aur/* aur@backup-aur:www/aur/'
 alias signrepo='PATH="/usr/bin:/bin" repo-add -k $KEYID -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
 alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
