@@ -61,7 +61,9 @@
 
 - Add a password:
 
-`addpass --name "My new Site" +user "zeltak" +branch "branch" +custom "foobar" +autotype "branch :tab user :tab pass"`
+```
+addpass --name "My new Site" +user "zeltak" +branch "branch" +custom "foobar" +autotype "branch :tab user :tab pass"
+```
 
 ## rofi application launcher
 

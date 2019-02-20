@@ -345,7 +345,6 @@ if [[ "$(whoami)" == "root" ]]; then
     systemctl enable "backup-repo@pkgbuild.service"
     systemctl_enable_start "system" "ModemManager.service"
     systemctl_enable_start "system" "systemd-resolved"
-    ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
     systemctl_enable_start "system" "vnstat.service"
     systemctl_enable_start "system" "pcscd.service"
     systemctl_enable_start "system" "usbguard.service"
@@ -423,7 +422,7 @@ if [[ "$(whoami)" == "root" ]]; then
   fi
 
   echo "Force dns config"
-  ln -sf /run/resolvconf/resolv.conf /etc/resolv.conf
+  ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
   echo "Reload udev rules"
   udevadm control --reload

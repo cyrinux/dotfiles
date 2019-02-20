@@ -69,10 +69,6 @@ alias ti='task add due:tomorrow tag:inbox'
 alias toa='todoist q "$@"'
 alias minikube-start='minikube --vm-driver=kvm2 start --insecure-registry localhost:5000 && sleep 5 && minikube dashboard; eval $(minikube docker-env)'
 alias minikube-stop='eval $(minikube docker-env -u); minikube stop'
-alias update='PATH="/bin" auru -Tcs $KEYID; pacu'
-alias syncrepo='gio mount smb://192.168.42.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.42.39/web/aur/'
-alias rsyncrepo='rsync --delete /var/cache/pacman/cyrinux-aur/* aur@backup-aur:www/aur/'
-alias signrepo='PATH="/usr/bin:/bin" repo-add -k $KEYID -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
 alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
 alias connect-shure-bt1="connect_a2dp 00:0E:DD:06:24:1C"
 alias connect-bose-mini-ii="connect_a2dp 08:DF:1F:A9:9E:EC"

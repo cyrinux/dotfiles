@@ -16,6 +16,11 @@ alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; py3-cmd refresh "external_script pacdiff"'
 alias lsp="pacman -Qett --color=always | more"
 
+alias syncrepo='gio mount smb://192.168.42.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.42.39/web/aur/'
+alias rsyncrepo='rsync --delete /var/cache/pacman/cyrinux-aur/* aur@backup-aur:www/aur/'
+alias update='PATH="/bin" auru -Tcs; pacu'
+alias signrepo='PATH="/usr/bin:/bin" repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
+
 pac() {
   sudo pacman "$@"
   py3status-refresh-pacman

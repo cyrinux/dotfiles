@@ -15,7 +15,9 @@ output := docs
 # All markdown files in src/ are considered sources
 sources := $(wildcard $(source)/*.md)
 
-all: doc install
+all: setup doc
+
+install: setup
 
 doc: lualatex wkhtmltopdf
 
@@ -28,11 +30,12 @@ lualatex: $(objects)
 # Recipe for converting a Markdown file into PDF using Pandoc
 $(output)/%-lualatex.pdf: $(source)/%.md
 	pandoc \
-		--variable mainfont="DejaVu Sans" \
-		--variable monofont="DejaVu Sans Mono" \
+		--variable mainfont="Cantarell" \
+		--variable monofont="Input Mono Narrow" \
 		--variable fontsize=11pt \
 		--variable geometry:"top=1.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm" \
 		--variable geometry:a4paper \
+		--highlight-style zenburn \
 		--metadata pagetitle="$<" \
 		--metadata title="$<" \
 		--table-of-contents \
@@ -47,10 +50,11 @@ wkhtmltopdf: $(objects)
 
 $(output)/%-wkhtmltopdf.pdf: $(source)/%.md
 	pandoc \
-		--variable mainfont="DejaVu Sans" \
-		--variable monofont="DejaVu Sans Mono" \
+		--variable mainfont="Cantarell" \
+		--variable monofont="Input Mono Narrow" \
 		--variable fontsize=11pt \
 		--variable geometry:a4paper \
+		--highlight-style zenburn \
 		--variable css="$(output)/src/pandoc.css" \
 		--metadata pagetitle="$<" \
 		--metadata title="$<" \
@@ -58,7 +62,7 @@ $(output)/%-wkhtmltopdf.pdf: $(source)/%.md
 		--pdf-engine=wkhtmltopdf \
 		-o $@
 
-install: setup
+setup:
 		./setup
 
 .PHONY : clean

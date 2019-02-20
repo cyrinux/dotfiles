@@ -5,7 +5,7 @@
 # Must have xclip installed to even show menu.
 type xclip || exit
 
-chosen=$(grep -v "#" -h ~/.fontawesome | dmenu -p fontawesome -i -l 20 -fn Monospace-18)
+chosen=$(grep -v "#" -h ~/.fontawesome | dmenu -p fontawesome -i -l 20)
 
 [ "$chosen" != "" ] || exit
 
