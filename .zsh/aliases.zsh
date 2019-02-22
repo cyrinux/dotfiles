@@ -14,7 +14,6 @@ alias mkdir='mkdir -p'
 alias o='xdg-open'
 alias rm='rmtrash -rf'
 alias rm!='\rm -rf'
-alias rsync='rsync --verbose --archive --info=progress2 --human-readable --compress --partial'
 alias sudo='sudo -E '
 alias ls="exa --git --group-directories-first"
 alias ll="ls -l"

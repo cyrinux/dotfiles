@@ -10,10 +10,15 @@ bind index \Cf noop
 source etc/muttcol
 source etc/aliases
 source colors
-source /usr/share/doc/neomutt/samples/gpg.rc
-set pgp_use_gpg_agent = yes
+
+set pgp_default_key = FC9B1319726657D3
+
+set crypt_use_gpgme = yes
+set crypt_use_pka = yes
+
 set pgp_auto_decode = yes
 set crypt_autosign = yes
+
 set sleep_time = 0
 set date_format="%d/%m/%y %I:%M"
 set markers = no
@@ -150,7 +155,7 @@ bind index,pager g noop
 bind index gg first-entry
 bind index,pager @ compose-to-sender
 
-message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
+# message-hook '!~g !~G ~b "^-----BEGIN PGP (SIGNED )?MESSAGE"' 'exec check-traditional-pgp'
 macro index \Cf "<enter-command>unset wait_key<enter><shell-escape>read -p 'notmuch query: ' x; echo \$x >~/.cache/mutt_terms<enter><limit>~i \"\`notmuch search --output=messages \$(cat ~/.cache/mutt_terms) | head -n 600 | perl -le '@a=<>;chomp@a;s/\^id:// for@a;$,=\"|\";print@a'\`\"<enter>" "show only messages matching a notmuch pattern"
 macro index,pager 0 "<limit>all<enter>:set nm_query_window_duration=0<enter>" "show everything"
 bind index \Cl limit-current-thread

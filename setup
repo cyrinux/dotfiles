@@ -153,6 +153,7 @@ if [ "$(whoami)" != "root" ]; then
     link ".config/systemd/user/urlwatch.service"
     link ".config/systemd/user/urlwatch.timer"
     link ".config/systemd/user/bum.service"
+    link ".config/udiskie"
 
     link ".local/share/dicts"
     link ".local/share/fonts/taskbar.ttf"

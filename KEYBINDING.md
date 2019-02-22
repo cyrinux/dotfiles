@@ -54,16 +54,21 @@
 - <kbd>a</kbd> - mark as archive a message
 - <kbd>A</kbd> - mark as archive a thread
 - <kbd>P</kbd> - archive messages/threads
+- <kbd>X</kbd> - open virtual folder (then <kbd>?</kbd>)
 
 # Misc
 
-## Pass
+## Pass and rofi-pass
 
 - Add a password:
 
 ```
 addpass --name "My new Site" +user "zeltak" +branch "branch" +custom "foobar" +autotype "branch :tab user :tab pass"
 ```
+
+- Edit or generate new password from rofi-pass
+
+  Select a password from the list then hit <kbd>Alt</kbd>+<kbd>a</kbd> and select the action.
 
 ## rofi application launcher
 

@@ -8,6 +8,8 @@ zstyle ':prezto:load' pmodule \
   'history'     \
   'directory'   \
   'completion'  \
-  'archive'     
+  'rsync'  \
+  'docker'  \
+  'archive'
 
 zstyle ':prezto:module:ruby:chruby' auto-switch 'yes'
