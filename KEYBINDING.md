@@ -12,7 +12,7 @@
 - <kbd>Mod</kbd>+<kbd>n</kbd> - rofi NetworkManager
 - <kbd>Mod</kbd>+<kbd>d</kbd> - rofi application launcher
 - <kbd>Mod</kbd>+<kbd>=</kbd> - rofi calculator
-- <kbd>Alt</kbd>+<kbd>Tab</kbd> - rofi window
+- <kbd>Alt</kbd>+<kbd>Tab</kbd> - rofi window, application launcher
 - <kbd>Mod</kbd>+<kbd>p</kbd> - rofi pass password manager
 - <kbd>Mod</kbd>+<kbd>Control</kbd>+<kbd>p</kbd> - rofi keepassx password manager
 - <kbd>Mod</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd> - audio menu: pavucontrol, pulseeffects, bluetooth
@@ -31,6 +31,7 @@
 - <kbd>Mod</kbd> - tape and release mod key alone send <kbd>Esc</kbd>
 - <kbd>Mod</kbd>+<kbd>f</kbd> - fullscreen
 - <kbd>Mod</kbd>+<kbd>l</kbd> - lock scren
+- <kbd>Mod</kbd>+<kbd>b</kbd> - rofi pinboard bookmark
 - All medias keys are working, controlling sounds and D-BUS medias app
 
 ## Neovim
@@ -54,6 +55,7 @@
 - <kbd>a</kbd> - mark as archive a message
 - <kbd>A</kbd> - mark as archive a thread
 - <kbd>P</kbd> - archive messages/threads
+- <kbd>p</kbd> - print message
 - <kbd>X</kbd> - open virtual folder (then <kbd>?</kbd>)
 
 # Misc

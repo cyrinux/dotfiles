@@ -155,7 +155,7 @@ if [ "$(whoami)" != "root" ]; then
     link ".config/systemd/user/bum.service"
     link ".config/udiskie"
 
-    link ".local/share/dicts"
+    link ".local/share/rofi-json-dicts"
     link ".local/share/fonts/taskbar.ttf"
     link ".local/share/applications/neomutt.desktop"
     link ".local/share/applications/browser.desktop"

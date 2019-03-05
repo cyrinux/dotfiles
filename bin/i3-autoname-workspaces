@@ -16,6 +16,7 @@ WINDOW_ICONS = {
     "duolingo": "",
     "notable": "",
     "crow": "",
+    "newsboat": "",
     "com-stonesoft-client-launcher-SmcClient": "",
     "pavucontrol": "",
     "syncthing gtk": "",

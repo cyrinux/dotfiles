@@ -152,3 +152,12 @@ screencasting() {
 }
 
 alias ffmpeg="ffmpeg -hide_banner"
+
+# Pentest
+#alias openvas="sudo docker run -d -p 443:443 --name openvas mikesplain/openvas"
+#alias parrotsec="sudo docker run -ti --rm --network host parrotsec/parrot"
+alias kali-poweron='vmware -x /var/run/media/cyril/SDCARD/Kali-Linux-2019.1-vm-amd64/Kali-Linux-2019.1-vm-amd64.vmx'
+tmux-connect() {/usr/bin/ssh -t $@ "tmux attach || tmux new";}
+kali() {
+  tmux-connect -X kali "$@"
+}

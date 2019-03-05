@@ -54,9 +54,7 @@ bindcode $mod+44 exec "jira-popup &"
 # mod+=
 bindcode $mod+21 exec "pgrep rofi && killall rofi || rofi -normal-window -show calc"
 # mod+d
-bindcode $mod+40 exec "pgrep rofi && killall rofi || rofi -normal-window -show drun"
-# mod+o
-bindcode $mod+32 exec "pgrep rofi && killall rofi || rofi -normal-window -show window"
+bindcode $mod+40 exec "pgrep rofi && killall rofi || rofi -normal-window -show file-browser"
 # mod+u
 bindcode $mod+30 exec "pgrep rofi && killall rofi || dmenuunicode"
 # mod+w
@@ -69,9 +67,10 @@ bindcode $mod+33 exec "pgrep rofi && killall rofi || rofi-pass"
 bindcode $mod+Control+33 exec "pgrep rofi && killall rofi || keepmenu"
 # mod+!
 bindcode $mod+61 exec "pgrep rofi && killall rofi || mpdmenu"
-
+# mod+b
+bindcode $mod+56 exec "pgrep rofi && killall rofi || rofi-pinboard"
 # Alt+Tab
-bindcode $alt+23 exec "pgrep rofi && killall rofi || rofi -normal-window -show window"
+bindcode $alt+23 exec "pgrep rofi && killall rofi || rofi -combi-modi window,drun -show combi -modi combi"
 
 
 ################################################################################################
@@ -554,6 +553,7 @@ exec_always  "pgrep -x udiskie || (udiskie &)"
 exec_always  "pgrep -x unclutter || (unclutter &)"
 exec_always  "killall xcape ; xcape -e 'Super_L=Escape'"
 exec  "pgrep -x neomutt || (kitty --class neomutt --title neomutt neomutt &)"
+exec  "pgrep -x newsboat || (kitty --class newsboat --title newsboat newsboat &)"
 exec  "pgrep -x glances || (kitty --class glances --title glances glances &)"
 exec  "pgrep -x wire-desktop || (wire-desktop &)"
 
