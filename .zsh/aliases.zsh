@@ -37,6 +37,7 @@ alias -s tex=edit
 alias -s pdf=zathura
 alias -s png=feh
 alias -s jpg=feh
+alias -s mkv=mpv
 
 # Task
 alias t='task'
