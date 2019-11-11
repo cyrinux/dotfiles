@@ -29,6 +29,9 @@
     icon_position = left
     max_icon_size = 32
     icon_folders = /usr/share/icons/hicolor/scalable/apps:/usr/share/icons/hicolor/128x128/apps:/usr/share/icons/hicolor/256x256/apps
+    mouse_left_click = close_current
+    mouse_middle_click = do_action
+    mouse_right_click = close_all
 
 [frame]
     width = 1
@@ -36,8 +39,8 @@
 
 [shortcuts]
     close = ctrl+space
-    close_all = ctrl+shift+space
-    history = ctrl+grave
+    # close_all = ctrl+shift+space
+    history = ctrl+shift+space
     context = ctrl+shift+period
 
 [urgency_low]

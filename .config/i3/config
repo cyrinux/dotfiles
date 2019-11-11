@@ -60,7 +60,7 @@ bindcode $hyper+52 exec "surfraw-rofi"
 # Mod+w
 bindcode $win+52 exec "surfraw duckduckgo -j $(xclip -o -selection clipboard)"
 # Hyper+p
-bindcode $hyper+33 exec "rofi-pass &"
+bindcode $hyper+33 exec "rofi-pass"
 # Hyper+b
 bindcode $hyper+56 exec "notify-send 'Opening bookmarks...'; rofi-pinboard"
 # square key
@@ -284,6 +284,7 @@ for_window [title="^edit_text$"] floating enable
 for_window    [window_role="pop-up"] floating enable
 for_window    [class="Peek"] floating enable
 for_window    [class="Rofi"] floating enable
+for_window    [class="copyq"]                floating enable
 for_window    [class="Tor Browser"] move container to $workspace8, floating enable border normal
 for_window    [class="(?i)chromium"] move window to workspace current, title_format "Chromium"
 for_window    [class="Wire"] move container to $workspace1
@@ -374,7 +375,7 @@ bindcode Control+$alt+46 exec i3exit lock
 
 # Clipboard manager
 # (hyper+f)
-bindcode $hyper+41 exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+bindcode $hyper+41 exec copyq toggle
 
 # Make floater
 # (mod+Control+m)
@@ -549,4 +550,5 @@ exec_always "pgrep -x playerctl || (playerctl status --format '{{ playerName  }}
 exec_always "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer normal 1800 'run-on-bat i3exit suspend' '' &)"
 exec_always py3-cmd refresh xkb_layouts
 exec_always (sleep 5 && xmodmap ~/.Xmodmap)&
+exec_always "pgrep -x copyq || (copyq & )"
 exec kitty &

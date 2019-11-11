@@ -77,7 +77,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".gnupg/gpg.conf"
   link ".gnupg/dirmngr.conf"
   link ".gnupg/sks-keyservers.netCA.pem"
-
+  link ".config/pulse/daemon.conf"
   link ".config/htop"
   link ".config/kak"
   link ".config/nvim"
