@@ -16,3 +16,6 @@
 [submodule ".config/kak/restclient.kak"]
 	path = .config/kak/restclient.kak
 	url = https://github.com/maximbaz/restclient.kak.git
+[submodule ".config/kak/sudo-write.kak"]
+	path = .config/kak/sudo-write.kak
+	url = https://github.com/occivink/kakoune-sudo-write
