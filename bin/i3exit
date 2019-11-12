@@ -26,6 +26,7 @@ before_lock() {
   killall compton
   pauseallmpv 2>/dev/null
   playerctl pause 2>/dev/null
+  pkill mpv 2>/dev/null
   fusermount -u ~/Vault &
   fusermount -u ~/Vault-Share &
   physlock -lms
