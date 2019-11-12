@@ -19,3 +19,6 @@
 [submodule ".config/kak/sudo-write.kak"]
 	path = .config/kak/sudo-write.kak
 	url = https://github.com/occivink/kakoune-sudo-write
+[submodule ".config/kak/number-toggle.kak"]
+	path = .config/kak/number-toggle.kak
+	url = https://github.com/evanrelf/number-toggle.kak.git
