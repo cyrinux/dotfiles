@@ -1,12 +1,14 @@
 #!/bin/bash
 
 PARAMS=(
-    # "animals"
-    # "clouds"
-    # "dogs"
-    # "flowers"
-    # "mountains"
-    # "nature"
+    "animals"
+    "clouds"
+    "dogs"
+    "flowers"
+    "mountains"
+    "nature"
+    "sea"
+    "fish"
     "fish-tank"
 )
 RAND=$((RANDOM % ${#PARAMS[@]}))
