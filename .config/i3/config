@@ -7,6 +7,9 @@ set $numlock Mod2
 set $hyper Mod3
 set $win Mod4
 
+# Use Mouse+$hyper to drag floating windows
+floating_modifier $hyper
+
 # set default desktop layout (default is tiling)
 # workspace_layout tabbed <stacking|tabbed>
 workspace_layout tabbed
@@ -30,8 +33,6 @@ hide_edge_borders both
 # is used in the bar {} block below.
 font pango: Taskbar, FontAwesome, Cantarell 8
 
-# Use Mouse+$hyper to drag floating windows
-floating_modifier $hyper
 
 # start a terminal
 bindsym $hyper+Return exec kitty
@@ -121,7 +122,7 @@ bindcode $win+40 --release exec "killall dunst; exec notify-send 'restart dunst'
 # mod+scroll_lock
 bindsym $hyper+Scroll_Lock exec "killall screenkey || screenkey"
 # printscreen
-bindsym Print exec "flameshot full -p ~/Pictures/Screenshots -c"
+bindsym Print exec "flameshot full -p ~/library/Pictures/Screenshots -c"
 # mod+printscreen
 bindsym $hyper+Print exec "flameshot gui"
 
