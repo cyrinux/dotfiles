@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.3
+pkgver=2.0.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -14,6 +14,30 @@ depends=(
 # To sort
 # Work
 
+'arch-audit'
+'bdf-unifont'
+'bpython'
+'copyq'
+'dnsmasq'
+'emacs'
+'ghc'
+'gocode-daemon'
+'go-pie'
+'go-tools'
+'hadolint-bin'
+'informant'
+'kak-lsp'
+'kakoune'
+'kernel-modules-hook'
+'nodejs-vmd'
+'overdue'
+'pacman-pstatus'
+'python2-future'
+'python-watchdog'
+'systemd-swap'
+'ttf-symbola'
+'vimiv-qt'
+'wafw00f'
 'android-sdk-platform-tools'
 'android-studio'
 'ansible'
@@ -430,7 +454,6 @@ depends=(
 'python-msrest'
 'python-msrestazure'
 'python-nautilus'
-'python-neovim'
 'python-netifaces'
 'python-pandas'
 'python-passlib'
@@ -512,7 +535,6 @@ depends=(
 'skypeforlinux-stable-bin'
 'slack-desktop-dark'
 'smartmontools'
-'smtube'
 'snap-pac'
 'snap-pac-grub'
 'snapper-gui-git'
@@ -584,7 +606,6 @@ depends=(
 'vimiv-qt'
 'vint'
 'visidata'
-'vlc'
 'vmware-keymaps'
 'vmware-workstation'
 'vnstat'
