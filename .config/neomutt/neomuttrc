@@ -229,3 +229,6 @@ macro index O "<shell-escape>flock -n /tmp/.mailsync-personal.lock mailsync<ente
 macro index o noop
 macro index o "<shell-escape>flock -n /tmp/.mailsync-personal.lock mailsync<enter><enter>" "sync all mail"
 
+# Printing
+set print_command="$HOME/.config/neomutt/print.sh"
+macro index,pager s "<pipe-message>$HOME/.config/neomutt/print.sh -s"
