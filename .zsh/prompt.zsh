@@ -229,12 +229,9 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
     '~/library/src/personal(/*)#'          PERSONAL     '⌂'
     '*'                                    DEFAULT  ''
   )
-
   typeset -g POWERLEVEL9K_DIR_WORK_FOREGROUND=067
   typeset -g POWERLEVEL9K_DIR_WORK_SHORTENED_FOREGROUND=067
   typeset -g POWERLEVEL9K_DIR_WORK_ANCHOR_FOREGROUND=067
-
-  typeset -g POWERLEVEL9K_TRANSIENT_PROMPT=same-dir
 
 }
 
