@@ -32,12 +32,12 @@ mkdcd() {
 alias -s gz='tar -xzvf'
 alias -s tgz='tar -xzvf'
 alias -s bz2='tar -xjvf'
-alias -s txt=edit
-alias -s tex=edit
 alias -s pdf=zathura
-alias -s png=feh
 alias -s jpg=feh
+alias -s png=feh
+alias -s avi=mpv
 alias -s mkv=mpv
+alias -s mp4=mpv
 
 # Task
 alias t='task'
