@@ -9,7 +9,7 @@ general {
 }
 
 
-systemd_suspend_inhibitor {
+suspend_inhibitor {
     format = "[\?color=state [\?if=state 󰁄|󰁅]]"
 }
 
@@ -56,7 +56,7 @@ order += 'volume_status'
 order += 'frame hidden'
 order += 'battery_level'
 order += 'getjson infra_healthcheck'
-order += 'systemd_suspend_inhibitor'
+order += 'suspend_inhibitor'
 order += 'do_not_disturb'
 order += 'usbguard'
 
