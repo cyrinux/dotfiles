@@ -96,6 +96,7 @@ clock {
     cache_timeout = 60
     format = '{Europe/Paris}'
     format_time = '  %H:%M'
+    on_click 1 = 'exec gsimplecal'
 }
 
 frame wwan_frame {
