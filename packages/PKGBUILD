@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.4
+pkgver=2.0.6
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -13,7 +13,7 @@ depends=(
 # Remote
 # To sort
 # Work
-
+'croc'
 'arch-audit'
 'bdf-unifont'
 'bpython'
@@ -341,7 +341,6 @@ depends=(
 'networkmanager-pptp'
 'networkmanager-strongswan'
 'nfs-utils'
-'ngrok'
 'nm-connection-editor'
 'nmap'
 'nmtrust-git'
@@ -387,7 +386,6 @@ depends=(
 'parcimonie-sh-git'
 'pass'
 'pavucontrol'
-'pcsc-tools'
 'pdfgrep'
 'pdfjs'
 'pdsh'
@@ -422,7 +420,6 @@ depends=(
 'pulseaudio'
 'pulseaudio-alsa'
 'pulseaudio-bluetooth'
-'pulseaudio-modules-bt-git'
 'pulseeffects'
 'purple-rocketchat'
 'putty'
@@ -609,7 +606,6 @@ depends=(
 'vmware-keymaps'
 'vmware-workstation'
 'vnstat'
-'vpcs'
 'vulscan'
 'w3m'
 'wapiti'
