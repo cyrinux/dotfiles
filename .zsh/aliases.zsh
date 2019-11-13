@@ -32,12 +32,13 @@ mkdcd() {
 alias -s gz='tar -xzvf'
 alias -s tgz='tar -xzvf'
 alias -s bz2='tar -xjvf'
-alias -s pdf=zathura
-alias -s jpg=feh
-alias -s png=feh
-alias -s avi=mpv
-alias -s mkv=mpv
-alias -s mp4=mpv
+alias -s bz2='tar -xjvf'
+alias -s pdf='firewarden -c zathura'
+alias -s jpg=vimiv
+alias -s png=vimiv
+alias -s avi='mpv --quiet'
+alias -s mkv='mpv --quiet'
+alias -s mp4='mpv --quiet'
 
 # Task
 alias t='task'
@@ -45,14 +46,12 @@ alias ta='task add'
 alias tm='task modify'
 alias ti='task add due:tomorrow tag:inbox'
 alias toa='todoist q "$@"'
-alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
-alias connect-shure-bt1="connect_a2dp 00:0E:DD:06:24:1C"
-alias connect-bose-mini-ii="connect_a2dp 08:DF:1F:A9:9E:EC"
-alias connect-aeropex="connect_a2dp 20:74:CF:3B:36:A9"
-alias clean_cache_zsh="antigen reset"
-alias generate_pins="pwgen -n -r=azertyuiopqsdfghjklmwxcvbn -A 3 10"
 
 
+
+########
+# Misc #
+########
 
 p() {
   if (( $# == 0 )); then
@@ -61,10 +60,6 @@ p() {
     ping $@
   fi
 }
-
-########
-# Misc #
-########
 
 vault!(){
   gocryptfs -extpass "pass gocryptfs-mega" -noprealloc /home/cyril/Seafile/datas/encrypted_gocryptfs ~/Vault
@@ -87,7 +82,13 @@ alias mtr-report='mtr --report --report-cycles 10 --no-dns'
 alias http-serve='python -m http.server'
 alias bc='bc -lq'
 alias utc='env TZ="UTC" date'
-alias c='code -n .'
+alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
+alias connect-shure-bt1="connect_a2dp 00:0E:DD:06:24:1C"
+alias connect-bose-mini-ii="connect_a2dp 08:DF:1F:A9:9E:EC"
+alias connect-aeropex="connect_a2dp 20:74:CF:3B:36:A9"
+alias clean_cache_zsh="antigen reset"
+alias generate_pins="pwgen -n -r=azertyuiopqsdfghjklmwxcvbn -A 3 10"
+alias send="croc send"
 
 # iowaiting
 iowaiting() {
