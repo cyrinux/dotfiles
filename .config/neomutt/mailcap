@@ -5,7 +5,7 @@ application/pdf; pdftotext -l 10 -nopgbrk -q -- %s - | fmt -w 120; copiousoutput
 application/ics; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;
 application/pgp-encrypted; gpg -d '%s'; copiousoutput;
 application/pgp-keys; pgp -f < %s ; copiousoutput;
-text/plain; nvim %s ; needsterminal
+text/plain; kak %s ; needsterminal
 text/html; firewarden -c qutebrowser %s; needsterminal; nametemplate=%s.html
 text/html; w3m -o display_link_number=1 -I %{charset} -T text/html; copiousoutput;
 text/calendar; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;

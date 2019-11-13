@@ -45,7 +45,7 @@ wait=0.2
 
 ## Programs to be used
 # Editor
-EDITOR='kitty nvim'
+EDITOR='kitty kak'
 
 # Browser
 BROWSER='browser'
