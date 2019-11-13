@@ -81,6 +81,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/pulse/daemon.conf"
   link ".config/htop"
   link ".config/kak"
+  link ".config/croc"
   link ".config/nvim"
   link ".config/pacman"
   link ".config/ranger/rc.conf"
