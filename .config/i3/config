@@ -113,8 +113,8 @@ bindcode $hyper+57 exec networkmanager_dmenu
 # mod+m
 bindcode $hyper+47 exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -p "Mount" -matching regex -dmenu -i -no-custom -multi-select
 # mod+F1
-bindcode $hyper+67 exec "autorandr --change --force; resolvectl flush-caches; sudo -A systemctl stop pcscd.service; sudo  -A systemctl restart systemd-resolved.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
-bindcode $win+67 exec "autorandr --change --force; resolvectl flush-caches; sudo -A systemctl stop pcscd.service; sudo -A systemctl restart systemd-resolved.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
+bindcode $hyper+67 exec "autorandr --change --force; sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
+bindcode $win+67 exec "autorandr --change --force; sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
 # display
 bindsym XF86Display --release exec autorandr --change
 # mod+Shift+d
