@@ -6,7 +6,7 @@ status_path = "~/.vdirsyncer/status/"
 a = "my_contacts_local"
 b = "my_contacts_remote"
 collections = ["from a", "from b"]
-conflict_resolution = ["command", "nvim", "-d"]
+conflict_resolution = ["command", "meld"]
 
 
 [storage my_contacts_local]
