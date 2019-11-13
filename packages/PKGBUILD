@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.6
+pkgver=2.0.7
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -85,7 +85,6 @@ depends=(
 'btrfs-progs'
 'calibre'
 'captive-browser-git'
-'cardpeek'
 'ccache'
 'ccid'
 'cheat-git'
@@ -662,5 +661,10 @@ depends=(
 'zip'
 'zoom'
 'zsh'
+'antiword'
+'compsize'
+'ngrok'
+'odt2txt'
+'pcsclite'
 )
 
