@@ -124,7 +124,6 @@ set hostname = levis.name
 set sendmail = "/usr/bin/msmtp -a personal"
 set signature = ~/.config/neomutt/signature
 
-set editor = "nvim +/^$/+1 +':noh'"
 set folder = "~/.mail/personal"
 set sort = threads
 set sort_aux = 'last-date-received'
