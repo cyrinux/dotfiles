@@ -35,9 +35,9 @@
   autocrlf = input
   pager = diff-so-fancy | less --tabs=4 -RFX
   excludesfile = ~/.gitignore
-	untrackedCache = true
-	pager = less
-	editor = kak
+  untrackedCache = true
+  pager = less
+  editor = kak
 [commit]
   gpgsign = true
   template = ~/.gitmessage
@@ -49,7 +49,7 @@
 [difftool "kitty"]
   cmd = kitty +kitten diff $LOCAL $REMOTE
 [merge]
-  conflictstyle = diff3
+  tool = meld
 [mergetool]
   keepBackup = false
   prompt = false
@@ -61,5 +61,7 @@
 [rebase]
   autostash = true
   autosquash = true
+[mergetool "meld"]
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 [includeIf "gitdir:~/library/src/work/"]
   path = ~/.gitconfig.work
