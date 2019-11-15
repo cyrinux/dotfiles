@@ -21,6 +21,7 @@ alias rsyncrepo='rsync --archive --compress --partial --delete /var/cache/pacman
 alias update='PATH="/bin" auru -Tcs; pacu'
 alias signrepo='PATH="/usr/bin:/bin" repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
 
+
 pac() {
   sudo -E pacman "$@"
   py3status-refresh-pacman
@@ -43,10 +44,16 @@ aurs() {
   post_aur
 }
 
-alias aurs!='aurs --no-ver-shallow --force'
+aurs!() {
+    aurs --no-ver-shallow -f "$@"
+}
+
+rebuild() {
+    aurs! $1 && SNAP_PAC_SKIP=true sudo -E pacman -Sy $1
+}
 
 aurb() {
-  PATH="/bin" aur build -sc --pkgver "$@"
+  PATH="/bin" aur build -scf --pkgver "$@"
   post_aur
 }
 

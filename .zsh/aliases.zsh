@@ -15,7 +15,7 @@ alias o='xdg-open'
 alias rm='rmtrash -rf'
 alias rm!='\rm -rf'
 alias sudo='sudo -E '
-alias ls="exa -g --git --group-directories-first"
+alias ls="exa --group --git --group-directories-first"
 alias ll="ls -l"
 alias la="ll -a"
 alias lk="ll -s=size"                # Sorted by size
