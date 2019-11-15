@@ -326,10 +326,13 @@ if [[ "$(whoami)" == "root" ]]; then
 
   systemctl daemon-reload
   systemctl_enable_start "system" "macchiato.service"
+  systemctl_enable_start "system" "fstrim.timer"
   systemctl_enable_start "system" "NetworkManager.service"
   systemctl_enable_start "system" "NetworkManager-dispatcher.service"
   systemctl_enable_start "system" "kresd.socket"
+  systemctl_enable_start "system" "kresd@1.service"
   systemctl_enable_start "system" "iwd.service"
+  systemctl_enable_start "system" "linux-modules-cleanup.service"
   systemctl_enable_start "system" "systemd-resolved"
   systemctl_enable_start "system" "bluetooth.service"
   systemctl_enable_start "system" "paccache.timer"
