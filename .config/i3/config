@@ -36,7 +36,7 @@ font pango: Taskbar, FontAwesome, Cantarell 8
 
 # start a terminal
 bindsym $hyper+Return exec kitty
-bindsym $win+Return exec kitty
+bindsym $win+Return exec kitty /bin/bash
 
 # kill focused window (q)
 bindcode $win+38 kill
@@ -50,26 +50,28 @@ bindcode Shift+69 exec "nautilus &"
 
 # Start a launcher (=)(d)(o)(w)(p)
 # Mod+=
-bindcode $hyper+21 exec "calc"
+bindcode $hyper+21 fullscreen disable, exec "pgrep -x rofi && pkill rofi || rofi-calc"
+
 # Hyper+Tab
-bindcode $hyper+23 exec "rofi -normal-window -show file-browser"
+bindcode $hyper+23 fullscreen disable, exec "rofi -normal-window -show file-browser"
+
 # Hyper+u
-bindcode $hyper+30 exec "rofimoji --rofi-args='-normal-window -matching normal -columns 3'"
+bindcode $hyper+30 fullscreen disable, exec "rofimoji --rofi-args='-normal-window -matching normal -columns 3'"
 
 # Hyper+w
-bindcode $hyper+52 exec "surfraw-rofi"
+bindcode $hyper+52 fullscreen disable, exec "surfraw-rofi"
 # Mod+w
-bindcode $win+52 exec "surfraw duckduckgo -j $(xclip -o -selection clipboard)"
+bindcode $win+52 fullscreen disable, exec "surfraw duckduckgo -j $(xclip -o -selection clipboard)"
 # Hyper+p
-bindcode $hyper+33 exec "rofi-pass"
+bindcode $hyper+33 fullscreen disable, exec "rofi-pass"
 # Hyper+b
-bindcode $hyper+56 exec "notify-send 'Opening bookmarks...'; rofi-pinboard"
+bindcode $hyper+56 fullscreen disable, exec "notify-send 'Opening bookmarks...'; rofi-pinboard"
 # square key
-bindcode 49 exec "rofi-todoist"
+bindcode 49 fullscreen disable, exec "rofi-todoist"
 # Alt+Tab
-bindcode $alt+23 exec "rofi -show window"
+bindcode $alt+23 fullscreen disable, exec "rofi -show window"
 # Hyper+d
-bindcode $hyper+40 exec "pgrep rofi && killall rofi || rofi -combi-modi window,drun,ssh -show combi -modi combi -columns 2"
+bindcode $hyper+40 fullscreen disable, exec "pgrep rofi && killall rofi || rofi -combi-modi window,drun,ssh -show combi -modi combi -columns 2"
 
 ################################################################################################
 # sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> +Pulseaudio later!   #
@@ -376,8 +378,7 @@ bindcode Control+$alt+46 exec i3exit lock
 
 # Clipboard manager
 # (hyper+f)
-bindcode $hyper+41 exec copyq toggle
-
+bindcode $hyper+41 fullscreen disable, exec copyq toggle
 # Make floater
 # (mod+Control+m)
 bindcode $win+Control+47 floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
