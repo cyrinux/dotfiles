@@ -56,3 +56,8 @@ export PATH="$GOPATH/bin:$PATH"
 export GRAALVM_HOME=/usr/lib/jvm/java-8-graal
 export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
 export PATH="$HOME/.node_modules/bin:$PATH"
+
+# Nnn files browser settings
+export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
+export NNN_TRASH=1
+export NNN_PLUG='d:dragdrop'
