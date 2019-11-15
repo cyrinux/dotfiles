@@ -30,7 +30,7 @@ order += 'external_script checkupdates_vcs'
 order += 'external_script checkrebuild'
 order += 'external_script checkfirmware'
 order += 'scratchpad_async'
-# order += 'external_script firejail'
+order += 'external_script firejail'
 order += 'process_status restic'
 order += 'file_status decrypted_shared'
 order += 'file_status decrypted_documents'
@@ -135,14 +135,6 @@ frame wwan_frame {
         statistics_type = 'm'
     }
 
-    tor_rate {
-        cache_timeout = 2
-        hide_socket_errors = true
-        format = "󰁃 in:{down} out:{up}"
-        control_port = 1337
-        control_password = "08QL7b9B7EvxMZGL4BKboaYc"
-        si_units = True
-    }
   }
 
 }
@@ -225,9 +217,9 @@ external_script checkupdates_vcs {
 }
 
 external_script checkrebuild {
-  cache_timeout = -1
+  cache_timeout = 7200
   button_show_notification = 1
-  script_path = "is_online && nmtrust -q && run-on-ac checkrebuild | grep cyrinux || true"
+  script_path = "nm-online -t 120 -q && nmtrust -q && run-on-ac checkrebuild | grep cyrinux || true"
   format = '[\?if=line [\?color=degraded 󰁂 {lines}]]'
 }
 
