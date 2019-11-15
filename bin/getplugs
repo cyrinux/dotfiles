@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# Description: Update nnn plugins
+#
+# Shell: POSIX compliant
+# Author: Arun Prakash Jana
+
+CONFIG_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/
+PLUGIN_DIR=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/plugins
+
+is_cmd_exists () {
+    which "$1" > /dev/null 2>&1
+    echo $?
+}
+
+if [ "$(is_cmd_exists sudo)" -eq "0" ]; then
+    sucmd=sudo
+elif [ "$(is_cmd_exists doas)" -eq "0" ]; then
+    sucmd=doas
+else
+    sucmd=: # noop
+fi
+
+# backup any earlier plugins
+if [ -d $PLUGIN_DIR ]; then
+    tar -C $CONFIG_DIR -czf $CONFIG_DIR"plugins-$(date '+%Y%m%d%H%M').tar.gz" plugins/
+fi
+
+cd $CONFIG_DIR
+curl -Ls -O https://github.com/jarun/nnn/archive/master.tar.gz
+tar -zxf master.tar.gz
+cp -vRf nnn-master/plugins .
+$sucmd mv -vf nnn-master/misc/nlaunch/nlaunch /usr/local/bin/
+rm -rf nnn-master/ master.tar.gz README.md

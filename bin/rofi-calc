@@ -1,6 +1,3 @@
-#!/usr/bin/zsh
+#!/bin/sh
 
-if [[ -n $* ]]; then
-  echo "$1"
-  LC_MONETARY=fr_FR.UTF-8 LC_ALL= qalc -t $1 | tee >(xclip -selection clipboard >/dev/null)
-fi
+rofi -normal-window -show calc -modi calc -no-show-match -no-sort -terse -calc-command "echo '{result}' | xclip -selection clipboard"
