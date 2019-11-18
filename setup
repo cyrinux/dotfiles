@@ -111,7 +111,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".gnupg/pinentry-dmenu.conf"
   link ".config/chromium-flags.conf"
   link ".config/captive-browser.toml"
-  link ".config/picom/picom.conf"
+  link ".config/picom"
   link ".config/dunst"
   link ".config/fontconfig/conf.d/70-monospace.conf"
   link ".config/gsimplecal"
