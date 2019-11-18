@@ -114,7 +114,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/chromium-flags.conf"
   link ".config/captive-browser.toml"
   link ".config/greenclip.cfg"
-  link ".config/compton/compton.conf"
+  link ".config/picom/picom.conf"
   link ".config/dunst"
   link ".config/fontconfig/conf.d/70-monospace.conf"
   link ".config/gsimplecal"
