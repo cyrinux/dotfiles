@@ -1,0 +1,15 @@
+#!/bin/bash +x
+
+selection="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection"
+croc="kitty --title 'Croc' --hold croc send \$files"
+
+if [ -s "$selection" ]; then
+    files=$(xargs -0 -a "$selection")
+elif [ -e "$1" ]; then
+    files=$1
+fi
+if [ -n $files ]; then
+    eval $croc &
+fi
+
+
