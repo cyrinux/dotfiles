@@ -180,7 +180,7 @@ function fzy-ssh () {
 }
 
 zle -N fzy-ssh
-bindkey '^s' fzy-ssh
+bindkey '^h' fzy-ssh
 
 
 # nnn, cd on exit
