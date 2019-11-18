@@ -22,24 +22,24 @@ stop_wlan() {
 }
 
 before_lock() {
-  usbguard_lock
-  killall picom
   pauseallmpv 2>/dev/null
   playerctl pause 2>/dev/null
-  pkill mpv 2>/dev/null
+  killall mpv 2>/dev/null
   bluetoothctl disconnect
   fusermount -u ~/Vault &
   fusermount -u ~/Vault-Share &
+  fusermount -u ~/SAMBA &
+  usbguard_lock
   physlock -lms
-  sudo systemctl stop pcscd.service
+  usbguard_lock
 }
 
 after_lock() {
   physlock -L
   usbguard_unlock
-  picom & disown
   xrandr --auto
-  fix_layout
+  picom & disown
+  fix_keyboard_layout
   killall -SIGCONT py3status
 }
 
@@ -51,7 +51,7 @@ usbguard_unlock(){
   usbguard set-parameter InsertedDevicePolicy $POLICY_UNLOCKED
 }
 
-fix_layout(){
+fix_keyboard_layout(){
   xkb-switch -s fr
   xmodmap ~/.Xmodmap
   py3-cmd refresh xkb_layouts
