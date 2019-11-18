@@ -148,6 +148,7 @@ alias graph="graph-easy --from dot --as boxart --stats"
 
 # ssh
 alias cssh="tmux-cssh"
+alias sssh="cssh"
 
 # mkdocs wiki
 alias mkbs="mkdocs build && mkdocs serve"
