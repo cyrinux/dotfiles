@@ -74,9 +74,7 @@ if [ "$(whoami)" != "root" ]; then
   link "bin"
 
   link ".config/user-dirs.dirs"
-  link ".ghc/ghci.conf"
   link ".gnupg/gpg.conf"
-  link ".gnupg/dirmngr.conf"
   link ".gnupg/sks-keyservers.netCA.pem"
   link ".config/pulse/daemon.conf"
   link ".config/htop"
