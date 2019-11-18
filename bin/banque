@@ -1,2 +1,0 @@
-#!/bin/sh
-firewarden -d brave https://ca-paris.fr/

@@ -23,7 +23,7 @@ stop_wlan() {
 
 before_lock() {
   usbguard_lock
-  killall compton
+  killall picom
   pauseallmpv 2>/dev/null
   playerctl pause 2>/dev/null
   pkill mpv 2>/dev/null
@@ -37,7 +37,7 @@ before_lock() {
 after_lock() {
   physlock -L
   usbguard_unlock
-  compton & disown
+  picom & disown
   xrandr --auto
   fix_layout
   killall -SIGCONT py3status
