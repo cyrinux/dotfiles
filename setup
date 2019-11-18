@@ -132,7 +132,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/repoctl"
   link ".config/transmission/settings.json"
   link ".config/USBGuard"
-  link ".config/weechat"
+  link ".config/nnn/plugins"
   link ".config/khard"
   link ".config/khal"
   link ".mbsyncrc"
