@@ -1,6 +1,4 @@
 #!/bin/bash
-# {{ ansible_managed }}
-
 menu=$(echo -e "chromium\ndisposable\nfirefox personal\nfirefox work\ntor browser\nqutebrowser\ndisposable without network\nqrcode\ncopy to clipboard\nplay\n" | rofi -dmenu -p "browser")
 
 case $menu in

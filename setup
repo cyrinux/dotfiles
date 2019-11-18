@@ -82,7 +82,6 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/croc"
   link ".config/nvim"
   link ".config/pacman"
-  link ".config/ranger/rc.conf"
   link ".config/rofi"
   link ".config/qalculate/qalc.cfg"
   link ".config/vifm/vifmrc"
@@ -253,12 +252,11 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/conf.d/snapper"
   copy "etc/iwd/main.conf"
   copy "etc/vnstat.conf"
-  copy "etc/knot-resolver/kresd.conf"
+  copy "etc/knot-resolver/kresd.conf" 644
   copy "etc/intel-undervolt.conf"
   copy "etc/environment"
   copy "etc/pacman.d/hooks"
-  copy "etc/profile.d/maven.sh"
-  copy "etc/profile.d/zz_custom.sh"
+  copy "etc/profile.d/zz_custom.sh" 644
   copy "etc/snap-pac.conf"
   copy "etc/snapper/configs/root"
   copy "etc/snapper/configs/config"
@@ -288,7 +286,7 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/lightdm/lightdm.conf"
   copy "etc/lightdm/lightdm-gtk-greeter.conf"
   copy "etc/grub.d/31_hold_shift"
-  copy "etc/pacman.conf"
+  copy "etc/pacman.conf" 644
   copy "etc/pam.d/sudo"
   copy "etc/private-internet-access/pia.conf"
   copy "etc/sudoers"
