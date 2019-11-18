@@ -190,7 +190,7 @@ n()
     # To cd on quit only on ^G, export NNN_TMPFILE after the call to nnn
     export NNN_TMPFILE=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd
 
-    nnn "$@"
+    nnn -t "$@"
 
     if [ -f $NNN_TMPFILE ]; then
             . $NNN_TMPFILE
