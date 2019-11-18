@@ -172,3 +172,7 @@ alias ansible-playbook="ANSIBLE_SSH_EXECUTABLE=/usr/bin/ssh ansible-playbook"
 
 # calendar
 alias cal="khal calendar"
+
+# gpg
+alias gpg-delete-master-key='gpg-connect-agent "DELETE_KEY 0D13C83ACE0E72759DADA333877F9E38CDDF866E" /bye'
+alias gpg-yubikey-change-card='gpg-connect-agent "scd serialno" "learn --force" /bye'
