@@ -1,15 +1,9 @@
-#!/bin/bash +x
-
+#!/bin/sh
 selection="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection"
-croc="kitty --title 'Croc' --hold croc send \$files"
+croc="kitty --hold --title 'Croc Send' croc send "
 
 if [ -s "$selection" ]; then
-    files=$(xargs -0 -a "$selection")
+    tar -cvf - -T "$selection" | $croc -
 elif [ -e "$1" ]; then
-    files=$1
+    $croc "$1"
 fi
-if [ -n "$files" ]; then
-    eval $croc &
-fi
-
-
