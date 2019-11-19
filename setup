@@ -248,7 +248,7 @@ if [[ "$(whoami)" == "root" ]]; then
   echo "=========================="
 
   copy "etc/makepkg.conf" 644
-  copy "etc/systemd/resolved.conf.d"
+  copy "etc/systemd/resolved.conf" 644
   copy "etc/conf.d/snapper"
   copy "etc/iwd/main.conf"
   copy "etc/vnstat.conf"
