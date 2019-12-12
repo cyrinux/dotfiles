@@ -43,8 +43,8 @@ export PASSWORD_STORE_GENERATED_LENGTH=40
 
 export GOPATH="$HOME/.go"
 export PATH="$GOPATH/bin:$PATH"
-export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
-export PATH="$HOME/.node_modules/bin:$PATH"
+# export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+# export PATH="$HOME/.node_modules/bin:$PATH"
 
 # Nnn files browser settings
 export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
