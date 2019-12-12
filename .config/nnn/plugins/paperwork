@@ -1,13 +1,13 @@
 #!/bin/bash
 
 selection="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection"
-import="paperwork-shell -q -b import"
+import="kitty @ new-window --no-response --window-type os --cwd $PWD paperwork-shell -b import "
 
-[ -f ~/Vault/.lock ] || echo "Please open-vault." && exit 1
+[ -f ~/Vault/.lock ] || (echo "Please open-vault." && exit 1)
 if [ -s "$selection" ]; then
-    xargs -0 -a "$selection" $import 2>/dev/null
+    xargs -0 -a "$selection" $import
 elif [ -e "$1" ]; then
-    $import "$1" 2>/dev/null
+    $import "$1"
 fi
 
 read -p "Enter to exit."
