@@ -38,6 +38,7 @@ alias -s jpg=vimiv
 alias -s png=vimiv
 alias -s avi='mpv --quiet'
 alias -s mkv='mpv --quiet'
+alias -s webm='mpv --quiet'
 alias -s mp4='mpv --quiet'
 
 # Task
@@ -108,7 +109,7 @@ ranger() {
 
 # fix
 ironkey() {
-  sudo ironkey $@
+  sudo /run/media/cyril/IronKey/linux/ironkey $@
 }
 
 # download recursive
@@ -176,3 +177,10 @@ alias cal="khal calendar"
 # gpg
 alias gpg-delete-master-key='gpg-connect-agent "DELETE_KEY 0D13C83ACE0E72759DADA333877F9E38CDDF866E" /bye'
 alias gpg-yubikey-change-card='gpg-connect-agent "scd serialno" "learn --force" /bye'
+
+# vault
+alias sync-vault='rsync -rav --delete /run/media/cyril/COFFRE/* /run/media/cyril/COFFRE2/'
+
+# password
+alias newpass='gpg --gen-random -a 1 24'
+
