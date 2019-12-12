@@ -80,6 +80,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/htop"
   link ".config/kak"
   link ".config/croc"
+  link ".config/teiler"
   link ".config/nvim"
   link ".config/pacman"
   link ".config/rofi"
