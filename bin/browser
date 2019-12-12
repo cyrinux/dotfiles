@@ -3,7 +3,7 @@ menu=$(echo -e "chromium\ndisposable\nfirefox personal\nfirefox work\ntor browse
 
 case $menu in
     "chromium")
-        eval chromium --profile=Cyril $@ >/dev/null 2>&1 &
+        eval chromium $@ >/dev/null 2>&1 &
     ;;
     "disposable without network")
         eval firewarden -n chromium $@ >/dev/null 2>&1 &

@@ -17,16 +17,16 @@ restic backup \
 -e .ccache \
 -e Coffre \
 -e CacheStorage \
+-e .*Storage \
 -e Téléchargements \
 -e Downloads \
 -e tmp \
 -e temp \
 -e .minikube \
--e syncthing \
 -e *.part \
 -e *.vmem \
 -x \
-/home
+/home/cyril
 
 echo "Cleaning old backup..."
 ionice -c2 nice -n19 \

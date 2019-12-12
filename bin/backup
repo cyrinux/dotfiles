@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-SOURCE="/home/cyril/.dotfiles /home/cyril/.go/src/github.com/cyrinux /home/cyril/.ssh /home/cyril/.cache/mail* /home/cyril/.tarsnap.key /home/cyril/.tarsnap-backup /home/cyril/.config/weechat/sec.conf /home/cyril/.config/weechat/irc.conf /home/cyril/.pinboard"
+SOURCE="/home/cyril/.dotfiles /home/cyril/.go/src/github.com/cyrinux /home/cyril/.ssh /home/cyril/.cache/mail* /home/cyril/.tarsnap.key /home/cyril/.tarsnap-backup /home/cyril/.pinboard /home/cyril/library/contacts /home/cyril/library/calendars "
 BACKUP_PATH="/home/cyril/Vault/backup_cyril_laptop_DONTREMOVE"
 BACKUP_DIR="$BACKUP_PATH/$(date +%Y-%m-%d)"
 
