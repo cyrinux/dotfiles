@@ -3,6 +3,8 @@
   name = Cyril Levis
   email = cyril@levis.name
   useConfigOnly = true
+[credential]
+    useHttpPath = true
 [alias]
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
   bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
@@ -33,16 +35,15 @@
   whitespace = red reverse
 [core]
   autocrlf = input
-  pager = diff-so-fancy | less --tabs=4 -RFX
   excludesfile = ~/.gitignore
   untrackedCache = true
-  pager = less
   editor = kak
+  pager = delta --dark --theme=OneHalfDark
 [commit]
   gpgsign = true
   template = ~/.gitmessage
 [diff]
-    tool = kitty
+  tool = kitty
 [difftool]
   prompt = false
   trustExitCode = true

@@ -2,8 +2,9 @@
 *.key filter=git-crypt diff=git-crypt
 *.ppk filter=git-crypt diff=git-crypt
 .ssh/*  filter=git-crypt diff=git-crypt
-.config/gtk-3.0/bookmarks filter=git-crypt diff=git-crypt 
+.config/gtk-3.0/bookmarks filter=git-crypt diff=git-crypt
 .config/gtk-3.0/servers filter=git-crypt diff=git-crypt
+.config/croc/*  filter=git-crypt diff=git-crypt
 .weechat/sec.conf filter=git-crypt diff=git-crypt
 .weechat/irc.conf filter=git-crypt diff=git-crypt
 .weechat/certs filter=git-crypt diff=git-crypt
@@ -22,5 +23,4 @@ etc/tor/torrc filter=git-crypt diff=git-crypt
 .pinboardrc filter=git-crypt diff=git-crypt
 .config/mopidy/mopidy.conf filter=git-crypt diff=git-crypt
 .config/spotifyd/spotifyd.conf filter=git-crypt diff=git-crypt
-
-
+.config/croc/* filter=git-crypt  diff=git-crypt
