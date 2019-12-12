@@ -2,13 +2,13 @@
 
 PARAMS=(
     "animals"
-    "clouds"
+    # "clouds"
     "dogs"
-    "flowers"
-    "mountains"
+    # "flowers"
+    # "mountains"
     "nature"
     "sea"
-    "fish"
+    # "fish"
     "fish-tank"
 )
 RAND=$((RANDOM % ${#PARAMS[@]}))
