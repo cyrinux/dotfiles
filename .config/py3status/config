@@ -17,7 +17,7 @@ order += 'mpris'
 order += 'khal_calendar'
 order += 'external_script new_email'
 order += 'external_script trash'
-order += 'gitlab puppetwork'
+# order += 'gitlab puppetwork'
 # order += 'taskwarrior'
 order += 'air_quality'
 order += 'external_script clipboard_count'
@@ -29,7 +29,7 @@ order += 'external_script checkupdates_aur'
 order += 'external_script checkupdates_vcs'
 order += 'external_script checkrebuild'
 order += 'external_script checkfirmware'
-order += 'scratchpad_async'
+order += 'scratchpad'
 order += 'external_script firejail'
 order += 'process_status restic'
 order += 'file_status decrypted_shared'
@@ -44,7 +44,7 @@ order += 'networkmanager'
 order += 'frame wwan_frame'
 order += 'external_script nmtrust'
 order += 'bluetooth'
-order += 'file_status PIA'
+order += 'file_status VPN'
 order += 'whatismyip'
 order += 'file_status HOME'
 order += 'file_status WORK'
@@ -154,22 +154,16 @@ frame hidden {
     on_click 1 = "exec chromium http://www.meteo.fr"
   }
 
-  clock {
-    cache_timeout = 60
-    format = '{US/Central}'
-    format_time = 'CT %H:%M'
-  }
-
 }
 
 file_status decrypted_documents {
   paths = '~/Vault/.lock'
-  format = '\?if=path&color=degraded  Documents'
+  format = '\?if=path&color=degraded   Docs'
 }
 
 file_status decrypted_shared {
   paths = '~/Vault-Share/.lock'
-  format = '\?if=path&color=degraded  Shared'
+  format = '\?if=path&color=degraded    Shared'
 }
 
 diskdata {
@@ -236,10 +230,10 @@ external_script date {
   on_click 1 = 'exec gsimplecal'
 }
 
-file_status PIA {
+file_status VPN {
   on_udev_net = 'refresh'
   cache_timeout = -1
-  paths = ['/proc/sys/net/ipv4/conf/tun-pia*']
+  paths = ['/proc/sys/net/ipv4/conf/tun-pia*', '/proc/sys/net/ipv4/conf/tun-vypr*' ]
   format = '\?color=path  '
   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
 }
@@ -264,10 +258,9 @@ sysdata {
   cache_timeout = 5
   mem_htop = true
   thresholds = {
-    'cpu_temp': [(0, 'good'), (75, 'degraded'), (90, 'bad')],
+    'cpu_temp': [(0, 'good'), (95, 'degraded'), (100, 'bad')],
   }
   format = '\?color=cpu_temp  {cpu_temp:.0f}°C   {cpu_freq_avg}ghz'
-  on_click 3 = 'exec kitty glances'
 }
 
 group cpu {
@@ -322,7 +315,7 @@ volume_status {
 
 whatismyip  {
   format = '[{country_iso}]'
-  url_geo = 'https://ifconfig.co/json'
+  url_geo = 'https://ip.levis.ws/json'
   expected = {'country_iso': 'FR'}
   hide_when_offline = true
 }
@@ -333,8 +326,8 @@ networkmanager {
   format_device_separator = '  |  '
 }
 
-scratchpad_async {
-  format = '[\?if=counter>2&color=degraded 󰀿 {counter}|󰀿 {counter}]'
+scratchpad {
+   format = '\?if=scratchpad&color=degraded 󰀿   {scratchpad}'
 }
 
 yubikey {
@@ -391,9 +384,9 @@ bluetooth {
 }
 
 air_quality {
-  auth_token = 'e9086302d25272486899ff6aaeb43ae9d09421b4'
-  location = '@3090'
-  format = '[\?if=aqi>100&color=aqi  {aqi}]'
+  auth_token = 'd1bcb22002e3bcf8c1fb4f16c231d30275fa9e18'
+  location = 'paris'
+  format = '[\?if=aqi>90&color=aqi  {aqi}]'
 }
 
 external_script clipboard_count {
