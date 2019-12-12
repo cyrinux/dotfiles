@@ -245,16 +245,17 @@ if [[ "$(whoami)" == "root" ]]; then
   echo "Setting up /etc configs..."
   echo "=========================="
 
-  copy "etc/makepkg.conf" 644
-  copy "etc/systemd/resolved.conf" 644
+  copy "etc/makepkg.conf"
+  copy "etc/mkinitcpio.conf"
+  copy "etc/systemd/resolved.conf"
   copy "etc/conf.d/snapper"
   copy "etc/iwd/main.conf"
   copy "etc/vnstat.conf"
-  copy "etc/knot-resolver/kresd.conf" 644
+  copy "etc/knot-resolver/kresd.conf"
   copy "etc/intel-undervolt.conf"
   copy "etc/environment"
   copy "etc/pacman.d/hooks"
-  copy "etc/profile.d/zz_custom.sh" 644
+  copy "etc/profile.d/zz_custom.sh"
   copy "etc/snap-pac.conf"
   copy "etc/snapper/configs/root"
   copy "etc/snapper/configs/config"
@@ -285,7 +286,7 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/lightdm/lightdm.conf"
   copy "etc/lightdm/lightdm-gtk-greeter.conf"
   copy "etc/grub.d/31_hold_shift"
-  copy "etc/pacman.conf" 644
+  copy "etc/pacman.conf"
   copy "etc/pam.d/sudo"
   copy "etc/private-internet-access/pia.conf"
   copy "etc/sudoers"
