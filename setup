@@ -155,6 +155,8 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/systemd/user/mailsync.timer"
   link ".config/systemd/user/vault.path"
   link ".config/systemd/user/vault.service"
+  link ".config/systemd/user/checkmail.service"
+  link ".config/systemd/user/checkmail.timer"
   link ".config/systemd/user/urlwatch.service"
   link ".config/systemd/user/urlwatch.timer"
   link ".config/udiskie"
