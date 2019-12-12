@@ -2,6 +2,8 @@ source /usr/share/kak-lsp/rc/lsp.kak
 lsp-enable
 lsp-auto-hover-insert-mode-enable
 lsp-auto-hover-enable
+set-option global lsp_auto_highlight_references true
+set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'ag --column --hidden -f'
 
@@ -38,7 +40,7 @@ hook global WinDisplay   .* %{ evaluate-commands %sh{
     project_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
     [ -n "$project_dir" ] && dir="$project_dir" || dir="${PWD%/.git}"
     printf "cd %%{%s}\n" "$dir"
-    [ -n "$project_dir" ] && printf "git show-diff"
+    [ -n "$project_dir" ] && [ "$kak_buffile" = "${kak_buffile#\*}" ] && printf "git show-diff"
 } }
 
 
@@ -84,4 +86,8 @@ hook global WinSetOption filetype=sh %{
     set-option buffer lintcmd 'shellcheck -x -fgcc'
     lint-enable
     lint
+}
+
+hook global WinSetOption filetype=rust %{
+    hook buffer -group format BufWritePre .* lsp-formatting-sync
 }
