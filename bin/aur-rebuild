@@ -1,0 +1,30 @@
+#!/bin/bash
+XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+AURDEST=${AURDEST:-$XDG_CACHE_HOME/aurutils/$argv0}
+
+get_package() {
+    if aur search -i "$1" >dev/null; then
+	aur fetch "$1"
+    elif kittypack "$1" >/dev/null; then
+	asp export "$1"
+    fi
+}
+
+if cd "$AURDEST"; then
+    while read -r repo pkg; do
+	if [[ ! -d $pkg ]]; then
+	    get_package "$pkg"
+	fi
+
+	if cd "$AURDEST/$pkg" && [[ -f PKGBUILD ]]; then
+	    if setconf PKGBUILD "pkgrel+=0.1"; then
+		aur build -d "$repo" "$@"
+	    fi
+	else
+	    printf >&2 '%s: invalid argument\n' "$pkg"
+	    exit 22
+	fi
+    done < <(checkrebuild)
+else
+    exit 1
+fi
