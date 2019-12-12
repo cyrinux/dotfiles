@@ -1,7 +1,0 @@
-[Unit]
-Description=Pause / Unpause mega-sync
-
-[Service]
-Type=simple
-ExecStart=/home/cyril/bin/mega-resume
-ExecStop=/home/cyril/bin/mega-pause
