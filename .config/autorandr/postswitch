@@ -1,3 +1,4 @@
-#!/bin/sh
-#killall compton; compton &
-#systemctl --user restart redshift &
+#!/bin/bash
+(sleep 2 && xmodmap ~/.Xmodmap) &
+(killall picom; picom) &
+(systemctl --user restart redshift) &
