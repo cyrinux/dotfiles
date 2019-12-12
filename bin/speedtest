@@ -1,2 +1,0 @@
-#!/bin/sh
-nm-online -q && speedtest-cli --secure --simple 2>/dev/null | xargs | tee -a ~/.cache/speedtest.data
