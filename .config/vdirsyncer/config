@@ -11,7 +11,7 @@ conflict_resolution = ["command", "meld"]
 
 [storage my_contacts_local]
 type = "filesystem"
-path = "~/.contacts/"
+path = "~/library/contacts/"
 fileext = ".vcf"
 
 [storage my_contacts_remote]
@@ -29,7 +29,7 @@ metadata = ["color"]
 
 [storage my_calendars_local]
 type = "filesystem"
-path = "~/.calendars/"
+path = "~/library/calendars/"
 fileext = ".ics"
 
 [storage my_calendars_remote]

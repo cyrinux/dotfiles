@@ -31,7 +31,6 @@ before_lock() {
   fusermount -u ~/SAMBA &
   usbguard_lock
   physlock -lms
-  usbguard_lock
 }
 
 after_lock() {

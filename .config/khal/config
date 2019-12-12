@@ -1,7 +1,7 @@
 [calendars]
 
 [[personal]]
-path = ~/.calendars/personal/
+path = ~/library/calendars/personal/
 color = dark green
 
 [locale]

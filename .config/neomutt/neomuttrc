@@ -92,7 +92,7 @@ bind index,pager X change-vfolder
 bind attach <return> view-mailcap
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
-auto_view application/pgp-encrypted text/html application/pdf text/calendar application/ics image/jpeg
+auto_view application/pgp-encrypted text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
 
 set fcc_attach           # save attachments with the body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
