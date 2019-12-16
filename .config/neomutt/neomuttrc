@@ -224,9 +224,9 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 
 #sync email
 macro index O noop
-macro index O "<shell-escape>flock -n /tmp/.mailsync-personal.lock mailsync<enter><enter>" "sync all mail"
+macro index O "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
 macro index o noop
-macro index o "<shell-escape>flock -n /tmp/.mailsync-personal.lock mailsync<enter><enter>" "sync all mail"
+macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
 
 # Printing
 set print_command="$HOME/.config/neomutt/print.sh"

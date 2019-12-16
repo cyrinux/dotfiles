@@ -32,6 +32,7 @@
     mouse_left_click = close_current
     mouse_middle_click = do_action
     mouse_right_click = close_all
+    transparency = 10
 
 [frame]
     width = 1
@@ -47,18 +48,18 @@
     timeout = 10
     background = "#353535"
     foreground = "#eaeaea"
-    icon = /usr/share/icons/Gruvbox/32x32/status/dialog-information.png
+    icon = /usr/share/icons/Papirus-Dark/32x32/status/dialog-information.svg
 
 [urgency_normal]
     timeout = 10
     background = "#353535"
     foreground = "#eaeaea"
-    icon = /usr/share/icons/Gruvbox/32x32/status/dialog-information.png
+    icon = /usr/share/icons/Papirus-Dark/32x32/status/dialog-information.svg
 
 [urgency_critical]
     timeout = 0
     background = "#4a3533"
     foreground = "#eaeaea"
-    icon = /usr/share/icons/Gruvbox/32x32/status/dialog-error.png
+    icon = /usr/share/icons/Papirus-Dark/32x32/status/dialog-error.svg
 
 # vim: ft=cfg
