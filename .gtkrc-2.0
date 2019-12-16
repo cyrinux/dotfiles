@@ -1,5 +1,5 @@
 include "/home/cyril/.gtkrc-2.0.mine"
-gtk-theme-name="Arc-Gruvbox"
+gtk-theme-name="Nordic-Polar"
 gtk-icon-theme-name="Papirus-Dark"
 gtk-font-name="Cantarell 11"
 gtk-cursor-theme-name="Adwaita"

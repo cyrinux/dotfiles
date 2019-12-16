@@ -10,6 +10,7 @@ import i3ipc
 WINDOW_ICONS = {
     "mcomix": "",
     "slack": "",
+    "riot": "",
     "zathura": "",
     "calibre": "",
     "darktable": "",

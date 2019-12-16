@@ -49,4 +49,4 @@ export PATH="$GOPATH/bin:$PATH"
 # Nnn files browser settings
 export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
 export NNN_TRASH=1
-export NNN_PLUG='d:dragdrop;p:paperwork;c:croc'
+export NNN_PLUG='d:dragdrop;p:paperwork;c:croc;m:mkchromecast'

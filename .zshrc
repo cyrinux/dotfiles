@@ -45,6 +45,9 @@ fi
 # Load todoist functions
 [ -f /usr/share/todoist/todoist_functions.sh ] && . /usr/share/todoist/todoist_functions.sh >/dev/null
 
+# Bash completion for some tools
+. ~/.zsh/complete.zsh
+
 # Make Ctrl-D work with p10k instant prompt
 function my-ctrl-d() {
     zle || exit 0

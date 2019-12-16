@@ -3,8 +3,8 @@
 general {
   colors = true
   color_good = '#ebdbb2'
-  color_degraded = '#fabd2f'
-  color_bad = '#fb4934'
+  color_degraded = '#D08770'
+  color_bad = '#bf616a'
   interval = 1
 }
 
@@ -75,7 +75,7 @@ battery_level  {
   on_udev_power_supply = 'refresh'
   blocks = '󰀙󰀘󰀗󰀖󰀕'
   charging_character = '󰀔'
-  color_charging = '#fabd2f'
+  color_charging = '#EBCB8B'
   format = '{icon}   {percent}%'
   notify_low_level = true
   notification = true
