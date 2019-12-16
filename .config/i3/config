@@ -23,7 +23,7 @@ hide_edge_borders both
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango: Taskbar, Cantarell 9
+font pango: Taskbar, Cantarell 10
 
 # start a terminal
 bindsym $hyper+Return exec kitty
@@ -60,9 +60,6 @@ bindcode $alt+23 exec "rofi -show window"
 # Hyper+d
 bindcode $hyper+40 exec "pgrep rofi && killall rofi || rofi -combi-modi window,drun,ssh -show combi -modi combi -columns 2"
 
-################################################################################################
-# sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> +Pulseaudio later!   #
-################################################################################################
 # Audio settings
 bindcode $win+33 mode "$mode_audio"
 set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
@@ -88,7 +85,6 @@ bindsym XF86AudioPlay exec playerctl -p $(tail -1 /tmp/player-last) play-pause
 bindsym XF86AudioPrev exec playerctl -p $(tail -1 /tmp/player-last) previous
 bindsym XF86AudioNext exec playerctl -p $(tail -1 /tmp/player-last) next
 
-################################################################################################
 
 # Screen brightness controls
 bindsym XF86MonBrightnessUp   exec set-brightness inc
@@ -145,18 +141,6 @@ set $workspace8 workspace number 8
 set $workspace9 workspace number 9
 set $workspace0 workspace number 10
 
-# Switch to workspace using keypad
-bindcode $numlock+$hyper+87 $workspace1
-bindcode $numlock+$hyper+88 $workspace2
-bindcode $numlock+$hyper+89 $workspace3
-bindcode $numlock+$hyper+83 $workspace4
-bindcode $numlock+$hyper+84 $workspace5
-bindcode $numlock+$hyper+85 $workspace6
-bindcode $numlock+$hyper+79 $workspace7
-bindcode $numlock+$hyper+80 $workspace8
-bindcode $numlock+$hyper+81 $workspace9
-bindcode $numlock+$hyper+90 $workspace0
-
 # Switch to workspace using number row
 bindsym $hyper+1 $workspace1
 bindsym $hyper+2 $workspace2
@@ -169,18 +153,6 @@ bindsym $hyper+8 $workspace8
 bindsym $hyper+9 $workspace9
 bindsym $hyper+0 $workspace0
 
-# Move window to workspace using keypad
-bindcode $numlock+$win+87 move container to $workspace1
-bindcode $numlock+$win+88 move container to $workspace2
-bindcode $numlock+$win+89 move container to $workspace3
-bindcode $numlock+$win+83 move container to $workspace4
-bindcode $numlock+$win+84 move container to $workspace5
-bindcode $numlock+$win+85 move container to $workspace6
-bindcode $numlock+$win+79 move container to $workspace7
-bindcode $numlock+$win+80 move container to $workspace8
-bindcode $numlock+$win+81 move container to $workspace9
-bindcode $numlock+$win+90 move container to $workspace0
-
 # Move window to workspace using number row
 bindsym $win+1 move container to $workspace1
 bindsym $win+2 move container to $workspace2
@@ -192,7 +164,6 @@ bindsym $win+7 move container to $workspace7
 bindsym $win+8 move container to $workspace8
 bindsym $win+9 move container to $workspace9
 bindsym $win+0 move container to $workspace0
-
 
 # alternatively, you can use the cursor keys:
 bindsym $hyper+Left focus left
@@ -211,11 +182,11 @@ workspace_auto_back_and_forth yes
 
 # split orientation
 # (mod+h)
-bindcode $hyper+43 split h;exec notify-send 'tile horizontally'
+bindcode $hyper+43 split h
 # (mod+v)
-bindcode $hyper+55 split v;exec notify-send 'tile vertically'
+bindcode $hyper+55 split v
 # (mod+q)
-bindcode $hyper+38 split toggle;exec notify-send 'toggle split'
+bindcode $hyper+38 split toggle
 
 # move workspace to the right monitor
 # mod+Shift+BackSpace
@@ -275,8 +246,9 @@ for_window [title="^edit_text$"] floating enable
 for_window    [window_role="pop-up"] floating enable
 for_window    [class="Peek"] floating enable
 for_window    [class="Rofi"] floating enable
-for_window    [class="copyq"]                floating enable
-for_window    [class="Tor Browser"] move container to $workspace8, floating enable border normal
+for_window    [class="copyq"] floating enable
+for_window    [class="Tor Browser"] move container to $workspace3, floating enable border normal
+for_window    [class="neomutt"] move container to $workspace2
 for_window    [class="(?i)chromium"] move window to workspace current, title_format "Chromium"
 for_window    [class="Wire"] move container to $workspace1
 for_window    [class="zoom"] floating enable, sticky disable
@@ -286,7 +258,6 @@ for_window    [class="com-sun-javaws-Main"] floating enable
 for_window    [class="feh|Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
 for_window    [class="com-stonesoft-client-launcher-SmcClient|sun-awt-X11-XDialogPeer"] floating enable
 for_window    [title="Event Tester"] floating enable
-for_window    [class="neomutt"] move container to $workspace4
 for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
 for_window    [class="seafile-applet"] floating enable
 for_window    [title="^Qalculate!$"] floating enable
@@ -381,15 +352,17 @@ bindcode $win+Control+47 floating enable; resize set 320 px 180 px; sticky enabl
 set $color_normal_white  #a89984
 set $color_bright_white  #ebdbb2
 set $color_normal_gray   #202020
-set $color_bright_gray   #3c3836
+set $color_bright_gray   #33302e
+set $color_tabbed_gray   #2b2b2b
 set $color_bright_yellow #d79921
 set $color_normal_black  #282828
+set $color_normal_red    #c13e2e
 set $color_unused        #c13e2e
 
-# Colors                  border                 background             text                   indicator       child_border
-client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_white   $color_normal_white
+# Colors                  border                 background             text                   indicator             child_border
+client.focused            $color_normal_gray     $color_normal_gray     $color_bright_white    $color_bright_white   $color_normal_white
 client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_normal_black   $color_normal_black
-client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_unused 		 $color_normal_black
+client.unfocused          $color_bright_gray     $color_bright_gray     $color_normal_white    $color_unused 		 $color_normal_black
 client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused  		 $color_unused
 client.placeholder        $color_bright_gray     $color_normal_black    $color_unused          $color_bright_white	 $color_unused
 
@@ -398,7 +371,6 @@ bar {
     status_command py3status --dbus-notify
 	position top
     hidden_state hide
-	i3bar_command i3bar
 	tray_output none
 	strip_workspace_numbers no
   	separator_symbol " | "
@@ -407,25 +379,23 @@ bar {
 
 	colors {
 	    # Whole color settings
-	    background $color_normal_gray
-	    separator  $color_bright_gray
+	    background $color_bright_gray
+	    separator  $color_bright_white
 	    statusline $color_bright_white
 
 	    # Type             border                 background              font
-	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
-	    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
-	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
-	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+	    focused_workspace  $color_normal_black     $color_normal_black      $color_bright_white
+	    active_workspace   $color_normal_black     $color_normal_black      $color_normal_white
+	    inactive_workspace $color_normal_black     $color_bright_gray      $color_bright_white
+	    urgent_workspace   $color_normal_black   $color_bright_yellow    $color_normal_black
     }
 }
 
 bar {
 	position top
     hidden_state hide
-	i3bar_command i3bar
 	tray_output none
 	strip_workspace_numbers no
-  	separator_symbol " | "
     output DP-1-2
     output DP-1-3
 
@@ -524,7 +494,8 @@ bindcode $win+47 mode $mode_workspaces_monitors
 bindsym --whole-window $hyper+button6 workspace next
 bindsym --whole-window $hyper+button7 workspace prev
 
-exec_always hsetroot -solid '#333333' &
+exec_always hsetroot -solid '#202020' &
+# exec_always hsetroot -solid '#333333' &
 # exec_always wallpaper &
 exec_always numlockx &
 exec syndaemon -d -i 0.2 -t

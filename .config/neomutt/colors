@@ -48,6 +48,7 @@ color signature brightgreen default
 color bold black default
 color underline black default
 color normal default default
+# color normal red default
 
 color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
 color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL

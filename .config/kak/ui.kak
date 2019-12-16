@@ -1,4 +1,4 @@
-colorscheme gruvbox
+source "~/.config/kak/colors.kak"
 
 add-highlighter global/ number-lines -hlcursor
 add-highlighter global/ show-matching
