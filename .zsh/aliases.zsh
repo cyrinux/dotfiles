@@ -184,3 +184,5 @@ alias sync-vault='rsync -rav --delete /run/media/cyril/COFFRE/* /run/media/cyril
 # password
 alias newpass='gpg --gen-random -a 1 24'
 
+# chromecast
+alias cast="repeat 10 mkchromecast --encoder-backend ffmpeg -c aac --video --notifications -s -i"

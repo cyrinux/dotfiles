@@ -393,7 +393,8 @@ if [[ "$(whoami)" == "root" ]]; then
   ufw --force reset > /dev/null
   ufw default allow outgoing
   ufw default deny incoming
-  ufw allow ssh
+  # ufw allow ssh
+  ufw allow 5000
   ufw enable
   find /etc/ufw -type f -name '*.rules.*' -delete
 

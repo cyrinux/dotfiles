@@ -348,23 +348,12 @@ bindcode $win+Control+47 floating enable; resize set 320 px 180 px; sticky enabl
 # https://i3wm.org/dovs/userguide.html#variables
 # Changing the value of one of the variables will
 # effect all the areas with the same color.
-# Color scheme (Gruvbox dark)
-set $color_normal_white  #a89984
-set $color_bright_white  #ebdbb2
-set $color_normal_gray   #202020
-set $color_bright_gray   #33302e
-set $color_tabbed_gray   #2b2b2b
-set $color_bright_yellow #d79921
-set $color_normal_black  #282828
-set $color_normal_red    #c13e2e
-set $color_unused        #c13e2e
 
 # Colors                  border                 background             text                   indicator             child_border
-client.focused            $color_normal_gray     $color_normal_gray     $color_bright_white    $color_bright_white   $color_normal_white
-client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_normal_black   $color_normal_black
-client.unfocused          $color_bright_gray     $color_bright_gray     $color_normal_white    $color_unused 		 $color_normal_black
-client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused  		 $color_unused
-client.placeholder        $color_bright_gray     $color_normal_black    $color_unused          $color_bright_white	 $color_unused
+client.focused          #2e3440 #4c566a #e5e9f0 #268bd2
+client.focused_inactive #2e3440 #2e3440 #d8dee9 #073642
+client.unfocused        #2e3440 #2e3440 #d8dee9 #073642
+client.urgent           #2e3440 #bf616a #e5e9f0 #002b36
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
@@ -379,15 +368,15 @@ bar {
 
 	colors {
 	    # Whole color settings
-	    background $color_bright_gray
-	    separator  $color_bright_white
-	    statusline $color_bright_white
+        background #2e3440
+        statusline #d8dee9
+        separator #4c566a
 
-	    # Type             border                 background              font
-	    focused_workspace  $color_normal_black     $color_normal_black      $color_bright_white
-	    active_workspace   $color_normal_black     $color_normal_black      $color_normal_white
-	    inactive_workspace $color_normal_black     $color_bright_gray      $color_bright_white
-	    urgent_workspace   $color_normal_black   $color_bright_yellow    $color_normal_black
+        # Type              border  background    font
+        focused_workspace   #4c566a #4c566a       #e5e9f0
+        active_workspace    #2e3440 #2e3440       #d8dee9
+        inactive_workspace  #2e3440 #2e3440       #d8dee9
+        urgent_workspace    #bf616a #bf616a       #e5e9f0
     }
 }
 
@@ -401,15 +390,15 @@ bar {
 
 	colors {
 	    # Whole color settings
-	    background $color_normal_gray
-	    separator  $color_bright_gray
-	    statusline $color_bright_white
+        background #2e3440
+        statusline #d8dee9
+        separator #4c566a
 
-	    # Type             border                 background              font
-	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
-	    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
-	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
-	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+        # Type              border  background    font
+        focused_workspace   #4c566a #4c566a       #e5e9f0
+        active_workspace    #2e3440 #2e3440       #d8dee9
+        inactive_workspace  #2e3440 #2e3440       #d8dee9
+        urgent_workspace    #bf616a #bf616a       #e5e9f0
     }
 }
 
