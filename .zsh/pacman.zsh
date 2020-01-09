@@ -15,10 +15,6 @@ alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; py3-cmd refresh "external_script pacdiff"'
 alias lsp="pacman -Qett --color=always | more"
 
-alias syncrepo='gio mount smb://192.168.43.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.43.39/web/aur/'
-alias rsyncrepo='rsync --archive --compress --partial --delete /var/cache/pacman/cyrinux-aur/ aur@backup-aur:www/aur/'
-alias update='PATH="/bin" auru -Tcs; pacu'
-alias signrepo='PATH="/usr/bin:/bin" repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
 
 
 pac() {
@@ -44,25 +40,18 @@ pacs!() {
 }
 
 aurs() {
-  PATH="/bin" aur sync -scP "$@"
-  post_aur
-}
-
-aurs!() {
-    aurs --no-ver-shallow -f "$@"
-}
-
-rebuild() {
-    aurs! $1 && SNAP_PAC_SKIP=true sudo -E pacman -Sy $1
-}
+      aur sync -ScP "$@"
+        post_aur
+    }
+alias aurs!='aurs --no-ver-shallow -f'
 
 aurb() {
-  PATH="/bin" aur build -scf --pkgver "$@"
+  aur build -Scf --pkgver "$@"
   post_aur
 }
 
 auru() {
-  PATH="/bin" xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -scuP --rebuild "$@"
+  xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -ScPu --rebuild "$@"
   post_aur
 }
 
@@ -75,6 +64,7 @@ post_aur() {
 aur_clean() {
   find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
   find /var/cache/pacman/cyrinux-aur -name '*~' -delete >/dev/null
+  find /var/cache/pacman/cyrinux-aur -group root -delete >/dev/null
 }
 
 py3status-refresh-pacman() {
@@ -85,4 +75,13 @@ py3status-refresh-pacman() {
   vcs="external_script checkupdates_vcs"
   rebuild="external_script checkrebuild"
   py3-cmd refresh "$pacdiff" "$official" "$repo" "$aur" "$vcs" "$rebuild"
+}
+
+alias syncrepo='gio mount smb://192.168.43.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.43.39/web/aur/'
+alias rsyncrepo='rsync --archive --compress --partial --delete /var/cache/pacman/cyrinux-aur/ aur@backup-aur:/var/services/homes/cyril/www/aur/'
+alias update='PATH="/bin" auru -Tcs; pacu'
+alias signrepo='PATH="/usr/bin:/bin" repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
+
+rebuild() {
+    aurs! $1 && SNAP_PAC_SKIP=true sudo -E pacman -Sy $1
 }

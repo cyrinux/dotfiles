@@ -111,10 +111,6 @@ bindsym Print exec "flameshot full -p ~/library/Pictures/Screenshots -c"
 # mod+printscreen
 bindsym $hyper+Print exec "flameshot gui"
 
-# Refresh py3status module after switching keyboard layout (Shift+Shift)
-bindcode Shift+50 exec "py3-cmd refresh xkb_layouts"
-bindcode Shift+62 exec "py3-cmd refresh xkb_layouts"
-
 # calendar (c)
 bindcode $hyper+54 exec gsimplecal
 

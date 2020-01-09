@@ -44,7 +44,7 @@ order += 'whatismyip'
 order += 'file_status HOME'
 order += 'file_status WORK'
 order += 'backlight'
-# order += 'xkb_layouts'
+order += 'xkb_input'
 order += 'external_script date'
 order += 'clock'
 order += 'volume_status'
@@ -444,10 +444,22 @@ suspend_inhibitor {
     format = "[\?color=state [\?if=state 󰁄|󰁅]]"
 }
 
+xkb_input {
+  cache_timeout = -1
+  button_prev = None
+  button_next = None
+  format_input = '\?color=s {s}'
+  thresholds = [
+    ('us', '#fb4934'),
+    ('ru', '#fb4934'),
+  ]
+}
+
 external_script checkfirmware {
   cache_timeout = 43200 # twice a day
   script_path = "nmtrust -q && fwupdmgr refresh >/dev/null; fwupdmgr get-updates 2>/dev/null"
   format = '\?if=lines&color=degraded '
   on_click 1 = 'exec notify-send "Firmware updates" "What\'s new: $ fwupdmgr get-updates\\nTo update: $ fwupdmgr update"'
 }
+
 

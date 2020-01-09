@@ -17,8 +17,6 @@ assign() {
     exit 1
   fi
 
-  umask 022
-
   orig_file="$2"
   dest_file="$3"
 
@@ -45,6 +43,10 @@ copy() {
   [ -z "$2" ] || chmod "$2" "/$1"
 }
 
+is_chroot() {
+  grep rootfs /proc/mounts >/dev/null
+}
+
 systemctl_enable_start() {
   if [ "$#" -eq 1 ]; then
     target="system"
@@ -55,10 +57,12 @@ systemctl_enable_start() {
   fi
   if [[ "$target" == "user" ]]; then
     echo "systemctl --user enable --now "$name""
-    systemctl --user enable --now "$name"
+    systemctl --user enable "$name"
+    systemctl --user start  "$name"
   else
     echo "systemctl enable --now "$name""
-    systemctl enable --now "$name"
+    systemctl enable "$name"
+    systemctl start  "$name"
   fi
 }
 
@@ -72,7 +76,6 @@ if [ "$(whoami)" != "root" ]; then
   git-crypt unlock
 
   link "bin"
-
   link ".config/user-dirs.dirs"
   link ".gnupg/gpg.conf"
   link ".gnupg/sks-keyservers.netCA.pem"
@@ -151,8 +154,6 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/systemd/user/restic.service"
   link ".config/systemd/user/restic-check.service"
   link ".config/systemd/user/restic-check.timer"
-  link ".config/systemd/user/pinboard-backup.timer"
-  link ".config/systemd/user/pinboard-backup.service"
   link ".config/systemd/user/checkmail.service"
   link ".config/systemd/user/checkmail.timer"
   link ".config/systemd/user/urlwatch.service"
@@ -180,12 +181,16 @@ if [ "$(whoami)" != "root" ]; then
   echo "Enabling and starting services..."
   echo "================================="
 
-  systemctl --user daemon-reload
-  systemctl_enable_start "user" "backup-packages.timer"
-  systemctl_enable_start "user" "dunst.service"
-  systemctl_enable_start "user" "redshift.service"
-  systemctl_enable_start "user" "urlwatch.timer"
-  systemctl_enable_start "user" "yubikey-touch-detector.service"
+  if is_chroot; then
+    >&2 echo "=== Running in chroot, skipping user services..."
+  else
+      systemctl --user daemon-reload
+      systemctl_enable_start "user" "backup-packages.timer"
+      systemctl_enable_start "user" "dunst.service"
+      systemctl_enable_start "user" "redshift.service"
+      systemctl_enable_start "user" "urlwatch.timer"
+      systemctl_enable_start "user" "yubikey-touch-detector.service"
+  fi
 
   echo ""
   echo "======================================="
@@ -201,10 +206,18 @@ if [ "$(whoami)" != "root" ]; then
     gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
   fi
 
-  if [[ ! -a "$HOME/.config/Yubico/u2f_keys" ]]; then
-    echo "Configuring YubiKey for sudo access (touch it now)"
-    mkdir -p "$HOME/.config/Yubico"
-    pamu2fcfg -ucyril > "$HOME/.config/Yubico/u2f_keys"
+  find ~/.gnupg -type f -exec chmod 600 {} \;
+  find ~/.gnupg -type d -exec chmod 700 {} \;
+
+
+  if is_chroot; then
+    >&2 echo "=== Running in chroot, skipping YubiKey configuration..."
+  else
+      if [[ ! -a "$HOME/.config/Yubico/u2f_keys" ]]; then
+        echo "Configuring YubiKey for sudo access (touch it now)"
+        mkdir -p "$HOME/.config/Yubico"
+        pamu2fcfg -ucyril > "$HOME/.config/Yubico/u2f_keys"
+      fi
   fi
 
   if [[ -a "$HOME/.password-store" ]]; then
@@ -218,18 +231,6 @@ if [ "$(whoami)" != "root" ]; then
 
   echo "Ignoring further changes to often changing config"
   git update-index --assume-unchanged ".config/transmission/settings.json"
-
-  echo "Creating pacman cache for custom AUR repo"
-  [[ ! -a "/var/cache/pacman/cyrinux-aur/" ]] && sudo install -d "/var/cache/pacman/cyrinux-aur" -o cyril
-  if [[ ! -a "/var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar" ]]; then
-    if read -q "?Press 'y' to mirror the remote repo or 'n' to create an empty one: "; then
-      echo ""
-      wget -m -nH -np -q --show-progress --reject="index.html*" --cut-dirs=1 -P '/var/cache/pacman/cyrinux-aur/' 'https://aur.levis.ws/'
-    else
-      echo ""
-      repo-add -s "/var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar"
-    fi
-  fi
 
   echo ""
   echo "====================================="
@@ -306,11 +307,8 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/NetworkManager/dispatcher.d/20freewifi"
   copy "etc/NetworkManager/dispatcher.d/100vpn"
   copy "etc/NetworkManager/dispatcher.d/99refresh-py3status"
-  copy "etc/NetworkManager/conf.d/ignore.conf"
-  copy "etc/NetworkManager/conf.d/ipv6.conf"
-  copy "etc/NetworkManager/conf.d/wifi_backend.conf"
-  copy "etc/NetworkManager/conf.d/llmr.conf"
-  copy "etc/NetworkManager/conf.d/mdns.conf"
+  copy "etc/NetworkManager/conf.d"
+  copy "etc/systemd/system/iwd.service.d/90-networkmanager.conf"
   mkdir -p "/etc/nmtrust" && copy "etc/nmtrust/trusted_units"
 
   echo ""
@@ -319,12 +317,15 @@ if [[ "$(whoami)" == "root" ]]; then
   echo "================================="
 
   sysctl --system > /dev/null
-
   systemctl daemon-reload
+  systemctl enable "backup-repo@pkgbuild.service"
+  systemctl enable "docker.service"
+  systemctl_enable_start "system" "getty@tty1.service"
   systemctl_enable_start "system" "macchiato.service"
   systemctl_enable_start "system" "fstrim.timer"
   systemctl_enable_start "system" "NetworkManager.service"
   systemctl_enable_start "system" "NetworkManager-dispatcher.service"
+  systemctl_enable_start "system" "ModemManager.service"
   systemctl_enable_start "system" "kresd.socket"
   systemctl_enable_start "system" "kresd@1.service"
   systemctl_enable_start "system" "iwd.service"
@@ -332,19 +333,21 @@ if [[ "$(whoami)" == "root" ]]; then
   systemctl_enable_start "system" "systemd-resolved"
   systemctl_enable_start "system" "bluetooth.service"
   systemctl_enable_start "system" "paccache.timer"
-  systemctl_enable_start "system" "docker.service"
   systemctl_enable_start "system" "ufw.service"
   systemctl_enable_start "system" "snapper-cleanup.timer"
   systemctl_enable_start "system" "auditd.service"
-  systemctl_enable_start "system" "ModemManager.service"
   systemctl_enable_start "system" "vnstat.service"
   systemctl_enable_start "system" "usbguard.service"
   systemctl_enable_start "system" "usbguard-dbus.service"
   systemctl_enable_start "system" "tlp.service"
   systemctl_enable_start "system" "tlp-sleep.service"
   systemctl_enable_start "system" "systemd-swap.service"
-  systemctl_enable_start "system" "getty@tty1.service"
-  systemctl enable "backup-repo@pkgbuild.service"
+
+  if [ -d "$HOME/.ccnet" ]; then
+    systemctl_enable_start "system" "seaf-cli@cyril.service"
+  else
+    >&2 echo "=== Seafile is not initialized, skipping..."
+  fi
 
 
   echo ""
@@ -368,42 +371,30 @@ if [[ "$(whoami)" == "root" ]]; then
   echo "Finishing various user configuration..."
   echo "======================================="
 
-  echo "Joining audit group"
-  groupadd -rf audit
-
-  echo "Joining others groups"
-  gpasswd -a cyril audit 2>/dev/null
-  gpasswd -a cyril rfkill 2>/dev/null
-  gpasswd -a cyril libvirt 2>/dev/null
-  gpasswd -a cyril kvm 2>/dev/null
-  gpasswd -a cyril scanner 2>/dev/null
-  gpasswd -a cyril printadmin 2>/dev/null
-  gpasswd -a cyril video 2>/dev/null
-  gpasswd -a cyril vboxusers 2>/dev/null
-  gpasswd -a cyril plugdev 2>/dev/null
-
-
   echo "Configuring aurutils"
   ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
   ln -sf /usr/bin/archbuild /usr/local/bin/aur-x86_64-build
 
-  echo "Enabling infinality aliases"
-  ln -sf /etc/fonts/conf.avail/30-infinality-aliases.conf /etc/fonts/conf.d/30-infinality-aliases.conf
-
-  echo "Configuring firewall"
-  ufw --force reset > /dev/null
-  ufw default allow outgoing
-  ufw default deny incoming
-  ufw allow ssh
-  ufw allow 5000
-  ufw enable
-  find /etc/ufw -type f -name '*.rules.*' -delete
-
   echo "Force dns config"
   ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
-  echo "Reload udev rules"
-  udevadm control --reload
-  udevadm trigger
+  echo "Configuring fontconfig"
+  ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.conf
+
+  if is_chroot; then
+      >&2 echo "=== Running in chroot, skipping firewall and udev setup..."
+  else
+      ufw --force reset > /dev/null
+      ufw default allow outgoing
+      ufw default deny incoming
+      ufw allow ssh
+      ufw allow 5000
+      ufw enable
+      find /etc/ufw -type f -name '*.rules.*' -delete
+
+      echo "Reload udev rules"
+      udevadm control --reload
+      udevadm trigger
+  fi
 
 fi
