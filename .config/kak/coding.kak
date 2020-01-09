@@ -74,7 +74,7 @@ hook global WinSetOption filetype=go %{
 }
 
 hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|yaml|html) %{
-    set-option buffer formatcmd "prettier --stdin-filepath=${kak_buffile}"
+    set-option buffer formatcmd "prettier --stdin-filepath=%val${kak_buffile}"
     hook buffer -group format BufWritePre .* format
 }
 

@@ -1,25 +1,25 @@
-PHONY: all
-all: build repoupdate
-force: buildforce repoupdate update
-asdeps: unknownasdeps
-reset: reporeset reposign
+.PHONY: all
+all: build install publish clean
+
+.PHONY: build
 build:
-	aur build -s --pkgver
-buildforce:
-	aur build -sf --pkgver
-repoupdate:
-	repoctl update
-update:
-	sudo pacman -Syyu
-clean: repoupdate
-backup:
+	PKGEXT='.pkg.tar.zst' makepkg -sf
+
+.PHONY: install
+install:
+	SNAP_PAC_SKIP=true sudo -E pacman --noconfirm -U *.pkg.tar.zst
 	backup-packages
-reporeset:
-	repoctl reset
-reposign:
-	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar
-	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar
-status:
-	repoctl status -a
-unknownasdeps:
-	sudo pacman -D --asdeps $(shell cat unknown.list)
+	if [ -s unknown.list ]; then \
+		xargs -a unknown.list sudo pacman -D --asdeps; \
+	fi
+	backup-packages
+
+.PHONY: publish
+publish:
+	gpg --detach-sign --yes *.pkg.tar.zst
+	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar *.pkg.tar.zst
+	cp *.pkg.tar* /var/cache/pacman/cyrinux-aur/
+
+.PHONY: clean
+clean:
+	rm -rf pkg src *.pkg.tar* *.log
