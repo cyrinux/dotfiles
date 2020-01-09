@@ -9,6 +9,7 @@ import i3ipc
 
 WINDOW_ICONS = {
     "mcomix": "",
+    "steam": "",
     "slack": "",
     "riot": "",
     "zathura": "",
@@ -18,6 +19,7 @@ WINDOW_ICONS = {
     "duolingo": "",
     "notable": "",
     "crow": "",
+    "burp-startburp": "",
     "liferea": "",
     "newsboat": "",
     "feedreader": "",
@@ -89,6 +91,8 @@ WINDOW_ICONS = {
     "vlc": "",
     "vmplayer": "",
     "vmware": "",
+    "virtualbox machine": "",
+    "virtualbox machine": "",
     "whats-app-nativefier-7bbd2c": "",
     "whatsapp-desktop": "",
     "wire": "󰁀",

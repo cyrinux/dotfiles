@@ -34,7 +34,7 @@ export XSECURELOCK_SHOW_HOSTNAME=0
 export XSECURELOCK_SHOW_USERNAME=0
 export XSECURELOCK_WANT_FIRST_KEYPRESS=1
 export XSECURELOCK_PASSWORD_PROMPT=time_hex
-
+export XSECURELOCK_AUTH_BACKGROUND_COLOR="#222222"
 
 # Pass configuration
 export PASSWORD_STORE_CHARACTER_SET='a-zA-Z0-9~!@#$%^&*()-_=+[]{};:,.<>?'
@@ -49,4 +49,4 @@ export PATH="$GOPATH/bin:$PATH"
 # Nnn files browser settings
 export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
 export NNN_TRASH=1
-export NNN_PLUG='d:dragdrop;p:paperwork;c:croc;m:mkchromecast'
+export NNN_PLUG='d:dragdrop;r:remove;p:paperwork;c:croc;m:mkchromecast'

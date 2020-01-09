@@ -78,6 +78,7 @@ if [ "$(whoami)" != "root" ]; then
   link ".gnupg/sks-keyservers.netCA.pem"
   link ".config/pulse/daemon.conf"
   link ".config/htop"
+  link ".pandoc"
   link ".config/kak"
   link ".config/croc"
   link ".config/teiler"
@@ -123,6 +124,8 @@ if [ "$(whoami)" != "root" ]; then
   link ".config/mimeapps.list"
   link ".config/msmtp"
   link ".config/mpv/config"
+  link ".zprofile"
+  link ".xinitrc"
   link ".config/youtube-dl/config"
   link ".config/neomutt"
   link ".config/redshift"
@@ -140,7 +143,6 @@ if [ "$(whoami)" != "root" ]; then
   link ".gitmessage"
   link ".config/PulseEffects"
   link ".config/oomox/colors/arc-gruvbox-Darker"
-  link ".icons"
   link ".config/systemd/user/tarsnap.timer"
   link ".config/systemd/user/tarsnap.service"
   link ".config/systemd/user/library-repos.service"
@@ -276,6 +278,7 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/bluetooth/main.conf"
   copy "etc/parcimonie.sh.d/cyril.conf"
   copy "etc/snapper/configs/home"
+  copy "etc/audit/auditd.conf"
   copy "etc/audit/audit.rules"
   copy "etc/modules-load.d/pkcs8.conf"
   copy "etc/modules-load.d/zram.conf"
@@ -283,9 +286,7 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "etc/default/tlp"
   copy "etc/default/grub-btrfs/config"
   copy "etc/nmtrust/trusted_units"
-  copy "etc/lightdm/lightdm.conf"
-  copy "etc/lightdm/lightdm-gtk-greeter.conf"
-  copy "etc/grub.d/31_hold_shift"
+  copy "etc/systemd/system/getty@tty1.service.d"
   copy "etc/pacman.conf"
   copy "etc/pam.d/sudo"
   copy "etc/private-internet-access/pia.conf"
@@ -342,7 +343,7 @@ if [[ "$(whoami)" == "root" ]]; then
   systemctl_enable_start "system" "tlp.service"
   systemctl_enable_start "system" "tlp-sleep.service"
   systemctl_enable_start "system" "systemd-swap.service"
-  systemctl enable "lightdm.service"
+  systemctl_enable_start "system" "getty@tty1.service"
   systemctl enable "backup-repo@pkgbuild.service"
 
 
@@ -367,11 +368,11 @@ if [[ "$(whoami)" == "root" ]]; then
   echo "Finishing various user configuration..."
   echo "======================================="
 
-  echo "Joining autologin group"
-  groupadd -rf autologin
+  echo "Joining audit group"
+  groupadd -rf audit
 
   echo "Joining others groups"
-  gpasswd -a cyril autologin 2>/dev/null
+  gpasswd -a cyril audit 2>/dev/null
   gpasswd -a cyril rfkill 2>/dev/null
   gpasswd -a cyril libvirt 2>/dev/null
   gpasswd -a cyril kvm 2>/dev/null
@@ -393,7 +394,7 @@ if [[ "$(whoami)" == "root" ]]; then
   ufw --force reset > /dev/null
   ufw default allow outgoing
   ufw default deny incoming
-  # ufw allow ssh
+  ufw allow ssh
   ufw allow 5000
   ufw enable
   find /etc/ufw -type f -name '*.rules.*' -delete

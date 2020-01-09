@@ -22,9 +22,11 @@ restic backup \
 -e Downloads \
 -e tmp \
 -e temp \
+-e vmware \
 -e .minikube \
 -e *.part \
 -e *.vmem \
+-e .vagrant.d \
 -x \
 /home/cyril
 

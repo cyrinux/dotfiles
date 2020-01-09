@@ -50,3 +50,5 @@ sandbox_hook rvm eyaml
 sandbox_hook rvm ruby
 sandbox_hook rvm transcode-video
 sandbox_hook rvm mdl
+sandbox_hook rvm vagrant
+sandbox_hook rvm irb

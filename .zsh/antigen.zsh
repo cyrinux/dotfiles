@@ -3,6 +3,8 @@
 antigen use prezto
 
 antigen bundles <<EOB
+  peikk0/tmux-cssh
+  MichaelAquilina/zsh-autoswitch-virtualenv
   robbyrussell/oh-my-zsh plugins/encode64
   robbyrussell/oh-my-zsh plugins/fancy-ctrl-z
   hlissner/zsh-autopair
@@ -15,8 +17,6 @@ antigen bundles <<EOB
   zsh-users/zsh-syntax-highlighting
   zsh-users/zsh-history-substring-search
   mafredri/zsh-async
-  peikk0/tmux-cssh
-  MichaelAquilina/zsh-autoswitch-virtualenv
 EOB
 
 antigen theme romkatv/powerlevel10k

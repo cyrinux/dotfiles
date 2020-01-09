@@ -9,6 +9,7 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
 
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
       time
+      nnn
       background_jobs
       user
       dir
@@ -189,6 +190,12 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_VISUAL_IDENTIFIER_EXPANSION=
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_CONTENT_EXPANSION='%B${P9K_CONTENT}'
 
+  ####################################[ nnn: nesting ]####################################
+  function prompt_nnn() {
+    [ -z "$NNNLVL" ] && return
+    p10k segment -f 208 -t " "
+  }
+
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
   typeset -g POWERLEVEL9K_KUBECONTEXT_PREFIX='%fat '
   typeset -g POWERLEVEL9K_KUBECONTEXT_VISUAL_IDENTIFIER_EXPANSION='☸️'
@@ -233,5 +240,5 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
   typeset -g POWERLEVEL9K_DIR_WORK_SHORTENED_FOREGROUND=067
   typeset -g POWERLEVEL9K_DIR_WORK_ANCHOR_FOREGROUND=067
 
-}
+  }
 

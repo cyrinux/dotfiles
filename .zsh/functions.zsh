@@ -197,3 +197,9 @@ n()
             rm $NNN_TMPFILE
     fi
 }
+
+#/ calibreadd: add book to calibre db
+calibreadd () { calibredb add "$1" -T new }
+
+#/ calibreconvert: convert book to azw3 format
+calibreconvert () { file="$1"; ebook-convert "$file" "${file%.*}.azw3" --from-opf=metadata.opf --cover=cover.jpg --output-profile=kindle  }

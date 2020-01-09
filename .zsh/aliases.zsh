@@ -48,7 +48,7 @@ alias tm='task modify'
 alias ti='task add due:tomorrow tag:inbox'
 alias toa='todoist q "$@"'
 
-
+alias top="htop"
 
 ########
 # Misc #
@@ -186,3 +186,8 @@ alias newpass='gpg --gen-random -a 1 24'
 
 # chromecast
 alias cast="repeat 10 mkchromecast --encoder-backend ffmpeg -c aac --video --notifications -s -i"
+
+trash-empty() {
+    /usr/bin/trash-empty
+    py3-cmd refresh external_script trash
+}
