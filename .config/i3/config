@@ -69,9 +69,9 @@ mode "$mode_audio" {
     # (e)
     bindcode 26 exec pulseeffects, mode "default"
     # (s)
-    bindcode 39 exec connect-shure-bt1, mode "default"
+    bindcode 39 exec "connect_a2dp 00:0E:DD:06:24:1C", mode "default"
     # (a)
-    bindcode 24 exec connect-aeropex, mode "default"
+    bindcode 24 exec "connect_a2dp 20:74:CF:3B:36:A9", mode "default"
 
     # exit system mode: "Enter" or "Escape"
     bindsym Return mode "default"
@@ -100,7 +100,6 @@ bindcode $hyper+47 exec UDISKIE_DMENU_LAUNCHER="rofi" udiskie-dmenu -p "Mount" -
 # mod+F1
 bindcode $hyper+67 exec "autorandr --change --force; sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
 bindcode $win+67 exec "autorandr --change --force; sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; xmodmap ~/.Xmodmap 2>/dev/null"
-
 # display
 bindsym XF86Display --release exec autorandr --change
 # mod+Shift+d
@@ -120,9 +119,9 @@ bindcode Shift+62 exec "py3-cmd refresh xkb_layouts"
 bindcode $hyper+54 exec gsimplecal
 
 # mod+F7
-bindcode $hyper+73 exec feh /home/cyril/Pictures/ru.png
+bindcode $hyper+73 exec feh /home/cyril/library/Pictures/ru.png
 # mod+F8
-bindcode $hyper+74 exec feh /home/cyril/Pictures/kak_keybinding.png
+bindcode $hyper+74 exec feh /home/cyril/library/Pictures/kak_keybinding.png
 
 # search
 bindsym XF86Search exec brave https://search.levis.ws/
@@ -165,6 +164,18 @@ bindsym $win+8 move container to $workspace8
 bindsym $win+9 move container to $workspace9
 bindsym $win+0 move container to $workspace0
 
+# Assign default outputs to workspaces
+workspace 1  output DP-1-3  eDP-1
+workspace 2  output DP-1-3  eDP-1
+workspace 3  output DP-1-3  eDP-1
+workspace 4  output DP-1-3  eDP-1
+workspace 5  output DP-1-1  eDP-1
+workspace 6  output DP-1-1  eDP-1
+workspace 7  output DP-1-1  eDP-1
+workspace 8  output DP-1-1  eDP-1
+workspace 9  output DP-1-1  eDP-1
+workspace 10 output DP-1-1  eDP-1
+
 # alternatively, you can use the cursor keys:
 bindsym $hyper+Left focus left
 bindsym $hyper+Down focus down
@@ -197,6 +208,7 @@ bindcode $hyper+22 move container to output right
 # toggle fullscreen mode for the focused container
 # (mod+f)
 bindcode $win+41 fullscreen toggle
+bindcode $win+Shift+41 exec ~/bin/i3-maximize
 
 # (mod+s)
 bindcode $hyper+39 layout stacked
@@ -304,11 +316,6 @@ mode "$mode_system" {
 # (r)
 bindcode $hyper+27 mode "resize"
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         # (j)
         bindcode 44 resize shrink width 5 px or 5 ppt
         # (k)
@@ -343,20 +350,37 @@ bindcode $hyper+41 fullscreen disable, exec copyq toggle
 # (mod+Control+m)
 bindcode $win+Control+47 floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
 
-# Color palette used for i3
-# Variables are set based on the documentation:
-# https://i3wm.org/dovs/userguide.html#variables
-# Changing the value of one of the variables will
-# effect all the areas with the same color.
+# Color scheme (Gruvbox dark)
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #222222
+set $color_bright_gray   #3c3836
+set $color_bright_yellow #d79921
+set $color_normal_black  #282828
+set $color_unused        #ff0000
 
-# Colors                  border                 background             text                   indicator             child_border
-client.focused          #2e3440 #4c566a #e5e9f0 #268bd2
-client.focused_inactive #2e3440 #2e3440 #d8dee9 #073642
-client.unfocused        #2e3440 #2e3440 #d8dee9 #073642
-client.urgent           #2e3440 #bf616a #e5e9f0 #002b36
+# Colors                  border                 background             text                   indicator       child_border
+client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_white
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_unused   $color_normal_black
+client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_unused   $color_normal_black
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused   $color_unused
+client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused   $color_unused
 
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
+	colors {
+    # Whole color settings
+    background $color_normal_gray
+    separator  $color_bright_gray
+    statusline $color_bright_white
+
+    # Type             border                 background              font
+    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
+    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+    }
+
     status_command py3status --dbus-notify
 	position top
     hidden_state hide
@@ -365,41 +389,28 @@ bar {
   	separator_symbol " | "
     output eDP-1
     output DP-1-1
-
-	colors {
-	    # Whole color settings
-        background #2e3440
-        statusline #d8dee9
-        separator #4c566a
-
-        # Type              border  background    font
-        focused_workspace   #4c566a #4c566a       #e5e9f0
-        active_workspace    #2e3440 #2e3440       #d8dee9
-        inactive_workspace  #2e3440 #2e3440       #d8dee9
-        urgent_workspace    #bf616a #bf616a       #e5e9f0
-    }
 }
 
 bar {
+	colors {
+    # Whole color settings
+    background $color_normal_gray
+    separator  $color_bright_gray
+    statusline $color_bright_white
+
+    # Type             border                 background              font
+    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
+    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+    }
+
 	position top
     hidden_state hide
 	tray_output none
 	strip_workspace_numbers no
     output DP-1-2
     output DP-1-3
-
-	colors {
-	    # Whole color settings
-        background #2e3440
-        statusline #d8dee9
-        separator #4c566a
-
-        # Type              border  background    font
-        focused_workspace   #4c566a #4c566a       #e5e9f0
-        active_workspace    #2e3440 #2e3440       #d8dee9
-        inactive_workspace  #2e3440 #2e3440       #d8dee9
-        urgent_workspace    #bf616a #bf616a       #e5e9f0
-    }
 }
 
 # hide/unhide i3status bar
@@ -484,22 +495,24 @@ bindsym --whole-window $hyper+button6 workspace next
 bindsym --whole-window $hyper+button7 workspace prev
 
 exec_always hsetroot -solid '#202020' &
-# exec_always hsetroot -solid '#333333' &
 # exec_always wallpaper &
-exec_always numlockx &
-exec syndaemon -d -i 0.2 -t
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-exec "pgrep -x neomutt || (kitty --class neomutt --title neomutt neomutt &)"
-exec "pgrep -x wire-desktop || (wire-desktop &)"
-exec_always "pgrep -x xss-lock || (xset s 300 5; xss-lock -n /usr/lib/xsecurelock/dimmer -l -- i3exit lock &)"
-exec_always "pgrep -x solaar || (solaar --restart-on-wake-up &)"
-exec_always "pgrep -x nm-applet || (nm-applet &)"
-exec_always "killall picom; picom &"
-exec_always "pgrep -x udiskie || (udiskie &)"
-exec_always "pgrep -x unclutter || (unclutter -b)"
-exec_always "pgrep -x playerctl || (playerctl status --format '{{ playerName  }}' --follow > /tmp/player-last &)"
-exec_always "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer normal 1800 'run-on-bat i3exit suspend' '' &)"
-exec_always (sleep 5 && xmodmap ~/.Xmodmap)&
-exec_always py3-cmd refresh xkb_layouts
-exec_always "pgrep -x copyq || (copyq & )"
+exec --no-startup-id (sleep 15 && xmodmap ~/.Xmodmap &)
+exec_always --no-startup-id xmodmap ~/.Xmodmap
+exec_always --no-startup-id numlockx &
+exec --no-startup-id syndaemon -d -i 0.2 -t
+exec --no-startup-id  /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+exec "kitty --class neomutt --title neomutt neomutt &"
+exec "wire-desktop &"
 exec kitty &
+exec_always --no-startup-id "pgrep -x xss-lock || (xset s 300 5; xss-lock -n /usr/lib/xsecurelock/dimmer -l -- i3exit lock &)"
+exec_always --no-startup-id "pgrep -x solaar || (solaar --restart-on-wake-up &)"
+exec_always --no-startup-id "pgrep -x nm-applet || (nm-applet &)"
+exec_always --no-startup-id "killall picom; picom &"
+exec_always --no-startup-id "pgrep -x udiskie || (udiskie &)"
+exec_always --no-startup-id "pgrep -x unclutter || (unclutter -b)"
+exec_always --no-startup-id "pgrep -x i3-gnome-pomodoro || (i3-gnome-pomodoro daemon)"
+exec_always --no-startup-id "pgrep -x playerctl || (playerctl status --format '{{ playerName }}' --follow > /tmp/player-last &)"
+exec_always --no-startup-id "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer 1800 'run-on-bat i3exit suspend '' & )"
+# exec_always py3-cmd refresh xkb_layouts
+exec_always "pgrep -x copyq || (copyq & )"
+exec_always "pgrep -x aa-notify || (aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log & )"

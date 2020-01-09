@@ -27,7 +27,7 @@ bg_color_reset() {
 }
 
 bg_color_set() {
-  color='#282828'
+  color='#202020'
   for arg in "$@"; do
     if [[ "${arg:0:1}" != "-" ]]; then
       if [[ "$arg" =~ '^.*prod[0-9]{2}$' ]]; then
@@ -40,10 +40,10 @@ bg_color_set() {
         color='#076678'
       elif [[ "$arg" =~ '^isilon.*$' ]]; then
         color='#d65d0e'
-    #  elif [[ "$arg" =~ '^logpoint.*$' ]]; then
-    #    color='#ddcaff'
       elif [[ "$arg" =~ '.*-sw.*$' ]]; then
         color='#5f87d7'
+      elif [[ "$arg" == 'crackbox' ]]; then
+        color='#322828'
       fi
     fi
   done

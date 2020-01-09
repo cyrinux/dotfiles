@@ -3,11 +3,12 @@
 general {
   colors = true
   color_good = '#ebdbb2'
-  color_degraded = '#D08770'
-  color_bad = '#bf616a'
+  color_degraded = '#fabd2f'
+  color_bad = '#fb4934'
   interval = 1
 }
 
+order += 'external_script pomodoro'
 order += 'mpris'
 order += 'khal_calendar'
 order += 'taskwarrior'
@@ -54,6 +55,15 @@ order += 'suspend_inhibitor'
 order += 'do_not_disturb'
 order += 'usbguard'
 
+external_script pomodoro {
+    cache_timeout = 1
+    script_path = "i3-gnome-pomodoro status"
+    format = "  {output}|"
+    on_click 1 = "exec i3-gnome-pomodoro toggle"
+    on_click 2 = "exec i3-gnome-pomodoro start"
+    on_click 3 = "exec i3-gnome-pomodoro stop"
+}
+
 external_script trash {
   cache_timeout = 86400
   script_path = "trash-list"
@@ -75,12 +85,13 @@ battery_level  {
   on_udev_power_supply = 'refresh'
   blocks = '󰀙󰀘󰀗󰀖󰀕'
   charging_character = '󰀔'
-  color_charging = '#EBCB8B'
+  color_charging = '#fabd2f'
   format = '{icon}   {percent}%'
   notify_low_level = true
   notification = true
   battery_id = 0
   measurement_mode = 'sys'
+  on_click 2 = 'exec kitty battop'
   on_click 3 = 'exec kitty sudo powertop'
 }
 
@@ -119,7 +130,7 @@ frame wwan_frame {
       format = '[\?color=total 󰀑 {total}]'
       format_value = '{value:.0f} {unit}'
       thresholds = {'total': [(0, 'hidden'), (1499500, 'degraded'), (14995000, 'bad')]} # 8 mbit, 80 mbit
-      unit = 'MB/s'
+      unit = 'Mbp/s'
     }
 
     vnstat {
@@ -324,7 +335,7 @@ scratchpad {
 }
 
 yubikey {
-  format = '[[\?if=is_gpg ][\?if=is_u2f ]  ]'
+  format = '[[\?if=is_gpg ][\?if=is_u2f ]   ]'
 }
 
 taskwarrior {
@@ -363,10 +374,10 @@ bluetooth {
     cache_timeout = 60
     format_separator = ' '
     format = '\?if=format_device {format_device} '
-    format_device = '[[\?if=mac=00:0E:DD:06:24:1C   {name} ]'
-    format_device += '[\?if=mac=20:74:CF:3B:36:A9   {name} ]'
-    format_device += '[\?if=mac=88:BD:45:02:38:3A   {name} ]'
-    format_device += '[\?if=mac=CD:07:D0:2D:BB:D1  {name} ]]'
+    format_device = '[[\?if=mac=00:0E:DD:06:24:1C  ]'
+    format_device += '[\?if=mac=20:74:CF:3B:36:A9  ]'
+    format_device += '[\?if=mac=88:BD:45:02:38:3A  ]'
+    format_device += '[\?if=mac=CD:07:D0:2D:BB:D1  ]]'
     format_device += '|\?show  {name}'
     color_bad = 'good'
     color_good = 'degraded'
@@ -395,7 +406,7 @@ external_script clipboard_count {
 # }
 
 mpris {
-  player_priority = "[mpv, vlc, mellowplayer, spotify, *]"
+  player_priority = "[mpv, vlc, spotify, *]"
   format = "{title} from [{artist}][{artists}]"
   format_none = ""
 }

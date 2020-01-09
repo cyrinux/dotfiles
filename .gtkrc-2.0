@@ -1,6 +1,9 @@
+# DO NOT EDIT! This file will be overwritten by LXAppearance.
+# Any customization should be done in ~/.gtkrc-2.0.mine instead.
+
 include "/home/cyril/.gtkrc-2.0.mine"
-gtk-theme-name="Nordic-Polar"
-gtk-icon-theme-name="Papirus-Dark"
+gtk-theme-name="Arc-Gruvbox"
+gtk-icon-theme-name="Adwaita"
 gtk-font-name="Cantarell 11"
 gtk-cursor-theme-name="Adwaita"
 gtk-cursor-theme-size=0

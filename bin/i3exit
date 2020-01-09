@@ -25,7 +25,7 @@ before_lock() {
   pauseallmpv 2>/dev/null
   playerctl pause 2>/dev/null
   killall mpv 2>/dev/null
-  bluetoothctl disconnect
+  bluetoothctl disconnect &
   fusermount -u ~/Vault &
   fusermount -u ~/Vault-Share &
   fusermount -u ~/SAMBA &

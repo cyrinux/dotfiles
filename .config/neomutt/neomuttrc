@@ -179,6 +179,7 @@ virtual-mailboxes "INBOX" "notmuch://?query=folder:INBOX"
 virtual-mailboxes "Py3status" "notmuch://?query=tag:py3status-issues"
 virtual-mailboxes "FrSAG" "notmuch://?query=frsag"
 virtual-mailboxes "FrNOG" "notmuch://?query=frnog"
+virtual-mailboxes "Archlinux" "notmuch://?query=tag:archlinux"
 virtual-mailboxes "Github" "notmuch://?query=tag:github-issues"
 virtual-mailboxes "Family" "notmuch://?query=tag:family"
 virtual-mailboxes "Friends" "notmuch://?query=tag:friends or tag:friend"
@@ -212,6 +213,7 @@ tag-transforms "attachment" " " \
                "amazon" " " \
                "frnog" " " \
                "frsag" " " \
+               "archlinux" "  " \
                "newsletter" " "
 
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"

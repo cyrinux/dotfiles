@@ -10,7 +10,7 @@ if [[ "$HOST" =~ "onlinux" ]]; then
 fi
 
 # Lazy-loading
-. ~/.zsh/sandboxd.zsh
+#. ~/.zsh/sandboxd.zsh
 
 # Load environment variables
 . /usr/share/LS_COLORS/dircolors.sh
