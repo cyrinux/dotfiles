@@ -342,6 +342,14 @@ if [[ "$(whoami)" == "root" ]]; then
     >&2 echo "=== Seafile is not initialized, skipping..."
   fi
 
+  if is_chroot; then
+    >&2 echo "=== Running in chroot, skipping private dotiles configuration..."
+  else
+        if [ ! -d "$HOME/.dotfiles-private" ]; then
+            git clone ssh://git@git.levis.ws:10022/cyril/dotfiles-private.git ~/.dotfiles-private
+            ~/.dotfiles-private/setup
+        fi
+  fi
 
   echo ""
   echo "=============================="
