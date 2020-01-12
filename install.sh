@@ -56,6 +56,10 @@ hostname=$(get_input "Hostname" "Enter hostname") || exit 1
 clear
 : ${hostname:?"hostname cannot be empty"}
 
+grubpw=$(get_password "GRUB" "Enter grub password") || exit 1
+clear
+: ${grubpw:?"password cannot be empty"}
+
 user=$(get_input "User" "Enter username") || exit 1
 clear
 : ${user:?"user cannot be empty"}
@@ -101,8 +105,8 @@ wipefs "${part_boot}"
 wipefs "${part_root}"
 
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
-echo -n ${password} | cryptsetup luksFormat --type luks1 "${part_root}"
-echo -n ${password} | cryptsetup luksOpen "${part_root}" luks
+echo -n ${grubpw} | cryptsetup luksFormat --type luks1 "${part_root}"
+echo -n ${grubpw} | cryptsetup luksOpen "${part_root}" luks
 mkfs.btrfs -L btrfs /dev/mapper/luks
 
 echo -e "\n### Setting up BTRFS subvolumes"
@@ -128,7 +132,7 @@ mount -o noatime,nodiratime,compress=zstd,subvol=snapshots /dev/mapper/luks /mnt
 echo -e "\n### Setting up an encrypted key for booting"
 dd bs=512 count=4 if=/dev/urandom of=/mnt/crypto_keyfile.bin
 chmod 000 /mnt/crypto_keyfile.bin
-echo -n ${password} | cryptsetup luksAddKey ${part_root} /mnt/crypto_keyfile.bin
+echo -n ${grubpw} | cryptsetup luksAddKey ${part_root} /mnt/crypto_keyfile.bin
 
 
 echo -e "\n### Importing my public PGP key"
@@ -138,7 +142,7 @@ pacman-key --lsign-key $MY_GPG_KEY_ID
 
 echo -e "\n### Adding blackarch repo"
 curl -sL https://blackarch.org/strap.sh | bash
-arch-chroot /mnt curl -sL https://blackarch.org/strap.sh | bash
+# arch-chroot /mnt curl -sL https://blackarch.org/strap.sh | bash
 
 echo -e "\n### Downloading custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur
@@ -197,6 +201,11 @@ GRUB_DISABLE_RECOVERY=true
 EOF
 arch-chroot /mnt grub-install ${device}
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+cat <<EOF >/mnt/boot/grub/update.sh
+#!/bin/sh
+grub-install ${device}
+EOF
+chmod +x /mnt/boot/grub/update.sh
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
