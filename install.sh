@@ -138,10 +138,11 @@ pacman-key --lsign-key $MY_GPG_KEY_ID
 
 echo -e "\n### Adding blackarch repo"
 curl -sL https://blackarch.org/strap.sh | bash
+arch-chroot /mnt curl -sL https://blackarch.org/strap.sh | bash
 
 echo -e "\n### Downloading custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur
-wget -m -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur' 'https://aur.levis.ws/'
+wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur' 'https://aur.levis.ws/'
 
 cat >>/etc/pacman.conf <<EOF
 [cyrinux-aur]
