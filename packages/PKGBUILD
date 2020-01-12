@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.33
+pkgver=2.0.34
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -30,11 +30,11 @@ depends=(
     'dash'
     'kernel-modules-hook'
     'logrotate'
-    'man-db'
     'man-pages'
     'btrfs-progs'
     'htop'
     'vi'
+    'posix'
 
     # base-devel
     'autoconf'
@@ -43,21 +43,17 @@ depends=(
     'bison'
     'fakeroot'
     'file'
-    'findutils'
     'flex'
     'gawk'
     'gcc'
     'gettext'
-    'grep'
     'groff'
     'gzip'
     'libtool'
     'm4'
     'make'
     'pacman'
-    'patch'
     'pkgconf'
-    'sed'
     'sudo'
     'texinfo'
     'which'
@@ -667,7 +663,6 @@ depends=(
 'zeal'
 'zip'
 'zps'
-'cups'
 'keybase'
 'paperkey'
 'smbnetfs'
