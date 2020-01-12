@@ -73,8 +73,6 @@ if [ "$(whoami)" != "root" ]; then
   echo "Setting up dotfiles for current user..."
   echo "======================================="
 
-  git-crypt unlock
-
   link "bin"
   link ".config/user-dirs.dirs"
   link ".gnupg/gpg.conf"
@@ -270,6 +268,7 @@ if [[ "$(whoami)" == "root" ]]; then
   copy "usr/local/bin/backitup"
   copy "etc/updatedb.conf"
   copy "etc/bluetooth/main.conf"
+  copy "etc/pulseaudio/default.pa"
   copy "etc/parcimonie.sh.d/cyril.conf"
   copy "etc/snapper/configs/home"
   copy "etc/audit/auditd.conf"
