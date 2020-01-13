@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.39
+pkgver=2.0.40
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -325,7 +325,6 @@ depends=(
 'lynx'
 'lzip'
 'macchiato-git'
-'maltego'
 'masscan'
 'mathjax'
 'maven'
@@ -505,7 +504,6 @@ depends=(
 'python-pytest-flake8'
 'python-pyudev'
 'python-rofi'
-'python-shodan'
 'python-simplebayes'
 'python-suds'
 'python-tinytag'
