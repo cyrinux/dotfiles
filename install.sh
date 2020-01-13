@@ -137,7 +137,8 @@ echo -n ${grubpw} | cryptsetup luksAddKey ${part_root} /mnt/crypto_keyfile.bin
 
 echo -e "\n### Importing my public PGP key"
 export MY_GPG_KEY_ID="0x2653E033C3C07A2C"
-pacman-key --recv-keys $MY_GPG_KEY_ID
+curl -s https://levis.name/pgp_keys.asc | pacman-key -a -
+# pacman-key --recv-keys $MY_GPG_KEY_ID
 pacman-key --lsign-key $MY_GPG_KEY_ID
 
 echo -e "\n### Adding blackarch repo"
