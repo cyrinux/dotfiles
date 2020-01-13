@@ -1,7 +1,5 @@
 unsetopt EXTENDED_GLOB
 
-umask 0027
-
 # Share history across all terminals.
 setopt share_history
 setopt append_history
