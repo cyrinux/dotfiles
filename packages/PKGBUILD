@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.35
+pkgver=2.0.37
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -132,7 +132,6 @@ depends=(
 'dict-gcide'
 'dict-moby-thesaurus'
 'diffstat'
-'dirsearch'
 'discord'
 'ditaa'
 'dmg2img'
@@ -144,7 +143,7 @@ depends=(
 'docker-compose'
 'dos2unix'
 'draft-bin'
-'dragon-drag-and-drop-git'
+'dragon-drag-and-drop'
 'drawio-desktop'
 'drone-cli'
 'dump1090-fa-git'
@@ -320,7 +319,6 @@ depends=(
 'modemmanager'
 'monitoring-plugins'
 'mp3info'
-'mps-youtube'
 'mpv'
 'msmtp'
 'mtpfs'
@@ -585,7 +583,6 @@ depends=(
 'udiskie-dmenu-git'
 'ufw'
 'unclutter'
-'unicornscan'
 'universal-ctags-git'
 'unpaper'
 'unrar'
