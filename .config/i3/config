@@ -512,3 +512,4 @@ exec_always --no-startup-id "pgrep -x xidlehook || (xidlehook --not-when-fullscr
 # exec_always py3-cmd refresh xkb_layouts
 exec_always "pgrep -x copyq || (copyq & )"
 exec_always "pgrep -x aa-notify || (aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log & )"
+exec_always "pgrep -x opensnitch-ui || (opensnitch-ui & )"
