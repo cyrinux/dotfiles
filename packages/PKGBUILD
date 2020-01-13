@@ -1,6 +1,6 @@
 pkgname='cyrinux'
-pkgver=2.0.37
-pkgrel=3
+pkgver=2.0.39
+pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
 url='https://github.com/cyrinux/dotfiles'
@@ -59,10 +59,8 @@ depends=(
 'ansible-lint'
 'ant'
 'antigen-git'
-'apachedirectorystudio'
 'apparmor'
 'arch-audit'
-'archiso'
 'archivemount'
 'arduino'
 'arduino-avr-core'
@@ -159,11 +157,8 @@ depends=(
 'drone-cli'
 'dump1090-fa-git'
 'dunst'
-'dvdauthor'
-'dvdbackup'
 'editorconfig-core-c'
 'efibootmgr'
-'electron4'
 'enscript'
 'epson-inkjet-printer-escpr'
 'eslint'
@@ -554,7 +549,6 @@ depends=(
 'rubygems'
 'ruby-json'
 'ruby-markdownlint'
-'ruby-video_transcoding'
 'rust'
 'rust-docs'
 'samba'
@@ -712,7 +706,6 @@ depends=(
 'zathura-djvu'
 'zathura-pdf-mupdf'
 'zathura-ps'
-'zeal'
 'zip'
 'zps'
 )
