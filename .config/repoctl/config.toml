@@ -7,11 +7,11 @@ repo = "/var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar"
 
 # add_params is the set of parameters that will be passed to repo-add
 # when it is called. Specify one time for each parameter.
-#add_params = ["-v"]
+add_params = ["-s"]
 
 # rm_params is the set of parameters that will be passed to repo-remove
 # when it is called. Specify one time for each parameter.
-#rm_params = []
+rm_params = ["-s"]
 
 # ignore_aur is a set of package names that are ignored in conjunction
 # with AUR related tasks, such as determining if there is an update or not.
@@ -19,14 +19,14 @@ repo = "/var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar"
 
 # backup specifies whether package files should be backed up or deleted.
 # If it is set to false, then obsolete package files are deleted.
-backup = false
+backup = true
 
 # backup_dir specifies which directory backups are stored in.
 # - If a relative path is given, then it is interpreted as relative to
 #   the repository directory.
 # - If the path here resolves to the same as repo, then obsolete packages
 #   are effectively ignored by repoctl, if backup is true.
-backup_dir = "backup/"
+backup_dir = ""
 
 # interactive specifies that repoctl should ask before doing anything
 # destructive.

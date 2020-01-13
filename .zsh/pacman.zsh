@@ -78,7 +78,7 @@ py3status-refresh-pacman() {
 }
 
 alias syncrepo='gio mount smb://192.168.43.39/web/aur/; gio copy -p  /var/cache/pacman/cyrinux-aur/* smb://192.168.43.39/web/aur/'
-alias rsyncrepo='rsync --archive --compress --partial --delete --checksum  /var/cache/pacman/cyrinux-aur/ aur@backup-aur:/var/services/homes/cyril/www/aur/'
+alias rsyncrepo='rsync --archive --compress --partial --delete --checksum --verbose /var/cache/pacman/cyrinux-aur/* aur@backup-aur:/var/services/homes/cyril/www/aur/'
 alias update='auru; pacu'
 alias signrepo='PATH="/usr/bin:/bin" repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar'
 
