@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.40
+pkgver=2.0.41
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -54,7 +54,6 @@ depends=(
 'which'
 
 # to sort
-'altdns'
 'ansible'
 'ansible-lint'
 'ant'
@@ -68,7 +67,6 @@ depends=(
 'aria2'
 'aspell-en'
 'aspell-fr'
-'assetfinder'
 'asunder'
 'atool'
 'audit'
@@ -85,12 +83,10 @@ depends=(
 'battop'
 'bdf-unifont'
 'beets'
-'bettercap'
 'bfg'
 'bind-tools'
 'bingo-git'
 'blackarch-keyring'
-'blackman'
 'bleachbit'
 'bluez-firmware'
 'bluez-utils'
@@ -180,7 +176,6 @@ depends=(
 'firewarden'
 'flameshot'
 'fontforge'
-'foremost'
 'fping'
 'freerdp'
 'freetds'
@@ -268,7 +263,6 @@ depends=(
 'iucode-tool'
 'iwd'
 'jdk8-openjdk'
-'jexboss'
 'jitterentropy'
 'john'
 'jq'
@@ -341,7 +335,6 @@ depends=(
 'msmtp'
 'mtpfs'
 'mtr'
-'multimon-ng'
 'multipath-tools'
 'mupdf-gl'
 'mupdf-tools'
@@ -530,7 +523,6 @@ depends=(
 'riot-desktop'
 'ripgrep'
 'ripmime'
-'rkhunter'
 'rmtrash'
 'rofi'
 'rofi-calc'
@@ -557,7 +549,6 @@ depends=(
 'seafile-client'
 'secure-delete'
 'shellcheck'
-'siege'
 'signify'
 'simple-scan'
 'sipcalc'
