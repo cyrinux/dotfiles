@@ -1,4 +1,5 @@
 [Default Applications]
+inode/directory=nnn.desktop
 application/vnd.ms-word.document.macroenabled.12=libreoffice-writer.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
 application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
