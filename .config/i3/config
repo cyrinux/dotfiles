@@ -385,6 +385,7 @@ bar {
   	separator_symbol " | "
     output eDP-1
     output DP-1-1
+    output LVDS-1
 }
 
 bar {

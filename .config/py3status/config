@@ -50,7 +50,7 @@ order += 'volume_status'
 order += 'frame hidden'
 order += 'battery_level'
 order += 'getjson infra_healthcheck'
-order += 'suspend_inhibitor'
+order += 'systemd_suspend_inhibitor'
 order += 'do_not_disturb'
 order += 'usbguard'
 
@@ -430,7 +430,7 @@ getjson infra_healthcheck {
   format = '[\?if=!status=up&color=bad   {status}]'
 }
 
-suspend_inhibitor {
+systemd_suspend_inhibitor {
     format = "[\?color=state [\?if=state 󰁄|󰁅]]"
 }
 
