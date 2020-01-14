@@ -36,6 +36,7 @@ export XSECURELOCK_WANT_FIRST_KEYPRESS=1
 export XSECURELOCK_PASSWORD_PROMPT=time_hex
 export XSECURELOCK_AUTH_BACKGROUND_COLOR="#222222"
 
+
 # Pass configuration
 export PASSWORD_STORE_CHARACTER_SET='a-zA-Z0-9~!@#$%^&*()-_=+[]{};:,.<>?'
 export PASSWORD_STORE_GENERATED_LENGTH=40
@@ -43,10 +44,10 @@ export PASSWORD_STORE_GENERATED_LENGTH=40
 
 export GOPATH="$HOME/.go"
 export PATH="$GOPATH/bin:$PATH"
-# export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
-# export PATH="$HOME/.node_modules/bin:$PATH"
+export JAVA_HOME="/usr/lib/jvm/java-8-openjdk"
+export PATH="$HOME/.node_modules/bin:$PATH"
 
 # Nnn files browser settings
 export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
 export NNN_TRASH=1
-export NNN_PLUG='d:dragdrop;r:remove;p:paperwork;c:croc;m:mkchromecast'
+export NNN_PLUG='d:dragdrop;p:paperwork;c:croc'
