@@ -4,11 +4,12 @@ GRUB_DEFAULT=0
 GRUB_TIMEOUT=2
 GRUB_RECORDFAIL_TIMEOUT=$GRUB_TIMEOUT
 GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="quiet vga=current rd.systemd.show_status=auto loglevel=0 udev.log_priority=0 udev.udev.log_priority=0 vt.global_cursor_default=0 pci=nommconf i8042.reset=1 i8042.nomux=1 apparmor=1 security=apparmor vsyscall=emulate i915.enable_rc6=3 i915.modeset=1 i915.enable_psr=1 i915.enable_dpcd_backlight=1 page_poison=on slub_debug=P acpi_osi=Linux consoleblank=60 pti=on spectre_v2=ons pec_store_bypass_disable=seccomp extra_latent_entropy i915.fastboot=1 psi=0"
+# GRUB_CMDLINE_LINUX_DEFAULT="quiet vga=current rd.systemd.show_status=auto loglevel=0 udev.log_priority=0 udev.udev.log_priority=0 vt.global_cursor_default=0 pci=nommconf i8042.reset=1 i8042.nomux=1 apparmor=1 security=apparmor vsyscall=emulate i915.enable_rc6=3 i915.modeset=1 i915.enable_psr=1 i915.enable_dpcd_backlight=1 i915.enable_guc=3 i915.enable_fbc=1 page_poison=on slub_debug=P acpi_osi=Linux consoleblank=60 pti=on spectre_v2=ons pec_store_bypass_disable=seccomp extra_latent_entropy i915.fastboot=1 psi=0"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet vga=current rd.systemd.show_status=auto loglevel=0 udev.log_priority=0 udev.udev.log_priority=0 vt.global_cursor_default=0 pci=nommconf i8042.reset=1 i8042.nomux=1 apparmor=1 security=apparmor vsyscall=emulate page_poison=on slub_debug=P acpi_osi=Linux consoleblank=60 pti=on spectre_v2=ons pec_store_bypass_disable=seccomp extra_latent_entropy psi=0"
 GRUB_CMDLINE_LINUX="cryptdevice=/dev/sda2:luks:allow-discards"
 
 # Preload both GPT and MBR modules so that they are not missed
-GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+GRUB_PRELOAD_MODULES="part_gpt part_msdos zstd"
 
 # Uncomment to enable booting from LUKS encrypted devices
 GRUB_ENABLE_CRYPTODISK=y

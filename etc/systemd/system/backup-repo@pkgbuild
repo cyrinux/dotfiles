@@ -1,3 +1,3 @@
 LOCAL_PATH=/var/cache/pacman/cyrinux-aur/
 REMOTE_ADDR=aur@backup-aur
-REMOTE_PATH=www/aur/
+REMOTE_PATH=/var/services/homes/cyril/www/aur/
