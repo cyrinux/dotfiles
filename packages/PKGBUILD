@@ -1,6 +1,6 @@
 pkgname='cyrinux'
-pkgver=2.0.42
-pkgrel=3
+pkgver=2.0.43
+pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
 url='https://github.com/cyrinux/dotfiles'
@@ -228,8 +228,6 @@ depends=(
 'hamlib'
 'hamradio-menus'
 'hardened-malloc-git'
-'hashcat'
-'hashcat-utils'
 'haskell-tf-random'
 'haskell-time-locale-compat'
 'haveged'
@@ -245,7 +243,6 @@ depends=(
 'hwdetect'
 'hydra'
 'i3-gaps'
-'i3-gnome-pomodoro-git'
 'imagemagick'
 'informant'
 'inotify-tools'
