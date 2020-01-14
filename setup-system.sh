@@ -190,8 +190,8 @@ echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
 ln -sf /usr/bin/archbuild /usr/local/bin/aur-x86_64-build
 
-echo "Force dns config"
-ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+# echo "Force dns config"
+# ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 echo "Configuring fontconfig"
 ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.conf
