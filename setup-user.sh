@@ -61,6 +61,7 @@ link ".pylintrc"
 link ".tmux.conf"
 link ".zsh"
 link ".zshrc"
+link ".zprezto-patches"
 link ".vmdrc"
 link ".gemrc"
 link ".visidatarc"
@@ -158,6 +159,7 @@ echo "======================================="
 echo "Finishing various user configuration..."
 echo "======================================="
 
+
 echo "Configuring MIME types"
 file --compile --magic-file ~/.magic
 
@@ -197,6 +199,7 @@ if is_chroot; then
 >&2 echo "=== Running in chroot, skipping private dotiles configuration..."
 else
     if [ ! -d "$HOME/.dotfiles-private" ]; then
+        mkdir -p  ~/.cache/ssh_sessions
         git clone ssh://git@git.levis.ws:10022/cyril/dotfiles-private.git ~/.dotfiles-private
         ~/.dotfiles-private/setup
     fi

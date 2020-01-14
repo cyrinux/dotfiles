@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.44
+pkgver=2.0.45
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -410,7 +410,6 @@ depends=(
 'perl-graph-easy'
 'perl-io-capture'
 'perl-test-tester'
-'pgadmin4'
 'physlock'
 'pigz'
 'pinentry-dmenu'
@@ -424,7 +423,6 @@ depends=(
 'powertop'
 'pppconfig'
 'prettier'
-'private-internet-access-vpn'
 'proselint'
 'proxychains-ng'
 'publicsuffix-list'
