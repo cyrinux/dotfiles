@@ -7,6 +7,7 @@ alias diff!='kitty +kitten diff'
 alias dragon='dragon-drag-and-drop --and-exit --all'
 alias emacsedit="emacsclient -nc -s instance1"
 alias e='kak'
+alias fd='fd --hidden --follow'
 alias grep='grep --color'
 alias http-serve='python3 -m http.server'
 alias locate='locate -i'

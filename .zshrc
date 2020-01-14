@@ -4,14 +4,6 @@ fi
 
 (( EUID )) && for f in ~/.zshrc ~/.zsh/*.zsh; do [[ ! -s $f.zwc || $f -nt $f.zwc ]] && zcompile $f; done
 
-# Launch a tmux session
-if [[ "$HOST" =~ "onlinux" ]]; then
-  . ~/.zsh/autorun-same-tmux.zsh
-fi
-
-# Lazy-loading
-#. ~/.zsh/sandboxd.zsh
-
 # Load environment variables
 . /usr/share/LS_COLORS/dircolors.sh
 
@@ -24,7 +16,6 @@ fi
 # Load terminal configuration
 . ~/.zsh/title.zsh
 . ~/.zsh/prompt.zsh
-. ~/.zsh/p10k-transient.zsh
 
 # Load custom configurations
 . ~/.zsh/opts.zsh
@@ -44,6 +35,9 @@ fi
 
 # Load todoist functions
 [ -f /usr/share/todoist/todoist_functions.sh ] && . /usr/share/todoist/todoist_functions.sh >/dev/null
+
+# Load azure-cli completions
+. /usr/bin/az.completion.sh >/dev/null
 
 # Bash completion for some tools
 . ~/.zsh/complete.zsh
