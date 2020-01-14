@@ -121,7 +121,6 @@ copy "etc/udev/rules.d/81-ac-battery-change.rules"
 copy "etc/udev/rules.d/70-wifi-powersave.rules"
 copy "etc/udev/rules.d/50-usb_power_save.rules"
 copy "etc/udev/rules.d/99pci_pm.rules"
-copy "etc/udev/rules.d/83-yubikey.rules"
 copy "etc/udev/rules.d/90-hid-eToken.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/X11/xorg.conf.d/00-keyboard.conf"
