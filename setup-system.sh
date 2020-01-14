@@ -47,10 +47,15 @@ is_chroot() {
   grep rootfs /proc/mounts >/dev/null
 }
 
+systemctl_enable() {
+    echo "systemctl enable "$1""
+    systemctl enable "$1"
+}
+
 systemctl_enable_start() {
-    echo "systemctl enable --now "$name""
-    systemctl enable "$name"
-    systemctl start  "$name"
+    echo "systemctl enable --now "$1""
+    systemctl enable "$1"
+    systemctl start  "$1"
 }
 
 echo ""
@@ -79,7 +84,6 @@ copy "etc/sysctl.d/99-idea.conf"
 copy "etc/sysctl.d/99-sysctl.conf"
 copy "etc/systemd/journald.conf"
 copy "etc/systemd/system/paccache.service"
-copy "etc/systemd/system/iwd.service"
 copy "etc/systemd/system/paccache.timer"
 copy "etc/systemd/system/reflector.service"
 copy "etc/systemd/system/reflector.timer"
@@ -122,7 +126,7 @@ copy "etc/udev/rules.d/90-hid-eToken.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/X11/xorg.conf.d/00-keyboard.conf"
 copy "etc/X11/xorg.conf.d/30-touchpad.conf"
-mkdir -p "/etc/nmtrust" && copy "etc/nmtrust/trusted_units"
+copy "etc/nmtrust/trusted_units"
 
 (( "$reverse" )) && exit 0
 
@@ -133,8 +137,8 @@ echo "================================="
 
 sysctl --system > /dev/null
 systemctl daemon-reload
-systemctl enable "backup-repo@pkgbuild.service"
-systemctl enable "docker.service"
+systemctl_enable "backup-repo@pkgbuild.service"
+systemctl_enable "docker.service"
 systemctl_enable_start "getty@tty1.service"
 systemctl_enable_start "macchiato.service"
 systemctl_enable_start "fstrim.timer"

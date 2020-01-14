@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.43
+pkgver=2.0.44
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -77,7 +77,6 @@ depends=(
 'avahi'
 'python-azure-cli'
 'awless'
-'barmie'
 'bash-completion'
 'bash-language-server'
 'bat'
@@ -102,7 +101,6 @@ depends=(
 'ccid'
 'cfssl'
 'checkbashisms'
-'checksec'
 'chirp-daily'
 'chromium-vaapi'
 'cinnamon-desktop'
@@ -121,7 +119,6 @@ depends=(
 'croc'
 'cryptboot'
 'cups-pdf'
-'darkmysqli'
 'dateutils'
 'ddrescue'
 'debian-archive-keyring'
@@ -320,7 +317,6 @@ depends=(
 'masscan'
 'mathjax'
 'maven'
-'mcomix'
 'meld'
 'mfcuk-git'
 'mkchromecast-git'
@@ -690,6 +686,7 @@ depends=(
 'yubikey-touch-detector'
 'zaproxy'
 'zathura'
+'zathura-cb'
 'zathura-djvu'
 'zathura-pdf-mupdf'
 'zathura-ps'
