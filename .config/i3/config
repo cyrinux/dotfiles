@@ -506,7 +506,6 @@ exec_always --no-startup-id "pgrep -x nm-applet || (nm-applet &)"
 exec_always --no-startup-id "killall picom; picom &"
 exec_always --no-startup-id "pgrep -x udiskie || (udiskie &)"
 exec_always --no-startup-id "pgrep -x unclutter || (unclutter -b)"
-exec_always --no-startup-id "pgrep -x i3-gnome-pomodoro || (i3-gnome-pomodoro daemon)"
 exec_always --no-startup-id "pgrep -x playerctl || (playerctl status --format '{{ playerName }}' --follow > /tmp/player-last &)"
 exec_always --no-startup-id "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer 1800 'run-on-bat i3exit suspend '' & )"
 # exec_always py3-cmd refresh xkb_layouts

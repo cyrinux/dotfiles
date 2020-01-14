@@ -8,7 +8,6 @@ general {
   interval = 1
 }
 
-order += 'external_script pomodoro'
 order += 'mpris'
 order += 'khal_calendar'
 order += 'taskwarrior'
@@ -54,15 +53,6 @@ order += 'getjson infra_healthcheck'
 order += 'suspend_inhibitor'
 order += 'do_not_disturb'
 order += 'usbguard'
-
-external_script pomodoro {
-    cache_timeout = 1
-    script_path = "i3-gnome-pomodoro status"
-    format = "  {output}|"
-    on_click 1 = "exec i3-gnome-pomodoro toggle"
-    on_click 2 = "exec i3-gnome-pomodoro start"
-    on_click 3 = "exec i3-gnome-pomodoro stop"
-}
 
 external_script trash {
   cache_timeout = 86400
