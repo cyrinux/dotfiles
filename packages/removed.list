@@ -1,3 +1,4 @@
+error: missing 'argon2' dependency for 'cryptsetup'
 error: missing 'afpfs-ng' dependency for 'hydra'
 error: missing 'fabric' dependency for 'python-azure-cli'
 error: missing 'python-applicationinsights' dependency for 'python-azure-cli'

@@ -6,7 +6,6 @@ exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 MY_GPG_KEY_ID="0x2653E033C3C07A2C"
 
-script_name="$(basename "$0")"
 dotfiles_dir="$(cd "$(dirname "$0")"; pwd)"
 cd "$dotfiles_dir"
 
@@ -27,9 +26,8 @@ is_chroot() {
 }
 
 systemctl_enable_start() {
-    echo "systemctl --user enable --now "$name""
-    systemctl --user enable "$name"
-    systemctl --user start  "$name"
+    echo "systemctl --user enable --now "$1""
+    systemctl --user enable --now "$1"
 }
 
 

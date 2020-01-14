@@ -17,5 +17,5 @@ application/lrf=calibre-lrfviewer.desktop
 image/gif=vimiv.desktop
 image/png=vimiv.desktop
 image/jpeg=vimiv.desktop
-application/vnd.comicbook+zip=mcomix.desktop
-application/vnd.comicbook-rar=mcomix.desktop
+application/vnd.comicbook+zip=org.pwmt.zathura-cb.desktop
+application/vnd.comicbook-rar=org.pwmt.zathura-cb.desktop
