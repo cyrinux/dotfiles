@@ -198,7 +198,7 @@ ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.co
 
 echo "Configuring firejail"
 firecfg
-rm -f /usr/local/bin/{i3,conky}
+rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox}
 
 if is_chroot; then
   >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
