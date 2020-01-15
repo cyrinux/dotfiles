@@ -30,11 +30,11 @@ before_lock() {
   fusermount -u ~/Vault-Share &
   fusermount -u ~/SAMBA &
   usbguard_lock
-  physlock -lms
+  # physlock -lms
 }
 
 after_lock() {
-  physlock -L
+  # physlock -L
   usbguard_unlock
   xrandr --auto
   picom & disown

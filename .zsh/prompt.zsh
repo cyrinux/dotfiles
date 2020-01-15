@@ -190,11 +190,10 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_VISUAL_IDENTIFIER_EXPANSION=
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_CONTENT_EXPANSION='%B${P9K_CONTENT}'
 
-  ####################################[ nnn: nesting ]####################################
-  function prompt_nnn() {
-    [ -z "$NNNLVL" ] && return
-    p10k segment -f 208 -t " "
-  }
+  ####################################[ nnn: nested shell ]####################################
+  typeset -g POWERLEVEL9K_NNN_FOREGROUND=208
+  typeset -g POWERLEVEL9K_NNN_CONTENT_EXPANSION=" "
+
 
   #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
   typeset -g POWERLEVEL9K_KUBECONTEXT_PREFIX='%fat '
@@ -209,7 +208,7 @@ ZSH_HIGHLIGHT_STYLES[comment]='fg=white,bold'
   typeset -g POWERLEVEL9K_KUBECONTEXT_CONTENT_EXPANSION='%B'
   POWERLEVEL9K_KUBECONTEXT_CONTENT_EXPANSION+='${P9K_KUBECONTEXT_CLOUD_CLUSTER:-${P9K_KUBECONTEXT_NAME}}'
   POWERLEVEL9K_KUBECONTEXT_CONTENT_EXPANSION+='${${:-/$P9K_KUBECONTEXT_NAMESPACE}:#/default}'
-  typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm'
+  typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|kubens|kubectx|helm'
 
   ####################################[ azure: azure subscription ]#############################
   typeset -g POWERLEVEL9K_AZURE_FOREGROUND=208

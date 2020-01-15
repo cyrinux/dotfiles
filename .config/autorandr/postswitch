@@ -1,4 +1,3 @@
 #!/bin/bash
 (sleep 2 && xmodmap ~/.Xmodmap) &
-(sleep 5 && killall picom; picom) &
-(sleep 10 && systemctl --user restart redshift) &
+(sleep 30 && systemctl --user restart redshift) &
