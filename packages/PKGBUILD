@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.48
+pkgver=2.0.50
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -149,7 +149,6 @@ depends=(
 'dragon-drag-and-drop'
 'drawio-desktop'
 'drone-cli'
-'dump1090-fa-git'
 'dunst'
 'editorconfig-core-c'
 'efibootmgr'
@@ -363,7 +362,6 @@ depends=(
 'noto-fonts'
 'npm'
 'ntfs-3g'
-'ntop'
 'ntp'
 'numlockx'
 'nyx'
@@ -688,5 +686,8 @@ depends=(
 'zathura-ps'
 'zip'
 'zps'
+'signal-desktop'
+'python-argcomplete'
+
 )
 

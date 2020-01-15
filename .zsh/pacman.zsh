@@ -15,8 +15,6 @@ alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; py3-cmd refresh "external_script pacdiff"'
 alias lsp="pacman -Qett --color=always | more"
 
-
-
 pac() {
   sudo -E pacman "$@"
   py3status-refresh-pacman
@@ -41,7 +39,7 @@ pacs!() {
 
 aurs() {
       aur sync -ScP "$@"
-        post_aur
+      post_aur
     }
 alias aurs!='aurs --no-ver-shallow -f'
 
@@ -52,7 +50,7 @@ aurb() {
 
 auru() {
   xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -ScPu --rebuild "$@"
-  post_aur
+  # post_aur
 }
 
 post_aur() {

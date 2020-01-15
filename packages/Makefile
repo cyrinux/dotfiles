@@ -23,3 +23,7 @@ publish:
 .PHONY: clean
 clean:
 	rm -rf pkg src *.pkg.tar* *.log
+
+.PHONY: push
+push:
+	rsyncrepo
