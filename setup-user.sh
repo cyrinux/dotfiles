@@ -164,9 +164,9 @@ echo "Configuring MIME types"
 file --compile --magic-file ~/.magic
 
 if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
-echo "Importing my public PGP key"
-curl -s https://levis.name/pgp_keys.asc| gpg --import
-gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
+    echo "Importing my public PGP key"
+    curl -s https://levis.name/pgp_keys.asc| gpg --import
+    gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
 fi
 
 find ~/.gnupg -type f -exec chmod 600 {} \;
@@ -184,9 +184,9 @@ else
 fi
 
 if [[ -a "$HOME/.password-store" ]]; then
-echo "Configuring automatic git push for pass"
-echo "#!/usr/bin/zsh\n\npass git push" >! "$HOME/.password-store/.git/hooks/post-commit"
-chmod +x "$HOME/.password-store/.git/hooks/post-commit"
+    echo "Configuring automatic git push for pass"
+    echo "#!/usr/bin/zsh\n\npass git push" >! "$HOME/.password-store/.git/hooks/post-commit"
+    chmod +x "$HOME/.password-store/.git/hooks/post-commit"
 fi
 
 echo "Configuring GTK file chooser dialog"
@@ -200,7 +200,7 @@ if is_chroot; then
 else
     if [ ! -d "$HOME/.dotfiles-private" ]; then
         mkdir -p  ~/.cache/ssh_sessions
-        git clone ssh://git@git.levis.ws:10022/cyril/dotfiles-private.git ~/.dotfiles-private
-        ~/.dotfiles-private/setup
+        git clone ssh://git@git.levis.ws:10022/cyril/dotfiles-private.git $HOME/.dotfiles-private
+        $HOME/.dotfiles-private/setup.sh
     fi
 fi

@@ -2,8 +2,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-(( EUID )) && for f in ~/.zshrc ~/.zsh/*.zsh; do [[ ! -s $f.zwc || $f -nt $f.zwc ]] && zcompile $f; done
-
 # Load environment variables
 . /usr/share/LS_COLORS/dircolors.sh
 
@@ -37,7 +35,7 @@ fi
 [ -f /usr/share/todoist/todoist_functions.sh ] && . /usr/share/todoist/todoist_functions.sh >/dev/null
 
 # Load azure-cli completions
-. /usr/bin/az.completion.sh >/dev/null
+[ -f /opt/azure-cli/bin/az.completion.sh ] && . /opt/azure-cli/bin/az.completion.sh >/dev/null
 
 # Bash completion for some tools
 . ~/.zsh/complete.zsh
