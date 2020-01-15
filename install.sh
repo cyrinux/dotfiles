@@ -221,6 +221,9 @@ arch-chroot /mnt chsh -s /usr/bin/zsh
 echo "$user:$password" | chpasswd --root /mnt
 arch-chroot /mnt passwd -dl root
 
+echo -e "\n### Fixing local  repository perms"
+arch-chroot chown -R $user: /var/cache/pacman/cyrinux-aur/
+
 echo -e "\n### Cloning dotfiles"
 arch-chroot /mnt sudo -u $user bash -c 'git clone https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
 

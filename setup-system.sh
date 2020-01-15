@@ -190,15 +190,20 @@ echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
 ln -sf /usr/bin/archbuild /usr/local/bin/aur-x86_64-build
 
-# echo "Force dns config"
-# ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+echo "Force dns config"
+ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
 echo "Configuring fontconfig"
 ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.conf
 
+echo "Configuring firejail"
+firecfg
+rm -f /usr/local/bin/{i3,conky}
+
 if is_chroot; then
-  >&2 echo "=== Running in chroot, skipping firewall and udev setup..."
+  >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
 else
+  echo "=== Configuring firewall rules and dev"
   ufw --force reset > /dev/null
   ufw default allow outgoing
   ufw default deny incoming
@@ -210,6 +215,9 @@ else
   echo "Reload udev rules"
   udevadm control --reload
   udevadm trigger
+
+  echo "Force dns config"
+  ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 
   sleep 1
   xmodmap "$dotfiles_dir/.Xmodmap"

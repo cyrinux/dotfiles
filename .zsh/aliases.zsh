@@ -180,7 +180,7 @@ alias gpg-delete-master-key='gpg-connect-agent "DELETE_KEY 0D13C83ACE0E72759DADA
 alias gpg-yubikey-change-card='gpg-connect-agent "scd serialno" "learn --force" /bye'
 
 # vault
-alias sync-vault='rsync -rav --delete /run/media/cyril/COFFRE/* /run/media/cyril/COFFRE2/'
+alias sync-vault='rsync-synchronize /run/media/cyril/COFFRE/* /run/media/cyril/COFFRE2/'
 
 # password
 alias newpass='gpg --gen-random -a 1 24'

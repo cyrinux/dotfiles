@@ -1,6 +1,6 @@
 pkgname='cyrinux'
-pkgver=2.0.50
-pkgrel=1
+pkgver=2.0.51
+pkgrel=2
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
 url='https://github.com/cyrinux/dotfiles'
@@ -104,7 +104,6 @@ depends=(
 'chirp-daily'
 'chromium-vaapi'
 'cinnamon-desktop'
-'clamav'
 'clang'
 'cmake'
 'code'
@@ -167,7 +166,6 @@ depends=(
 'fdupes'
 'feh'
 'filezilla'
-'fimap'
 'firefox'
 'firejail'
 'firewarden'
@@ -623,7 +621,6 @@ depends=(
 'vifm'
 'vimiv-qt'
 'vint'
-'virtualbox'
 'visidata'
 'vnstat'
 'vulscan'
@@ -688,6 +685,12 @@ depends=(
 'zps'
 'signal-desktop'
 'python-argcomplete'
-
+'libmfx'
+'openarena'
+'python2-lockfile'
+'python2-pyasn1'
+'vmware-workstation'
+'wtf'
+'wtfutil'
 )
 
