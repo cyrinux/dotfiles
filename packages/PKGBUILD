@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.0.45
+pkgver=2.0.48
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -75,7 +75,7 @@ depends=(
 'aurutils-git'
 'autorandr'
 'avahi'
-'python-azure-cli'
+'azure-cli'
 'awless'
 'bash-completion'
 'bash-language-server'
@@ -238,7 +238,6 @@ depends=(
 'hub'
 'hunspell-fr'
 'hwdetect'
-'hydra'
 'i3-gaps'
 'imagemagick'
 'informant'
@@ -254,6 +253,7 @@ depends=(
 'iptables'
 'iptraf-ng'
 'iscan'
+'iscan-data'
 'isync'
 'iucode-tool'
 'iwd'
@@ -433,7 +433,6 @@ depends=(
 'putty'
 'pv'
 'pwgen'
-'pwntools'
 'py3status'
 'pydf'
 'pygmentize'
@@ -445,7 +444,6 @@ depends=(
 'python-attrs'
 'python-awscli-plugin-endpoint'
 'python-black'
-'python-capstone'
 'python-chump-git'
 'python-colorlog'
 'python-coverage'
