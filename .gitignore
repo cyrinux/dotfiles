@@ -26,3 +26,4 @@ __pycache__/
 *.pdf
 .magic.mgc
 .#.*
+bin/checkmail

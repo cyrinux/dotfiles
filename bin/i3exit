@@ -30,11 +30,11 @@ before_lock() {
   fusermount -u ~/Vault-Share &
   fusermount -u ~/SAMBA &
   usbguard_lock
-  # physlock -lms
+  physlock -lms
 }
 
 after_lock() {
-  # physlock -L
+  physlock -L
   usbguard_unlock
   xrandr --auto
   picom & disown
@@ -53,7 +53,6 @@ usbguard_unlock(){
 fix_keyboard_layout(){
   xkb-switch -s fr
   xmodmap ~/.Xmodmap
-  py3-cmd refresh xkb_layouts
 }
 
 trap usbguard_unlock SIGHUP SIGINT SIGTERM
