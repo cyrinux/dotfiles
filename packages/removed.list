@@ -1,4 +1,4 @@
+error: missing 'python-azure-cli' dependency for 'cyrinux'
 error: missing 'afpfs-ng' dependency for 'hydra'
-error: missing 'python-vsts-cd-manager' dependency for 'python-azure-cli'
 error: missing 'capstone' dependency for 'python-capstone'
 error: missing 'capstone' dependency for 'python2-capstone'
