@@ -36,7 +36,7 @@ case $STATUS in
     fi
     systemctl restart kresd@1.service
     systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "file_status PIA"
+    py3-cmd refresh "whatismyip" "networkmanager"
     ;;
   vpn-down)
     if [[ $INTERFACE == "tun-pia" ]]; then
@@ -44,7 +44,7 @@ case $STATUS in
     fi
     systemctl restart kresd@1.service
     systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "file_status PIA"
+    py3-cmd refresh "whatismyip" "networkmanager"
     ;;
 esac
 py3-cmd refresh "external_script nmtrust" "networkmanager" "frame wwan_frame"
