@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/bin/bash
 
 set -e
 
@@ -80,8 +80,7 @@ copy "etc/snapper/configs/config"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/10-swappiness.conf"
 copy "etc/sysctl.d/51-tcp-ip-stack.conf"
-copy "etc/sysctl.d/99-idea.conf"
-copy "etc/sysctl.d/99-sysctl.conf"
+copy "etc/sysctl.d/99-sysrq.conf"
 copy "etc/systemd/journald.conf"
 copy "etc/systemd/system/paccache.service"
 copy "etc/systemd/system/paccache.timer"
@@ -109,6 +108,8 @@ copy "etc/default/grub"
 copy "etc/default/tlp"
 copy "etc/default/grub-btrfs/config"
 copy "etc/nmtrust/trusted_units"
+copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
+copy "etc/systemd/system/man-db.timer.d/man-db.timer.conf"
 copy "etc/systemd/system/getty@tty1.service.d"
 copy "etc/pacman.conf"
 copy "etc/pam.d/sudo"
@@ -198,7 +199,7 @@ ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.co
 
 echo "Configuring firejail"
 firecfg
-rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox}
+rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox,wire-desktop}
 
 if is_chroot; then
   >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."

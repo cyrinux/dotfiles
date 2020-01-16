@@ -1,6 +1,6 @@
 pkgname='cyrinux'
-pkgver=2.0.51
-pkgrel=2
+pkgver=2.0.52
+pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
 url='https://github.com/cyrinux/dotfiles'
@@ -221,7 +221,6 @@ depends=(
 'hadolint-bin'
 'hamlib'
 'hamradio-menus'
-'hardened-malloc-git'
 'haskell-tf-random'
 'haskell-time-locale-compat'
 'haveged'
@@ -670,7 +669,6 @@ depends=(
 'yapf'
 'yarn'
 'youtube-dl'
-'youtube-viewer'
 'yq'
 'yubikey-manager'
 'yubikey-personalization-gui'
@@ -692,5 +690,7 @@ depends=(
 'vmware-workstation'
 'wtf'
 'wtfutil'
+'intel-undervolt'
+
 )
 
