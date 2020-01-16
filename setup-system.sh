@@ -54,8 +54,7 @@ systemctl_enable() {
 
 systemctl_enable_start() {
     echo "systemctl enable --now "$1""
-    systemctl enable "$1"
-    systemctl start  "$1"
+    systemctl enable --now "$1"
 }
 
 echo ""
@@ -167,9 +166,9 @@ if [ ! -s "/etc/usbguard/rules.conf" ]; then
 fi
 
 if [ -d "$HOME/.ccnet" ]; then
-systemctl_enable_start "seaf-cli@cyril.service"
+    systemctl_enable_start "seaf-cli@cyril.service"
 else
->&2 echo "=== Seafile is not initialized, skipping..."
+    >&2 echo "=== Seafile is not initialized, skipping..."
 fi
 
 echo ""
