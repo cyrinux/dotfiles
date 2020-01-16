@@ -160,7 +160,6 @@ echo "======================================="
 echo "Finishing various user configuration..."
 echo "======================================="
 
-
 echo "Configuring MIME types"
 file --compile --magic-file ~/.magic
 
