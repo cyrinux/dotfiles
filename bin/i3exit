@@ -31,6 +31,7 @@ before_lock() {
   fusermount -u ~/SAMBA &
   usbguard_lock
   physlock -lms
+  killall picom
 }
 
 after_lock() {

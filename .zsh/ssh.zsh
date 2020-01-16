@@ -4,7 +4,7 @@ alias ssh='ssh_with_color_and_term'
 
 ssh_with_term() {
   if [[ "$@" =~ "(.*bastion.*|.*isilon*|.*wat-sw.*|.*uli-sw.*|.*n9k.*|.*n3k.*|nasux|10.105.*)" ]]; then
-    TERM=xterm-256color ssh -q "$@"
+    TERM=xterm-256color /usr/bin/ssh -q "$@"
   else
     kitty +kitten ssh "$@"
   fi
