@@ -144,7 +144,7 @@ else
   systemctl_enable_start "yubikey-touch-detector.service"
 
     if [ -d "$HOME/.mail" ]; then
-        systemctl_enable_start "mbsync.timer"
+        systemctl_enable_start "checkmail.timer"
         systemctl_enable_start "goimapnotify@personal.service"
     else
         >&2 echo -e "
