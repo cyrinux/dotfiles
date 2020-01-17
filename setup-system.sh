@@ -54,7 +54,8 @@ systemctl_enable() {
 
 systemctl_enable_start() {
     echo "systemctl enable --now "$1""
-    systemctl enable --now "$1"
+    systemctl enable "$1"
+    systemctl start "$1"
 }
 
 echo ""
@@ -161,15 +162,6 @@ systemctl_enable_start "tlp.service"
 systemctl_enable_start "tlp-sleep.service"
 systemctl_enable_start "systemd-swap.service"
 
-if [ ! -s "/etc/usbguard/rules.conf" ]; then
- >&2 echo "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
-fi
-
-if [ -d "$HOME/.ccnet" ]; then
-    systemctl_enable_start "seaf-cli@cyril.service"
-else
-    >&2 echo "=== Seafile is not initialized, skipping..."
-fi
 
 echo ""
 echo "==============================="
@@ -185,6 +177,16 @@ echo "======================================="
 echo "Finishing various user configuration..."
 echo "======================================="
 
+if [ ! -s "/etc/usbguard/rules.conf" ]; then
+ >&2 echo "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
+fi
+
+if [ -d "$HOME/.ccnet" ]; then
+    systemctl_enable_start "seaf-cli@cyril.service"
+else
+    >&2 echo "=== Seafile is not initialized, skipping..., run seafile-applet"
+fi
+
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
 ln -sf /usr/bin/archbuild /usr/local/bin/aur-x86_64-build
@@ -196,13 +198,13 @@ echo "Configuring fontconfig"
 ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.conf
 
 echo "Configuring firejail"
-firecfg 2>/dev/null
+firecfg >/dev/null 2>&1
 rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox,wire-desktop,copyq}
 
 if is_chroot; then
   >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
 else
-  echo "=== Configuring firewall rules and dev"
+  echo "Configuring firewall rules and dev"
   ufw --force reset > /dev/null
   ufw default allow outgoing
   ufw default deny incoming

@@ -11,10 +11,10 @@ case $STATUS in
     if [[ ${INTERFACE:0:3} != "tun" && ${INTERFACE:0:3} != "tap"
           && ${INTERFACE:0:2} != "vm" && ${INTERFACE:0:6} != "docker"
           && ${INTERFACE:0:11} != "enp59s0u1u2" && ${INTERFACE:0:5} != "virbr"
-          && ${INTERFACE:0:5} != "vmnet" && ${INTERFACE:0:14} != "wg0"
+          && ${INTERFACE:0:14} != "wg0"
           && ${INTERFACE:0:14} != "wwp0s20f0u2i12"
-          && ${ESSID:0:4} != "truc" && ${ESSID:0:6} != "mobile"
-          && ${ESSID:0:6} != "phonux" ]]; then
+          && ${ESSID:0:4} != "truc"
+          && ${ESSID:0:4} != "phon" ]]; then
       nmcli con up "$VPN_NAME" 2>/dev/null
     fi
     systemctl restart kresd@1.service
