@@ -35,7 +35,7 @@ order += 'sysdata'
 order += 'group cpu'
 order += 'group ram'
 order += 'networkmanager'
-order += 'frame wwan_frame'
+order += 'frame wwan'
 order += 'external_script nmtrust'
 order += 'bluetooth'
 order += 'file_status VPN'
@@ -92,7 +92,7 @@ clock {
     on_click 1 = 'exec gsimplecal'
 }
 
-frame wwan_frame {
+frame wwan {
   format = '{output}{button}'
   open = false
 
