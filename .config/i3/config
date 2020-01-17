@@ -282,17 +282,13 @@ bindcode $win+27 restart
 
 # Set shut down, restart and locking features
 bindsym $hyper+Escape mode "$mode_system"
-set $mode_system (l)ock, (e)xit, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
+set $mode_system (l)ock,  (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
 mode "$mode_system" {
     # (l)
     bindcode 46 exec i3exit lock, mode "default"
     # (s)
     bindcode 39 exec i3exit suspend, mode "default"
-    # (g)
-    bindcode 42 exec i3exit greeter, mode "default"
     # (e)
-    bindcode 26 exec i3exit logout, mode "default"
-    # (r)
     bindcode 27 exec i3exit reboot, mode "default"
     # (s)
     bindcode Shift+39 exec i3exit shutdown, mode "default"
@@ -437,6 +433,7 @@ mode "$mode_gaps" {
         bindcode 32 mode "$mode_gaps_outer"
         # (i)
         bindcode 31 mode "$mode_gaps_inner"
+
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
@@ -493,7 +490,7 @@ bindsym --whole-window $hyper+button7 workspace prev
 
 exec_always hsetroot -solid '#202020' &
 # exec_always wallpaper &
-exec --no-startup-id (sleep 15 && xmodmap ~/.Xmodmap &)
+exec --no-startup-id (sleep 5 && xmodmap ~/.Xmodmap &)
 exec_always --no-startup-id xmodmap ~/.Xmodmap
 exec_always --no-startup-id numlockx &
 exec --no-startup-id syndaemon -d -i 0.2 -t
@@ -509,8 +506,7 @@ exec_always --no-startup-id "pgrep -x udiskie || (udiskie &)"
 exec_always --no-startup-id "pgrep -x unclutter || (unclutter -b)"
 exec_always --no-startup-id "pgrep -x playerctl || (playerctl status --format '{{ playerName }}' --follow > /tmp/player-last &)"
 exec_always --no-startup-id "pgrep -x xidlehook || (xidlehook --not-when-fullscreen --not-when-audio --socket /tmp/xidlehook_suspend.sock --timer 1800 'run-on-bat i3exit suspend '' & )"
-# exec_always py3-cmd refresh xkb_layouts
 exec_always "pgrep -x copyq || (copyq & )"
-exec_always "pgrep -x aa-notify || (aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log & )"
+exec_always "pgrep -x aa-notify || (aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log &)"
 exec_always "pgrep -x opensnitch-ui || (opensnitch-ui & )"
 exec_always "pgrep -x picom || picom & )"

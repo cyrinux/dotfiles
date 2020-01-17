@@ -196,8 +196,8 @@ echo "Configuring fontconfig"
 ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.conf
 
 echo "Configuring firejail"
-firecfg
-rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox,wire-desktop}
+firecfg 2>/dev/null
+rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox,wire-desktop,copyq}
 
 if is_chroot; then
   >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
