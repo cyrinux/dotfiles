@@ -28,7 +28,6 @@ before_lock() {
   bluetoothctl disconnect &
   fusermount -u ~/Vault &
   fusermount -u ~/Vault-Share &
-  fusermount -u ~/SAMBA &
   usbguard_lock
   physlock -lms
   # killall picom
