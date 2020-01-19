@@ -63,6 +63,8 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
+copy "etc/lightdm/lightdm.conf"
+copy "etc/lightdm/lightdm-gtk-greeter.conf"
 copy "etc/bluetooth/main.conf"
 copy "etc/makepkg.conf"
 copy "etc/default/grub-btrfs/config"
@@ -97,7 +99,7 @@ copy "etc/NetworkManager/dispatcher.d/20freewifi"
 copy "etc/NetworkManager/conf.d"
 copy "etc/systemd/system/iwd.service.d/90-networkmanager.conf"
 copy "etc/updatedb.conf"
-copy "etc/pulse/default.pa"
+copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"
 copy "etc/snapper/configs/home"
 copy "etc/audit/auditd.conf"
@@ -105,12 +107,11 @@ copy "etc/audit/audit.rules"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/modules-load.d/zram.conf"
 copy "etc/default/grub"
-copy "etc/default/tlp"
-copy "etc/nmtrust/trusted_units"
+copy "etc/default/tlp" 644
+copy "etc/nmtrust/trusted_units" 644
 copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
 copy "etc/systemd/system/man-db.timer.d/man-db.timer.conf"
-copy "etc/systemd/system/getty@tty1.service.d"
-copy "etc/pacman.conf"
+copy "etc/pacman.conf" 644
 copy "etc/pam.d/sudo"
 copy "etc/private-internet-access/pia.conf"
 copy "etc/sudoers"
@@ -123,9 +124,8 @@ copy "etc/udev/rules.d/50-usb_power_save.rules"
 copy "etc/udev/rules.d/99pci_pm.rules"
 copy "etc/udev/rules.d/90-hid-eToken.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
-copy "etc/X11/xorg.conf.d/00-keyboard.conf"
-copy "etc/X11/xorg.conf.d/30-touchpad.conf"
-copy "etc/nmtrust/trusted_units"
+copy "etc/X11/xorg.conf.d/00-keyboard.conf" 644
+copy "etc/X11/xorg.conf.d/30-touchpad.conf" 644
 
 (( "$reverse" )) && exit 0
 
@@ -138,7 +138,7 @@ sysctl --system > /dev/null
 systemctl daemon-reload
 systemctl_enable "backup-repo@pkgbuild.service"
 systemctl_enable "docker.service"
-systemctl_enable_start "getty@tty1.service"
+systemctl_enable "lightdm.service"
 systemctl_enable_start "macchiato.service"
 systemctl_enable_start "fstrim.timer"
 systemctl_enable_start "NetworkManager.service"

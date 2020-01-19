@@ -490,7 +490,7 @@ bindsym --whole-window $hyper+button7 workspace prev
 
 exec_always hsetroot -solid '#202020' &
 # exec_always wallpaper &
-exec --no-startup-id (sleep 5 && xmodmap ~/.Xmodmap &)
+exec --no-startup-id (sleep 15 && xmodmap ~/.Xmodmap &)
 exec_always --no-startup-id xmodmap ~/.Xmodmap
 exec_always --no-startup-id numlockx &
 exec --no-startup-id syndaemon -d -i 0.2 -t

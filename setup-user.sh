@@ -96,7 +96,6 @@ link ".config/khard"
 link ".config/khal"
 link ".config/vdirsyncer"
 link ".config/firejail"
-link ".cheat"
 link ".wgetrc"
 link ".gitmessage"
 link ".config/PulseEffects"
@@ -186,7 +185,7 @@ fi
 
 if [[ -a "$HOME/.password-store" ]]; then
     echo "Configuring automatic git push for pass"
-    echo "#!/usr/bin/zsh\n\npass git push" >! "$HOME/.password-store/.git/hooks/post-commit"
+    echo "#!/usr/bin/zsh\n\npass git push" > "$HOME/.password-store/.git/hooks/post-commit"
     chmod +x "$HOME/.password-store/.git/hooks/post-commit"
 fi
 

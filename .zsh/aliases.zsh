@@ -97,20 +97,9 @@ iowaiting() {
     watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')"
 }
 
-# ranger session
-ranger() {
-    tempfile="$(mktemp -t tmp.XXXXXX)"
-    /usr/bin/ranger --choosedir="$tempfile" "${@:-$(pwd)}"
-    test -f "$tempfile" &&
-    if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
-        cd -- "$(cat "$tempfile")"
-    fi
-    rm -f -- "$tempfile"
-}
-
 # fix
 ironkey() {
-  sudo /run/media/cyril/IronKey/linux/ironkey $@
+  sudo /run/media/$USER/IronKey/linux/ironkey $@
 }
 
 # download recursive
