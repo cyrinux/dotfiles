@@ -6,7 +6,7 @@ Description=Run mbsync and notmuch 2 minutes after boot and every 10minutes
 OnBootSec=2min
 # Time between running each consecutive time
 OnUnitActiveSec=10min
-Unit=mailsync.service
+Unit=checkmail.service
 
 [Install]
 WantedBy=timers.target

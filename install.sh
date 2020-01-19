@@ -231,7 +231,7 @@ chmod +x /mnt/boot/grub/update.sh
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video audit plugdev informant; do
+for group in wheel autologin network video audit plugdev informant; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done

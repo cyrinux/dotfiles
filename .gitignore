@@ -15,7 +15,6 @@ packages/pkg/**
 **/index-v*.db/.*
 .weechat/*.log
 .config/copyq/*.dat
-*.pem
 watch_later
 **/.stignore
 **/.stfolder
@@ -26,4 +25,6 @@ __pycache__/
 *.pdf
 .magic.mgc
 .#.*
+*.pem
 bin/checkmail
+

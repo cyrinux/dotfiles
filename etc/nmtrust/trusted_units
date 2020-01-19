@@ -1,8 +1,7 @@
-mailsync.timer,user:cyril
+checkmail.timer,user:cyril
 vdirsyncer.timer,user:cyril
 tarsnap.timer,user:cyril
-tarsnapper.timer
-pinboard-backup.timer,user:cyril
+tarsnapper.timer,user:cyril
 tor.service
 library-repos.timer,user:cyril
 sshd.service
