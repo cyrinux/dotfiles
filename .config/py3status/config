@@ -30,7 +30,6 @@ order += 'file_status decrypted_shared'
 order += 'file_status decrypted_documents'
 order += 'diskdata'
 order += 'conky diskio_sda'
-order += 'conky diskio_sdb'
 order += 'sysdata'
 order += 'group cpu'
 order += 'group ram'
@@ -43,15 +42,15 @@ order += 'whatismyip'
 order += 'file_status HOME'
 order += 'file_status WORK'
 order += 'backlight'
-order += 'xkb_input'
-order += 'external_script date'
-order += 'clock'
 order += 'volume_status'
 order += 'frame hidden'
+order += 'do_not_disturb'
 order += 'battery_level'
 order += 'getjson infra_healthcheck'
 order += 'systemd_suspend_inhibitor'
-order += 'do_not_disturb'
+order += 'xkb_input'
+order += 'external_script date'
+order += 'clock'
 order += 'usbguard'
 
 external_script trash {
@@ -415,11 +414,6 @@ getjson blog {
 
 conky diskio_sda {
     format = ' {diskio sda}'
-    config = {'short_units': True}
-}
-
-conky diskio_sdb {
-    format = ' {diskio sdb}'
     config = {'short_units': True}
 }
 

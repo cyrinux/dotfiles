@@ -1,5 +1,0 @@
-error: missing 'private-internet-access-vpn' dependency for 'cyrinux'
-error: missing 'virtualbox' dependency for 'cyrinux'
-error: missing 'afpfs-ng' dependency for 'hydra'
-error: missing 'capstone' dependency for 'python-capstone'
-error: missing 'capstone' dependency for 'python2-capstone'
