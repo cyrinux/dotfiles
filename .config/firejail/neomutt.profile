@@ -1,4 +1,4 @@
-#quiet
+quiet
 # Firejail profile for mutt
 # Description: Text-based mailreader supporting MIME, GPG, PGP and threading
 # This file is overwritten after every install/update
