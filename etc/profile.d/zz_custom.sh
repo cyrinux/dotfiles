@@ -15,6 +15,7 @@ export BROWSER='browser'
 # XDG Compliance
 export WGETRC="$HOME/.config/wget/wgetrc"
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
+# export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Ssh agent support
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
