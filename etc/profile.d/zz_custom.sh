@@ -12,6 +12,10 @@ export DIFFPROG='meld'
 export WORDCHARS='*?_.[]~&!#$%^(){}<>'
 export BROWSER='browser'
 
+# XDG Compliance
+export WGETRC="$HOME/.config/wget/wgetrc"
+export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
+
 # Ssh agent support
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 
@@ -36,7 +40,6 @@ export XSECURELOCK_WANT_FIRST_KEYPRESS=1
 export XSECURELOCK_PASSWORD_PROMPT=time_hex
 export XSECURELOCK_AUTH_BACKGROUND_COLOR="#222222"
 export XSECURELOCK_COMPOSITE_OBSCURER=0
-
 
 # Pass configuration
 export PASSWORD_STORE_CHARACTER_SET='a-zA-Z0-9~!@#$%^&*()-_=+[]{};:,.<>?'
