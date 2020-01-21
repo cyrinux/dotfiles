@@ -75,7 +75,7 @@ py3status-refresh-pacman() {
   py3-cmd refresh "$pacdiff" "$official" "$repo" "$aur" "$vcs" "$rebuild"
 }
 
-alias rsyncrepo='rsync --archive --partial --delete --checksum --verbose /var/cache/pacman/cyrinux-aur/* aur@backup-aur:/var/services/homes/cyril/www/aur/'
+alias rsyncrepo='rsync --archive --partial --delete --verbose /var/cache/pacman/cyrinux-aur/* aur@backup-aur:/var/services/homes/cyril/www/aur/'
 alias update='auru; pacu'
 alias signrepo='repoctl update'
 
