@@ -28,7 +28,6 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
 
 
 # Hooks
-
 hook global BufOpenFile  .* modeline-parse
 hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}

@@ -15,7 +15,6 @@ export BROWSER='browser'
 # XDG Compliance
 export WGETRC="$HOME/.config/wget/wgetrc"
 export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
-# export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 # Ssh agent support
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
@@ -57,3 +56,14 @@ export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/'
 export NNN_TRASH=1
 export NNN_COLORS='4235'
 export NNN_PLUG='j:jump;d:dragdrop;p:paperwork;c:croc'
+
+# Enable QT apps to have gtk theme
+# Force wayland on qt apps
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORM=wayland
+export QT_WAYLAND_FORCE_DPI=96
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export QUTE_SKIP_WAYLAND_CHECK=1
+export XKB_DEFAULT_LAYOUT="fr-hyper,us"
+export MOZ_ENABLE_WAYLAND=1
+

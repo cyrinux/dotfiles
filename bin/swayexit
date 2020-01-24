@@ -1,0 +1,88 @@
+#!/usr/bin/zsh
+
+POLICY_UNLOCKED=apply-policy
+POLICY_LOCKED=reject
+
+radio_state() {
+ wifi $1
+ wwan $1
+ bluetooth $1
+}
+
+stop_vpn() {
+  nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
+}
+
+stop_wwan() {
+  nmcli con show --active | grep gsm | cut -d' ' -f1 | xargs -n1 nmcli con down
+}
+
+stop_wlan() {
+  nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
+}
+
+before_lock() {
+  pauseallmpv 2>/dev/null
+  playerctl pause 2>/dev/null
+  killall mpv 2>/dev/null
+  bluetoothctl disconnect &
+  fusermount -u ~/Vault &
+  fusermount -u ~/Vault-Share &
+  usbguard_lock
+  physlock -lms
+}
+
+after_lock() {
+  physlock -L
+  usbguard_unlock
+  xrandr --auto
+  fix_keyboard_layout
+  killall -SIGCONT py3status
+}
+
+usbguard_lock(){
+  usbguard set-parameter InsertedDevicePolicy $POLICY_LOCKED
+}
+
+usbguard_unlock(){
+  usbguard set-parameter InsertedDevicePolicy $POLICY_UNLOCKED
+}
+
+fix_keyboard_layout(){
+  xkb-switch -s fr
+  xmodmap ~/.Xmodmap
+}
+
+trap usbguard_unlock SIGHUP SIGINT SIGTERM
+
+case "$1" in
+  lock)
+    before_lock
+    swaylock
+    after_lock
+    ;;
+  suspend)
+    before_lock
+    stop_vpn
+    stop_wwan
+    systemctl -i suspend
+    swaylock
+    after_lock
+    nmcli device wifi rescan 2>/dev/null
+    ;;
+  reboot)
+    stop_vpn
+    stop_wwan
+    systemctl -i reboot
+    ;;
+  shutdown)
+    stop_vpn
+    stop_wwan
+    systemctl -i poweroff
+    ;;
+  *)
+    echo "Usage: $0 {lock|suspend|reboot|shutdown}"
+    exit 2
+esac
+
+exit 0

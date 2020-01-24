@@ -1,0 +1,21 @@
+margin=16
+padding=8
+border-color=#ebdbb2
+text-color=#eaeaea
+background-color=#282828
+border-size=2
+height=200
+border-radius=8
+default-timeout=20000
+format=<b>%s</b>\n\n%b
+
+[urgency=low]
+background-color=#353535
+default-timeout=10000
+
+[urgency=high]
+background-color=#4a3533
+default-timeout=0
+
+[grouped]
+format=(%g) <b>%s</b>\n\n\n%b
