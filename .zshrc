@@ -7,7 +7,7 @@ fi
 
 # Load plugins
 . ~/.zsh/prezto.zsh
-. ~/.zsh/zsh-notify.zsh
+# . ~/.zsh/zsh-notify.zsh
 . ~/.zsh/antigen.zsh
 . ~/.zsh/prezto-patches.zsh
 

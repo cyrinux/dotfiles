@@ -1,0 +1,9 @@
+{
+    output eDP-1   disable
+    output DP-3    enable   position 0,0        mode 1920x1200   transform 270
+    output DP-4    enable   position 1200,420   mode 1920x1200
+    output DP-5    enable   position 3120,420   mode 1920x1200
+}
+{
+    output eDP-1   enable   scale 1.2
+}

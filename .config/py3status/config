@@ -176,7 +176,7 @@ external_script firejail {
 
 external_script checkofficial {
   cache_timeout = 84600
-  script_path = "check-aur-became-official"
+  script_path = "checkofficial"
   button_show_notification = 1
   format = '\?if=lines&color=degraded 󰀽  official {lines}'
 }
@@ -387,13 +387,6 @@ external_script clipboard_count {
   format = '\?if=lines>200&color=degraded  {lines:.0f}'
 }
 
-# gitlab puppetwork {
-#     cache_timeout = 60
-#     auth_token = ***REMOVED***
-#     project = '***REMOVED***'
-#     format = '[\?if=open_merge_requests_count>4 [\?color=orangered&show ] [{open_merge_requests_count}]]'
-# }
-
 mpris {
   player_priority = "[mpv, vlc, spotify, *]"
   format = "{title} from [{artist}][{artists}]"
@@ -433,6 +426,8 @@ xkb_input {
   button_prev = None
   button_next = None
   format_input = '\?color=s {s}'
+  switcher = 'swaymsg'
+  inputs = [{"type": "keyboard", "identifier": "*AT_Translated_Set_2_keyboard" }]
   thresholds = [
     ('us', '#fb4934'),
     ('ru', '#fb4934'),
