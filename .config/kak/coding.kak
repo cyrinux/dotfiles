@@ -7,7 +7,7 @@ set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'rg --hidden --follow --smart-case --with-filename --column'
 
-set-option global langmap %opt{langmap_ru_jcuken}
+set-option global langmap %opt{langmap_fr_azerty}
 
 hook global ModuleLoaded kitty %{
    set-option global kitty_window_type 'os'
@@ -33,7 +33,7 @@ hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
 hook global BufWritePost .* %{ git show-diff }
 hook global BufReload    .* %{ git show-diff }
-hook global WinCreate    .* auto-pairs-enable
+# hook global WinCreate    .* auto-pairs-enable
 hook global WinDisplay   .* %{ evaluate-commands %sh{
     cd "$(dirname "$kak_buffile")"
     project_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
@@ -78,7 +78,7 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
 }
 
 hook global WinSetOption filetype=markdown %{
-    set-option -add buffer auto_pairs_surround _ _ * *
+    set-option -add buffer surround _ _ * *
 }
 
 hook global WinSetOption filetype=sh %{

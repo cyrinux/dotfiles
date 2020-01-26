@@ -8,7 +8,7 @@ domain=$(echo "$credentials" | grep 'rdp_domain' | awk '{ print $2 }')
 host=$(echo "$credentials" | grep 'rdp_host' | awk '{ print $2 }')
 
 
-xfreerdp -grab-keyboard               \
+wlfreerdp -grab-keyboard               \
         /f                            \
         /fonts                        \
         /aero                         \

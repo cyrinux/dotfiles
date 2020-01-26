@@ -35,8 +35,6 @@ before_lock() {
 after_lock() {
   physlock -L
   usbguard_unlock
-  xrandr --auto
-  fix_keyboard_layout
   killall -SIGCONT py3status
 }
 
@@ -46,11 +44,6 @@ usbguard_lock(){
 
 usbguard_unlock(){
   usbguard set-parameter InsertedDevicePolicy $POLICY_UNLOCKED
-}
-
-fix_keyboard_layout(){
-  xkb-switch -s fr
-  xmodmap ~/.Xmodmap
 }
 
 trap usbguard_unlock SIGHUP SIGINT SIGTERM

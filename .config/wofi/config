@@ -1,0 +1,7 @@
+width=600
+height=400
+mode=drun
+stylesheet=gruvbox
+no_actions=true
+insensitive=true
+allow_images=true

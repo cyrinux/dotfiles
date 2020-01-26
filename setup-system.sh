@@ -63,8 +63,9 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
-copy "etc/lightdm/lightdm.conf"
-copy "etc/lightdm/lightdm-gtk-greeter.conf"
+# copy "etc/lightdm/lightdm.conf"
+# copy "etc/lightdm/lightdm-gtk-greeter.conf"
+copy "etc/systemd/system/getty@tty2.service.d"
 copy "etc/bluetooth/main.conf"
 copy "etc/makepkg.conf"
 copy "etc/default/grub-btrfs/config"
@@ -138,7 +139,8 @@ sysctl --system > /dev/null
 systemctl daemon-reload
 systemctl_enable "backup-repo@pkgbuild.service"
 systemctl_enable "docker.service"
-systemctl_enable "lightdm.service"
+systemctl_enable "getty@tty2.service"
+# systemctl_enable "lightdm.service"
 systemctl_enable_start "macchiato.service"
 systemctl_enable_start "fstrim.timer"
 systemctl_enable_start "NetworkManager.service"
@@ -219,8 +221,5 @@ else
 
   echo "Force dns config"
   ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-
-  sleep 1
-  xmodmap "$dotfiles_dir/.Xmodmap"
 fi
 

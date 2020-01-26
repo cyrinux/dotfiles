@@ -1,3 +1,0 @@
-#!/bin/bash
-(sleep 2 && xmodmap ~/.Xmodmap) &
-(sleep 30 && systemctl --user restart redshift) &
