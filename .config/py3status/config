@@ -12,7 +12,7 @@ order += 'mpris'
 order += 'khal_calendar'
 order += 'taskwarrior'
 order += 'air_quality'
-order += 'external_script clipboard_count'
+# order += 'external_script clipboard_count'
 order += 'yubikey'
 order += 'external_script pacdiff'
 order += 'external_script checkofficial'
@@ -77,7 +77,6 @@ battery_level  {
   color_charging = '#fabd2f'
   format = '{icon}   {percent}%'
   notify_low_level = true
-  notification = true
   battery_id = 0
   measurement_mode = 'sys'
   on_click 2 = 'exec kitty battop'
@@ -380,12 +379,12 @@ air_quality {
   format = '[\?if=aqi>90&color=aqi  {aqi}]'
 }
 
-external_script clipboard_count {
-  cache_timeout = 3600
-  strip_output = True
-  script_path = "copyq count"
-  format = '\?if=lines>200&color=degraded  {lines:.0f}'
-}
+# external_script clipboard_count {
+#   cache_timeout = 3600
+#   strip_output = True
+#   script_path = "copyq count"
+#   format = '\?if=lines>200&color=degraded  {lines:.0f}'
+# }
 
 mpris {
   player_priority = "[mpv, vlc, spotify, *]"

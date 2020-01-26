@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
-if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
-  exec startx
+if [ "$(tty)" = "/dev/tty2"  ]; then
+        exec sway
 fi
+

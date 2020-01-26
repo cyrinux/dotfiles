@@ -1,5 +1,5 @@
 #!/bin/bash
-menu=$(echo -e "chromium\ndisposable\nfirefox personal\nfirefox work\ntor browser\nqutebrowser\ndisposable without network\nqrcode\ncopy to clipboard\nplay\n" | rofi -dmenu -p "browser")
+menu=$(echo -e "firefox\nchromium\ndisposable\ntor browser\nqutebrowser\ndisposable without network\nqrcode\ncopy to clipboard\nplay" | wofi -d -p "browser")
 
 case $menu in
     "chromium")
@@ -14,11 +14,8 @@ case $menu in
     "tor browser")
         eval tor-browser-en $@ >/dev/null 2>&1 &
     ;;
-    "firefox personal")
+    "firefox")
         eval firefox -P default $@ >/dev/null 2>&1 &
-    ;;
-    "firefox work")
-        eval firefox -P work $@ >/dev/null 2>&1 &
     ;;
     "qutebrowser")
         eval firewarden -c qutebrowser $@ >/dev/null 2>&1 &
@@ -27,7 +24,7 @@ case $menu in
         eval qrcode $@ >/dev/null 2>&1 &
     ;;
     "copy to clipboard")
-       eval echo \"$@\" | xclip -selection -c
+       eval echo \"$@\" | wl-copy
     ;;
     "play")
         eval mpv $@ >/dev/null 2>&1 &

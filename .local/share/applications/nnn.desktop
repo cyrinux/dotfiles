@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=nnn
 Comment=File manager
-Exec=/usr/bin/kitty nnn -A
+Exec=/usr/bin/kitty --class nnn nnn -Ae
 Type=Application
 Icon=system-file-manager
 Categories=ConsoleOnly;System;FileTools;FileManager;
