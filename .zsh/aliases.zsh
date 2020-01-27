@@ -37,6 +37,7 @@ alias -s bz2='tar -xjvf'
 alias -s pdf='firewarden -c zathura'
 alias -s jpg=vimiv
 alias -s png=vimiv
+alias -s gif=vimiv
 alias -s avi='mpv --quiet'
 alias -s mkv='mpv --quiet'
 alias -s webm='mpv --quiet'

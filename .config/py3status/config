@@ -8,7 +8,7 @@ general {
   interval = 1
 }
 
-order += 'mpris'
+# order += 'mpris'
 order += 'khal_calendar'
 order += 'taskwarrior'
 order += 'air_quality'
@@ -40,7 +40,8 @@ order += 'bluetooth'
 order += 'file_status VPN'
 order += 'whatismyip'
 order += 'file_status HOME'
-order += 'file_status WORK'
+order += 'file_status NAS'
+# order += 'file_status WORK'
 order += 'backlight'
 order += 'volume_status'
 order += 'frame hidden'
@@ -232,16 +233,24 @@ file_status VPN {
 file_status HOME {
   on_udev_net = 'refresh'
   cache_timeout = -1
-  paths = ['/proc/sys/net/ipv4/conf/tun-home']
+  paths = ['/proc/sys/net/ipv4/conf/tun-home*']
   format = '\?if=path&color=path  '
   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
 }
 
-file_status WORK {
+# file_status WORK {
+#   on_udev_net = 'refresh'
+#   cache_timeout = -1
+#   paths = ['/proc/sys/net/ipv4/conf/tap-work*']
+#   format = '\?if=path&color=path  '
+#   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
+# }
+
+file_status NAS {
   on_udev_net = 'refresh'
   cache_timeout = -1
-  paths = ['/proc/sys/net/ipv4/conf/tap-ooprod*']
-  format = '\?if=path&color=path  '
+  paths = ['/proc/sys/net/ipv4/conf/MyNAS*']
+  format = '\?if=path&color=path  '
   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
 }
 

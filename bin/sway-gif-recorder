@@ -1,0 +1,17 @@
+#!/bin/sh
+RECORDS="$(xdg-user-dir PICTURES)"
+if [ "$1" = "start" ]; then
+    NAME="record_$(date +'%s').gif"
+    GIF="$RECORDS/$NAME"
+    NOTIF_ID=$(notify-send.sh  --print-id -u critical 'Start recording' "will be record as $NAME, select an area then close this popup to end recording." \
+        --action='stop:sway-gif-recorder stop' \
+        --action="open:mpv $GIF" \
+        --close-action='sway-gif-recorder stop')
+    wf-recorder -g "$(slurp -b '#33333333')" -c gif -f $GIF
+    wl-copy < $GIF
+    notify-send 'End recording' "$GIF copied in clipboard."
+elif [ "$1" = "stop" ]; then
+    killall wf-recorder
+else
+    >&2 echo "Usage: sway-gif-recorder <start|stop>"
+fi

@@ -34,12 +34,15 @@ window {
     margin: 5px;
 }
 
+#entry:nth-child(1) {
+    font-weight: bold;
+}
+
 #entry:nth-child(even) {
     background-color: #3B3837;
 }
 
 #entry:selected {
-    border: 2px solid #d79921;
     background-color: #d79921;
 }
 

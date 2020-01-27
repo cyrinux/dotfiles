@@ -36,6 +36,7 @@ after_lock() {
   physlock -L
   usbguard_unlock
   killall -SIGCONT py3status
+  swaymsg "output * dpms on"
 }
 
 usbguard_lock(){

@@ -1,4 +1,0 @@
-#!/bin/sh
-
-mkdir -p ~/.cache/clipboard-history/
-wl-paste -n > ~/.cache/clipboard-history/$(date +%s)
