@@ -5,3 +5,4 @@ stylesheet=gruvbox
 no_actions=true
 insensitive=true
 allow_images=true
+# matching=fuzzy

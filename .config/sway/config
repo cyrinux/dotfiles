@@ -1,7 +1,3 @@
-set $laptop eDP-1
-bindswitch --reload lid:on output $laptop disable
-bindswitch --reload lid:off output $laptop enable
-
 input type:keyboard {
     xkb_layout fr-hyper,us
     xkb_options grp:shifts_toggle,caps:hyper
@@ -13,98 +9,38 @@ input type:touchpad {
     accel_profile adaptive
     tap enabled
     dwt enabled
-    # events disabled_on_external_mouse
 }
+
+set $laptop eDP-1
+bindswitch --reload lid:on output $laptop disable
+bindswitch --reload lid:off output $laptop enable
 
 output * {
     bg "#222222" solid_color
     scale 1.2
+    subpixel rgb
 }
 
+
+
 seat * hide_cursor 5000
-
-# Set mod key (Mod1=<Alt>, Mod4=<Super>, Mod3=<Hyper(CapsLocks)>)
-set $alt Mod1
-set $numlock Mod2
-set $hyper Mod4
-set $win Mod3
-
-# Use Mouse+$hyper to drag floating windows
-floating_modifier $hyper
 
 workspace_layout tabbed
 hide_edge_borders --i3 none
 default_border pixel 2
 default_floating_border none
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
+
+set $alt Mod1
+set $numlock Mod2
+set $hyper Mod4
+set $win Mod3
+floating_modifier $hyper
+
 font pango: Taskbar, Cantarell 9
 
-# Audio settings
-bindsym --to-code $win+p mode "$mode_audio"
-set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
-mode "$mode_audio" {
-    # (p)
-    bindcode 33 exec pavucontrol, mode "default"
-    # (e)
-    bindcode 26 exec pulseeffects, mode "default"
-    # (s)
-    bindcode 39 exec "connect_a2dp 00:0E:DD:06:24:1C", mode "default"
-    # (a)
-    bindcode 24 exec "connect_a2dp 20:74:CF:3B:36:A9", mode "default"
-
-    # exit system mode: "Enter" or "Escape"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym XF86AudioMute         exec py3-cmd click 1 volume_status
-bindsym Shift+XF86AudioMute   exec pamute
-bindsym XF86AudioRaiseVolume  exec py3-cmd click 4 volume_status
-bindsym XF86AudioLowerVolume  exec py3-cmd click 5 volume_status
-bindsym XF86AudioPlay exec playerctl -p $(tail -1 /tmp/player-last) play-pause
-bindsym XF86AudioPrev exec playerctl -p $(tail -1 /tmp/player-last) previous
-bindsym XF86AudioNext exec playerctl -p $(tail -1 /tmp/player-last) next
-
-
-# Screen brightness controls
-bindsym XF86MonBrightnessUp   exec set-brightness inc
-bindsym XF86MonBrightnessDown exec set-brightness dec
-bindsym Shift+XF86MonBrightnessUp   exec set-brightness inc
-bindsym Shift+XF86MonBrightnessDown exec set-brightness dec
-
-
-bindsym --to-code {
- $hyper+n exec networkmanager_dmenu
- $hyper+m exec udiskie-dmenu -p "Mount"
- $hyper+F1 exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; 2>/dev/null"
- $win+F1 exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches; 2>/dev/null"
- Print exec "grimshot save"
- $hyper+Print exec "grimshot copy area"
-
-# calendar (c)
- $hyper+c exec gsimplecal
-
- $hyper+F8 exec feh /home/cyril/library/Pictures/kak_keybinding.png
- XF86Search exec brave https://search.levis.ws/
-
- $hyper+Return exec kitty
- $win+Return exec kitty
-
- $win+q kill
-
- Shift+F2 exec "open-vault 7200 &"
- Shift+F3 exec "nemo &"
-
-# Start a launcher (=)(d)(o)(w)(p)
- $hyper+equal exec "calc"
- $hyper+w exec "surfraw-rofi"
- $win+w exec "surfraw duckduckgo -j $(wl-paste)"
- $hyper+p exec "rofi-pass"
- twosuperior exec "rofi-todoist"
- $hyper+d exec "pgrep wofi && killall wofi || wofi"
-}
+gaps inner 5
+smart_gaps on
 
 focus_follows_mouse no
 
@@ -119,8 +55,190 @@ set $workspace8 workspace number 8
 set $workspace9 workspace number 9
 set $workspace0 workspace number 10
 
-# Switch to workspace using number row
+# Assign default outputs to workspaces
+workspace 1  output DP-1-3  $laptop
+workspace 2  output DP-1-3  $laptop
+workspace 3  output DP-1-3  $laptop
+workspace 4  output DP-1-3  $laptop
+workspace 5  output DP-1-1  $laptop
+workspace 6  output DP-1-1  $laptop
+workspace 7  output DP-1-1  $laptop
+workspace 8  output DP-1-1  $laptop
+workspace 9  output DP-1-1  $laptop
+workspace 10 output DP-1-1  $laptop
+
+# workspace back and forth (with/without active container)
+workspace_auto_back_and_forth yes
+
+# Specific window configuration
+for_window    [title="^edit_text$"] floating enable
+for_window    [window_role="pop-up"] floating enable
+for_window    [app_id="org.ksnip.ksnip"] floating enable
+for_window    [class="neomutt"] move container to $workspace2
+for_window    [class="Wire"] move container to $workspace1
+for_window    [class="wfreerdp"] move container to $workspace9
+for_window    [class="feh|Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
+for_window    [class="com-stonesoft-client-launcher-SmcClient|sun-awt-X11-XDialogPeer"] floating enable
+for_window    [app_id="wev"] floating enable
+for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
+for_window    [title="^Qalculate!$"] floating enable
+
+# Audio settings
+set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
+mode "$mode_audio" {
+    bindsym --to-code {
+		 p exec pavucontrol, mode "default"
+	     e exec pulseeffects, mode "default"
+	     s exec "connect_a2dp 00:0E:DD:06:24:1C", mode "default"
+	     a exec "connect_a2dp 20:74:CF:3B:36:A9", mode "default"
+
+        Return mode "default"
+	    Escape mode "default"
+    }
+}
+
+
+# Set shut down, restart and locking features
+set $mode_system (l)ock,  (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
+mode "$mode_system" {
+	bindsym --to-code {
+     l exec swayexit lock, mode "default"
+     s exec swayexit suspend, mode "default"
+     e exec swayexit reboot, mode "default"
+     Shift+s exec swayexit shutdown, mode "default"
+     t exec ttoggle -t, mode "default"
+     u exec ttoggle -x, mode "default"
+     x --release exec xkill, mode "default"
+
+    # exit system mode: "Enter" or "Escape"
+    Return mode "default"
+    Escape mode "default"
+	}
+}
+
+# Resize window (you can also use the mouse for that)
+mode "resize" {
+    bindsym --to-code {
+        j resize shrink width 5 px or 5 ppt
+        k resize grow height 5 px or 5 ppt
+        l resize shrink height 5 px or 5 ppt
+        semicolon resize grow width 5 px or 5 ppt
+
+        # same bindings, but for the arrow keys
+        Left resize shrink width 10 px or 10 ppt
+        Down resize grow height 10 px or 10 ppt
+        Up resize shrink height 10 px or 10 ppt
+        Right resize grow width 10 px or 10 ppt
+
+        # exit resize mode: Enter or Escape
+        Return mode "default"
+        Escape mode "default"
+    }
+}
+
+# Move workspaces between monitors (m)
+set $mode_workspaces_monitors Move workspace between monitors
+mode "$mode_workspaces_monitors" {
+	bindsym --to-code {
+	  h exec swaymsg move workspace to output left, mode "default"
+	  l exec swaymsg move workspace to output right, mode "default"
+
+	  # back to normal: Enter or Escape
+	  Return mode "default"
+	  Escape mode "default"
+	}
+}
+
+
+# Color scheme (Gruvbox dark)
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #222222
+set $color_bright_gray   #3c3836
+set $color_bright_yellow #d79921
+set $color_normal_black  #282828
+set $color_unused        #ff0000
+
+# Colors                  border                 background             text                   indicator            child_border
+client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
+client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_normal_gray   $color_normal_black
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
+client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused        $color_unused
+
+bar {
+	colors {
+	    # Whole color settings
+	    background $color_normal_gray
+	    separator  $color_bright_gray
+	    statusline $color_bright_white
+
+	    # Type             border                 background              font
+	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
+	    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
+	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
+	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
+    }
+
+    status_command py3status --dbus-notify
+	position top
+    hidden_state hide
+	tray_output none
+	strip_workspace_numbers no
+  	separator_symbol " | "
+}
+
 bindsym --to-code {
+# Media controls
+ XF86AudioMute         exec py3-cmd click 1 volume_status
+ Shift+XF86AudioMute   exec pamute
+ XF86AudioRaiseVolume  exec py3-cmd click 4 volume_status
+ XF86AudioLowerVolume  exec py3-cmd click 5 volume_status
+ XF86AudioPlay         exec playerctl --player playerctld play-pause
+ XF86AudioPrev         exec playerctl --player playerctld previous
+ XF86AudioNext         exec playerctl --player playerctld next
+ $alt+Up               exec playerctl --player playerctld play-pause
+ $alt+Left             exec playerctl --player playerctld previous
+ $alt+Right            exec playerctl --player playerctld next
+ $alt+Down             exec playerctl --player playerctld stop
+ $win+p mode "$mode_audio"
+
+# Screen brightness controls
+ XF86MonBrightnessUp         exec set-brightness inc
+ XF86MonBrightnessDown       exec set-brightness dec
+ Shift+XF86MonBrightnessUp   exec set-brightness inc
+ Shift+XF86MonBrightnessDown exec set-brightness dec
+
+ $hyper+n           exec networkmanager_dmenu
+ $hyper+m           exec udiskie-dmenu -p "Mount"
+ $hyper+F1          exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
+ $win+F1            exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
+ Print              exec "grimshot save $(xdg-user-dir PICTURES)/Screenshots/"
+ $hyper+Print       exec "pgrep -x sway-screeshot || sway-screenshot-area"
+ $win+Print         exec "sway-gif-recorder start &"
+ $win+Shift+Print   exec "sway-gif-recorder stop"
+
+ $hyper+c exec gsimplecal
+
+ $hyper+F8 exec imv /home/cyril/library/Pictures/kak_keybinding.png
+ XF86Search exec firefox https://search.levis.ws/
+
+ $hyper+Return exec kitty
+ $win+Return exec kitty
+
+ $win+q kill
+
+ Shift+F2 exec "open-vault 7200 &"
+
+ $hyper+equal fullscreen disable, exec bash -c "dmenu -p calc | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
+ $hyper+w     fullscreen disable, exec "surfraw-rofi"
+ $win+w       fullscreen disable, exec "surfraw duckduckgo -j $(wl-paste)"
+ $hyper+p     fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || { sway-paste lock; passmenu -p 'pass'; sway-paste unlock; }"
+ $hyper+f	  fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || sway-paste dmenu"
+ twosuperior  fullscreen disable, exec "rofi-todoist"
+ $hyper+d     fullscreen disable, exec "pgrep wofi && killall wofi || wofi"
+
+# Switch to workspace using number row
  $hyper+ampersand $workspace1
  $hyper+eacute $workspace2
  $hyper+quotedbl $workspace3
@@ -133,34 +251,17 @@ bindsym --to-code {
  $hyper+agrave $workspace0
 
 # Move window to workspace using number row
- $win+ampersand move container to $workspace1
- $win+eacute move container to $workspace2
- $win+quotedbl move container to $workspace3
+ $win+ampersand  move container to $workspace1
+ $win+eacute     move container to $workspace2
+ $win+quotedbl   move container to $workspace3
  $win+apostrophe move container to $workspace4
- $win+parenleft move container to $workspace5
- $win+minus move container to $workspace6
- $win+egrave move container to $workspace7
+ $win+parenleft  move container to $workspace5
+ $win+minus      move container to $workspace6
+ $win+egrave     move container to $workspace7
  $win+underscore move container to $workspace8
- $win+ccedilla move container to $workspace9
- $win+agrave move container to $workspace0
-}
+ $win+ccedilla   move container to $workspace9
+ $win+agrave     move container to $workspace0
 
-# Assign default outputs to workspaces
-workspace 1  output DP-1-3  eDP-1
-workspace 2  output DP-1-3  eDP-1
-workspace 3  output DP-1-3  eDP-1
-workspace 4  output DP-1-3  eDP-1
-workspace 5  output DP-1-1  eDP-1
-workspace 6  output DP-1-1  eDP-1
-workspace 7  output DP-1-1  eDP-1
-workspace 8  output DP-1-1  eDP-1
-workspace 9  output DP-1-1  eDP-1
-workspace 10 output DP-1-1  eDP-1
-
-# workspace back and forth (with/without active container)
-workspace_auto_back_and_forth yes
-
-bindsym --to-code {
 # alternatively, you can use the cursor keys:
  $hyper+Left focus left
  $hyper+Down focus down
@@ -168,9 +269,9 @@ bindsym --to-code {
  $hyper+Right focus right
 
 # alternatively, you can use the cursor keys:
- $win+Left move left
- $win+Down move down
- $win+Up move up
+ $win+Left  move left
+ $win+Down  move down
+ $win+Up    move up
  $win+Right move right
 
  $hyper+s split toggle
@@ -179,7 +280,7 @@ bindsym --to-code {
  $hyper+BackSpace move container to output right
 
 # toggle fullscreen mode for the focused container
- $win+f fullscreen toggle
+ $win+f fullscreen toggle, inhibit_idle fullscreen
  $hyper+t layout tabbed
  $hyper+e layout toggle tabbed splith splitv stacked
 
@@ -214,148 +315,24 @@ bindsym --to-code {
 
 # reload the configuration file
  $win+r reload
+
+ $hyper+Escape mode "$mode_system"
+ $hyper+r mode "resize"
+ $win+l exec swayexit lock
+ $hyper+l exec swayexit lock
+ Control+$alt+l exec swayexit lock
+ $win+Control+m floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
+ $win+Shift+m bar mode toggle
+ $win+m mode $mode_workspaces_monitors
+
+ Ctrl+Space exec makoctl dismiss
+ Ctrl+Shift+Space exec makoctl dismiss --all
+ $hyper+o exec makoctl menu dmenu
 }
 
-# Specific window configuration
-# Bindings to make the webcam float and stick.
-# # float edit_text windows
-for_window    [title="^edit_text$"] floating enable
-for_window    [window_role="pop-up"] floating enable
-for_window    [class="neomutt"] move container to $workspace2
-for_window    [class="Wire"] move container to $workspace1
-# for_window    [class="zoom"] floating enable, sticky disable
-for_window    [class="wfreerdp"] move container to $workspace9
-for_window    [class="seafile-applet"] floating enable
-# for_window    [class="com-sun-javaws-Main"] floating enable
-# for_window    [class="feh|Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
-# for_window    [class="com-stonesoft-client-launcher-SmcClient|sun-awt-X11-XDialogPeer"] floating enable
-# for_window    [title="Event Tester"] floating enable
-# for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
-for_window    [title="^Qalculate!$"] floating enable
-# for_window    [title="Preferences$"] floating enable
 
-
-# Set shut down, restart and locking features
-bindsym $hyper+Escape mode "$mode_system"
-set $mode_system (l)ock,  (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
-mode "$mode_system" {
-    # (l)
-    bindcode 46 exec swayexit lock, mode "default"
-    # (s)
-    bindcode 39 exec swayexit suspend, mode "default"
-    # (e)
-    bindcode 27 exec swayexit reboot, mode "default"
-    # (s)
-    bindcode Shift+39 exec swayexit shutdown, mode "default"
-    # (t)
-    bindcode 28 exec ttoggle -t, mode "default"
-    # (u)
-    bindcode 30 exec ttoggle -x, mode "default"
-    # (x)
-    bindcode 53 --release exec xkill, mode "default"
-
-    # exit system mode: "Enter" or "Escape"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-# Resize window (you can also use the mouse for that)
-# (r)
-bindsym --to-code $hyper+r mode "resize"
-mode "resize" {
-        # (j)
-        bindcode 44 resize shrink width 5 px or 5 ppt
-        # (k)
-        bindcode 45 resize grow height 5 px or 5 ppt
-        # (l)
-        bindcode 46 resize shrink height 5 px or 5 ppt
-        # (semicolon)
-        bindcode 59 resize grow width 5 px or 5 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # exit resize mode: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-}
-
-bindsym --to-code {
-  $win+l exec swayexit lock
-  $hyper+l exec swayexit lock
-  Control+$alt+l exec swayexit lock
-  $hyper+f fullscreen disable, exec copyq toggle
-  $win+Control+m floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
-}
-
-# Color scheme (Gruvbox dark)
-set $color_normal_white  #a89984
-set $color_bright_white  #ebdbb2
-set $color_normal_gray   #222222
-set $color_bright_gray   #3c3836
-set $color_bright_yellow #d79921
-set $color_normal_black  #282828
-set $color_unused        #ff0000
-
-# Colors                  border                 background             text                   indicator            child_border
-client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
-client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
-client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_normal_gray   $color_normal_black
-client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
-client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused        $color_unused
-
-bar {
-	colors {
-    # Whole color settings
-    background $color_normal_gray
-    separator  $color_bright_gray
-    statusline $color_bright_white
-
-    # Type             border                 background              font
-    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
-    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
-    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
-    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
-    }
-
-    status_command py3status --dbus-notify
-	position top
-    hidden_state hide
-	tray_output none
-	strip_workspace_numbers no
-  	separator_symbol " | "
-    output eDP-1
-    output DP-1-1
-    output LVDS-1
-}
-
-bindsym --to-code $win+Shift+m bar mode toggle
-gaps inner 5
-smart_gaps on
-
-# Move workspaces between monitors (m)
-set $mode_workspaces_monitors Move workspace between monitors
-mode "$mode_workspaces_monitors" {
-  # (h)
-  bindcode 43 exec swaymsg move workspace to output left, mode "default"
-  # (l)
-  bindcode 46 exec swaymsg move workspace to output right, mode "default"
-
-  # back to normal: Enter or Escape
-  bindsym Return mode "default"
-  bindsym Escape mode "default"
-}
-bindsym --to-code $win+m mode $mode_workspaces_monitors
-
-# Cycle through workspaces with mouse.
-bindsym --whole-window $hyper+button6 workspace next
-bindsym --whole-window $hyper+button7 workspace prev
-
-exec_always "pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log"
-exec_always "pgrep -x kanshi || kanshi"
+# exec_always "pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log"
+# exec_always "pgrep -x kanshi || kanshi"
 exec_always "pgrep -x mako || mako"
 exec_always "pgrep -x nm-applet || nm-applet"
 exec_always "pgrep -x opensnitch-ui || opensnitch-ui"
@@ -363,13 +340,8 @@ exec_always "pgrep -x redshift || redshift"
 exec_always "pgrep -x solaar || solaar --restart-on-wake-up"
 exec_always "pgrep -x udiskie || udiskie"
 exec_always "pgrep -x sway-autoname-w; sway-autoname-workspaces -d"
-exec kitty
 exec "kitty --class neomutt --title neomutt neomutt"
-exec swayidle -w timeout 180 'swayexit lock' timeout 300 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep 'swayexit suspend'
 exec_always "pgrep -fx 'sh /usr/bin/wire-desktop' || wire-desktop"
-exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.7"
-exec wl-paste -w ~/bin/wl-paste-watch
-
-bindsym Ctrl+Space exec makoctl dismiss
-bindsym Ctrl+Shift+Space exec makoctl dismiss --all
-bindsym $hyper+o exec makoctl menu dmenu
+exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.5"
+exec_always "pgrep -x sway-paste || sway-paste daemon"
+exec_always swayidle -w timeout 180 'swayexit lock' resume 'swaymsg "output * dpms on"' before-sleep 'swayexit lock'
