@@ -1,11 +1,29 @@
-#!/bin/bash
-credentials=$(pass backup/restic-synology)
+#!/bin/sh
+set -u
 
-RESTIC_PASSWORD=$(echo "$credentials" | head -n1)
-RESTIC_REPOSITORY=$(echo "$credentials" | grep RESTIC_REPOSITORY | awk '{ print $2 }')
+main() {
+	for repo in $(lsrepos); do
+	    check "$repo"
+	done
+}
 
-export RESTIC_PASSWORD="$RESTIC_PASSWORD"
-export RESTIC_REPOSITORY="$RESTIC_REPOSITORY"
+check() {
+	eval "$(pass "restic/$1" 2>/dev/null)"
 
-restic check --json
-restic prune --json
+	echo
+	echo "Checking up to $RESTIC_REPOSITORY..."
+	echo
+
+	restic check --json
+	restic prune --json
+
+}
+
+lsrepos() {
+	find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
+		sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+}
+
+
+main "$@"
+

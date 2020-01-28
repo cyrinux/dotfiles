@@ -1,2 +1,0 @@
-#!/bin/sh
-notify-send -t 10000 -i /usr/share/doc/neomutt/logo/neomutt-128.png 'Last mail' "$(notmuch search  --limit=1 folder:INBOX | awk '{print $1}' | xargs notmuch show --format=json --entire-thread=false | jq -r '..| select(."content-type"? == "text/plain") | .content' | head -20)"

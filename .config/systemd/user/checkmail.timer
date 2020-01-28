@@ -1,11 +1,11 @@
 [Unit]
-Description=Run mbsync and notmuch 2 minutes after boot and every 10minutes
+Description=Mailbox synchronization timer
 
 [Timer]
 # Time to wait after booting before offlineimap.service is run for the first time
-OnBootSec=2min
+OnBootSec=1min
 # Time between running each consecutive time
-OnUnitActiveSec=10min
+OnUnitActiveSec=30s
 Unit=checkmail.service
 
 [Install]

@@ -5,8 +5,9 @@ using the libsecret API. See the documentation for each function
 '''
 
 from gi import require_version
-require_version('Secret', '1')
 from gi.repository import Secret
+
+require_version('Secret', '1')
 
 def get_pw_from_desc(pw_desc) :
     '''

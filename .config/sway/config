@@ -1,7 +1,8 @@
 font pango: Taskbar, Cantarell 9
 
 input type:keyboard {
-    xkb_layout fr-hyper,us
+    xkb_layout fr-hyper,us,fr
+    xkb_variant basic,,bepo
     xkb_options grp:shifts_toggle,caps:hyper
 }
 
@@ -11,37 +12,36 @@ input type:touchpad {
     dwt enabled
 }
 
+set $screen_laptop 'eDP-1'
+set $screen_left 'Dell Inc. DELL P2317H 9KFDW65A10FL'
+set $screen_right 'Dell Inc. DELL P2317H V2G5175GANCI'
+
 output * {
     bg "#222222" solid_color
 }
 
-output eDP-1 {
-    scale 1.2
-    subpixel rgb
+output $screen_laptop {
+    scale 1.0
+    # subpixel rgb
 }
 
-output DP-1 {
-    scale 1.1
+output $screen_right {
+    scale 1.0
+    subpixel rgb
+    pos 1920,0
+}
+
+output $screen_left {
+    scale 1.0
     subpixel rgb
     pos 0,0
 }
 
-output DP-2 {
-    scale 1.1
-    subpixel rgb
-    pos 1745,0
-}
+bindswitch --locked lid:off output $screen_laptop dpms on, exec systemctl --user start wluma
+bindswitch --locked lid:on  exec systemctl --user stop wluma, output $screen_laptop dpms off
 
-set $laptop eDP-1
-set $screen_left DP-1
-set $screen_right DP-2
-bindswitch --reload lid:on output $laptop disable
-bindswitch --reload lid:off output $laptop enable
-# bindswitch --locked --reload lid:off output $laptop enable;  output $screen_left disable; output $screen_right disable
-# bindswitch --locked --reload lid:on  output $laptop disable; output $screen_left enable;  output $screen_right enable
-
-# hide cursor if idle while 5s
-seat * hide_cursor 5000
+# hide cursor if idle while 10s
+seat * hide_cursor 10000
 
 # default layout in tabbed
 workspace_layout tabbed
@@ -51,8 +51,6 @@ hide_edge_borders --i3 none
 default_border pixel 2
 default_floating_border none
 
-
-set $alt Mod1
 set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
@@ -77,37 +75,44 @@ set $workspace9 workspace number 9
 set $workspace0 workspace number 10
 
 # Assign default outputs to workspaces
-workspace 1  output DP-1-3  $laptop
-workspace 2  output DP-1-3  $laptop
-workspace 3  output DP-1-3  $laptop
-workspace 4  output DP-1-3  $laptop
-workspace 5  output DP-1-1  $laptop
-workspace 6  output DP-1-1  $laptop
-workspace 7  output DP-1-1  $laptop
-workspace 8  output DP-1-1  $laptop
-workspace 9  output DP-1-1  $laptop
-workspace 10 output DP-1-1  $laptop
+workspace 1  output $screen_right   $screen_laptop
+workspace 2  output $screen_right   $screen_laptop
+workspace 3  output $screen_right   $screen_laptop
+workspace 4  output $screen_right   $screen_laptop
+workspace 5  output $screen_left    $screen_laptop
+workspace 6  output $screen_left    $screen_laptop
+workspace 7  output $screen_left    $screen_laptop
+workspace 8  output $screen_left    $screen_laptop
+workspace 9  output $screen_left    $screen_laptop
+workspace 10 output $screen_left    $screen_laptop
 
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
 
 # Specific window configuration
-for_window    [app_id="org.ksnip.ksnip"] floating enable
+for_window    [app_id="org.ksnip.ksnip"]     floating enable
 for_window    [app_id=".*"]                  sticky enable
 for_window    [window_role="pop-up"]         floating enable
-for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox"
+for_window    [class="ksnip"]                floating enable
+for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
+for_window    [class="Zoom"]                 floating enable
 for_window    [class="Wire"]                 move container to $workspace3
 for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
-for_window    [app_id="wev"] floating enable
+for_window    [app_id="wev"]                 floating enable
+for_window    [app_id="udiskie"]             floating enable
+for_window    [app_id="mpv"]                 inhibit_idle fullscreen
+for_window    [title="Firefox - Sharing Indicator"] floating enable
+for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
+for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
 
 # Audio settings
-set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects"
+set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, p(x)5"
 mode $mode_audio {
     bindsym --to-code {
 		 p exec pavucontrol, mode "default"
-	     e exec pulseeffects, mode "default"
-	     s exec "connect_a2dp 00:0E:DD:06:24:1C", mode "default"
-	     a exec "connect_a2dp 20:74:CF:3B:36:A9", mode "default"
+	     s exec "connect-a2dp 00:0E:DD:06:24:1C", mode "default"
+	     a exec "connect-a2dp 20:74:CF:3B:36:A9", mode "default"
+	     x exec "connect-a2dp B0:67:2F:13:7A:F1", mode "default"
 
         Return mode "default"
 	    Escape mode "default"
@@ -115,11 +120,10 @@ mode $mode_audio {
 }
 
 
-# Set shut down, restart and locking features
 set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted"
 mode $mode_system {
 	bindsym --to-code {
-     l exec sway-exit lock, mode "default"
+     l exec 'sleep 1; pkill -USR1 swayidle', mode "default"
      s exec sway-exit suspend, mode "default"
      r exec sway-exit reboot, mode "default"
      h exec sway-exit shutdown, mode "default"
@@ -131,28 +135,28 @@ mode $mode_system {
 	}
 }
 
-# set $mode_resize "Resize window"
+set $mode_cpu "CPU: (c)ool, (n)ormal"
+mode $mode_cpu {
+	bindsym --to-code {
+     c exec sudo cpu cooling, mode "default"
+     n exec sudo cpu normal, mode "default"
+
+     Return mode "default"
+     Escape mode "default"
+	}
+}
+
+set $mode_resize "Resize window"
 mode $mode_resize {
     bindsym --to-code {
-        h            resize grow   left  10 px or 10 ppt
-        Shift+h      resize shrink right 10 px or 10 ppt
-        Ctrl+h       resize grow   left  1  px or 1  ppt
-        Ctrl+Shift+h resize shrink right 1  px or 1  ppt
-
-        Shift+j      resize grow   down  10 px or 10 ppt
-        j            resize shrink up    10 px or 10 ppt
-        Ctrl+Shift+j resize grow   down  1  px or 1  ppt
-        Ctrl+j       resize shrink up    1  px or 1  ppt
-
-        Shift+k      resize shrink down  10 px or 10 ppt
-        k            resize grow   up    10 px or 10 ppt
-        Ctrl+Shift+k resize shrink down  1  px or 1  ppt
-        Ctrl+k       resize grow   up    1  px or 1  ppt
-
-        Shift+l      resize grow   right 10 px or 10 ppt
-        l            resize shrink left  10 px or 10 ppt
-        Ctrl+Shift+l resize grow   right 1  px or 1  ppt
-        Ctrl+l       resize shrink left  1  px or 1  ppt
+        h            exec swaymsg resize grow   left 10 || swaymsg resize shrink right 10
+        Ctrl+h       exec swaymsg resize grow   left 1  || swaymsg resize shrink right 1
+        j            exec swaymsg resize shrink up   10 || swaymsg resize grow   down  10
+        Ctrl+j       exec swaymsg resize shrink up   1  || swaymsg resize grow   down  1
+        k            exec swaymsg resize grow   up   10 || swaymsg resize shrink down  10
+        Ctrl+k       exec swaymsg resize grow   up   1  || swaymsg resize shrink down  1
+        l            exec swaymsg resize shrink left 10 || swaymsg resize grow   right 10
+        Ctrl+l       exec swaymsg resize shrink left 1  || swaymsg resize grow   right 1
 
         # back to normal: Enter or Escape
         Return mode default
@@ -190,62 +194,53 @@ client.unfocused          $color_normal_gray     $color_normal_gray     $color_n
 client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
 client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused        $color_unused
 
-bar {
-	colors {
-	    # Whole color settings
-	    background $color_normal_gray
-	    separator  $color_bright_gray
-	    statusline $color_bright_white
-
-	    # Type             border                 background              font
-	    focused_workspace  $color_bright_gray     $color_bright_gray      $color_bright_white
-	    active_workspace   $color_bright_gray     $color_bright_gray      $color_bright_white
-	    inactive_workspace $color_normal_gray     $color_normal_gray      $color_normal_white
-	    urgent_workspace   $color_bright_yellow   $color_bright_yellow    $color_normal_black
-    }
-
-    status_command py3status --dbus-notify
-	position top
-    hidden_state hide
-	tray_output none
-	strip_workspace_numbers no
-  	separator_symbol " | "
+bindsym --to-code --locked {
+	# Media controls
+	Shift+XF86AudioMute           exec pamute
+    XF86AudioMute                 exec pamixer -t
+    XF86AudioRaiseVolume          exec pamixer -i 5
+    XF86AudioLowerVolume          exec pamixer -d 5
+    $win+Up                       exec pamixer -t
+    $win+Down                     exec pamixer -t
+    $win+Right                    exec pamixer -i 5
+    $win+Left                     exec pamixer -d 5
+	$win+Shift+Up                 exec pamixer -t --source 1
+    $win+Shift+Down               exec pamixer -t --source 1
+    $win+Shift+Right              exec pamixer -i 5 --source 1
+    $win+Shift+Left               exec pamixer -d 5 --source 1
+    XF86AudioPlay                 exec playerctl --player playerctld play-pause
+    XF86AudioNext                 exec playerctl --player playerctld next
+    XF86AudioPrev                 exec playerctl --player playerctld previous
+    $hyper+Up                     exec playerctl --player playerctld play-pause
+    $hyper+Down                   exec playerctl --player playerctld play-pause
+    $hyper+Left                   exec playerctl --player playerctld previous
+    $hyper+Right                  exec playerctl --player playerctld next
 }
 
 bindsym --to-code {
-	# Media controls
-	XF86AudioMute                 exec py3-cmd click 1 volume_status
-	Shift+XF86AudioMute           exec pamute
-	XF86AudioRaiseVolume          exec py3-cmd click 4 volume_status
-	XF86AudioLowerVolume          exec py3-cmd click 5 volume_status
-	XF86AudioPlay                 exec playerctl --player playerctld play-pause
-	XF86AudioPrev                 exec playerctl --player playerctld previous
-	XF86AudioNext                 exec playerctl --player playerctld next
-	Control+$alt+Up               exec playerctl --player playerctld play-pause
-	Control+$alt+Left             exec playerctl --player playerctld previous
-	Control+$alt+Right            exec playerctl --player playerctld next
-	Control+$alt+Down             exec playerctl --player playerctld stop
-
 	# Screen brightness controls
-	XF86MonBrightnessUp           exec set-brightness inc
-	XF86MonBrightnessDown         exec set-brightness dec
+    XF86MonBrightnessUp         exec light -A 1%
+    XF86MonBrightnessDown       exec light -U 1%
+    Shift+XF86MonBrightnessUp   exec light -A 5%
+    Shift+XF86MonBrightnessDown exec light -U 5%
 
-	$hyper+F1                     exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
-	$win+F1                       exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
-	Print                         exec "grimshot save $(xdg-user-dir PICTURES)/Screenshots/"
-	$hyper+Print                  exec "pgrep -x sway-screenshot || sway-screenshot-area"
-	$win+Print                    exec "sway-gif-recorder start &"
-	$win+Shift+Print              exec "sway-gif-recorder stop"
+    # Go to previous windows
+    $win+Tab					  [con_mark=_prev] focus
+
+    # Misc
+	$hyper+F1                     exec "resolvectl flush-caches"
+	$win+F1                       exec "resolvectl flush-caches"
+
+    Print                         exec sway-screenshot-area
+    $hyper+Print                  exec sway-gif-area
+    $win+Print                    exec sway-screenshare
 
 	# kakoune cheatsheet
-	$hyper+F8 exec vimiv -s statusbar.show false /home/cyril/library/Pictures/kak_keybinding.png
-
-	# media search key
-	XF86Search exec xdg-open https://search.levis.ws/
+	# $hyper+F8 exec vimiv -s statusbar.show false /home/cyril/library/Pictures/kak_keybinding.png
 
 	# open terminal
 	$hyper+Return exec kitty
-	$win+Return exec kitty
+	$win+Return exec kitty /bin/bash
 
 	# vault
 	Shift+F2 exec "open-vault 7200 &"
@@ -255,13 +250,14 @@ bindsym --to-code {
 
 	# launcher
 	$hyper+n      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
-	$hyper+m      fullscreen disable, exec "pgrep -x dmenu && pkill dmen || uudiskie-dmenu -p 'Mount'"
-	$hyper+equal  fullscreen disable, exec bash -c "dmenu -p calc | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
+	$hyper+equal  exec bash -c "echo 'enter expression to calculate' | dmenu | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
 	$hyper+w      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
-	$hyper+p      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || { sway-paste lock; passmenu -p 'pass'; sway-paste unlock; }"
-	$hyper+f	  fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || sway-paste dmenu"
 	twosuperior   fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || rofi-todoist"
-	$hyper+d      fullscreen disable, exec "pgrep -x wofi && pkill  wofi || wofi"
+    $hyper+d     fullscreen disable, exec wofi
+    $hyper+f       fullscreen disable, exec wl-clipboard-manager dmenu
+    $hyper+p     fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
+	$win+p        fullscreen disable, exec "wl-clipboard-manager lock; PASSWORD_STORE_DIR="~/work/.password-store" passmenu -p 'pass work'; wl-clipboard-manager unlock"
+    $hyper+Shift+m     fullscreen disable, exec udiskie-dmenu
 
 	# Switch to workspace using number row
 	$hyper+ampersand  $workspace1
@@ -301,7 +297,7 @@ bindsym --to-code {
 	$win+l move right
 
 	# toggle menu bar
-	$win+Shift+m bar mode toggle
+	$win+Shift+m exec "killall -SIGUSR1 waybar"
 
 	# Split
 	$hyper+s split toggle
@@ -345,26 +341,30 @@ bindsym --to-code {
 	$win+r reload
 
 	# mode
-	$win+p mode $mode_audio
+	$win+a mode $mode_audio
 	$win+Escape mode $mode_system
+	$hyper+Escape mode $mode_cpu
 	$win+m mode $mode_workspaces_monitors
-	$hyper+r mode "resize"
+	$hyper+r mode $mode_resize
 
 	# notification
-	Ctrl+Space exec makoctl dismiss
-	Ctrl+Shift+Space exec makoctl dismiss --all
+    $hyper+q exec makoctl dismiss
+	$hyper+Shift+q exec makoctl dismiss --all
 	$hyper+o exec makoctl menu dmenu
 }
 
-exec_always "pgrep -x mako || mako"
-exec_always "pgrep -x nm-applet || nm-applet"
-exec_always "pgrep -x opensnitch-ui || opensnitch-ui"
+exec_always "pgrep -x sway-autoname-w || sway-autoname-workspaces -d"
+exec_always "pgrep -x inactive-window || inactive-windows-transparency.py -o 0.7"
+exec_always "pgrep -x flashfocus || flashfocus"
 exec_always "pgrep -x redshift || redshift"
-exec_always "pgrep -x solaar || solaar --restart-on-wake-up"
-exec_always "pgrep -x udiskie || udiskie"
-exec_always "pgrep -x sway-autoname-w; sway-autoname-workspaces -d"
-exec_always "pgrep -fx 'sh /usr/bin/wire-desktop' || wire-desktop"
-exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.7"
-exec_always "pgrep -x sway-paste || sway-paste daemon"
+exec_always "pkill waybar; waybar"
+exec_always "pgrep -x mako || mako"
+exec_always "pgrep -x polkit-gnome-au || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+exec_always "pgrep -x nm-applet || nm-applet"
+exec swayidle -w timeout 0 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'
 exec "kitty --class neomutt --title neomutt neomutt"
-exec_always swayidle -w timeout 120 'swaymsg "output * dpms off"' timeout 180 'sway-exit lock' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'
+
+# Load host-specific configs
+include ~/.config/sway/`hostgroup`.conf
+
+# vi:ft=i3

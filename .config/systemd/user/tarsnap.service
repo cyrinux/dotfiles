@@ -7,7 +7,7 @@ Environment=SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 IOSchedulingClass=2
 IOSchedulingPriority=7
 Type=oneshot
-ExecStart=/usr/local/bin/backitup -l %h/.tarsnap-backup -b %h/bin/tarsnap-dematerialisation
+ExecStart=%h/bin/backitup -l %h/.tarsnap-backup -b %h/bin/tarsnap-dematerialisation
 
 [Install]
 WantedBy=multi-user.target

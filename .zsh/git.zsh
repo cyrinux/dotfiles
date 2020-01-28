@@ -1,4 +1,10 @@
-alias g='git'
+g() {
+    if [[ $# > 0 ]]; then
+        git $@
+    else
+        git status
+    fi
+}
 
 alias ga='git add'
 alias gaa='git add --all'
@@ -43,7 +49,7 @@ alias gcpc='git cherry-pick --continue'
 alias gd='git diff'
 alias gds='git diff --cached'
 alias gd!='git difftool -d'
-alias gds!='git difftool --cached -d'
+alias gds!='git difftool -d --cached'
 
 alias gf='git fetch --tags'
 alias gl='git pull --tags -f'
@@ -58,8 +64,6 @@ alias gma='git merge --abort'
 alias gp='git push -u'
 alias gpf='git push --force-with-lease'
 alias gpf!='git push --force'
-alias gpa="git pushall"
-alias gpaf="git pushall -f"
 
 alias gra='git remote add'
 alias grr='git remote remove'
@@ -84,3 +88,27 @@ alias gst='git status'
 
 alias gsa='git submodule add'
 alias gsu='git submodule update --remote'
+
+grf() {
+    upstream="$(git remote get-url upstream 2> /dev/null || git remote get-url origin)"
+    if [[ $# == 1 ]]; then
+        fork=$(echo "$upstream" | awk -v name="$1" -F/ '{print $1"/"$2"/"$3"/"name"/"$5}')
+
+        git remote remove "$1" 2> /dev/null
+        git remote add "$1" "$fork"
+        git fetch "$1"
+    else
+        myfork=$(echo "$upstream" | awk -v name="$USER" -F/ '{print "git@github.com:"name"/"$5}')
+
+        git remote remove upstream 2> /dev/null
+        git remote remove origin 2> /dev/null
+
+        git remote add upstream "$upstream"
+        git remote add origin "$myfork"
+
+        git fetch upstream
+        git fetch origin
+
+        git branch --set-upstream-to=upstream/master master
+    fi
+}

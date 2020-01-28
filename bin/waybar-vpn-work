@@ -1,0 +1,19 @@
+##!/bin/bash
+
+trap 'pkill -P $$' EXIT
+
+vpn() {
+    if [ -e "/sys/class/net/tun-prod" ]; then
+        icon=''
+        class=on
+    else
+        icon=''
+        class=off
+    fi
+    tooltip="Connected to production"
+    printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+}
+
+vpn
+
+ip monitor link | while read -r line; do vpn; done

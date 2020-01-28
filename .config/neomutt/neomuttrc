@@ -24,7 +24,6 @@ set markers = no
 set mark_old = yes
 set mime_forward = yes
 set wait_key = no
-set smart_wrap
 set menu_context = 5
 set menu_move_off = no
 set menu_scroll = yes
@@ -41,7 +40,7 @@ set ts_enabled = yes
 set help = no
 
 set vfolder_format = "%6n(%6N) %f"
-set index_format = "%4C %Z%?X?📎&  ?%?g?%g& ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
+set index_format = "%4C %Z%?X?&  ?%?g?%g& ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
 set attach_format = "%u%D%I %t%4n %T%.100f (%.100d)%> [%.15m/%.15M, %.6e%?C?, %C?, %s] "
 set pager_format = "%e/%E - %C/%m%?g? (%g)&?: %-40.40n   %s%* -- (%P)"
 set status_format = "%f: Total %?M?%M/?%m%?n?, New %n?%?d?, Del %d?%?F?, Flag %F?%?t?, Tag %t? %* -- (%P)"
@@ -51,6 +50,9 @@ tag-transforms "archive" "X"
 
 set beep_new = yes
 
+macro index,pager B "<enter-command>set sidebar_visible=yes<enter><enter-command>set wrap=120<enter>"
+unbind b
+macro index,pager b "<enter-command>set sidebar_visible=no<enter><enter-command>set wrap=0<enter>"
 bind editor <space> noop
 bind editor <Tab> complete-query
 bind editor ^T    complete
@@ -78,7 +80,7 @@ bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
 bind index,pager V sidebar-toggle-virtual
-macro index,pager S "<sync-mailbox><check-stats>"
+macro index,pager <Tab> "<sync-mailbox>y<check-stats>"
 macro index,pager \Cv "<view-attachments><search>html<enter><view-mailcap><exit>"
 macro index,pager \Cx "<pipe-message>ripmime -i - -d ~/Downloads/<enter>" "save attachments in downloads folder"
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
@@ -90,6 +92,7 @@ bind index,pager + entire-thread
 bind index,pager y modify-labels
 bind index,pager X change-vfolder
 bind attach <return> view-mailcap
+macro attach s "<save-entry><bol>~/Downloads<eol>"
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
 auto_view application/pgp-encrypted text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
@@ -156,14 +159,18 @@ bind index \Cl limit-current-thread
 macro index,pager J "<save-message>=Junk<enter><enter>" "Move to junk"
 macro index,pager D "<purge-message>" "Purge the message"
 macro index,pager H "<save-message>=INBOX<enter><enter>" "Mark as ham"
+macro index,pager I "<save-message>=INBOX<enter><enter>" "Move to inbox"
 macro index,pager gi "<change-vfolder>INBOX<enter>" "Go to inbox."
 macro index,pager gs "<change-vfolder>Sent<enter>" "Go to sent."
 macro index,pager gd "<change-vfolder>Drafts<enter>" "Go to drafts."
 macro index,pager gt "<change-vfolder>Trash<enter>" "Go to trash."
-macro index,pager ga "<change-vfolder>Archive/2019<enter>" "Go to archive."
+macro index,pager ga "<change-vfolder>Archive/2020<enter>" "Go to archive."
 macro index,pager gj "<change-vfolder>Junk<enter>" "Go to junk."
 macro index,pager gn "<change-vfolder>Newsletters<enter>" "Go to newsletter."
 macro index,pager gf "<change-vfolder>Family<enter>" "Go to family."
+macro index,pager gF "<change-vfolder>Friends<enter>" "Go to friends."
+macro index,pager gm "<change-vfolder>GMAIL<enter>" "Go to to migrate."
+
 # generate virtual folder from query with time window
 bind index < vfolder-window-backward
 bind index > vfolder-window-forward
@@ -176,11 +183,8 @@ subscribe arch-announce@archlinux.org arch-dev-public@archlinux.org arch-events@
 
 unvirtual-mailboxes *
 virtual-mailboxes "INBOX" "notmuch://?query=folder:INBOX"
-virtual-mailboxes "Py3status" "notmuch://?query=tag:py3status-issues"
-virtual-mailboxes "FrSAG" "notmuch://?query=frsag"
-virtual-mailboxes "FrNOG" "notmuch://?query=frnog"
 virtual-mailboxes "Archlinux" "notmuch://?query=tag:archlinux"
-virtual-mailboxes "Github" "notmuch://?query=tag:github-issues"
+virtual-mailboxes "Mailing" "notmuch://?query=tag:github-issues"
 virtual-mailboxes "Family" "notmuch://?query=tag:family"
 virtual-mailboxes "Friends" "notmuch://?query=tag:friends or tag:friend"
 virtual-mailboxes "Newsletters" "notmuch://?query=tag:newsletter"
@@ -188,17 +192,8 @@ virtual-mailboxes "Trash" "notmuch://?query=folder:Trash"
 virtual-mailboxes "Drafts" "notmuch://?query=folder:Drafts"
 virtual-mailboxes "Sent" "notmuch://?query=folder:Sent"
 virtual-mailboxes "Junk" "notmuch://?query=folder:Junk"
-virtual-mailboxes "Archive/2019" "notmuch://?query=folder:Archive/2019"
-virtual-mailboxes "Archive/2018" "notmuch://?query=folder:Archive/2018"
-virtual-mailboxes "Archive/2017" "notmuch://?query=folder:Archive/2017"
-virtual-mailboxes "Archive/2016" "notmuch://?query=folder:Archive/2016"
-virtual-mailboxes "Archive/2015" "notmuch://?query=folder:Archive/2015"
-virtual-mailboxes "Archive/2014" "notmuch://?query=folder:Archive/2014"
-virtual-mailboxes "Archive/2013" "notmuch://?query=folder:Archive/2013"
-virtual-mailboxes "Archive/2012" "notmuch://?query=folder:Archive/2012"
-virtual-mailboxes "Archive/2011" "notmuch://?query=folder:Archive/2011"
-virtual-mailboxes "Archive/2010" "notmuch://?query=folder:Archive/2010"
-virtual-mailboxes "Archive/2009" "notmuch://?query=folder:Archive/2009"
+virtual-mailboxes "Archive" "notmuch://?query=folder:Archive/2020"
+virtual-mailboxes "GMAIL" "notmuch://?query=tag:gmail"
 
 set auto_tag = yes
 set hidden_tags = draft,passed,replied,tofilter,sent,unread,archive-moved,archive
@@ -219,7 +214,7 @@ tag-transforms "attachment" " " \
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"
 macro pager a "<modify-tags>!archive<enter><next-undeleted>"
 macro index A "<tag-thread><clear-flag>N<modify-tags>+archive<enter><untag-pattern>.<enter>"
-macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2019<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
+macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2020<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
 
 #Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
@@ -233,3 +228,5 @@ macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<en
 # Printing
 set print_command="$HOME/.config/neomutt/print.sh"
 macro index,pager s "<pipe-message>$HOME/.config/neomutt/print.sh -s"
+
+set sidebar_short_path=yes

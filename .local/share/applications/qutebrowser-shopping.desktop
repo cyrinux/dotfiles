@@ -1,0 +1,20 @@
+[Desktop Entry]
+Name=qutebrowser shopping
+StartupWMClass=qutebrowser
+con=qutebrowser
+Type=Application
+Categories=Network;WebBrowser;
+Exec=qutebrowser-shopping %u
+Terminal=false
+StartupNotify=false
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/qute;
+Keywords=Browser
+Actions=new-window;preferences;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=qutebrowser-shopping
+
+[Desktop Action preferences]
+Name=Preferences
+Exec=qutebrowser-shopping "qute://settings"

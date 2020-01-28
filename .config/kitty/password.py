@@ -1,12 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 
 def main(args):
-    p1 = Popen(["pass", "show", "work/ldap"], stdout=PIPE)
+    p1 = Popen(["pass", "work/ldap"], stdout=PIPE)
     password, _ = p1.communicate()
-    return password.decode("utf-8").strip()
+    return password.decode("utf-8").splitlines()[0].strip()
 
 
 def handle_result(args, password, target_window_id, boss):

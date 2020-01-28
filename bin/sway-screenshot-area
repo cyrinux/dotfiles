@@ -1,46 +1,25 @@
 #!/bin/sh
-# Screenshot an area with screen freeze
-# plus image edit with ksnip
-# NOTE: Set ksnip options to "Instant save without dialog"
-# and /tmp/area_edited.png as location
 
-if ! type grim >/dev/null; then
-    >&2 echo "$0: grim is required."
-    exit 1
-fi
-if ! type ksnip >/dev/null; then
-    >&1 echo "$0: ksnip is required."
-    exit 1
-fi
-if ! type wl-copy >/dev/null; then
-    >&2 echo "$0: wl-clipboard is required."
-    exit 1
-fi
-if ! type imv >/dev/null; then
-    >&2 echo "$0: imv is required."
-    exit 1
-fi
+mkdir -p /tmp/screenshots
+cd /tmp/screenshots
 
-# Taking a full screenshot to freeze the image
-# then make a selection on
+pkill -x inactive-window
 
-# Freeze
 OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
-grim -o $OUTPUT -t png /tmp/screenshot.png
-vimiv -f -s statusbar.show false /tmp/screenshot.png &
+grim -o $OUTPUT -t png screen.png
+vimiv -f -s statusbar.show false screen.png &
 
-# Area selection
-grim -g "$(slurp)" -t png /tmp/area.png
+geometry="$(slurp)"
+if [ -n "$geometry" ]; then
+    grim -g "$geometry" -t png area.png
+else
+    grim -t png area.png
+fi
 
-# Kill vimiv
 kill $!
 
-# Edit the screenshot then Control+s, Control+q
-[ -f /tmp/area.png ] && ksnip -e /tmp/area.png
+[ -f area.png ] && swappy -f area.png
 
-# Copy to clipboard
-if [ -f /tmp/area_edited.png ]; then
-    wl-copy -t image/png < /tmp/area_edited.png
-else
-    wl-copy -t image/png < /tmp/area.png
-fi
+inactive-windows-transparency.py -o 0.7 &
+
+rm -f screen.png area.png

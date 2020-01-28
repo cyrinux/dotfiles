@@ -2,25 +2,31 @@
 menu=$(echo "personal\nwork\nshopping\ndisposable\ntor browser\ndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
-    "disposable without network")
-        firewarden -n firefox "$@" &
+"qutebrowser")
+    open_url_in_instance.sh "$@" &
     ;;
-    "disposable")
-        firewarden firefox "$@" &
+"disposable without network")
+    firewarden -n qutebrowser "$@" &
     ;;
-    "tor browser")
-        tor-browser-en "$@" &
+"disposable")
+    firewarden qutebrowser "$@" &
     ;;
-    "personal")
-        firefox-container -n Personal --fingerprint --blue "$@" &
+"tor browser")
+    tor-browser-en "$@" &
     ;;
-    "work")
-        firefox-container -n Work --briefcase --red "$@" &
+"personal")
+    qutebrowser-personal "$@" &
     ;;
-    "copy to clipboard")
-       echo "$@" | wl-copy
+"work")
+    qutebrowser-work "$@" &
     ;;
-    "play")
-       kitty @ new-window --no-response --window-type os streamlink "$@" &
+"shopping")
+    qutebrowser-shopping "$@" &
+    ;;
+"copy to clipboard")
+    echo "$@" | wl-copy
+    ;;
+"play")
+    mpv "$@" &
     ;;
 esac

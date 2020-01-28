@@ -8,42 +8,43 @@
 # Based on https://github.com/maximbaz/dotfiles/blob/master/bin/i3-autoname-workspaces
 
 import argparse
-import i3ipc
 import logging
 import re
 import signal
 import sys
 
+import i3ipc
+
 WINDOW_ICONS = {
     "bleachbit": "",
     "burp-startburp": "",
     "calibre": "",
-    "chromium": "󰀠",
+    "chromium": "",
     "code": "",
+    "cssh": "",
     "darktable": "",
     "discord": "",
     "draw.io": "",
     "duolingo": "",
     "firefox": "",
     "fontforge": "",
-    "keepass2": "",
+    "gcr-prompter": "",
     "kitty": "󰀀",
-    "lampe-gtk": "",
+    "ksnip": "",
+    "krita": "",
+    "vimiv": "",
     "libreoffice-calc": "",
     "libreoffice-impress": "",
+    "libreoffice-startcenter": "",
     "libreoffice-writer": "",
-    "liferea": "",
-    "mellowplayer": "",
     "mpv": "",
-    "nnn": "",
-    "nemo": "",
     "neomutt": "󰀚",
-    "newsboat": "",
     "nm-connection-editor": "",
+    "nnn": "n³",
+    "org.pwmt.zathura": "",
+    "org.qutebrowser.qutebrowser": "",
     "paperwork": "",
     "pavucontrol": "",
-    "peek": "",
-    "gcr-prompter": "",
     "qutebrowser": "",
     "rapid-photo-downloader": "",
     "riot": "",
@@ -58,18 +59,17 @@ WINDOW_ICONS = {
     "tor browser": "",
     "transmission-gtk": "",
     "udiskie": "",
-    "vimiv": "",
     "virtualbox machine": "",
     "virtualbox manager": "",
     "vlc": "",
     "vmplayer": "",
     "vmware": "",
+    "wayvnc": "󰀄",
     "whatsapp-desktop": "",
+    "whatsapp-nativefier-d52542": "",
     "wire": "󰁀",
     "wireshark-gtk": "",
     "wlfreerdp": "󰀄",
-    "wayvnc": "󰀄",
-    "zathura": "",
     "zoom": "",
 }
 
@@ -106,7 +106,7 @@ def rename_workspaces(ipc):
                 if not ARGUMENTS.duplicates and icon in icon_tuple:
                     continue
                 icon_tuple += (icon,)
-        name_parts["icons"] = "  ".join(icon_tuple) + " "
+        name_parts["icons"] = " ".join(icon_tuple)
         new_name = construct_workspace_name(name_parts)
         ipc.command('rename workspace "%s" to "%s"' % (workspace.name, new_name))
 

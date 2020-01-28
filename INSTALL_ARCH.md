@@ -245,7 +245,8 @@
     $ sudo cryptboot-efikeys create
     $ sudo cryptboot-efikeys enroll
     $ sudo cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
-    $ sudo cryptboot-efikeys sign /boot/efi/EFI/arch/fwupx64.efi
+    $ sudo cryptboot-efikeys sign /boot/efi/EFI/arch/fwupdx64.efi
+    $ sudo cryptboot-efikeys sign /boot/efi/EFI/network/ipxe.efi
     ```
 
 1.  Disable root password:

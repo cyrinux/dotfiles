@@ -1,8 +1,3 @@
-[user]
-  signingkey = 0x8538D68543979A20
-  name = Cyril Levis
-  email = cyril@levis.name
-  useConfigOnly = true
 [credential]
     useHttpPath = true
 [alias]
@@ -10,6 +5,8 @@
   bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
   pushall = !git remote | xargs -L1 git push --all
   branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+  createmr = !git push -o merge_request.create
+  fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 [branch]
   autosetuprebase = always
 
@@ -38,7 +35,7 @@
   excludesfile = ~/.gitignore
   untrackedCache = true
   editor = kak
-  pager = delta --dark --theme=OneHalfDark
+  pager = diff-so-fancy | less -RFXMx4
 [commit]
   gpgsign = true
   template = ~/.gitmessage
@@ -56,7 +53,7 @@
   prompt = false
 [diff "gpg"]
   binary = true
-  textconv = gpg2 --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+  textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
 [push]
   default = current
 [rebase]
@@ -64,5 +61,14 @@
   autosquash = true
 [mergetool "meld"]
     cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+[user]
+  signingkey = 0x8538D68543979A20
+  name = Cyril Levis
+  email = cyril@levis.name
+  useConfigOnly = true
+
+[includeIf "gitdir:~/work/"]
+  path = ~/.gitconfig.work
+
 [includeIf "gitdir:~/library/src/work/"]
   path = ~/.gitconfig.work

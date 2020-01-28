@@ -1,2 +1,0 @@
-#!/bin/sh
-py3-cmd refresh "external_script nmtrust" "wifi" "frame network" "group netrate"

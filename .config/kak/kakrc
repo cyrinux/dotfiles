@@ -4,8 +4,6 @@ source "~/.config/kak/surround.kak/rc/surround.kak"
 source "~/.config/kak/vertical-selection/vertical-selection.kak"
 source "~/.config/kak/langmap.kak/rc/langmap.kak"
 source "~/.config/kak/restclient.kak/restclient.kak"
-source "~/.config/kak/sudo-write.kak/sudo-write.kak"
-source "~/.config/kak/number-toggle.kak/rc/number-toggle.kak"
 
 # My configs
 source "~/.config/kak/coding.kak"

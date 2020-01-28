@@ -3,7 +3,7 @@
 
 include "/home/cyril/.gtkrc-2.0.mine"
 gtk-theme-name="Arc-Gruvbox"
-gtk-icon-theme-name="Adwaita"
+gtk-icon-theme-name="ePapirus"
 gtk-font-name="Cantarell 11"
 gtk-cursor-theme-name="Adwaita"
 gtk-cursor-theme-size=0
@@ -15,5 +15,5 @@ gtk-enable-event-sounds=1
 gtk-enable-input-feedback-sounds=1
 gtk-xft-antialias=1
 gtk-xft-hinting=1
-gtk-xft-hintstyle="hintslight"
+gtk-xft-hintstyle="hintfull"
 gtk-xft-rgba="rgb"

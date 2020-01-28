@@ -11,4 +11,4 @@ rm -f "$file"
 
 cp "$1" "$file"
 
-setsid xdg-open "$file" >/dev/null 2>&1 &
+setsid gio open "$file" >/dev/null 2>&1 &

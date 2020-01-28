@@ -41,7 +41,7 @@ iconv -c -f utf-8 -t ISO-8859-1 $INPUT | enscript --font=Courier8 -G2r -p - 2>/d
 if [ -n "$SAVEFILE" ]; then
     mv "$tmpfile" "$HOME"
 else
-    xdg-open "$tmpfile" >/dev/null 2>&1 &
+    gio open "$tmpfile" >/dev/null 2>&1 &
     sleep 1
     rm "$tmpfile"
 fi

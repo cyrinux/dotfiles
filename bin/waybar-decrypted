@@ -1,0 +1,21 @@
+#!/bin/bash
+
+trap 'pkill -P $$' EXIT
+
+output() {
+    if [ -f "/home/cyril/Vault/.lock" ]; then
+        printf '{"text": "  "}\n'
+    else
+        printf '{"text": ""}\n'
+    fi
+}
+
+check() {
+    output
+    inotifywait -q "/home/cyril/Vault/.lock" >/dev/null 2>&1
+    output
+    inotifywait -q "/home/cyril/Vault" >/dev/null
+    check
+}
+
+check
