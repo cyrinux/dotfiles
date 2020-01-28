@@ -63,8 +63,6 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
-# copy "etc/lightdm/lightdm.conf"
-# copy "etc/lightdm/lightdm-gtk-greeter.conf"
 copy "etc/systemd/system/getty@tty2.service.d"
 copy "etc/bluetooth/main.conf"
 copy "etc/makepkg.conf"
@@ -125,8 +123,7 @@ copy "etc/udev/rules.d/50-usb_power_save.rules"
 copy "etc/udev/rules.d/99pci_pm.rules"
 copy "etc/udev/rules.d/90-hid-eToken.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
-copy "etc/X11/xorg.conf.d/00-keyboard.conf" 644
-copy "etc/X11/xorg.conf.d/30-touchpad.conf" 644
+copy "etc/systemd/system/usbguard.service.d"
 
 (( "$reverse" )) && exit 0
 
@@ -140,7 +137,6 @@ systemctl daemon-reload
 systemctl_enable "backup-repo@pkgbuild.service"
 systemctl_enable "docker.service"
 systemctl_enable "getty@tty2.service"
-# systemctl_enable "lightdm.service"
 systemctl_enable_start "macchiato.service"
 systemctl_enable_start "fstrim.timer"
 systemctl_enable_start "NetworkManager.service"
@@ -201,7 +197,7 @@ ln -sf /etc/fonts/conf.avail/75-joypixels.conf /etc/fonts/conf.d/75-joypixels.co
 
 echo "Configuring firejail"
 firecfg >/dev/null 2>&1
-rm -f /usr/local/bin/{i3,conky,gpg,chromium,firefox,wire-desktop,copyq}
+rm -f /usr/local/bin/{conky,gpg,chromium,firefox,wire-desktop}
 
 if is_chroot; then
   >&2 echo "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
@@ -210,8 +206,8 @@ else
   ufw --force reset > /dev/null
   ufw default allow outgoing
   ufw default deny incoming
-  ufw allow ssh
-  ufw allow 5000
+  # ufw allow ssh
+  # ufw allow 5000
   ufw enable
   find /etc/ufw -type f -name '*.rules.*' -delete
 

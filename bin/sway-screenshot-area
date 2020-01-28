@@ -1,11 +1,11 @@
-#/bin/sh
+#!/bin/sh
 # Screenshot an area with screen freeze
 # plus image edit with ksnip
 # NOTE: Set ksnip options to "Instant save without dialog"
 # and /tmp/area_edited.png as location
 
-if ! type grimshot >/dev/null; then
-    >&2 echo "$0: grimshot is required."
+if ! type grim >/dev/null; then
+    >&2 echo "$0: grim is required."
     exit 1
 fi
 if ! type ksnip >/dev/null; then
@@ -23,21 +23,18 @@ fi
 
 # Taking a full screenshot to freeze the image
 # then make a selection on
-grimshot save screen /tmp/screenshot.png && \
-(
-    imv -f /tmp/screenshot.png &            \
-    sleep 0.5 &&                            \
-    grimshot save area /tmp/area.png && kill $!
-)
+OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
+grim -o $OUTPUT -t png /tmp/screenshot.png
+{
+    vimiv -f -s statusbar.show false /tmp/screenshot.png &
+    grim -g $(slurp) -t png /tmp/area.png && kill $!
+}
 
 # Edit the screenshot then Control+s, Control+q
 ksnip -e /tmp/area.png
 
 if [ -f /tmp/area_edited.png ]; then
-    wl-copy < /tmp/area_edited.png
-    rm -f /tmp/area_edited.png
+    wl-copy -t image/png < /tmp/area_edited.png
 else
-    wl-copy < /tmp/area.png
+    wl-copy -t image/png < /tmp/area.png
 fi
-
-rm -f /tmp/screenshot.png

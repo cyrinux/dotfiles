@@ -1,36 +1,29 @@
-#!/bin/bash
-menu=$(echo -e "firefox\nchromium\ndisposable\ntor browser\nqutebrowser\ndisposable without network\nqrcode\ncopy to clipboard\nplay" | wofi -d -p "browser")
+#!/bin/sh
+menu=$(echo "personal\nwork\nshopping\ndisposable\ntor browser\ndisposable without network\nqrcode\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
-    "chromium")
-        eval chromium $@ >/dev/null 2>&1 &
-    ;;
     "disposable without network")
-        eval firewarden -n chromium $@ >/dev/null 2>&1 &
+        firewarden -n firefox "$@" &
     ;;
     "disposable")
-        eval firewarden chromium $@ >/dev/null 2>&1 &
+        firewarden firefox "$@" &
     ;;
     "tor browser")
-        eval tor-browser-en $@ >/dev/null 2>&1 &
+        tor-browser-en "$@" &
     ;;
-    "firefox")
-        eval firefox -P default $@ >/dev/null 2>&1 &
+    "personal")
+        firefox-container -n Personal --fingerprint --blue "$@" &
     ;;
-    "qutebrowser")
-        eval firewarden -c qutebrowser $@ >/dev/null 2>&1 &
+    "work")
+        firefox-container -n Work --briefcase --red "$@" &
     ;;
     "qrcode")
-        eval qrcode $@ >/dev/null 2>&1 &
+        qrcode "$@" &
     ;;
     "copy to clipboard")
-       eval echo \"$@\" | wl-copy
+       echo "$@" | wl-copy
     ;;
     "play")
-        eval mpv $@ >/dev/null 2>&1 &
-    ;;
-    *)
-        echo $menu $@ >/dev/null 2>&1 &
+       kitty @ new-window --no-response --window-type os streamlink "$@" &
     ;;
 esac
-

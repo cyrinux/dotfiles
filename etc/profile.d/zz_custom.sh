@@ -2,7 +2,6 @@
 
 # Disable bell
 setterm -blength 0
-xset -b
 
 export TERMINAL='kitty'
 export EDITOR='kak'
@@ -67,4 +66,3 @@ export QUTE_SKIP_WAYLAND_CHECK=1
 export XKB_DEFAULT_LAYOUT="fr-hyper,us"
 export MOZ_ENABLE_WAYLAND=1
 export _JAVA_AWT_WM_NONREPARENTING=1
-

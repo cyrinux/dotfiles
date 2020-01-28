@@ -1,3 +1,5 @@
+font pango: Taskbar, Cantarell 9
+
 input type:keyboard {
     xkb_layout fr-hyper,us
     xkb_options grp:shifts_toggle,caps:hyper
@@ -12,15 +14,19 @@ input type:touchpad {
 }
 
 set $laptop eDP-1
+set $screen_left DP-5
+set $screen_right DP-6
 bindswitch --reload lid:on output $laptop disable
 bindswitch --reload lid:off output $laptop enable
+
+# bindswitch --locked --reload lid:off output $laptop enable;  output $screen_left disable; output $screen_right disable
+# bindswitch --locked --reload lid:on  output $laptop disable; output $screen_left enable;  output $screen_right enable
 
 output * {
     bg "#222222" solid_color
     scale 1.2
     subpixel rgb
 }
-
 
 
 seat * hide_cursor 5000
@@ -37,11 +43,11 @@ set $hyper Mod4
 set $win Mod3
 floating_modifier $hyper
 
-font pango: Taskbar, Cantarell 9
-
 gaps inner 5
 smart_gaps on
 
+# Disable cursor jumping
+mouse_warping none
 focus_follows_mouse no
 
 set $workspace1 workspace number 1
@@ -71,17 +77,18 @@ workspace 10 output DP-1-1  $laptop
 workspace_auto_back_and_forth yes
 
 # Specific window configuration
+for_window    [app_id="org.ksnip.ksnip"] floating enable
+for_window    [app_id="qalculate-gtk"] floating enable
+for_window    [app_id="wayvnc"] move container to $workspace9
+for_window    [app_id="wev"] floating enable
+for_window    [app_id="wlfreerdp"] move container to $workspace9
+for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
+# for_window    [class="Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
+for_window    [class="neomutt"] move container to $workspace3
+for_window    [class="sun-awt-X11-XDialogPeer"] floating enable
+for_window    [class="Wire"] move container to $workspace2
 for_window    [title="^edit_text$"] floating enable
 for_window    [window_role="pop-up"] floating enable
-for_window    [app_id="org.ksnip.ksnip"] floating enable
-for_window    [class="neomutt"] move container to $workspace2
-for_window    [class="Wire"] move container to $workspace1
-for_window    [class="wfreerdp"] move container to $workspace9
-for_window    [class="feh|Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
-for_window    [class="com-stonesoft-client-launcher-SmcClient|sun-awt-X11-XDialogPeer"] floating enable
-for_window    [app_id="wev"] floating enable
-for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
-for_window    [title="^Qalculate!$"] floating enable
 
 # Audio settings
 set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
@@ -99,20 +106,18 @@ mode "$mode_audio" {
 
 
 # Set shut down, restart and locking features
-set $mode_system (l)ock,  (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted, (x)kill
+set $mode_system (l)ock, (s)uspend, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted
 mode "$mode_system" {
 	bindsym --to-code {
-     l exec swayexit lock, mode "default"
-     s exec swayexit suspend, mode "default"
-     e exec swayexit reboot, mode "default"
-     Shift+s exec swayexit shutdown, mode "default"
+     l exec sway-exit lock, mode "default"
+     s exec sway-exit suspend, mode "default"
+     r exec sway-exit reboot, mode "default"
+     Shift+s exec sway-exit shutdown, mode "default"
      t exec ttoggle -t, mode "default"
      u exec ttoggle -x, mode "default"
-     x --release exec xkill, mode "default"
 
-    # exit system mode: "Enter" or "Escape"
-    Return mode "default"
-    Escape mode "default"
+     Return mode "default"
+     Escape mode "default"
 	}
 }
 
@@ -197,10 +202,10 @@ bindsym --to-code {
  XF86AudioPlay         exec playerctl --player playerctld play-pause
  XF86AudioPrev         exec playerctl --player playerctld previous
  XF86AudioNext         exec playerctl --player playerctld next
- $alt+Up               exec playerctl --player playerctld play-pause
- $alt+Left             exec playerctl --player playerctld previous
- $alt+Right            exec playerctl --player playerctld next
- $alt+Down             exec playerctl --player playerctld stop
+ Control+$alt+Up               exec playerctl --player playerctld play-pause
+ Control+$alt+Left             exec playerctl --player playerctld previous
+ Control+$alt+Right            exec playerctl --player playerctld next
+ Control+$alt+Down             exec playerctl --player playerctld stop
  $win+p mode "$mode_audio"
 
 # Screen brightness controls
@@ -318,9 +323,9 @@ bindsym --to-code {
 
  $hyper+Escape mode "$mode_system"
  $hyper+r mode "resize"
- $win+l exec swayexit lock
- $hyper+l exec swayexit lock
- Control+$alt+l exec swayexit lock
+ $win+l exec sway-exit lock
+ $hyper+l exec sway-exit lock
+ Control+$alt+l exec sway-exit lock
  $win+Control+m floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
  $win+Shift+m bar mode toggle
  $win+m mode $mode_workspaces_monitors
@@ -330,8 +335,6 @@ bindsym --to-code {
  $hyper+o exec makoctl menu dmenu
 }
 
-
-# exec_always "pgrep -x aa-notify || aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log"
 # exec_always "pgrep -x kanshi || kanshi"
 exec_always "pgrep -x mako || mako"
 exec_always "pgrep -x nm-applet || nm-applet"
@@ -342,6 +345,6 @@ exec_always "pgrep -x udiskie || udiskie"
 exec_always "pgrep -x sway-autoname-w; sway-autoname-workspaces -d"
 exec "kitty --class neomutt --title neomutt neomutt"
 exec_always "pgrep -fx 'sh /usr/bin/wire-desktop' || wire-desktop"
-exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.5"
+exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.7"
 exec_always "pgrep -x sway-paste || sway-paste daemon"
-exec_always swayidle -w timeout 180 'swayexit lock' resume 'swaymsg "output * dpms on"' before-sleep 'swayexit lock'
+exec_always swayidle -w timeout 180 'sway-exit lock' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'

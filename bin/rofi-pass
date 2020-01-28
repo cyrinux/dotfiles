@@ -1,4 +1,0 @@
-#!/usr/bin/bash
-copyq disable
-/usr/bin/passmenu "$@"
-copyq enable

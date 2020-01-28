@@ -64,7 +64,7 @@ hook global WinSetOption filetype=python %{
 }
 
 hook global WinSetOption filetype=go %{
-    hook buffer -group format BufWritePost .* %{ evaluate-commands %sh{ goimports -e -w "$kak_buffile" }; edit! }
+    hook buffer -group format BufWritePre .* lsp-formatting-sync
 
     set-option buffer lintcmd "run() { golint $1; go vet $1 2>&1 | sed -E 's/: /: error: /'; } && run"
     lint-enable
@@ -78,7 +78,7 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
 }
 
 hook global WinSetOption filetype=markdown %{
-    set-option -add buffer surround _ _ * *
+    set-option -add buffer surround_pairs _ _ * *
 }
 
 hook global WinSetOption filetype=sh %{

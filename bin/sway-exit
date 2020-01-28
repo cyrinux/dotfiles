@@ -22,6 +22,7 @@ stop_wlan() {
 }
 
 before_lock() {
+  swaymsg input 1:1:AT_Translated_Set_2_keyboard xkb_switch_layout 0
   pauseallmpv 2>/dev/null
   playerctl pause 2>/dev/null
   killall mpv 2>/dev/null

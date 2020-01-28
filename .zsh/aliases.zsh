@@ -35,13 +35,13 @@ alias -s tgz='tar -xzvf'
 alias -s bz2='tar -xjvf'
 alias -s bz2='tar -xjvf'
 alias -s pdf='firewarden -c zathura'
-alias -s jpg=vimiv
-alias -s png=vimiv
-alias -s gif=vimiv
-alias -s avi='mpv --quiet'
-alias -s mkv='mpv --quiet'
-alias -s webm='mpv --quiet'
-alias -s mp4='mpv --quiet'
+alias -s jpg=xdg-open
+alias -s png=xdg-open
+alias -s gif=xdg-open
+alias -s avi=xdg-open
+alias -s mkv=xdg-open
+alias -s webm=xdg-open
+alias -s mp4=xdg-open
 
 # Task
 alias t='task'

@@ -1,2 +1,36 @@
-color=333333
-indicator-idle-visible
+# color=333333
+# indicator-idle-visible
+
+
+
+# ignore-empty-password
+# show-failed-attempts
+
+# font="Cantarell 10"
+# scaling=fill
+
+# indicator-radius=100
+# indicator-thickness=20
+
+# inside-color=1d2021b3
+# text-color=ebdbb2
+# ring-color=98971a
+# key-hl-color=b8bb26
+# bs-hl-color=d77921
+
+# text-clear-color=1d2021
+# inside-clear-color=fabd2fb3
+# ring-clear-color=d79921
+
+# text-caps-lock-color=b16286
+
+# text-ver-color=1d2021
+# ring-ver-color=458588
+# inside-ver-color=83a598b3
+
+# text-wrong-color=1d2021
+# ring-wrong-color=cc241d
+# inside-wrong-color=fb4934b3
+
+color=222222
+inside-color=282828
