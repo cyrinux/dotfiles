@@ -27,4 +27,4 @@ __pycache__/
 .#.*
 *.pem
 bin/checkmail
-
+qalc.history

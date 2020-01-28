@@ -20,7 +20,6 @@ WINDOW_ICONS = {
     "calibre": "",
     "chromium": "󰀠",
     "code": "",
-    "copyq": "",
     "darktable": "",
     "discord": "",
     "draw.io": "",
@@ -69,7 +68,7 @@ WINDOW_ICONS = {
     "wire": "󰁀",
     "wireshark-gtk": "",
     "wlfreerdp": "󰀄",
-    "wofi": "󰀋",
+    "wayvnc": "󰀄",
     "zathura": "",
     "zoom": "",
 }

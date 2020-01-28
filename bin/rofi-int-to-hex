@@ -1,6 +1,0 @@
-#!/usr/bin/zsh
-
-if [[ -n $* ]]; then
-  echo "$1"
-  printf '%x\n' $1 | tee >(xclip -selection clipboard >/dev/null)
-fi

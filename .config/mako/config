@@ -1,14 +1,14 @@
-margin=16
-padding=8
-border-color=#ebdbb2
-text-color=#eaeaea
 background-color=#282828
 border-size=2
-height=800
-width=300
 border-radius=8
-default-timeout=20000
+border-color=#ebdbb2
+text-color=#ebdbb2
 format=<b>%s</b>\n\n%b
+height=600
+width=600
+margin=16
+padding=8
+default-timeout=20000
 
 [urgency=low]
 background-color=#353535
