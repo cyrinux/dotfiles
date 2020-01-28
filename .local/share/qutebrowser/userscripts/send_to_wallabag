@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+# coding=utf-8
+
+import datetime
+import os
+import re
+import shlex
+import subprocess
+import sys
+
+import requests
+
+from qutescript import userscript
+
+
+@userscript
+def send_to_wallabag(request):
+    command = shlex.split(
+        "bash -c 'PASSWORD_STORE_DIR=~/.password-store pass show api/send_to_wallabag'"
+    )
+    proc = subprocess.Popen(command, stdout=subprocess.PIPE, encoding="utf8")
+    config = {}
+    for line in proc.stdout:
+        (key, _, value) = line.strip().partition("=")
+        config[key] = value
+    proc.communicate()
+
+    gettoken = {
+        "username": config["W_USERNAME"],
+        "password": config["W_PASSWORD"],
+        "client_id": config["W_CLIENTID"],
+        "client_secret": config["W_SECRET"],
+        "grant_type": "password",
+    }
+    r = requests.get("{}/oauth/v2/token".format(config["W_HOST"]), gettoken)
+    access = r.json().get("access_token")
+
+    if not request.url:
+        message = "Nothing to do, the message does not contain any URL"
+        request.send_command("message-info '{}'".format(message))
+    else:
+        a = 0  # should the article be already read? 0 or 1
+        f = 0  # should the article be added as favorited? 0 or 1
+
+        article = {
+            "url": request.url,
+            "archive": a,
+            "favorited": f,
+            "access_token": access,
+        }
+        r = requests.post("{}/api/entries.json".format(config["W_HOST"]), article)
+        if r.status_code == 200:
+            message = "URL {} sent to wallabag".format(request.url)
+            request.send_command("message-info '{}'".format(message))
+        else:
+            message = "HTTP {}, can't send URL {} to wallabag, check pass api/send_to_wallabag entry".format(
+                r.status_code, request.url
+            )
+            request.send_command("message-error '{}'".format(message))
+
+
+if __name__ == "__main__":
+    send_to_wallabag()

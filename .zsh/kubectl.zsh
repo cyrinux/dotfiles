@@ -1,6 +1,6 @@
 alias k='kubectl'
-alias kc='kubectx "$(kubectx | fzy)"'
-alias kn='kubens "$(kubens | fzy)"'
+alias kc='kubectx "$(kubectx | fzf --height=10%)"'
+alias kn='kubens "$(kubens | fzf --height=10%)"'
 alias kd='k describe'
 alias kd!='kd --all-namespaces'
 alias kdp='kd pod'
@@ -15,3 +15,7 @@ alias kgp!='kgp --all-namespaces'
 alias kgs='kg service'
 alias kgs!='kgs --all-namespaces'
 alias kl='kubectl logs -f'
+alias khpa='kg! hpa'
+alias klogs='stern'
+drain_node() {                                                                                                                                                                                                                             kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
+}

@@ -8,6 +8,7 @@ general {
   interval = 1
 }
 
+order += 'gitlab work'
 order += 'khal_calendar'
 order += 'taskwarrior'
 order += 'air_quality'
@@ -22,7 +23,7 @@ order += 'external_script checkfirmware'
 order += 'external_script new_email'
 order += 'external_script trash'
 order += 'scratchpad'
-order += 'external_script firejail'
+# order += 'external_script firejail'
 order += 'process_status restic'
 order += 'file_status decrypted_shared'
 order += 'file_status decrypted_documents'
@@ -39,7 +40,7 @@ order += 'file_status VPN'
 order += 'whatismyip'
 order += 'file_status HOME'
 order += 'file_status NAS'
-# order += 'file_status WORK'
+order += 'file_status WORK'
 order += 'backlight'
 order += 'volume_status'
 order += 'frame hidden'
@@ -93,20 +94,20 @@ frame wwan {
   format = '{output}{button}'
   open = false
 
-  wwan {
-    on_udev_rfkill = 'refresh'
-    cache_timeout = 30
-    allow_urgent = false
-    format_message = '[\?if=index=1 {number} {text}]'
-    format_notification = '[\?if=message>0 {format_message}]'
-    format_notification += '[\?if=signal_quality_0>80 High signal]'
-    format = '\?color=state   '
-    format += '[\?color=access_technologies {access_technologies_name} ]'
-    format += '[\?if=state_name=connected ({signal_quality_0}% '
-    format += '[\?if=signal_quality_1=False&color=signal_quality_1 \[!\]|] '
-    format += ')|{state_name}][ ({message}/{messages} sms)]'
-    on_click 2 = 'exec wwan toggle'
-  }
+  # wwan {
+  #   on_udev_rfkill = 'refresh'
+  #   cache_timeout = 30
+  #   allow_urgent = false
+  #   format_message = '[\?if=index=1 {number} {text}]'
+  #   format_notification = '[\?if=message>0 {format_message}]'
+  #   format_notification += '[\?if=signal_quality_0>80 High signal]'
+  #   format = '\?color=state   '
+  #   format += '[\?color=access_technologies {access_technologies_name} ]'
+  #   format += '[\?if=state_name=connected ({signal_quality_0}% '
+  #   format += '[\?if=signal_quality_1=False&color=signal_quality_1 \[!\]|] '
+  #   format += ')|{state_name}][ ({message}/{messages} sms)]'
+  #   on_click 2 = 'exec wwan toggle'
+  # }
 
   group netrate {
     button_next = 1
@@ -164,13 +165,13 @@ diskdata {
   on_click 3 = 'exec nemo /home/cyril'
 }
 
-external_script firejail {
-  cache_timeout = 60
-  script_path = "sudo firemon --list |grep firejail"
-  format = '\?if=lines=0&color=bad   {lines}'
-  format += '|\?color=good&show   {lines}'
-  button_show_notification = 1
-}
+# external_script firejail {
+#   cache_timeout = 60
+#   script_path = "sudo firemon --list |grep firejail"
+#   format = '\?if=lines=0&color=bad   {lines}'
+#   format += '|\?color=good&show   {lines}'
+#   button_show_notification = 1
+# }
 
 external_script checkofficial {
   cache_timeout = 84600
@@ -223,7 +224,7 @@ external_script date {
 file_status VPN {
   on_udev_net = 'refresh'
   cache_timeout = -1
-  paths = ['/proc/sys/net/ipv4/conf/tun-pia*', '/proc/sys/net/ipv4/conf/tun-vypr*' ]
+  paths = ['/proc/sys/net/ipv4/conf/tun-pia*', '/proc/sys/net/ipv4/conf/tun-vypr*', '/proc/sys/net/ipv4/conf/tun0*' ]
   format = '\?color=path  '
   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
 }
@@ -236,13 +237,13 @@ file_status HOME {
   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
 }
 
-# file_status WORK {
-#   on_udev_net = 'refresh'
-#   cache_timeout = -1
-#   paths = ['/proc/sys/net/ipv4/conf/tap-work*']
-#   format = '\?if=path&color=path  '
-#   thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
-# }
+file_status WORK {
+  on_udev_net = 'refresh'
+  cache_timeout = -1
+  paths = ['/proc/sys/net/ipv4/conf/tun-prod*']
+  format = '\?if=path&color=path  '
+  thresholds = [(0, 'bad'), (1, 'good'), (2, 'degraded')]
+}
 
 file_status NAS {
   on_udev_net = 'refresh'
@@ -339,7 +340,7 @@ taskwarrior {
 }
 
 process_status restic {
-  cache_timeout = 5
+  cache_timeout = 60
   process = 'restic'
   color_bad = 'good'
   color_good = 'degraded'
@@ -386,7 +387,7 @@ air_quality {
 }
 
 mpris {
-  player_priority = "[mpv, vlc, spotify, *]"
+  player_priority = "[mpv, spotify, *]"
   format = "{title} from [{artist}][{artists}]"
   format_none = ""
 }
@@ -410,7 +411,7 @@ conky diskio_sda {
 
 getjson infra_healthcheck {
   allow_urgent = true
-  cache_timeout = 300
+  cache_timeout = 120
   url = 'https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json'
   format = '[\?if=!status=up&color=bad   {status}]'
 }
@@ -431,11 +432,16 @@ xkb_input {
   ]
 }
 
+gitlab work {
+     cache_timeout = 60
+     auth_token = 'ezak5dMwmvzzMtrVCWBe'
+     project = 'https://gitlab.dm.gg/infra/salt'
+     format = '[\?if=open_merge_requests_count>1 [\?color=orangered&show ][{open_merge_requests_count}]]'
+}
+
 external_script checkfirmware {
   cache_timeout = 43200 # twice a day
   script_path = "nmtrust -q && fwupdmgr refresh >/dev/null; fwupdmgr get-updates 2>/dev/null"
   format = '\?if=lines&color=degraded '
   on_click 1 = 'exec notify-send "Firmware updates" "What\'s new: $ fwupdmgr get-updates\\nTo update: $ fwupdmgr update"'
 }
-
-

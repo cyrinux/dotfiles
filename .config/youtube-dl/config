@@ -1,3 +1,32 @@
+# youtube-dl configuration
+
+# srsly no other options to change color output?!
+--no-color
+
+# filename template
+--output ~/tmp/%(title)s.%(ext)s
+
+# avoid special characters in filenames
+--restrict-filenames
+
+# dump metadata for resuming download later
+--write-info-json
+
+# embed metadata in the file too
 --add-metadata
---sub-lang en,fr
---convert-subs srt
+
+# format selection
+# --format (bestvideo+bestaudio/best)[height<=?1080]
+--format (bestvideo+bestaudio/best)[height<=?720]
+--prefer-free-formats
+--merge-output-format mkv
+
+# include subtitles if available
+# --write-sub
+# --embed-subs
+# --sub-format vtt/srt/best
+# --convert-subs vtt
+# --sub-lang en,fr
+
+# run post-processing hook
+--exec '${XDG_CONFIG_HOME:-$HOME/.config}/youtube-dl/postcmd.sh {}'

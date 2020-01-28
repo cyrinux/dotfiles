@@ -1,0 +1,10 @@
+#!/bin/sh
+case $1 in
+    cooling)
+        sudo cpupower frequency-set -g powersave -d 400Mhz -u 600Mhz
+        ;;
+    normal)
+        sudo cpupower frequency-set -g performance -d 400Mhz -u 1900Mhz
+        ;;
+esac
+sudo cpupower frequency-info

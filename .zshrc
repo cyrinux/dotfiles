@@ -1,52 +1,56 @@
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+#!/usr/bin/env zsh
 
-# Load environment variables
-. /usr/share/LS_COLORS/dircolors.sh
+zstyle ':z4h:' auto-update no
+zstyle ':z4h:*' channel stable
+zstyle ':z4h:' cd-key alt
+zstyle ':z4h:autosuggestions' forward-char partial-accept
+zstyle ':fzf-tab:*' continuous-trigger tab
+zstyle ':zle:(up|down)-line-or-beginning-search' leave-cursor no
 
-# Load plugins
-. ~/.zsh/prezto.zsh
-. ~/.zsh/zsh-notify.zsh
-. ~/.zsh/antigen.zsh
-. ~/.zsh/prezto-patches.zsh
+z4h install romkatv/archive || return
 
-# Load terminal configuration
-. ~/.zsh/title.zsh
-. ~/.zsh/prompt.zsh
+z4h init || return
 
-# Load custom configurations
-. ~/.zsh/opts.zsh
-. ~/.zsh/keybindings.zsh
-. ~/.zsh/aliases.zsh
-. ~/.zsh/pacman.zsh
-. ~/.zsh/kubectl.zsh
-. ~/.zsh/functions.zsh
-. ~/.zsh/git.zsh
-. ~/.zsh/fuzzy.zsh
-. ~/.zsh/ssh.zsh
-. ~/.zsh/docker.zsh
-. ~/.zsh/pentest.zsh
+fpath+=($Z4H/romkatv/archive)
+autoload -Uz archive lsarchive unarchive edit-command-line
 
-# Load python mkvirtualenv
-[ -f /usr/bin/virtualenvwrapper_lazy.sh ]  && . /usr/bin/virtualenvwrapper_lazy.sh >/dev/null
-
-# Load todoist functions
-[ -f /usr/share/todoist/todoist_functions.sh ] && . /usr/share/todoist/todoist_functions.sh >/dev/null
-
-# Load azure-cli completions
-[ -f /opt/azure-cli/bin/az.completion.sh ] && . /opt/azure-cli/bin/az.completion.sh >/dev/null
-
-# Bash completion for some tools
-. ~/.zsh/complete.zsh
-
-# Make Ctrl-D work with p10k instant prompt
-function my-ctrl-d() {
-    zle || exit 0
-    [[ -n $BUFFER ]] && return
-    typeset -g precmd_functions=(my-ctrl-d)
-    zle accept-line
+my-ctrl-z() {
+    if [[ $#BUFFER -eq 0 ]]; then
+        BUFFER="fg"
+        zle accept-line -w
+    else
+        zle push-input -w
+        zle clear-screen -w
+    fi
 }
-zle -N my-ctrl-d
-bindkey '^D' my-ctrl-d
-setopt ignore_eof
+zle -N my-ctrl-z
+bindkey '^Z' my-ctrl-z
+
+zle -N edit-command-line
+bindkey '^V^V' edit-command-line
+
+command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
+
+setopt GLOB_DOTS
+
+z4h source -c /usr/share/LS_COLORS/dircolors.sh
+z4h source -c ~/.zsh/aliases.zsh
+z4h source -c ~/.zsh/pacman.zsh
+z4h source -c ~/.zsh/git.zsh
+z4h source -c ~/.zsh/ssh.zsh
+z4h source -c ~/.zsh/kubectl.zsh
+z4h source -c ~/.zsh/pentest.zsh
+z4h source -c ~/.zsh/docker.zsh
+z4h source -c ~/.zshrc-private/personal.zsh
+z4h source -c ~/.zshrc-private/work.zsh
+z4h source -c ~/.zsh/server.zsh
+z4h source -c ~/.zsh/completion.zsh
+
+# default mapping are unusable in azerty layout
+bindkey '^[r' redo # alt+r
+bindkey '^[z' undo # alt+z
+bindkey '^H' z4h-backward-kill-word
+
+patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
+
+return 0

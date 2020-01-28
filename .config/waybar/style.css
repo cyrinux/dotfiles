@@ -1,0 +1,124 @@
+@define-color background #282828;
+@define-color foreground #ebdbb2;
+@define-color black      #222222;
+@define-color yellow     #fabd2f;
+@define-color red        #fb4934;
+@define-color green      #b8bb26;
+@define-color gray       #282828;
+@define-color blue       #83a578;
+
+* {
+  border: none;
+  border-radius: 0;
+  font-family: Input, "Font Awesome 5 Free";
+  font-size: 13px;
+  min-height: 0;
+}
+
+@keyframes blink {
+  to {
+    background-color: @white;
+    color: @background;
+  }
+}
+
+#tray {
+  margin-left: 100000px;
+}
+
+window#waybar {
+  background: @background;
+  border-bottom: 3px solid @gray;
+  color: @foreground;
+  transition-property: background-color;
+  transition-duration: 0.5s;
+}
+
+#workspaces button {
+  padding: 0 5px;
+  background: transparent;
+  color: @foreground;
+  border-top: 3px solid @background;
+  border-bottom: 3px solid transparent;
+}
+
+#workspaces button.focused {
+  border-bottom: 3px solid @green;
+}
+
+#workspaces button.urgent {
+  border-bottom: 3px solid @yellow;
+}
+
+#mode {
+  background-color: @black;
+  border-top: 3px solid @black;
+  border-bottom: 3px solid @red;
+}
+
+#custom-vpn.work {
+  border-bottom: 3px solid @blue;
+}
+
+#custom-usbguard,
+#custom-decrypted,
+#custom-updates,
+#custom-mail,
+#custom-vpn.off,
+#battery.warning,
+#custom-dnd.on {
+  border-bottom: 3px solid @yellow;
+}
+
+#battery.charging {
+  border-bottom: 3px solid @green;
+}
+
+#custom-yubikey,
+#custom-recording,
+#custom-cast,
+#battery.critical {
+  border-bottom: 3px solid @red;
+}
+
+#mode,
+#pulseaudio,
+#custom-usbguard,
+#custom-spotify,
+#custom-yubikey,
+#custom-decrypted,
+#custom-updates,
+#custom-mail,
+#network,
+#custom-infra-status,
+#temperature,
+#cpu,
+#memory,
+#backlight,
+#battery,
+#idle_inhibitor,
+#clock {
+  padding: 0 6px;
+  margin: 0 6px;
+}
+
+#custom-vpn,
+#custom-vpn-work,
+#custom-recordind,
+#custom-cast,
+#custom-dnd {
+  padding: 0;
+  margin: 0 6px;
+}
+
+#custom-infra-status.up {
+  border-bottom: 3px solid @green;
+}
+
+#custom-infra-status.down {
+  border-bottom: 3px solid @red;
+}
+
+#temperature.critical {
+  border-bottom: 3px solid @red;
+}

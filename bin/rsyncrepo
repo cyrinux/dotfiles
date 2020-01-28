@@ -1,0 +1,3 @@
+#!/bin/sh
+. /etc/systemd/system/backup-repo@pkgbuild
+/usr/bin/rsync --fuzzy --archive --partial --verbose --delete ${LOCAL_PATH}/* ${REMOTE_ADDR}:${REMOTE_PATH}

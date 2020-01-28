@@ -109,7 +109,7 @@ class Mako(Notification):
     """
 
     def toggle(self, state):
-        self.parent.py3.command_run("makoctl set invisible={}".format(int(bool(state))))
+        self.parent.py3.command_run("makoctl set invisible={}".format(int(state)))
 
 
 class Xfce4_notifyd(Notification):
@@ -145,7 +145,7 @@ class Py3status:
     thresholds = [(0, "bad"), (1, "good")]
 
     def post_config_hook(self):
-        servers = ["xfce4-notifyd", "dunst", "mako", None]
+        servers = ["dunst", "mako", "xfce4-notifyd", None]
         if not self.server:
             for server in servers:
                 if server:

@@ -1,13 +1,15 @@
 source /usr/share/kak-lsp/rc/lsp.kak
 lsp-enable
 lsp-auto-hover-insert-mode-enable
-lsp-auto-hover-enable
 set-option global lsp_auto_highlight_references true
 set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'rg --hidden --follow --smart-case --with-filename --column'
 
-set-option global langmap %opt{langmap_fr_azerty}
+set-option global langmap %opt{langmap_ru_jcuken}
+
+set-option global surround_begin auto-pairs-disable
+set-option global surround_end auto-pairs-enable
 
 hook global ModuleLoaded kitty %{
    set-option global kitty_window_type 'os'
@@ -16,7 +18,7 @@ hook global ModuleLoaded kitty %{
 # Commands
 
 define-command disable-autolint -docstring 'disable auto-lint' %{
-    lint-disable
+    lint-hide-diagnostics
     unset-option buffer lintcmd
     remove-hooks buffer lint
 }
@@ -28,12 +30,12 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
 
 
 # Hooks
+
 hook global BufOpenFile  .* modeline-parse
 hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
 hook global BufWritePost .* %{ git show-diff }
 hook global BufReload    .* %{ git show-diff }
-# hook global WinCreate    .* auto-pairs-enable
 hook global WinDisplay   .* %{ evaluate-commands %sh{
     cd "$(dirname "$kak_buffile")"
     project_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
@@ -54,11 +56,11 @@ hook global WinSetOption filetype=.* %{
 }
 
 hook global WinSetOption filetype=python %{
-    set-option buffer formatcmd 'black -q -'
+    set-option buffer formatcmd 'isort -q - | black -q -'
+
     hook buffer -group format BufWritePre .* format
 
     set-option buffer lintcmd 'pylint --msg-template="{path}:{line}:{column}: {category}: {msg}" -rn -sn'
-    lint-enable
     lint
     hook buffer -group lint BufWritePost .* lint
 }
@@ -67,13 +69,16 @@ hook global WinSetOption filetype=go %{
     hook buffer -group format BufWritePre .* lsp-formatting-sync
 
     set-option buffer lintcmd "run() { golint $1; go vet $1 2>&1 | sed -E 's/: /: error: /'; } && run"
-    lint-enable
     lint
     hook buffer -group lint BufWritePost .* lint
 }
 
+hook global WinSetOption filetype=rust %{
+    hook buffer -group format BufWritePre .* lsp-formatting-sync
+}
+
 hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|yaml|html) %{
-    set-option buffer formatcmd "prettier --stdin-filepath=%val${kak_buffile}"
+    set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
     hook buffer -group format BufWritePre .* format
 }
 
@@ -82,11 +87,14 @@ hook global WinSetOption filetype=markdown %{
 }
 
 hook global WinSetOption filetype=sh %{
+    set-option buffer formatcmd 'shfmt -i 4 -ci -sr -kp'
+    hook buffer -group format BufWritePre .* format
+
     set-option buffer lintcmd 'shellcheck -x -fgcc'
-    lint-enable
     lint
 }
 
-hook global WinSetOption filetype=rust %{
-    hook buffer -group format BufWritePre .* lsp-formatting-sync
+hook global WinSetOption filetype=terraform %{
+    set-option buffer formatcmd 'terraform fmt -'
+    hook buffer -group format BufWritePre .* format
 }

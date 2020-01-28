@@ -1,0 +1,21 @@
+#!/bin/bash
+trap 'pkill -P $$' EXIT
+
+get_status() {
+    status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
+    if [[ "$status" == "up" ]]; then
+        icon=''
+        tooltip='Infra is OK'
+        class=up
+    else
+        icon=''
+        tooltip='Infra got a problem!'
+        class=down
+    fi
+    printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+}
+
+while true; do
+    nm-online -q -t 60 && get_status
+    sleep 60
+done

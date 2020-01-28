@@ -1,49 +1,29 @@
 #!/bin/bash
 
-VPN_NAME="France"
-ESSID=$(iwgetid -r | tr '[:upper:]' '[:lower:]')
-
+ESSID=$(nmcli -t -f active,ssid dev wifi| grep -e '^yes' | cut -d':' -f2 | tr '[:upper:]' '[:lower:]')
 INTERFACE="$1"
 STATUS=$2
 
 case $STATUS in
   up)
-    if [[ ${INTERFACE:0:3} != "tun" && ${INTERFACE:0:3} != "tap"
-          && ${INTERFACE:0:2} != "vm" && ${INTERFACE:0:6} != "docker"
-          && ${INTERFACE:0:11} != "enp59s0u1u2" && ${INTERFACE:0:5} != "virbr"
-          && ${INTERFACE:0:14} != "wg0"
-          && ${INTERFACE:0:14} != "wwp0s20f0u2i12"
-          && ${ESSID:0:4} != "truc"
-          && ${ESSID:0:4} != "phon" ]]; then
-      nmcli con up "$VPN_NAME" 2>/dev/null
+    if [[ ${ESSID:0:4} != "truc" && ${ESSID:0:3} != "Air"
+          && ${ESSID:0:4} != "phon"
+          && ${INTERFACE:0:3} != "tun"
+          && ${INTERFACE} != 'ens8u1u4' ]]; then
+         # mullvad connect
+         # nmcli con up WARP
+         nmcli con up MyNAS
+    else
+        # mullvad disconnect
+        # nmcli con down WARP
     fi
-    systemctl restart kresd@1.service
     systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "weather_owm paris" "frame wwan" "external_script nmtrust"
     ;;
   down)
-    if nmcli con show --active | grep "$VPN_NAME"; then
-      nmcli con down "$VPN_NAME" 2>/dev/null
-    fi
-    systemctl restart kresd@1.service
-    systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "frame wwan" "external_script nmtrust"
     ;;
   vpn-up)
-    if [[ $INTERFACE == "tun-pia" ]]; then
-      nmcli con down tun-pia-hard 2>/dev/null
-      sysctl -w net.ipv6.conf.all.disable_ipv6=1
-    fi
-    systemctl restart kresd@1.service
     systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "external_script nmtrust"
     ;;
   vpn-down)
-    if [[ $INTERFACE == "tun-pia" ]]; then
-      sysctl -w net.ipv6.conf.all.disable_ipv6=0
-    fi
-    systemctl restart kresd@1.service
-    systemctl restart systemd-resolved.service
-    py3-cmd refresh "whatismyip" "networkmanager" "external_script nmtrust"
     ;;
 esac

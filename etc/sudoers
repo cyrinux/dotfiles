@@ -85,7 +85,7 @@ root ALL=(ALL) ALL
 
 ## Uncomment to allow members of group wheel to execute any command
 %wheel ALL=(ALL) ALL
-%wheel ALL=(ALL) NOPASSWD:SETENV: /usr/bin/systemctl stop pcscd.service, /usr/bin/pacman -Sy, /usr/bin/tlp, /usr/bin/firejail --list, /usr/bin/firemon --list, /usr/bin/systemctl restart kresd@1.service, /usr/bin/arch-nspawn, /usr/bin/makechrootpkg, /usr/bin/mkarchroot, /usr/local/bin/aur-x86_64-build
+%wheel ALL=(ALL) NOPASSWD:SETENV: /usr/bin/systemctl stop pcscd.service, /usr/bin/pacman -Sy, /usr/bin/tlp, /usr/bin/firejail --list, /usr/bin/firemon --list, /usr/bin/arch-nspawn, /usr/bin/makechrootpkg, /usr/bin/mkarchroot, /usr/local/bin/aur-x86_64-build, /usr/local/bin/cpu
 ## Same thing without a password
 #%wheel ALL=(ALL) NOPASSWD: ALL
 

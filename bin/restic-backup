@@ -1,43 +1,51 @@
-#!/bin/bash
-credentials=$(pass backup/restic-synology)
+#!/bin/sh
+set -u
 
-RESTIC_PASSWORD=$(echo "$credentials" | head -n1)
-RESTIC_REPOSITORY=$(echo "$credentials" | grep RESTIC_REPOSITORY | awk '{ print $2 }')
+main() {
+	set_xdg_dirs
+	for repo in $(lsrepos); do
+		backup "$repo"
+	done
+}
 
-export RESTIC_PASSWORD="$RESTIC_PASSWORD"
-export RESTIC_REPOSITORY="$RESTIC_REPOSITORY"
+backup() {
+	eval "$(pass "restic/$1" 2>/dev/null)"
 
-echo "Backup..."
-ionice -c2 nice -n19 \
-restic backup \
---tag home \
--e .snapshots \
--e .cache \
--e cache \
--e .ccache \
--e Coffre \
--e CacheStorage \
--e .*Storage \
--e Téléchargements \
--e Downloads \
--e tmp \
--e temp \
--e vmware \
--e .minikube \
--e *.part \
--e *.vmem \
--e .vagrant.d \
--x \
-/home/cyril
+	echo
+	echo "Backing up to $RESTIC_REPOSITORY..."
+	echo
 
-echo "Cleaning old backup..."
-ionice -c2 nice -n19 \
-restic forget \
---tag home \
---keep-last 48 \
---keep-daily 7 \
---keep-weekly 4 \
---keep-monthly 3 \
---keep-yearly 10
+	restic backup --tag="$RESTIC_TAG" "$HOME" \
+		--exclude-file="$XDG_CONFIG_HOME/resticignore" --exclude-caches
+	restic forget --host "$(hostname)" --path "$HOME" --tag="$RESTIC_TAG" \
+		--keep-tag keep --keep-hourly  18 --keep-daily 14 \
+		--keep-weekly 8 --keep-monthly 18 --keep-yearly 2
+}
 
-echo "Backup successfull!"
+lsrepos() {
+	find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
+		sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+}
+
+# These get used in the exclude file.
+set_xdg_dirs() {
+	export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+	export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+	export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+
+	if test -e "${XDG_CONFIG_HOME}/user-dirs.dirs"; then
+		. "${XDG_CONFIG_HOME}/user-dirs.dirs"
+	fi
+
+	export XDG_DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
+	export XDG_DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-$HOME/Downloads}"
+	export XDG_TEMPLATES_DIR="${XDG_TEMPLATES_DIR:-$HOME/Templates}"
+	export XDG_PUBLICSHARE_DIR="${XDG_PUBLICSHARE_DIR:-$HOME/Public}"
+	export XDG_DOCUMENTS_DIR="${XDG_DOCUMENTS_DIR:-$HOME/Documents}"
+	export XDG_MUSIC_DIR="${XDG_MUSIC_DIR:-$HOME/Music}"
+	export XDG_PICTURES_DIR="${XDG_PICTURES_DIR:-$HOME/Pictures}"
+	export XDG_VIDEOS_DIR="${XDG_VIDEOS_DIR:-$HOME/Videos}"
+}
+
+main "$@"
+

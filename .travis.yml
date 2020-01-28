@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+
+install:
+  - docker build -t archlinux/dotfiles -f docker/archlinux/Dockerfile .
+
+script:
+  - docker run archlinux/dotfiles make test
+  - docker run archlinux/dotfiles sudo pacman -Sy --noconfirm cyrinux

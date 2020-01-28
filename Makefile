@@ -15,9 +15,7 @@ output := docs
 # All markdown files in src/ are considered sources
 sources := $(wildcard $(source)/*.md)
 
-all: setup doc
-
-install: setup
+all: install doc
 
 doc: lualatex wkhtmltopdf
 
@@ -30,8 +28,6 @@ lualatex: $(objects)
 # Recipe for converting a Markdown file into PDF using Pandoc
 $(output)/%-lualatex.pdf: $(source)/%.md
 	pandoc \
-		--variable mainfont="Cantarell" \
-		--variable monofont="Input Mono Narrow" \
 		--variable fontsize=11pt \
 		--variable geometry:"top=1.5cm, bottom=2.5cm, left=1.5cm, right=1.5cm" \
 		--variable geometry:a4paper \
@@ -50,8 +46,6 @@ wkhtmltopdf: $(objects)
 
 $(output)/%-wkhtmltopdf.pdf: $(source)/%.md
 	pandoc \
-		--variable mainfont="Cantarell" \
-		--variable monofont="Input Mono Narrow" \
 		--variable fontsize=11pt \
 		--variable geometry:a4paper \
 		--highlight-style zenburn \
@@ -62,10 +56,29 @@ $(output)/%-wkhtmltopdf.pdf: $(source)/%.md
 		--pdf-engine=wkhtmltopdf \
 		-o $@
 
-setup:
-		./setup
+.PHONY : setup-system
+setup-system:
+	./setup-system.sh
+	
+.PHONY : setup-user
+setup-user:
+	./setup-user.sh
+	
+.PHONY: install
+install: setup-system setup-user
 
-.PHONY : clean
+.PHONY: install-metapackage
+install-metapackage:
+	sudo pacman -Sy --noconfirm cyrinux
+	
+.PHONY: travis
+travis: setup-system setup-user install-metapackage
 
+.PHONY: test
+test:
+	docker build -t archlinux/dotfiles -f docker/archlinux/Dockerfile .
+	docker run --rm -it archlinux/dotfiles make travis
+	
+.PHONY: clean
 clean:
 	rm -f $(output)/*.pdf

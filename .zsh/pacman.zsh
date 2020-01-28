@@ -1,84 +1,89 @@
-alias aurc='aur talk -bin 5'
-alias paci='pac -Sy'
-alias ipaci='SNAP_PAC_SKIP=true paci'
-alias ipaci!='ipaci -dd'
-alias pacr='pac -Rs'
-alias ipacr='SNAP_PAC_SKIP=true pacr'
-alias pacr!='pacr -dd'
-alias ipacr!='ipacr -dd'
-alias pacf='pac -U'
-alias ipacf='SNAP_PAC_SKIP=true pacf'
-alias pacu='pac -Syu'
-alias ipacu='SNAP_PAC_SKIP=true pacu'
-alias pacq='pacman -Si'
-alias pacl='pacman -Ql'
-alias pacdiff='sudo \pacdiff; py3-cmd refresh "external_script pacdiff"'
-alias lsp="pacman -Qett --color=always | more"
+#!/usr/bin/env zsh
 
 pac() {
-  sudo -E pacman "$@"
-  py3status-refresh-pacman
-  rehash
+    sudo -E pacman "$@"
+    pkill -RTMIN+1 -x waybar
+    rehash
 }
-compdef pac=pacman
+command -v pacman &> /dev/null && compdef pac=pacman
 
+alias paci='SNAP_PAC_SKIP=true pac -Sy'
+alias paci!='pac -Sy -dd'
+alias pacr='SNAP_PAC_SKIP=true pac -Rs'
+alias pacr!='pac -Rs -dd'
+alias pacf='SNAP_PAC_SKIP=true pac -U'
+alias pacF='pacman -F'
+alias pacu='pac -Syu'
+alias pacq='pacman -Si'
+alias pacl='pacman -Ql'
+alias pacdiff='sudo \pacdiff; pkill -RTMIN+1 -x waybar'
+
+pacs() (
+    [ $# -lt 1 ] && { >&2 echo "No search term provided"; return 1; }
+    tmp=$(mktemp -d)
+    trap 'rm -rf $tmp' EXIT
+    cd $tmp
+    touch pkgs
+
+    {
+        NO_COLOR=true aur search -n -k NumVotes "$@"
+        pacman -Ss "$@"
+    } |
+    while read -r pkg; do
+        read -r desc
+        name="${pkg%% *}"
+        mkdir -p `dirname "$name"`
+        echo "$pkg" >>pkgs
+        echo "$desc" >$name
+    done
+    [ -s pkgs ] || { >&2 echo "No packages found"; return 2; }
+    aur_pkgs=()
+    repo_pkgs=()
+    cat pkgs | fzf --tac --preview-window=wrap --preview='cat {1}; echo; echo; pacman -Si `basename {1}` 2>/dev/null; true' |
+    while read -r pkg; do
+        title="${pkg%% *}"
+        repo="$(dirname "$title")"
+        name="$(basename "$title")"
+        if [ "$repo" = "aur" ]; then
+            aur_pkgs+=("$name")
+        else
+            repo_pkgs+=("$name")
+        fi
+    done
+    (( ${#aur_pkgs[@]} )) && aurs "${aur_pkgs[@]}"
+    SNAP_PAC_SKIP=true pac -Sy "${aur_pkgs[@]}" "${repo_pkgs[@]}"
+)
+
+pacs!() {
+    aur search -k NumVotes "$@"
+    pacman -Ss "$@"
+}
 
 pacQ() {
     pacman -Qo `which "$1"`
 }
 
-pacs() {
-  aur search -n -k NumVotes "$@"
-  pacman -Ss "$@"
-}
-
-pacs!() {
-  aur search -k NumVotes "$@"
-  pacman -Ss "$@"
-}
-
 aurs() {
-      aur sync -ScP "$@"
-      post_aur
-    }
-alias aurs!='aurs --no-ver-shallow -f'
+    aur sync -Sc "$@"
+    post_aur
+}
+alias aurs!='aurs --nover-argv -f'
 
 aurb() {
-  aur build -Scf --pkgver "$@"
-  post_aur
+    aur build -Scf --pkgver "$@"
+    post_aur
 }
 
 auru() {
-  xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -ScPu --rebuild "$@"
-  # post_aur
+    xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -Scu --rebuild "$@"
+    post_aur
 }
 
 post_aur() {
-  sudo -E pacman -Sy
-  py3status-refresh-pacman
-  aur_clean
+    sudo -E pacman -Sy
+    pkill -RTMIN+1 -x waybar
+    find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
+    find /var/cache/pacman/cyrinux-aur -name '*~' -delete >/dev/null
+    find /var/cache/pacman/cyrinux-aur -group root -delete >/dev/null
 }
 
-aur_clean() {
-  find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
-  find /var/cache/pacman/cyrinux-aur -name '*~' -delete >/dev/null
-  find /var/cache/pacman/cyrinux-aur -group root -delete >/dev/null
-}
-
-py3status-refresh-pacman() {
-  pacdiff="external_script pacdiff"
-  official="external_script checkofficial"
-  repo="external_script checkupdates"
-  aur="external_script checkupdates_aur"
-  vcs="external_script checkupdates_vcs"
-  rebuild="external_script checkrebuild"
-  py3-cmd refresh "$pacdiff" "$official" "$repo" "$aur" "$vcs" "$rebuild"
-}
-
-alias rsyncrepo='rsync --archive --partial --delete --verbose /var/cache/pacman/cyrinux-aur/* aur@backup-aur:/var/services/homes/cyril/www/aur/'
-alias update='auru; pacu'
-alias signrepo='repoctl update'
-
-rebuild() {
-    aurs! $1 && SNAP_PAC_SKIP=true sudo -E pacman -Sy $1
-}

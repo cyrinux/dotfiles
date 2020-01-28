@@ -1,3 +1,0 @@
-#!/usr/bin/zsh
-source ~/.zsh/environment.zsh
-kitty ssh $1

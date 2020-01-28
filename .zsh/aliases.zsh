@@ -1,184 +1,154 @@
-alias goprojects='cd $GOPATH/src/github.com/cyrinux/'
-alias rg='rg --hidden --follow --smart-case 2>/dev/null'
-alias cp='cp -r --reflink=auto'
-alias df='pydf'
-alias diff='git diff --no-index'
-alias diff!='kitty +kitten diff'
-alias dragon='dragon-drag-and-drop --and-exit --all'
-alias emacsedit="emacsclient -nc -s instance1"
-alias e='kak'
-alias fd='fd --hidden --follow'
-alias grep='grep --color'
-alias http-serve='python3 -m http.server'
-alias locate='locate -i'
-alias mkdir='mkdir -p'
-alias o='xdg-open'
-alias rm='rmtrash -rf'
-alias rm!='\rm -rf'
-alias sudo='sudo -E '
-alias ls="exa --group --git --group-directories-first"
-alias ll="ls -l"
-alias la="ll -a"
-alias lk="ll -s=size"                # Sorted by size
-alias lm="ll -s=modified"            # Sorted by modified date
-#alias lc="ll --created -s=created"   # Sorted by created date
-alias yubikey-unlock='sudo systemctl stop pcscd.service'
-alias rg='noglob rg --smart-case --hidden --ignore-file=$HOME/.rgignore'
-alias ip="ip -c"
-mkdcd() {
-  [ -n "$1" ] && mkdir -p "$1" && builtin cd "$1"
-}
+#!/usr/bin/env zsh
 
-# Extension based commands
-alias -s gz='tar -xzvf'
-alias -s tgz='tar -xzvf'
-alias -s bz2='tar -xjvf'
-alias -s bz2='tar -xjvf'
-alias -s pdf='firewarden -c zathura'
-alias -s jpg=xdg-open
-alias -s png=xdg-open
-alias -s gif=xdg-open
-alias -s avi=xdg-open
-alias -s mkv=xdg-open
-alias -s webm=xdg-open
-alias -s mp4=xdg-open
+command -v advcp     &> /dev/null    && alias cp='advcp -g -r --reflink=auto'                      || alias cp='cp -r --reflink=auto'
+command -v advmv     &> /dev/null    && alias mv='advmv -g'
+command -v bat       &> /dev/null    && alias c='bat -p'                                           || alias c='cat'
+command -v curlie    &> /dev/null    && alias curl='curlie'
+command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
+command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
+command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
+command -v exa       &> /dev/null    && alias ls='exa --group --git --group-directories-first'     || alias ls='ls --color=auto --group-directories-first -h'
+command -v fd        &> /dev/null    && alias fd='fd --hidden --follow'                            || alias fd='find . -name'
+command -v git       &> /dev/null    && alias diff='git diff --no-index'
+command -v htop      &> /dev/null    && alias top='htop'
+command -v pydf      &> /dev/null    && alias df='pydf'
+command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
+command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 
-# Task
-alias t='task'
-alias ta='task add'
-alias tm='task modify'
-alias ti='task add due:tomorrow tag:inbox'
-alias toa='todoist q "$@"'
-
-alias top="htop"
-
-########
-# Misc #
-########
-
-p() {
-  if (( $# == 0 )); then
-    ping 1.1.1.1
-  else
-    ping $@
-  fi
-}
-
-vault!(){
-  gocryptfs -extpass "pass gocryptfs-mega" -noprealloc /home/cyril/Seafile/datas/encrypted_gocryptfs ~/Vault
-  py3-cmd refresh decrypted_documents
-  sleep ${1:-10}m
-  fusermount -u ~/Vault
-  notify-send 'Vault' 'Unmounted!'
-}
-
-vault-share!(){
-  gocryptfs -extpass "pass gocryptfs-mega-share" -noprealloc /home/cyril/Seafile/shared_with_maximbaz ~/Vault-Share
-  sleep ${1:-10}m
-  fusermount -u ~/Vault-Share
-  notify-send 'Vault Share' 'Unmounted!'
-  py3-cmd refresh decrypted_shared
-}
-
-alias lmr='mr --config $HOME/library/src/myrepos.conf --directory=$HOME/library/src/'
-alias mtr-report='mtr --report --report-cycles 10 --no-dns'
-alias http-serve='python -m http.server'
-alias bc='bc -lq'
-alias utc='env TZ="UTC" date'
+alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
+alias e='$EDITOR'
 alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
-alias connect-shure-bt1="connect_a2dp 00:0E:DD:06:24:1C"
-alias connect-bose-mini-ii="connect_a2dp 08:DF:1F:A9:9E:EC"
-alias connect-aeropex="connect_a2dp 20:74:CF:3B:36:A9"
-alias clean_cache_zsh="antigen reset"
-alias generate_pins="pwgen -n -r=azertyuiopqsdfghjklmwxcvbn -A 3 10"
-alias send="croc send"
-
-# iowaiting
-iowaiting() {
-    watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')"
-}
-
-# fix
-ironkey() {
-  sudo /run/media/$USER/IronKey/linux/ironkey $@
-}
-
-# download recursive
-website_aspirator() {
-  wget --no-check-certificate  -r -np -R "index.html*" $@
-}
-
-# screencast
-screencasting() {
- screencast -u -v hevc_nvenc -W -w @cyrinux -g optipng -o ~/Movies/Screencasts -t /dev/shm/ -v h264_vaapi -A /dev/dri/renderD128 -1 $@
-}
-
-# ffmeg
-alias ffmpeg="ffmpeg -hide_banner"
-
-# Dict
-def() {
-  dict $@ | less
-}
-
-# task
-alias task="todoist"
-
-# greenbone / openvas docker container account
-alias gvm="sudo su - gvm-docker"
-
-# tcpdump all requests made by given process
-alias sysdig="sudo sysdig"
-alias csysdig="sudo csysdig"
-httpdump() { sysdig -s 2000 -A -c echo_fds proc.name=$1; }
-
-# log viewer
-alias lnav="lnav -q"
-
-# misc
-alias graph="graph-easy --from dot --as boxart --stats"
-
-# ssh
-alias cssh="tmux-cssh"
-alias sssh="cssh"
-
-# mkdocs wiki
-alias mkbs="mkdocs build && mkdocs serve"
-
-
-# spotify download
-spotify-download() {
-  sudo docker run --rm -it -v ~/Musics:/Spotify:/music ritiek/spotify-downloader -p "$1"
-  sudo docker run --rm -it -v ~/Musics/Spotify:/music ritiek/spotify-downloader -l *.txt
-  sudo rm -f ~/Musics/Spotify/*.txt
-  sudo chown -R $USER ~/Musics/Spotify
-}
-
-# java docker version
-alias java10-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
-alias java9-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
-alias java8-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
-
-# ansible
-alias ansible-playbook="ANSIBLE_SSH_EXECUTABLE=/usr/bin/ssh ansible-playbook"
-
-# calendar
+alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(pass personal/bios)"'
+alias battery-normal='sudo cctk --PrimaryBattChargeCfg=custom:50-86 --ValSetupPwd="$(pass personal/bios)"'
+alias bc='bc -lq'
 alias cal="khal calendar"
-
-# gpg
+alias chromecast="repeat 10 mkchromecast --encoder-backend ffmpeg -c aac --video --notifications -s -i"
+alias csysdig="sudo csysdig"
+alias diff!='kitty +kitten diff'
+alias generate_pins="pwgen -n -r=azertyuiopqsdfghjklmwxcvbn -A 3 10"
 alias gpg-delete-master-key='gpg-connect-agent "DELETE_KEY 0D13C83ACE0E72759DADA333877F9E38CDDF866E" /bye'
 alias gpg-yubikey-change-card='gpg-connect-agent "scd serialno" "learn --force" /bye'
+alias grep='grep --color'
+alias hexdump='od -A x -t x1z -v'
+alias htpasswd='openssl passwd -apr1'
+alias httpdump='sysdig -s 2000 -A -c echo_fds proc.name='
+alias http-serve='python3 -m http.server'
+alias ip="ip -c"
+alias ll='ls -l'
+alias locate='locate -i'
+alias logviewer="lnav -q"
+alias mkdir='mkdir -p'
+alias mtr-report='mtr --report --report-cycles 10'
+alias o='xdg-open'
+alias play_cercle="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCPKT_csvP72boVX0XrMtagQ/videos"
+alias play_techno="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCmfF7JZv26UUKyRedViGIlw/videos"
+alias readallmail="notmuch tag -unread folder:INBOX"
+alias rm!='\rm -rf'
+alias send="croc send"
+alias sudo='sudo -E '
+alias sysdig="sudo sysdig"
+alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
+alias tree='tree -a -I .git --dirsfirst'
+alias utc='env TZ="UTC" date'
+alias yubikey-fix='sudo systemctl stop pcscd.service'
+alias zshupdate='z4h update'
 
-# vault
-alias sync-vault='rsync-synchronize /run/media/cyril/COFFRE/* /run/media/cyril/COFFRE2/'
+# nnn, cd on exit
+n()
+{
+    # The default behaviour is to cd on quit (nnn checks if NNN_TMPFILE is set)
+    # To cd on quit only on ^G, export NNN_TMPFILE after the call to nnn
+    export NNN_TMPFILE=${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd
 
-# password
-alias newpass='gpg --gen-random -a 1 24'
+    nnn "$@"
 
-# chromecast
-alias cast="repeat 10 mkchromecast --encoder-backend ffmpeg -c aac --video --notifications -s -i"
+    if [ -f $NNN_TMPFILE ]; then
+            . $NNN_TMPFILE
+            rm $NNN_TMPFILE
+    fi
+}
 
-trash-empty() {
-    /usr/bin/trash-empty
-    py3-cmd refresh external_script trash
+e64() { [[ $# == 1 ]] && base64 <<<"$1" || base64 }
+d64() { [[ $# == 1 ]] && base64 --decode <<<"$1" || base64 --decode }
+iowaiting() { watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')" }
+
+
+# Make directory and enter it
+function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
+compdef _directories md
+
+# Make a temporary directory and enter it
+tmpd() { cd "$(mktemp -d -t "${1:-tmp}.XXXXXXXXXX")" }
+
+# Run `dig` and display the most useful info
+alias d='dig +nocmd +multiline +noall +answer'
+
+# ping test
+p() { [ -n "$DOMAIN" ] && ping ${1}.${DOMAIN} || ping "${1:-1.1.1.1}" }
+
+iowaiting() { watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')" }
+
+
+# Create a data URL from a file
+dataurl() {
+        local mimeType
+        mimeType=$(file -b --mime-type "$1")
+        if [[ $mimeType == text/* ]]; then
+                mimeType="${mimeType};charset=utf-8"
+        fi
+        echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
+}
+
+# Create a git.io short URL
+gitio() {
+        if [ -z "${1}" ] || [ -z "${2}" ]; then
+                echo "Usage: \`gitio slug url\`"
+                return 1
+        fi
+        curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
+}
+
+
+# Show all the names (CNs and SANs) listed in the SSL certificate
+# for a given domain
+getcertnames() {
+        if [ -z "${1}" ]; then
+                echo "ERROR: No domain specified."
+                return 1
+        fi
+        local domain="${1}"
+        echo "Testing ${domain}…"
+        echo ""; # newline
+        local tmp
+        tmp=$(echo -e "GET / HTTP/1.0\\nEOT" \
+                | openssl s_client -connect "${domain}:443" 2>&1)
+        if [[ "${tmp}" = *"-----BEGIN CERTIFICATE-----"* ]]; then
+                local certText
+                certText=$(echo "${tmp}" \
+                        | openssl x509 -text -certopt "no_header, no_serial, no_version, \
+                        no_signame, no_validity, no_issuer, no_pubkey, no_sigdump, no_aux")
+                echo "Common Name:"
+                echo ""; # newline
+                echo "${certText}" | grep "Subject:" | sed -e "s/^.*CN=//"
+                echo ""; # newline
+                echo "Subject Alternative Name(s):"
+                echo ""; # newline
+                echo "${certText}" | grep -A 1 "Subject Alternative Name:" \
+                        | sed -e "2s/DNS://g" -e "s/ //g" | tr "," "\\n" | tail -n +2
+                return 0
+        else
+                echo "ERROR: Certificate not found."
+                return 1
+        fi
+}
+
+# get dbus session
+dbs() {
+        local t=$1
+        if [[  -z "$t" ]]; then
+                local t="session"
+        fi
+        dbus-send --$t --dest=org.freedesktop.DBus \
+                --type=method_call      --print-reply \
+                /org/freedesktop/DBus org.freedesktop.DBus.ListNames
 }

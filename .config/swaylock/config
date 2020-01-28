@@ -34,3 +34,6 @@
 
 color=222222
 inside-color=282828
+inside-clear-color=222222
+ring-color=282828
+text-clear-color=222222
