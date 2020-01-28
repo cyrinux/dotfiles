@@ -19,6 +19,6 @@ WALLPAPER=~/.wallpaper.jpeg
 if test -f "$WALLPAPER"; then
     RES=$(curl -sL "$URL" -o "$WALLPAPER")
     if [ -z "$RES" ]; then
-        feh --bg-scale "$WALLPAPER"
+        swaybg -i "$WALLPAPER"
     fi
 fi

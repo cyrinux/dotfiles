@@ -124,6 +124,7 @@ copy "etc/udev/rules.d/99pci_pm.rules"
 copy "etc/udev/rules.d/90-hid-eToken.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/systemd/system/usbguard.service.d"
+copy "etc/smartd.conf"
 
 (( "$reverse" )) && exit 0
 
@@ -159,6 +160,7 @@ systemctl_enable_start "usbguard-dbus.service"
 systemctl_enable_start "tlp.service"
 systemctl_enable_start "tlp-sleep.service"
 systemctl_enable_start "systemd-swap.service"
+systemctl_enable_start "smartd.service"
 
 
 echo ""

@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
 
-# TODO: integrate into py3status
-fwupdmgr refresh
-fwupdmgr get-updates
-# fwupdmgr update
+sudo fwupdmgr refresh
+sudo fwupdmgr get-updates
+sudo fwupdmgr update

@@ -7,31 +7,46 @@ input type:keyboard {
 
 input type:touchpad {
     natural_scroll enabled
-    left_handed enabled
-    accel_profile adaptive
     tap enabled
     dwt enabled
 }
 
-set $laptop eDP-1
-set $screen_left DP-5
-set $screen_right DP-6
-bindswitch --reload lid:on output $laptop disable
-bindswitch --reload lid:off output $laptop enable
-
-# bindswitch --locked --reload lid:off output $laptop enable;  output $screen_left disable; output $screen_right disable
-# bindswitch --locked --reload lid:on  output $laptop disable; output $screen_left enable;  output $screen_right enable
-
 output * {
     bg "#222222" solid_color
+}
+
+output eDP-1 {
     scale 1.2
     subpixel rgb
 }
 
+output DP-1 {
+    scale 1.1
+    subpixel rgb
+    pos 0,0
+}
 
+output DP-2 {
+    scale 1.1
+    subpixel rgb
+    pos 1745,0
+}
+
+set $laptop eDP-1
+set $screen_left DP-1
+set $screen_right DP-2
+bindswitch --reload lid:on output $laptop disable
+bindswitch --reload lid:off output $laptop enable
+# bindswitch --locked --reload lid:off output $laptop enable;  output $screen_left disable; output $screen_right disable
+# bindswitch --locked --reload lid:on  output $laptop disable; output $screen_left enable;  output $screen_right enable
+
+# hide cursor if idle while 5s
 seat * hide_cursor 5000
 
+# default layout in tabbed
 workspace_layout tabbed
+
+# hide borders
 hide_edge_borders --i3 none
 default_border pixel 2
 default_floating_border none
@@ -78,21 +93,16 @@ workspace_auto_back_and_forth yes
 
 # Specific window configuration
 for_window    [app_id="org.ksnip.ksnip"] floating enable
-for_window    [app_id="qalculate-gtk"] floating enable
-for_window    [app_id="wayvnc"] move container to $workspace9
+for_window    [app_id=".*"]                  sticky enable
+for_window    [window_role="pop-up"]         floating enable
+for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox"
+for_window    [class="Wire"]                 move container to $workspace3
+for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
 for_window    [app_id="wev"] floating enable
-for_window    [app_id="wlfreerdp"] move container to $workspace9
-for_window    [class="(?i)zathura"] focus, layout tabbed, border normal
-# for_window    [class="Keepassx|Pavucontrol|Steam|Pulseaudio-equalizer-gtk|mpv|vaapi"] floating enable
-for_window    [class="neomutt"] move container to $workspace3
-for_window    [class="sun-awt-X11-XDialogPeer"] floating enable
-for_window    [class="Wire"] move container to $workspace2
-for_window    [title="^edit_text$"] floating enable
-for_window    [window_role="pop-up"] floating enable
 
 # Audio settings
-set $mode_audio Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects
-mode "$mode_audio" {
+set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, pulse(e)ffects"
+mode $mode_audio {
     bindsym --to-code {
 		 p exec pavucontrol, mode "default"
 	     e exec pulseeffects, mode "default"
@@ -106,13 +116,13 @@ mode "$mode_audio" {
 
 
 # Set shut down, restart and locking features
-set $mode_system (l)ock, (s)uspend, (r)eboot, (Shift+s)hutdown, (t)rusted, (u)ntrusted
-mode "$mode_system" {
+set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted"
+mode $mode_system {
 	bindsym --to-code {
      l exec sway-exit lock, mode "default"
      s exec sway-exit suspend, mode "default"
      r exec sway-exit reboot, mode "default"
-     Shift+s exec sway-exit shutdown, mode "default"
+     h exec sway-exit shutdown, mode "default"
      t exec ttoggle -t, mode "default"
      u exec ttoggle -x, mode "default"
 
@@ -121,29 +131,38 @@ mode "$mode_system" {
 	}
 }
 
-# Resize window (you can also use the mouse for that)
-mode "resize" {
+# set $mode_resize "Resize window"
+mode $mode_resize {
     bindsym --to-code {
-        j resize shrink width 5 px or 5 ppt
-        k resize grow height 5 px or 5 ppt
-        l resize shrink height 5 px or 5 ppt
-        semicolon resize grow width 5 px or 5 ppt
+        h            resize grow   left  10 px or 10 ppt
+        Shift+h      resize shrink right 10 px or 10 ppt
+        Ctrl+h       resize grow   left  1  px or 1  ppt
+        Ctrl+Shift+h resize shrink right 1  px or 1  ppt
 
-        # same bindings, but for the arrow keys
-        Left resize shrink width 10 px or 10 ppt
-        Down resize grow height 10 px or 10 ppt
-        Up resize shrink height 10 px or 10 ppt
-        Right resize grow width 10 px or 10 ppt
+        Shift+j      resize grow   down  10 px or 10 ppt
+        j            resize shrink up    10 px or 10 ppt
+        Ctrl+Shift+j resize grow   down  1  px or 1  ppt
+        Ctrl+j       resize shrink up    1  px or 1  ppt
 
-        # exit resize mode: Enter or Escape
-        Return mode "default"
-        Escape mode "default"
+        Shift+k      resize shrink down  10 px or 10 ppt
+        k            resize grow   up    10 px or 10 ppt
+        Ctrl+Shift+k resize shrink down  1  px or 1  ppt
+        Ctrl+k       resize grow   up    1  px or 1  ppt
+
+        Shift+l      resize grow   right 10 px or 10 ppt
+        l            resize shrink left  10 px or 10 ppt
+        Ctrl+Shift+l resize grow   right 1  px or 1  ppt
+        Ctrl+l       resize shrink left  1  px or 1  ppt
+
+        # back to normal: Enter or Escape
+        Return mode default
+        Escape mode default
     }
 }
 
 # Move workspaces between monitors (m)
-set $mode_workspaces_monitors Move workspace between monitors
-mode "$mode_workspaces_monitors" {
+set $mode_workspaces_monitors "Move workspace between monitors: (h) left, (l) right"
+mode $mode_workspaces_monitors {
 	bindsym --to-code {
 	  h exec swaymsg move workspace to output left, mode "default"
 	  l exec swaymsg move workspace to output right, mode "default"
@@ -194,148 +213,149 @@ bar {
 }
 
 bindsym --to-code {
-# Media controls
- XF86AudioMute         exec py3-cmd click 1 volume_status
- Shift+XF86AudioMute   exec pamute
- XF86AudioRaiseVolume  exec py3-cmd click 4 volume_status
- XF86AudioLowerVolume  exec py3-cmd click 5 volume_status
- XF86AudioPlay         exec playerctl --player playerctld play-pause
- XF86AudioPrev         exec playerctl --player playerctld previous
- XF86AudioNext         exec playerctl --player playerctld next
- Control+$alt+Up               exec playerctl --player playerctld play-pause
- Control+$alt+Left             exec playerctl --player playerctld previous
- Control+$alt+Right            exec playerctl --player playerctld next
- Control+$alt+Down             exec playerctl --player playerctld stop
- $win+p mode "$mode_audio"
+	# Media controls
+	XF86AudioMute                 exec py3-cmd click 1 volume_status
+	Shift+XF86AudioMute           exec pamute
+	XF86AudioRaiseVolume          exec py3-cmd click 4 volume_status
+	XF86AudioLowerVolume          exec py3-cmd click 5 volume_status
+	XF86AudioPlay                 exec playerctl --player playerctld play-pause
+	XF86AudioPrev                 exec playerctl --player playerctld previous
+	XF86AudioNext                 exec playerctl --player playerctld next
+	Control+$alt+Up               exec playerctl --player playerctld play-pause
+	Control+$alt+Left             exec playerctl --player playerctld previous
+	Control+$alt+Right            exec playerctl --player playerctld next
+	Control+$alt+Down             exec playerctl --player playerctld stop
 
-# Screen brightness controls
- XF86MonBrightnessUp         exec set-brightness inc
- XF86MonBrightnessDown       exec set-brightness dec
- Shift+XF86MonBrightnessUp   exec set-brightness inc
- Shift+XF86MonBrightnessDown exec set-brightness dec
+	# Screen brightness controls
+	XF86MonBrightnessUp           exec set-brightness inc
+	XF86MonBrightnessDown         exec set-brightness dec
 
- $hyper+n           exec networkmanager_dmenu
- $hyper+m           exec udiskie-dmenu -p "Mount"
- $hyper+F1          exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
- $win+F1            exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
- Print              exec "grimshot save $(xdg-user-dir PICTURES)/Screenshots/"
- $hyper+Print       exec "pgrep -x sway-screeshot || sway-screenshot-area"
- $win+Print         exec "sway-gif-recorder start &"
- $win+Shift+Print   exec "sway-gif-recorder stop"
+	$hyper+F1                     exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
+	$win+F1                       exec "sudo -A systemctl restart kresd@1.service; resolvectl flush-caches"
+	Print                         exec "grimshot save $(xdg-user-dir PICTURES)/Screenshots/"
+	$hyper+Print                  exec "pgrep -x sway-screenshot || sway-screenshot-area"
+	$win+Print                    exec "sway-gif-recorder start &"
+	$win+Shift+Print              exec "sway-gif-recorder stop"
 
- $hyper+c exec gsimplecal
+	# kakoune cheatsheet
+	$hyper+F8 exec vimiv -s statusbar.show false /home/cyril/library/Pictures/kak_keybinding.png
 
- $hyper+F8 exec imv /home/cyril/library/Pictures/kak_keybinding.png
- XF86Search exec firefox https://search.levis.ws/
+	# media search key
+	XF86Search exec xdg-open https://search.levis.ws/
 
- $hyper+Return exec kitty
- $win+Return exec kitty
+	# open terminal
+	$hyper+Return exec kitty
+	$win+Return exec kitty
 
- $win+q kill
+	# vault
+	Shift+F2 exec "open-vault 7200 &"
 
- Shift+F2 exec "open-vault 7200 &"
+	# quit app
+	$win+q kill
 
- $hyper+equal fullscreen disable, exec bash -c "dmenu -p calc | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
- $hyper+w     fullscreen disable, exec "surfraw-rofi"
- $win+w       fullscreen disable, exec "surfraw duckduckgo -j $(wl-paste)"
- $hyper+p     fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || { sway-paste lock; passmenu -p 'pass'; sway-paste unlock; }"
- $hyper+f	  fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || sway-paste dmenu"
- twosuperior  fullscreen disable, exec "rofi-todoist"
- $hyper+d     fullscreen disable, exec "pgrep wofi && killall wofi || wofi"
+	# launcher
+	$hyper+n      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
+	$hyper+m      fullscreen disable, exec "pgrep -x dmenu && pkill dmen || uudiskie-dmenu -p 'Mount'"
+	$hyper+equal  fullscreen disable, exec bash -c "dmenu -p calc | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
+	$hyper+w      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
+	$hyper+p      fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || { sway-paste lock; passmenu -p 'pass'; sway-paste unlock; }"
+	$hyper+f	  fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || sway-paste dmenu"
+	twosuperior   fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || rofi-todoist"
+	$hyper+d      fullscreen disable, exec "pgrep -x wofi && pkill  wofi || wofi"
 
-# Switch to workspace using number row
- $hyper+ampersand $workspace1
- $hyper+eacute $workspace2
- $hyper+quotedbl $workspace3
- $hyper+apostrophe $workspace4
- $hyper+parenleft $workspace5
- $hyper+minus $workspace6
- $hyper+egrave $workspace7
- $hyper+underscore $workspace8
- $hyper+ccedilla $workspace9
- $hyper+agrave $workspace0
+	# Switch to workspace using number row
+	$hyper+ampersand  $workspace1
+	$hyper+eacute     $workspace2
+	$hyper+quotedbl   $workspace3
+	$hyper+apostrophe $workspace4
+	$hyper+parenleft  $workspace5
+	$hyper+minus      $workspace6
+	$hyper+egrave     $workspace7
+	$hyper+underscore $workspace8
+	$hyper+ccedilla   $workspace9
+	$hyper+agrave     $workspace0
 
-# Move window to workspace using number row
- $win+ampersand  move container to $workspace1
- $win+eacute     move container to $workspace2
- $win+quotedbl   move container to $workspace3
- $win+apostrophe move container to $workspace4
- $win+parenleft  move container to $workspace5
- $win+minus      move container to $workspace6
- $win+egrave     move container to $workspace7
- $win+underscore move container to $workspace8
- $win+ccedilla   move container to $workspace9
- $win+agrave     move container to $workspace0
+	# Move window to workspace using number row
+	$win+ampersand  move container to $workspace1
+	$win+eacute     move container to $workspace2
+	$win+quotedbl   move container to $workspace3
+	$win+apostrophe move container to $workspace4
+	$win+parenleft  move container to $workspace5
+	$win+minus      move container to $workspace6
+	$win+egrave     move container to $workspace7
+	$win+underscore move container to $workspace8
+	$win+ccedilla   move container to $workspace9
+	$win+agrave     move container to $workspace0
 
-# alternatively, you can use the cursor keys:
- $hyper+Left focus left
- $hyper+Down focus down
- $hyper+Up focus up
- $hyper+Right focus right
 
-# alternatively, you can use the cursor keys:
- $win+Left  move left
- $win+Down  move down
- $win+Up    move up
- $win+Right move right
+	# Change focus
+	$hyper+h focus left
+	$hyper+j focus down
+	$hyper+k focus up
+	$hyper+l focus right
 
- $hyper+s split toggle
-# move workspace to the right monitor
- $win+BackSpace move workspace to output right
- $hyper+BackSpace move container to output right
+	# Move focused window
+	$win+h move left
+	$win+j move down
+	$win+k move up
+	$win+l move right
 
-# toggle fullscreen mode for the focused container
- $win+f fullscreen toggle, inhibit_idle fullscreen
- $hyper+t layout tabbed
- $hyper+e layout toggle tabbed splith splitv stacked
+	# toggle menu bar
+	$win+Shift+m bar mode toggle
 
-# toggle tiling / floating
- $win+space floating toggle
+	# Split
+	$hyper+s split toggle
 
-# change focus between tiling / floating windows
- $hyper+space focus mode_toggle
+	# move workspace to the right monitor
+	$win+BackSpace move workspace to output right
+	$hyper+BackSpace move container to output right
 
-# toggle sticky (Shift+s)
- $win+s sticky toggle
+	# toggle fullscreen mode for the focused container
+	$win+f fullscreen toggle, inhibit_idle fullscreen
 
-# focus the parent container (hyper+a)
- $hyper+a focus parent
+	# container layout: tabbed
+	$hyper+t layout tabbed
 
-# Focus the child container (hyper+z)
- $hyper+z focus child
+	# container layout: split
+	$hyper+e layout toggle split
 
-# move the currently focused window to the scratchpad
- $win+twosuperior move scratchpad
+	# toggle tiling / floating
+	$win+space floating toggle
 
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
- $hyper+twosuperior scratchpad show
+	# change focus between tiling / floating windows
+	$hyper+space focus mode_toggle
 
-#navigate workspaces next / previous
- $hyper+Ctrl+Right workspace next
- $hyper+Ctrl+Left workspace prev
+	# focus the parent container (hyper+a)
+	$hyper+a focus parent
 
-# switch to workspace with urgent window automatically
- $win+x [urgent=latest] focus
+	# Focus the child container (hyper+z)
+	$hyper+z focus child
 
-# reload the configuration file
- $win+r reload
+	# move the currently focused window to the scratchpad
+	$win+twosuperior move scratchpad
 
- $hyper+Escape mode "$mode_system"
- $hyper+r mode "resize"
- $win+l exec sway-exit lock
- $hyper+l exec sway-exit lock
- Control+$alt+l exec sway-exit lock
- $win+Control+m floating enable; resize set 320 px 180 px; sticky enable; move window to position 1600 px 24 px
- $win+Shift+m bar mode toggle
- $win+m mode $mode_workspaces_monitors
+	# Show the next scratchpad window or hide the focused scratchpad window.
+	# If there are multiple scratchpad windows, this command cycles through them.
+	$hyper+twosuperior scratchpad show
 
- Ctrl+Space exec makoctl dismiss
- Ctrl+Shift+Space exec makoctl dismiss --all
- $hyper+o exec makoctl menu dmenu
+	# switch to workspace with urgent window automatically
+	$win+x [urgent=latest] focus
+
+	# reload the configuration file
+	$win+r reload
+
+	# mode
+	$win+p mode $mode_audio
+	$win+Escape mode $mode_system
+	$win+m mode $mode_workspaces_monitors
+	$hyper+r mode "resize"
+
+	# notification
+	Ctrl+Space exec makoctl dismiss
+	Ctrl+Shift+Space exec makoctl dismiss --all
+	$hyper+o exec makoctl menu dmenu
 }
 
-# exec_always "pgrep -x kanshi || kanshi"
 exec_always "pgrep -x mako || mako"
 exec_always "pgrep -x nm-applet || nm-applet"
 exec_always "pgrep -x opensnitch-ui || opensnitch-ui"
@@ -343,8 +363,8 @@ exec_always "pgrep -x redshift || redshift"
 exec_always "pgrep -x solaar || solaar --restart-on-wake-up"
 exec_always "pgrep -x udiskie || udiskie"
 exec_always "pgrep -x sway-autoname-w; sway-autoname-workspaces -d"
-exec "kitty --class neomutt --title neomutt neomutt"
 exec_always "pgrep -fx 'sh /usr/bin/wire-desktop' || wire-desktop"
 exec_always "pgrep -x sway-fade-inact || sway-fade-inactive -o 0.7"
 exec_always "pgrep -x sway-paste || sway-paste daemon"
-exec_always swayidle -w timeout 180 'sway-exit lock' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'
+exec "kitty --class neomutt --title neomutt neomutt"
+exec_always swayidle -w timeout 120 'swaymsg "output * dpms off"' timeout 180 'sway-exit lock' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'
