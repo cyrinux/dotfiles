@@ -1,3 +1,7 @@
+# DEPRECATED
+
+Need to update all binding
+
 # Keyboard shortcuts
 
 ## i3 window manager

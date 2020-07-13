@@ -16,7 +16,7 @@ command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-c
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
-alias e='$EDITOR'
+alias e="$EDITOR"
 alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
 alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(pass personal/bios)"'
 alias battery-normal='sudo cctk --PrimaryBattChargeCfg=custom:50-86 --ValSetupPwd="$(pass personal/bios)"'
