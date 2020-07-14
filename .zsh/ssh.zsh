@@ -1,11 +1,10 @@
 zstyle ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
-# zstyle ':z4h:ssh:*' ssh-command command ssh -R 9999:localhost:8118
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
 
 function z4h-ssh-configure() {
-  # z4h_ssh_prelude+=(
-  #   "export all_proxy='http://localhost:9999'; export ALL_PROXY='http://localhost:9999'"
-  # )
+  z4h_ssh_prelude+=(
+    "export all_proxy=$PROXY export ALL_PROXY=$PROXY"
+  )
 
   local file
   for file in $ZDOTDIR/.zsh_history.*:$z4h_ssh_host(N); do
@@ -14,18 +13,29 @@ function z4h-ssh-configure() {
   done
 }
 
-ssh() {
+alias ssh='ssh_with_color_and_term'
+
+ssh-with-privoxy() {
+    zstyle ':z4h:ssh:*' ssh-command command ssh -R 9999:localhost:8118
+    export PROXY='http://127.0.0.1:9999'
     z4h ssh "$@"
 }
+compdef ssh-with-privoxy=ssh
 
 cssh() {
     tmux-cssh "$@"
 }
 compdef cssh=ssh
 
-alias kssh='ssh_with_color_and_term'
-ssh_with_term() {
+kssh() {
     kitty +kitten ssh "$@"
+}
+compdef kssh=ssh
+
+tmux-connect() { ssh "$@" "tmux attach || tmux new";}
+
+ssh_with_term() {
+    z4h ssh "$@"
 }
 
 ssh_with_color_and_term() {
@@ -58,4 +68,3 @@ bg_color_set() {
     printf "\033]11;$color\007"
 }
 
-tmux-connect() { ssh "$@" "tmux attach || tmux new";}
