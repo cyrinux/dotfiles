@@ -20,3 +20,4 @@ video/x-matroska=mpv.desktop
 video/mp4=mpv.desktop
 text/csv=visidata.desktop
 text/tab-separated-values=visidata.desktop
+text/plain=kakoune.desktop
