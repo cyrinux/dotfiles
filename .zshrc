@@ -49,7 +49,11 @@ z4h source -c ~/.zsh/completion.zsh
 # default mapping are unusable in azerty layout
 bindkey '^[r' redo # alt+r
 bindkey '^[z' undo # alt+z
-bindkey '^H' z4h-backward-kill-word
+bindkey '^H'      z4h-backward-kill-word
+bindkey '^[[1;7C' z4h-forward-zword
+bindkey '^[[1;7D' z4h-backward-zword
+bindkey '^[[3;7~' z4h-kill-zword
+bindkey '^[^H'    z4h-backward-kill-zword
 
 patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
 
