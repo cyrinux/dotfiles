@@ -55,6 +55,6 @@ bindkey '^[[1;7D' z4h-backward-zword
 bindkey '^[[3;7~' z4h-kill-zword
 bindkey '^[^H'    z4h-backward-kill-zword
 
-patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
+command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
 
 return 0
