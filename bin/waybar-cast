@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if pgrep -x gst-launch-1.0 >/dev/null; then
+if pgrep -x gst-launch-1.0 > /dev/null; then
     printf '{"text": "  "}\n'
 else
     printf '{"text": ""}\n'

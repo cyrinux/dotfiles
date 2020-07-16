@@ -54,37 +54,36 @@ VERSION='0.1.0'
 
 # Prompts user for a password in POSIX compatible way.
 ask_pass() {
-	local prompt="$1"
-	local pass
+    local prompt="$1"
+    local pass
 
-	printf '%s: ' "$prompt" >&2
-	stty -echo
-	read -r pass
-	stty echo
-	printf '\n' >&2
+    printf '%s: ' "$prompt" >&2
+    stty -echo
+    read -r pass
+    stty echo
+    printf '\n' >&2
 
-	test -n "$pass" || return 1
-	printf '%s\n' "$pass"
+    test -n "$pass" || return 1
+    printf '%s\n' "$pass"
 }
 
 outfile_arg() {
-	local arg="$1"
+    local arg="$1"
 
-	if [ "$arg" != '-' ]; then
-		mkdir -p "$(dirname "$arg")"
-		printf -- '--output %s\n' "$arg"
-	fi
+    if [ "$arg" != '-' ]; then
+        mkdir -p "$(dirname "$arg")"
+        printf -- '--output %s\n' "$arg"
+    fi
 }
 
 die() {
-	printf '%s: %s\n' "$PROGNAME" "$@" >&2
-	exit 1
+    printf '%s: %s\n' "$PROGNAME" "$@" >&2
+    exit 1
 }
 
 print_help() {
-	sed -En '/^#---help---/,/^#---help---/p' "$0" | sed -E 's/^# ?//; 1d;$d;'
+    sed -En '/^#---help---/,/^#---help---/p' "$0" | sed -E 's/^# ?//; 1d;$d;'
 }
-
 
 #=============================  M a i n  ==============================#
 
@@ -101,29 +100,38 @@ passphrase="${GPG_PASSPHRASE:-}"
 verbosity='--quiet'
 
 while [ $# -gt 0 ]; do
-	n=2
-	case "$1" in
-		-e | --expire-date) expire_date="$2";;
-		-b | --key-length) key_length="$2";;
-		-t | --key-type) key_type="$2";;
-		-u | --key-usage) key_usage="$2";;
-		-c | --name-comment) name_comment="$2";;
-		-m | --name-email) name_email="$2";;
-		-n | --name-real) name_real="$2";;
-		-p | --passphrase) passphrase="$2";;
-		-v | --verbose) verbosity='--verbose'; n=1;;
-		-V | --version) echo "$PROGNAME $VERSION"; exit 0;;
-		-h | --help) print_help; exit 0;;
-		- | --) break;;
-		-* | --*) die "unknown option: $1";;
-		*) break;;
-	esac
-	shift $n
+    n=2
+    case "$1" in
+        -e | --expire-date) expire_date="$2" ;;
+        -b | --key-length) key_length="$2" ;;
+        -t | --key-type) key_type="$2" ;;
+        -u | --key-usage) key_usage="$2" ;;
+        -c | --name-comment) name_comment="$2" ;;
+        -m | --name-email) name_email="$2" ;;
+        -n | --name-real) name_real="$2" ;;
+        -p | --passphrase) passphrase="$2" ;;
+        -v | --verbose)
+            verbosity='--verbose'
+            n=1
+            ;;
+        -V | --version)
+            echo       "$PROGNAME $VERSION"
+            exit                                  0
+            ;;
+        -h | --help)
+            print_help
+            exit                0
+            ;;
+        - | --) break ;;
+        -* | --*) die "unknown option: $1" ;;
+        *) break ;;
+    esac
+    shift $n
 done
 
 if [ $# -lt 1 ]; then
-	print_help >&2
-	exit 1
+    print_help >&2
+    exit 1
 fi
 
 privkey_out="$1"
@@ -132,16 +140,15 @@ pubkey_out="${2:-}"
 : ${name_real:="$(cat /dev/urandom | LC_CTYPE=C tr -cd 'A-Za-z0-9' | head -c 8)"}
 
 if [ -z "$passphrase" ]; then
-	passphrase=$(ask_pass 'Enter passphrase')
+    passphrase=$(ask_pass 'Enter passphrase')
 fi
-
 
 temp_dir=$(mktemp -d)
 trap "rm -Rf '$temp_dir'" EXIT HUP INT TERM
 
 export GNUPGHOME="$temp_dir"
 
-cat > "$temp_dir/.input" <<-EOF
+cat > "$temp_dir/.input" <<- EOF
 	%echo Generating a basic GPG key
 	Key-Type: $key_type
 	Key-Length: $key_length
@@ -158,23 +165,23 @@ EOF
 $GPG $verbosity --batch --no-tty --gen-key "$temp_dir/.input"
 
 # Find key's ID.
-id=$($GPG --no-tty --list-secret-keys --with-colons 2>/dev/null \
-	| awk -F: '/^sec:/ { print $5 }')
+id=$($GPG --no-tty --list-secret-keys --with-colons 2> /dev/null |
+    awk -F: '/^sec:/ { print $5 }')
 echo "$id"
 
 # List created keys.
 if [ "$verbosity" = '--verbose' ]; then
-	$GPG --no-tty --list-keys >&2
+    $GPG --no-tty --list-keys >&2
 fi
 
 # Export public key.
 if [ -n "$pubkey_out" ]; then
-	$GPG $verbosity $(outfile_arg "$pubkey_out") \
-		--batch --yes --no-tty --armor --export "$id" 
+    $GPG $verbosity $(outfile_arg "$pubkey_out") \
+        --batch --yes --no-tty --armor --export "$id"
 fi
 
 # Export secret key.
 umask 0077
 echo "$passphrase" | $GPG $verbosity $(outfile_arg "$privkey_out") \
-	--batch --yes --no-tty --pinentry-mode loopback --passphrase-fd 0 \
-	--armor --export-secret-keys "$id"
+    --batch --yes --no-tty --pinentry-mode loopback --passphrase-fd 0 \
+    --armor --export-secret-keys "$id"

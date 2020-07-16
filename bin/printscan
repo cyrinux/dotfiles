@@ -4,4 +4,3 @@
 # requires imagemagick
 # need to remove <policy domain="coder" rights="none" pattern="PDF" /> from /etc/ImageMagick-6/policy.xml
 convert "$1" -colorspace gray \( +clone -blur 0x1 \) +swap -compose divide -composite -linear-stretch 5%x0% -rotate 1 "$(dirname "$1")/scan-$(basename "$1")"
-

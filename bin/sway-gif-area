@@ -18,4 +18,3 @@ pkill -x wf-recorder
 
     inactive-windows-transparency.py -o 0.7 &
 } &
-

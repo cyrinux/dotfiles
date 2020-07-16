@@ -19,7 +19,6 @@ ROFI_OPTIONS="-p 'Audio Streams: ' -width 600"
 #
 #########################################################
 
-
 pactl list sink-inputs | awk -v rofi_cmd="rofi -dmenu -format i $ROFI_OPTIONS" '
 	BEGIN {	item = 1 }
 

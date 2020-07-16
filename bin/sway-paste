@@ -16,7 +16,7 @@ elif [ "$1" = "on-copy" ]; then
     cat > "$file"
     ext="$(file --mime-type "$file" | cut -d' ' -f2 | cut -d'/' -f2)"
     mv "$file" "$file.$ext"
-    [ "$ext" = "png" ] && [ -x "$(which tesseract)" ] && { tesseract "$file.$ext" "/tmp/$timestamp" -l eng -l fra --oem 1 && \
+    [ "$ext" = "png" ] && [ -x "$(which tesseract)" ] && { tesseract "$file.$ext" "/tmp/$timestamp" -l eng -l fra --oem 1 &&
         mv "/tmp/$timestamp.txt" "$dir/$timestamp.plain"; }
     fdupes -idN "$dir"
     find "$dir" -type f -size 0 -delete
@@ -40,6 +40,6 @@ elif [ "$1" = "dmenu" ]; then
         fi
     }
 else
-    >&2 echo "Usage: sway-paste <daemon|lock|unlock|on-copy|dmenu>"
+    echo >&2 "Usage: sway-paste <daemon|lock|unlock|on-copy|dmenu>"
     exit 1
 fi

@@ -2,28 +2,26 @@
 set -u
 
 main() {
-	for repo in $(lsrepos); do
-	    check "$repo"
-	done
+    for repo in $(lsrepos); do
+        check "$repo"
+    done
 }
 
 check() {
-	eval "$(pass "restic/$1" 2>/dev/null)"
+    eval "$(pass "restic/$1" 2> /dev/null)"
 
-	echo
-	echo "Checking up to $RESTIC_REPOSITORY..."
-	echo
+    echo
+    echo "Checking up to $RESTIC_REPOSITORY..."
+    echo
 
-	restic check --json
-	restic prune --json
+    restic check --json
+    restic prune --json
 
 }
 
 lsrepos() {
-	find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
-		sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
+        sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 
-
 main "$@"
-

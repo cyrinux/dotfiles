@@ -6,71 +6,72 @@ reset_kbd() {
 }
 
 stop_vpn() {
-  nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
+    nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
 
 stop_wwan() {
-  nmcli con show --active | grep gsm | cut -d' ' -f1 | xargs -n1 nmcli con down
+    nmcli con show --active | grep gsm | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
 
 stop_wlan() {
-  nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
+    nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
 
 radio_state() {
- wifi $1
- wwan $1
- bluetooth $1
+    wifi $1
+    wwan $1
+    bluetooth $1
 }
 
 before_lock() {
-  playerctl -a pause
-  # sudo systemctl stop pcscd.service
-  reset_kbd
-  fusermount -u ~/Vault >/dev/null 2>&1
-  fusermount -u ~/Vault-Share >/dev/null 2>&1
-  physlock -lms
+    playerctl -a pause
+    # sudo systemctl stop pcscd.service
+    reset_kbd
+    fusermount -u ~/Vault > /dev/null 2>&1
+    fusermount -u ~/Vault-Share > /dev/null 2>&1
+    physlock -lms
 }
 
 after_lock() {
-  physlock -L
-  pkill mako
-  mako &
+    physlock -L
+    pkill mako
+    mako &
 }
 
 case "$1" in
-  lock)
-    before_lock
-    swaylock-blur
-    after_lock
-    ;;
-  before_lock)
-      before_lock
-  ;;
-  after_lock)
-      after_lock
-  ;;
-  suspend)
-    before_lock
-    bluetoothctl disconnect >/dev/null 2>&1
-    stop_vpn
-    stop_wwan
-    systemctl -i suspend
-    swaylock-blur
-    after_lock
-    nmcli device wifi rescan
-    ;;
-  reboot)
-    stop_vpn
-    stop_wwan
-    systemctl -i reboot
-    ;;
-  shutdown)
-    stop_vpn
-    stop_wwan
-    systemctl -i poweroff
-    ;;
-  *)
-    echo "Usage: $0 {lock|suspend|reboot|shutdown}"
-    exit 2
+    lock)
+        before_lock
+        swaylock-blur
+        after_lock
+        ;;
+    before_lock)
+        before_lock
+        ;;
+    after_lock)
+        after_lock
+        ;;
+    suspend)
+        before_lock
+        bluetoothctl disconnect > /dev/null 2>&1
+        stop_vpn
+        stop_wwan
+        systemctl -i suspend
+        swaylock-blur
+        after_lock
+        nmcli device wifi rescan
+        ;;
+    reboot)
+        stop_vpn
+        stop_wwan
+        systemctl -i reboot
+        ;;
+    shutdown)
+        stop_vpn
+        stop_wwan
+        systemctl -i poweroff
+        ;;
+    *)
+        echo "Usage: $0 {lock|suspend|reboot|shutdown}"
+        exit 2
+        ;;
 esac

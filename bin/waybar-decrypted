@@ -12,9 +12,9 @@ output() {
 
 check() {
     output
-    inotifywait -q "/home/cyril/Vault/.lock" >/dev/null 2>&1
+    inotifywait -q "/home/cyril/Vault/.lock" > /dev/null 2>&1
     output
-    inotifywait -q "/home/cyril/Vault" >/dev/null
+    inotifywait -q "/home/cyril/Vault" > /dev/null
     check
 }
 

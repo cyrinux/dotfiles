@@ -14,4 +14,3 @@ sudo sysctl net.ipv4.ip_forward=1
 
 # connect
 ssh -v -o PreferredAuthentications=password -p 22  root@10.0.0.1
-

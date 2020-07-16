@@ -19,4 +19,3 @@ encode() {
 
     inactive-windows-transparency.py -o 0.7 &
 } &
-

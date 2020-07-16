@@ -2,7 +2,7 @@
 trap 'pkill -P $$' EXIT
 
 check() {
-    notmuch new >/dev/null
+    notmuch new > /dev/null
     count="$(notmuch count 'tag:unread')"
     tooltip="There are $count new emails"
     if [ "$count" = "0" ]; then
@@ -10,7 +10,7 @@ check() {
     else
         printf '{"text": " %s", "tooltip": "%s"}\n' "$count" "$tooltip"
     fi
-    inotifywait -q -e move -e create -e delete /home/cyril/.mail/personal/INBOX/cur >/dev/null
+    inotifywait -q -e move -e create -e delete /home/cyril/.mail/personal/INBOX/cur > /dev/null
     check
 }
 

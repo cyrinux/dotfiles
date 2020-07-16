@@ -2,31 +2,31 @@
 menu=$(echo "personal\nwork\nshopping\ndisposable\ntor browser\ndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
-"qutebrowser")
-    open_url_in_instance.sh "$@" &
-    ;;
-"disposable without network")
-    firewarden -n qutebrowser "$@" &
-    ;;
-"disposable")
-    firewarden qutebrowser "$@" &
-    ;;
-"tor browser")
-    tor-browser-en "$@" &
-    ;;
-"personal")
-    qutebrowser-personal "$@" &
-    ;;
-"work")
-    qutebrowser-work "$@" &
-    ;;
-"shopping")
-    qutebrowser-shopping "$@" &
-    ;;
-"copy to clipboard")
-    echo "$@" | wl-copy
-    ;;
-"play")
-    mpv "$@" &
-    ;;
+    "qutebrowser")
+        open_url_in_instance.sh "$@" &
+        ;;
+    "disposable without network")
+        firewarden -n qutebrowser "$@" &
+        ;;
+    "disposable")
+        firewarden qutebrowser "$@" &
+        ;;
+    "tor browser")
+        tor-browser-en "$@" &
+        ;;
+    "personal")
+        qutebrowser-personal "$@" &
+        ;;
+    "work")
+        qutebrowser-work "$@" &
+        ;;
+    "shopping")
+        qutebrowser-shopping "$@" &
+        ;;
+    "copy to clipboard")
+        echo "$@" | wl-copy
+        ;;
+    "play")
+        mpv "$@" &
+        ;;
 esac
