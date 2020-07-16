@@ -2,8 +2,8 @@
 set -ef -o pipefail
 
 usage() {
-  echo "$(basename $0) bluetooth_mac [00:11:22:33:44:55]"
-  exit 1
+    echo "$(basename $0) bluetooth_mac [00:11:22:33:44:55]"
+    exit 1
 }
 
 connect() {
@@ -17,19 +17,18 @@ connect() {
 }
 
 set_a2dp() {
-  pacmd set-card-profile bluez_card.$(echo -n $mac | tr ':' '_') a2dp_sink
-  pacmd set-default-sink bluez_sink.$(echo -n $mac | tr ':' '_').a2dp_sink
+    pacmd set-card-profile bluez_card.$(echo -n $mac | tr ':' '_') a2dp_sink
+    pacmd set-default-sink bluez_sink.$(echo -n $mac | tr ':' '_').a2dp_sink
 }
 
 if [ -z "$1" ]; then
-  usage
+    usage
 else
-  mac="${1::17}"
-  echo "Connecting to $mac ..."
-  connect
-  sleep 2
-  echo "Set a2dp profile to $mac ..."
-  set_a2dp
-  notify-send -i /usr/share/icons/Adwaita/scalable/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to $1"
+    mac="${1::17}"
+    echo "Connecting to $mac ..."
+    connect
+    sleep 2
+    echo "Set a2dp profile to $mac ..."
+    set_a2dp
+    notify-send -i /usr/share/icons/Adwaita/scalable/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to $1"
 fi
-

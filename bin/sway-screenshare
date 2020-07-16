@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 pkill -x wf-recorder
 
 [ $? -ne 0 ] && {
@@ -12,4 +11,3 @@ pkill -x wf-recorder
     pkill -RTMIN+3 -x waybar
     notify-send 'Screen sharing' 'Recording is complete'
 }
-

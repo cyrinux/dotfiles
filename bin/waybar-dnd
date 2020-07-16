@@ -22,4 +22,3 @@ toggle() {
 }
 
 [ $# -gt 0 ] && toggle || show
-

@@ -2,25 +2,24 @@
 set -u
 
 main() {
-	for repo in $(lsrepos); do
-		restore "$repo" "$@"
-	done
+    for repo in $(lsrepos); do
+        restore "$repo" "$@"
+    done
 }
 
 backup() {
-	eval "$(pass "restic/$1" 2>/dev/null)"
+    eval "$(pass "restic/$1" 2> /dev/null)"
 
-	echo
-	echo "Restore from $RESTIC_REPOSITORY..."
-	echo
+    echo
+    echo "Restore from $RESTIC_REPOSITORY..."
+    echo
 
-	restic restore --tag="$RESTIC_TAG" "$HOME" "$@"
+    restic restore --tag="$RESTIC_TAG" "$HOME" "$@"
 }
 
 lsrepos() {
-	find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
-		sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
+        sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 
 main "$@"
-
