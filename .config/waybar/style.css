@@ -3,6 +3,7 @@
 @define-color black      #222222;
 @define-color yellow     #fabd2f;
 @define-color red        #fb4934;
+@define-color purple     #8f3f71;
 @define-color green      #b8bb26;
 @define-color gray       #282828;
 @define-color blue       #83a578;
@@ -83,6 +84,7 @@ window#waybar {
 
 #mode,
 #pulseaudio,
+#custom-progress,
 #custom-usbguard,
 #custom-spotify,
 #custom-yubikey,
@@ -109,6 +111,18 @@ window#waybar {
 #custom-dnd {
   padding: 0;
   margin: 0 6px;
+}
+
+#custom-progress.cp {
+  border-bottom: 3px solid @purple;
+}
+
+#custom-progress.mv {
+  border-bottom: 3px solid @orange;
+}
+
+#custom-progress.rsync {
+  border-bottom: 3px solid @blue;
 }
 
 #custom-infra-status.up {
