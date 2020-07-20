@@ -6,6 +6,7 @@
         "sway/mode"
     ],
     "modules-right": [
+        "custom/progress",
         "custom/usbguard",
         "custom/infra-status",
         "custom/yubikey",
@@ -28,6 +29,11 @@
         "idle_inhibitor",
         "tray"
     ],
+    "custom/progress": {
+        "exec": "waybar-progress",
+        "return-type": "json",
+        "interval": 2
+    },
     "custom/usbguard": {
         "exec": "waybar-usbguard",
         "return-type": "json",
