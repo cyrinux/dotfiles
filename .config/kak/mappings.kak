@@ -36,16 +36,12 @@ map global user -docstring 'files-in-folder'          F      ': files-in-folder<
 map global user -docstring 'edit kakrc'               e      ': e ~/.config/kak/kakrc<ret>'
 map global user -docstring 'lsp hover'                h      ': lsp-hover<ret>'
 map global user -docstring 'codepoint'                i      ': echo %sh{ printf "codepoint: U+%04x" "$kak_cursor_char_value" }<ret>'
-map global user -docstring 'surround'                 s      ': surround<ret>'
+map global user -docstring 'surround'                 s      ': enter-user-mode surround<ret>'
 map global user -docstring 'select down'              V      ': vertical-selection-down<ret>'
 map global user -docstring 'select up'                <a-v>  ': vertical-selection-up<ret>'
 map global user -docstring 'select up and down'       v      ': vertical-selection-up-and-down<ret>'
 map global user -docstring 'new terminal in cwd'      n      ': kitty-terminal zsh<ret>'
 map global user -docstring 'disable autoformat'       d      ': disable-autoformat<ret>'
-
-map global normal -docstring "toggle layout (C-\)" ''   ':      toggle-langmap<ret>'
-map global insert -docstring "toggle layout (C-\)" ''   '<a-;>: toggle-langmap<ret>'
-map global prompt -docstring "toggle layout (C-\)" ''   '<a-;>: toggle-langmap prompt<ret>'
 
 define-command -hidden -params 1 extend-line-down %{ execute-keys "<a-:>%arg{1}X" }
 define-command -hidden -params 1 extend-line-up   %{
