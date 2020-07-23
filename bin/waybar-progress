@@ -2,29 +2,21 @@
 
 trap 'pkill -P $$' EXIT
 
-output=$(progress -q -c cp -c mv -c rsync 2> /dev/null)
-percentage=$(echo $output | tail -2 | cut -d ' ' -f4 | tr -d '\t' | sed 's/%//')
+output=$(progress -q -c "$1")
+percentage=$(echo -e "$output" | awk 'NR%3==2 { print $1 }' | sed 's/%//')
 text=$(echo $output | cut -d ' ' -f4-10)
-tooltip=$output
-class=$(echo $output | cut -d ' ' -f2)
+tooltip="$output"
+class="$1"
 
 if [ $percentage     ] > 0 && [ $class == "cp" ]; then
     text=" $text"
 elif [ $percentage     ] > 0 && [ $class == "mv" ]; then
     text=" $text"
+elif [ $percentage     ] > 0 && [ $class == "rsync" ]; then
+    text=" $text"
+elif [ $percentage     ] > 0 && [ $class == "gpg" ]; then
+    text=" $text"
 fi
 
 json=$(printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": "%.0f"}\n' "$text" "$tooltip" "$class" "$percentage")
 echo $json | jq --unbuffered --compact-output
-
-# progress -M -q -c cp | while read -r output ; do
-#     percentage=$(echo $output | cut -d ' ' -f4 | tr -d '\t')
-#     text=$output
-#     tooltip=$output
-#     class='blink'
-
-#     json=$(printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": "%s"}\n' "$text" "$tooltip" "$class" "$percentage")
-
-#     # echo $json | jq --unbuffered --compact-output
-#     # echo $json
-# done

@@ -6,7 +6,10 @@
         "sway/mode"
     ],
     "modules-right": [
-        "custom/progress",
+        "custom/copy",
+        "custom/gpg",
+        "custom/move",
+        "custom/rsync",
         "custom/usbguard",
         "custom/infra-status",
         "custom/yubikey",
@@ -29,10 +32,25 @@
         "idle_inhibitor",
         "tray"
     ],
-    "custom/progress": {
-        "exec": "waybar-progress",
+    "custom/copy": {
+        "exec": "waybar-progress cp",
         "return-type": "json",
-        "interval": 2
+        "interval": 3
+    },
+    "custom/rsync": {
+        "exec": "waybar-progress rsync",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/move": {
+        "exec": "waybar-progress mv",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/gpg": {
+        "exec": "waybar-progress gpg",
+        "return-type": "json",
+        "interval": 3
     },
     "custom/usbguard": {
         "exec": "waybar-usbguard",
@@ -145,6 +163,7 @@
         "format-ethernet": " {ifname}",
         "format-linked": " {ifname}",
         "format-disconnected": "  ",
+        "tooltip-format-wifi": "{ifname}: {essid} ({signalStrength}%)\n{ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
         "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
         "tooltip-format-disconnect": "",
         "interval": 2
