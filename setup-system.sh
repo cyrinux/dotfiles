@@ -200,7 +200,7 @@ else
         echo >&2 "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
     else
         echo "Sudo config"
-        copy "etc/sudoers"
+        copy "etc/sudoers.d/override"
 
         echo "Applying kernel tuning"
         sysctl --system > /dev/null
