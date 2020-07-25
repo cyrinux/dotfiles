@@ -7,7 +7,7 @@ trap 'rm -rf "$dst_file"' EXIT
 
 arr=$(find . ! -name . -prune -printf '%P\n' | sort)
 lines=$(printf "%s\n" "$arr" | wc -l)
-width=$((${#lines} + 3))
+width=$(( ${#lines} + 3 ))
 
 printf "%s" "$arr" | awk '{printf("%-'"${width}"'d %s\n", NR, $0)}' > "$dst_file"
 
@@ -57,7 +57,7 @@ while read -r num name; do
             c=0
 
             while [ -e "$tmp" ] || [ -L "$tmp" ]; do
-                c=$((c + 1))
+                c=$(( c + 1 ))
                 tmp="$tmp~$c"
             done
 
