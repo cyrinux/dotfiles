@@ -106,7 +106,6 @@ copy "etc/systemd/system/iwd.service.d/90-networkmanager.conf"
 copy "etc/updatedb.conf"
 copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"
-copy "etc/snapper/configs/home"
 copy "etc/audit/auditd.conf"
 copy "etc/audit/audit.rules"
 copy "etc/modules-load.d/pkcs8.conf"
