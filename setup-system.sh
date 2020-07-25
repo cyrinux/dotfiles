@@ -92,8 +92,6 @@ copy "etc/sysctl.d/10-swappiness.conf"
 copy "etc/sysctl.d/51-tcp-ip-stack.conf"
 copy "etc/sysctl.d/99-sysrq.conf"
 copy "etc/systemd/journald.conf"
-copy "etc/systemd/system/paccache.service"
-copy "etc/systemd/system/paccache.timer"
 copy "etc/systemd/system/reflector.service"
 copy "etc/systemd/system/reflector.timer"
 copy "etc/systemd/system/system-dotfiles-sync.service"
@@ -121,10 +119,10 @@ copy "etc/systemd/system/usbguard.service.d"
 copy "etc/systemd/logind.conf"
 copy "etc/systemd/system/backup-repo@pkgbuild"
 copy "etc/systemd/system/backup-repo@.service"
-copy "etc/smartd.conf"
+copy "etc/systemd/system/backup-repo@.timer"
 copy "usr/local/bin/cpu"
 
-(("$reverse")) && exit 0
+(( "$reverse" ))&& exit 0
 
 echo ""
 echo "==============================="
@@ -144,7 +142,7 @@ if in_docker; then
     echo >&2 "=== Running in docker, skipping services configuration..."
 else
     systemctl daemon-reload
-    systemctl_enable "backup-repo@pkgbuild.service"
+    systemctl_enable_start "backup-repo@pkgbuild.timer"
     systemctl_enable "docker.service"
     systemctl_enable_start "fstrim.timer"
     systemctl_enable_start "NetworkManager.service"
