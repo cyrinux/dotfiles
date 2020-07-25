@@ -81,7 +81,7 @@ useConfigOnly = true
 [includeIf "gitdir:~/library/src/work/"]
 path = ~/.gitconfig.work
 
-[includeIf "gitdir:~/library/src/personal/"]
+[include]
 path = ~/.gitconfig.personal
 
 # vim:ft=ini
