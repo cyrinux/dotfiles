@@ -1,6 +1,5 @@
 goimapnotify@personal.service,user:cyril
 library-repos.timer,user:cyril
-paccache.timer
 pkgfile-update.timer
 reflector.timer
 restic-check.timer,user:cyril
