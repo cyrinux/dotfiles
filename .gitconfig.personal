@@ -1,0 +1,9 @@
+[commit]
+gpgsign = true
+
+[user]
+signingkey = 0x8538D68543979A20
+email = cyril@levis.name
+
+# vim:ft=ini
+
