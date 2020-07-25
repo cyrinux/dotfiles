@@ -13,7 +13,7 @@ dotfiles_dir="$(
 )"
 cd "$dotfiles_dir"
 
-if (("$EUID")); then
+if (( "$EUID" )); then
     sudo -s "$dotfiles_dir/$script_name" "$@"
     exit 0
 fi
@@ -162,7 +162,6 @@ else
     systemctl_enable_start "tlp.service"
     systemctl_enable_start "thermald.service"
     systemctl_enable_start "privoxy.service"
-    systemctl_enable "smartd.service"
     systemctl_enable "btrfs-scrub@-.timer"
     systemctl_enable "btrfs-scrub@mnt-btrfs\x2droot.timer"
     systemctl_enable "btrfs-scrub@home.timer"
@@ -191,7 +190,6 @@ else
 
     echo "Configuring aurutils"
     ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
-    ln -sf /usr/bin/archbuild /usr/local/bin/aur-x86_64-build
 
     if is_chroot && in_docker; then
         echo >&2 "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
