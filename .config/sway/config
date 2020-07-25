@@ -354,7 +354,7 @@ bindsym --to-code {
 }
 
 exec_always "pgrep -x sway-autoname-w || sway-autoname-workspaces -d"
-exec_always "pgrep -x inactive-window || inactive-windows-transparency.py -o 0.7"
+exec_always "pgrep -x inactive-window || inactive-windows-transparency -o 0.7"
 exec_always "pgrep -x flashfocus || flashfocus"
 exec_always "pgrep -x redshift || redshift"
 exec_always "pkill waybar; waybar"
