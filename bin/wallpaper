@@ -11,7 +11,7 @@ PARAMS=(
     # "fish"
     "fish-tank"
 )
-RAND=$((RANDOM % ${#PARAMS[@]}))
+RAND=$(( RANDOM % ${#PARAMS[@]} ))
 RESOLUTION="1920x1080"
 URL="https://source.unsplash.com/featured/${RESOLUTION}/daily?${PARAMS[$RAND]}"
 WALLPAPER=~/.wallpaper.jpeg

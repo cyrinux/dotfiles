@@ -337,7 +337,7 @@ function stop() {
 
                     status=$?
                     if [[ $status -eq 0 ]]; then
-                        count=$((count + 1))
+                        count=$(( count + 1 ))
                         output="STOPPED: ID: $i IMAGE: $path/$args NAME: $name"
                         echo "$output" | log
                     else
@@ -391,7 +391,7 @@ function cleanContainers() {
                 docker rm "$i" &> /dev/null
                 status=$?
                 if [[ $status -eq 0 ]]; then
-                    count=$((count + 1))
+                    count=$(( count + 1 ))
                     output="DELETED: ID: $i IMAGE: $path/$args NAME: $name"
                     echo "$output" | log
                 else
@@ -421,7 +421,7 @@ function cleanImages() {
                 repotag="$(docker inspect -f '{{json .RepoTags}}' "$i")"
                 size="$(docker inspect -f '{{json .Size}}' "$i")"
                 echo "REPOSITORY/TAG: $repotag IMAGE ID: $i"
-                totalSize=$((totalSize + size))
+                totalSize=$(( totalSize + size ))
             done
             echoSize $totalSize
             echo #Spacing
@@ -437,7 +437,7 @@ function cleanImages() {
             todelete="${IMAGES_TO_DELETE[*]}"
             while [[ "$try" -lt "${#IMAGES_TO_DELETE[@]}" ]]; do
                 for i in $(seq 0 "${#IMAGES_TO_DELETE[@]}"); do
-                    try=$((try + 1))
+                    try=$(( try + 1 ))
                     local output
                     local status
                     local repotag
@@ -456,8 +456,8 @@ function cleanImages() {
                         docker rmi -f "$image" &> /dev/null
                         status=$?
                         if [[ $status -eq 0 ]]; then
-                            count=$((count + 1))
-                            totalSize=$((totalSize + size))
+                            count=$(( count + 1 ))
+                            totalSize=$(( totalSize + size ))
                             output="DELETED: REPOSITORY/TAG: $repotag IMAGE ID: $image"
                             echo "$output" | log
                             #unset "IMAGES_TO_DELETE[$i]" # ERROR value too great for base
@@ -516,7 +516,7 @@ function cleanVolumes() {
                 docker volume rm "$i" &> /dev/null
                 status=$?
                 if [[ $status -eq 0 ]]; then
-                    count=$((count + 1))
+                    count=$(( count + 1 ))
                     output="DELETED DRIVER: $driver NAME: $i"
                     echo "$output" | log
                 else
@@ -583,7 +583,7 @@ function cleanNetworks() {
                 echo "Removing empty networks..."
                 for i in "${EMPTY_NETWORKS[@]}"; do
                     if docker network rm "$i" 2>&1 | log; then
-                        count=$((count + 1))
+                        count=$(( count + 1 ))
                     fi
                 done
                 echo "Networks removed: $count"
@@ -716,8 +716,8 @@ function echoSize() {
     local mega
     local giga
     if [[ $1 -gt 0 ]]; then
-        mega=$(($1 / 1000000))
-        giga=$(($1 / 1000000000))
+        mega=$(( $1 / 1000000 ))
+        giga=$(( $1 / 1000000000 ))
         if [[ $giga == 0 ]]; then
             echo "You've cleared approximately MB: $mega of space!"
         else
