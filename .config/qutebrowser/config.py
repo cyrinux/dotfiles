@@ -64,13 +64,16 @@ config.set("content.media_capture", True, "*://app.slack.com")
 # privacy
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
+
 with config.pattern("*://*.levis.name/") as p:
     p.content.autoplay = True
+
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks = False  # Change to True to be able to login to google
 c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
 c.content.canvas_reading = False
 c.content.host_blocking.enabled = True
+
 with config.pattern("*://*.dm.gg/") as p:
     p.content.autoplay = True
     c.content.canvas_reading = True
@@ -79,10 +82,9 @@ with config.pattern("*://*.dm.gg/") as p:
     )
 
 # urls
-DDG = "https://duckduckgo.com/?kae=d&k1=-1&kk=-1&kak=-1&kax=-1&kaq=-1&kap=-1&kao=-1&kau=-1&kba=-1"
 c.url.searchengines = {
-    "DEFAULT": "%s&q={}" % DDG,
-    "ddg": "%s&q={}" % DDG,
+    "DEFAULT": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
+    "d": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
     "g": "https://google.com/search?q={}",
     "gh": "https://github.com/search?q={}",
     "y": "https://www.invidio.us/search?q={}",
@@ -92,9 +94,8 @@ c.url.searchengines = {
     "s": "https://search.levis.ws/?s={}",
 }
 
-# c.url.default_page = "~/.config/qutebrowser/blank.html"
-# c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
-c.url.start_pages = [DDG]
+c.url.default_page = "~/.config/qutebrowser/blank.html"
+c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 
 
 # keys
@@ -115,7 +116,6 @@ bindings = {
     ",c": "spawn --userscript cast",
     "xx": "config-cycle tabs.show always switching",
     ",b": "config-cycle colors.webpage.bg '#32302f' 'white'",
-    "xi": "devtools bottom",
     "xjn": "set content.javascript.enabled true",
     "xjf": "set content.javascript.enabled false",
 }
