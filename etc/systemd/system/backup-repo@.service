@@ -1,6 +1,5 @@
 [Unit]
 Description=Backup pacman repository to %I
-After=paccache.service
 
 [Service]
 Type=oneshot
@@ -8,6 +7,3 @@ User=cyril
 EnvironmentFile=/etc/systemd/system/backup-repo@%i
 ExecStart=/usr/bin/rsync --archive --partial --delete --verbose ${LOCAL_PATH_AURUTILS} ${REMOTE_ADDR}:${REMOTE_PATH_AURUTILS}
 ExecStart=/usr/bin/rsync --archive --partial --delete --verbose ${LOCAL_PATH} ${REMOTE_ADDR}:${REMOTE_PATH}
-
-[Install]
-WantedBy=paccache.service
