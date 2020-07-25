@@ -11,12 +11,14 @@ alias drmid='sudo drmi $(sudo docker images -q -f dangling=true)'
 alias dpurge="drmcd ; drmvd ; drmid ;sudo docker network prune -f"
 
 alias docker-compose='sudo docker-compose'
+alias dcd='docker-compose down'
+alias dcl='docker-compose logs -f --tail=1000'
+alias dclp='docker-compose pull'
+alias dcr='dcd; dcu'
+alias dcr='docker-compose restart'
+alias dcs='dc ps'
 alias dc="sudo docker-compose"
 alias dcu='docker-compose up'
-alias dcd='docker-compose down'
-alias dcr='docker-compose restart'
-alias dcl='docker-compose logs -f'
-alias dclp='docker-compose pull'
 
 alias fedora="sudo docker run --rm -it fedora"
 alias ubuntu="sudo docker run --rm -it ubuntu"

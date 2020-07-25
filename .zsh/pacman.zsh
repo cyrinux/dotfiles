@@ -2,6 +2,21 @@
 
 pac() {
     sudo -E pacman "$@"
+
+    is_removal=0
+    while [[ "$1" == -* ]]; do
+        [[ "$1" == "-R"* ]] && is_removal=1
+        shift
+    done
+    if (( is_removal )); then
+        echo "\nCleaning up AUR repo..."
+        repo-remove -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar "$@"
+    fi
+
+    echo "\nCleaning up repo cache..."
+    sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
+    sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
+
     pkill -RTMIN+1 -x waybar
     rehash
 }
@@ -13,7 +28,6 @@ alias pacr='SNAP_PAC_SKIP=true pac -Rs'
 alias pacr!='pac -Rs -dd'
 alias pacf='SNAP_PAC_SKIP=true pac -U'
 alias pacF='pacman -F'
-alias pacu='pac -Syu'
 alias pacq='pacman -Si'
 alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; pkill -RTMIN+1 -x waybar'
@@ -24,6 +38,7 @@ pacs() (
     trap 'rm -rf $tmp' EXIT
     cd $tmp
     touch pkgs
+    sudo -E pacman -Sy
 
     {
         NO_COLOR=true aur search -n -k NumVotes "$@"
@@ -50,9 +65,18 @@ pacs() (
             repo_pkgs+=("$name")
         fi
     done
-    (( ${#aur_pkgs[@]} )) && aurs "${aur_pkgs[@]}"
+    if (( ${#aur_pkgs[@]} )); then
+        aur sync -Sc "${aur_pkgs[@]}"
+        post_aur
+    fi
     SNAP_PAC_SKIP=true pac -Sy "${aur_pkgs[@]}" "${repo_pkgs[@]}"
 )
+
+pacu() {
+    xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -Scu --rebuild "$@"
+    post_aur
+    pac -Syu
+}
 
 pacs!() {
     aur search -k NumVotes "$@"
@@ -65,25 +89,21 @@ pacQ() {
 
 aurs() {
     aur sync -Sc "$@"
+    sudo -E pacman -Sy
+    pkill -RTMIN+1 -x waybar
     post_aur
 }
 alias aurs!='aurs --nover-argv -f'
 
 aurb() {
     aur build -Scf --pkgver "$@"
-    post_aur
-}
-
-auru() {
-    xargs -a <(aur vercmp-devel | cut -d: -f1) aur sync -Scu --rebuild "$@"
+    sudo -E pacman -Sy
+    pkill -RTMIN+1 -x waybar
     post_aur
 }
 
 post_aur() {
-    sudo -E pacman -Sy
-    pkill -RTMIN+1 -x waybar
     find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
-    find /var/cache/pacman/cyrinux-aur -name '*~' -delete >/dev/null
     find /var/cache/pacman/cyrinux-aur -group root -delete >/dev/null
 }
 
