@@ -1,13 +1,11 @@
 #!/usr/bin/env zsh
 
-command -v advcp     &> /dev/null    && alias cp='advcp -g -r --reflink=auto'                      || alias cp='cp -r --reflink=auto'
-command -v advmv     &> /dev/null    && alias mv='advmv -g'
 command -v bat       &> /dev/null    && alias c='bat -p'                                           || alias c='cat'
 command -v curlie    &> /dev/null    && alias curl='curlie'
 command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
-command -v exa       &> /dev/null    && alias ls='exa --group --git --group-directories-first'     || alias ls='ls --color=auto --group-directories-first -h'
+command -v exa       &> /dev/null    && alias ls='exa -ga --group-directories-first --time-style=long-iso --color-scale'     || alias ls='ls --color=auto --group-directories-first -h'
 command -v fd        &> /dev/null    && alias fd='fd --hidden --follow'                            || alias fd='find . -name'
 command -v git       &> /dev/null    && alias diff='git diff --no-index'
 command -v htop      &> /dev/null    && alias top='htop'
@@ -15,6 +13,7 @@ command -v pydf      &> /dev/null    && alias df='pydf'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 
+alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
 alias e="$EDITOR"
 alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
@@ -33,7 +32,7 @@ alias hexdump='od -A x -t x1z -v'
 alias htpasswd='openssl passwd -apr1'
 alias httpdump='sysdig -s 2000 -A -c echo_fds proc.name='
 alias http-serve='python3 -m http.server'
-alias ip="ip -c"
+alias ip='ip -color -brief'
 alias ll='ls -l'
 alias locate='locate -i'
 alias logviewer="lnav -q"

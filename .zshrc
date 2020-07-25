@@ -26,6 +26,18 @@ my-ctrl-z() {
 zle -N my-ctrl-z
 bindkey '^Z' my-ctrl-z
 
+toggle-sudo() {
+    [[ -z "$BUFFER" ]] && zle up-history -w
+    if [[ "$BUFFER" != "sudo "* ]]; then
+        BUFFER="sudo $BUFFER"
+        CURSOR=$(( CURSOR + 5 ))
+    else
+        BUFFER="${BUFFER#sudo }"
+    fi
+}
+zle -N toggle-sudo
+bindkey '^[s' toggle-sudo
+
 zle -N edit-command-line
 bindkey '^V^V' edit-command-line
 
