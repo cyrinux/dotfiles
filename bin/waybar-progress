@@ -8,13 +8,13 @@ text=$(echo $output | cut -d ' ' -f4-10)
 tooltip="$output"
 class="$1"
 
-if [ $percentage     ] > 0 && [ $class == "cp" ]; then
+if [ $percentage -gt 0 ] && [ $class == "cp" ]; then
     text=" $text"
-elif [ $percentage     ] > 0 && [ $class == "mv" ]; then
+elif [ $percentage -gt 0 ] && [ $class == "mv" ]; then
     text=" $text"
-elif [ $percentage     ] > 0 && [ $class == "rsync" ]; then
+elif [ $percentage -gt 0 ] && [ $class == "rsync" ]; then
     text=" $text"
-elif [ $percentage     ] > 0 && [ $class == "gpg" ]; then
+elif [ $percentage -gt 0 ] && [ $class == "gpg" ]; then
     text=" $text"
 fi
 
