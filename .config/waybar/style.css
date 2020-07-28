@@ -78,15 +78,19 @@ window#waybar {
 #custom-yubikey,
 #custom-recording,
 #custom-cast,
-#battery.critical {
+#battery.critical,
+#temperature.critical {
   border-bottom: 3px solid @red;
 }
 
 #mode,
 #pulseaudio,
-#custom-progress,
+#custom-progress-cp,
+#custom-progress-mv,
+#custom-progress-rsync,
+#custom-progress-gpg,
+#custom-progress-tar,
 #custom-usbguard,
-#custom-spotify,
 #custom-yubikey,
 #custom-decrypted,
 #custom-updates,
@@ -113,34 +117,25 @@ window#waybar {
   margin: 0 6px;
 }
 
-#custom-progress.cp {
+#custom-progress-cp {
   border-bottom: 3px solid @purple;
 }
-
-#custom-progress.mv {
+#custom-progress-mv {
   border-bottom: 3px solid @orange;
 }
-
-#custom-progress.rsync {
+#custom-progress-rsync {
   border-bottom: 3px solid @blue;
 }
-
-#custom-progress.gpg {
+#custom-progress-gpg {
   border-bottom: 3px solid @yellow;
 }
-
-#custom-progress.tar {
+#custom-progress-tar {
   border-bottom: 3px solid @yellow;
 }
 
 #custom-infra-status.up {
   border-bottom: 3px solid @green;
 }
-
 #custom-infra-status.down {
-  border-bottom: 3px solid @red;
-}
-
-#temperature.critical {
   border-bottom: 3px solid @red;
 }

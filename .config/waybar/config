@@ -6,7 +6,11 @@
         "sway/mode"
     ],
     "modules-right": [
-        "custom/progress",
+        "custom/progress-cp",
+        "custom/progress-mv",
+        "custom/progress-rsync",
+        "custom/progress-gpg",
+        "custom/progress-tar",
         "custom/usbguard",
         "custom/infra-status",
         "custom/yubikey",
@@ -29,8 +33,28 @@
         "idle_inhibitor",
         "tray"
     ],
-    "custom/progress": {
-        "exec": "waybar-progress",
+    "custom/progress-cp": {
+        "exec": "waybar-progress cp",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/progress-mv": {
+        "exec": "waybar-progress mv",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/progress-rsync": {
+        "exec": "waybar-progress rsync",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/progress-tar": {
+        "exec": "waybar-progress tar",
+        "return-type": "json",
+        "interval": 3
+    },
+    "custom/progress-gpg": {
+        "exec": "waybar-progress gpg",
         "return-type": "json",
         "interval": 3
     },
