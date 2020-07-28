@@ -84,10 +84,7 @@ window#waybar {
 
 #mode,
 #pulseaudio,
-#custom-copy,
-#custom-move,
-#custom-rsync,
-#custom-gpg,
+#custom-progress,
 #custom-usbguard,
 #custom-spotify,
 #custom-yubikey,
@@ -116,19 +113,23 @@ window#waybar {
   margin: 0 6px;
 }
 
-#custom-copy {
+#custom-progress.cp {
   border-bottom: 3px solid @purple;
 }
 
-#custom-move {
+#custom-progress.mv {
   border-bottom: 3px solid @orange;
 }
 
-#custom-rsync {
+#custom-progress.rsync {
   border-bottom: 3px solid @blue;
 }
 
-#custom-gpg {
+#custom-progress.gpg {
+  border-bottom: 3px solid @yellow;
+}
+
+#custom-progress.tar {
   border-bottom: 3px solid @yellow;
 }
 
