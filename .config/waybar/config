@@ -16,6 +16,7 @@
         "custom/yubikey",
         "custom/decrypted",
         "custom/updates",
+        "custom/calendar",
         "custom/mail",
         "custom/recording",
         "custom/cast",
@@ -33,6 +34,11 @@
         "idle_inhibitor",
         "tray"
     ],
+    "custom/calendar": {
+        "exec": "waybar-calendar",
+        "return-type": "json",
+        "interval": 3600
+    },
     "custom/progress-cp": {
         "exec": "waybar-progress cp",
         "return-type": "json",
