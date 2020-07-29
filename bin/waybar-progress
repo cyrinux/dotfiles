@@ -2,21 +2,24 @@
 
 trap 'pkill -P $$' EXIT
 
-output=$(progress -q -c "$1")
-percentage=$(echo -e "$output" | awk 'NR%3==2 { print $1 }' | sed 's/%//')
-text=$(echo $output | cut -d ' ' -f4-10)
-tooltip="$output"
-class="$1"
+get_progress() {
+    class="$1"
+    output=$(progress -q -c "$class")
+    [ -n "$output" ] && percentage="$(echo -e "$output" | awk 'BEGIN {i=0} NR%3==2 {sum +=$1; i+=1} END {print sum/i}')"
+    text="${percentage}%"
+    tooltip="$(echo $output | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//'))"
+    if [ -n "$percentage" ] && [ "${percentage%.*}" -gt 0 ]; then
+        case $class in
+            "cp") text=" $text" ;;
+            "gpg") text=" $text" ;;
+            "mv") text=" $text" ;;
+            "rsync") text=" $text" ;;
+            "tar") text=" $text" ;;
+            *) text="" ;;
+        esac
+        json=$(printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": "%.0f"}\n' "$text" "$tooltip" "$class" "$percentage")
+        echo -n $json
+    fi
+}
 
-if [ $percentage -gt 0 ] && [ $class == "cp" ]; then
-    text=" $text"
-elif [ $percentage -gt 0 ] && [ $class == "mv" ]; then
-    text=" $text"
-elif [ $percentage -gt 0 ] && [ $class == "rsync" ]; then
-    text=" $text"
-elif [ $percentage -gt 0 ] && [ $class == "gpg" ]; then
-    text=" $text"
-fi
-
-json=$(printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": "%.0f"}\n' "$text" "$tooltip" "$class" "$percentage")
-echo $json | jq --unbuffered --compact-output
+get_progress "$1"
