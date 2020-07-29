@@ -1,5 +1,4 @@
-##!/bin/bash
-
+#!/bin/bash
 trap 'pkill -P $$' EXIT
 
 vpn() {
