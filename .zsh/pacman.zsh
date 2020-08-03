@@ -17,8 +17,9 @@ pac() {
     sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
     sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
 
-    pkill -RTMIN+1 -x waybar
     rehash
+
+    systemctl --user start waybar-updates.service
 }
 command -v pacman &> /dev/null && compdef pac=pacman
 

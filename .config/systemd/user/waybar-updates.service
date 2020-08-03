@@ -1,0 +1,6 @@
+[Unit]
+Description=Waybar packages updates notifications async
+
+[Service]
+ExecStart=/home/cyril/bin/waybar-updates
+
