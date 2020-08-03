@@ -1,0 +1,9 @@
+[Unit]
+Description=Waybar packages updates notifications async
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

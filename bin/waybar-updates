@@ -38,7 +38,9 @@ tooltip=""
 tooltip="$(printf "$tooltip" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
 
 if [ -z "$text" ]; then
-    printf '{"text": ""}\n'
+    printf '{"text": ""}\n' > ~/.cache/waybar-updates
 else
-    printf '{"text": "\uf49e %s", "tooltip": "%s" }\n' "$text" "$tooltip"
+    printf '{"text": "\uf49e %s", "tooltip": "%s" }\n' "$text" "$tooltip" > ~/.cache/waybar-updates
 fi
+
+pkill -RTMIN+1 -x waybar
