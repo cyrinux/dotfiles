@@ -1,9 +1,16 @@
-{
+profile {
     output eDP-1   disable
-    output DP-3    enable   position 0,0        mode 1920x1200   transform 270
-    output DP-4    enable   position 1200,420   mode 1920x1200
-    output DP-5    enable   position 3120,420   mode 1920x1200
+	output "Dell Inc. DELL P2415Q D8VXF9CJ0EPB" mode 3840x2160 position 0,0 scale 1.6
 }
-{
-    output eDP-1   enable   scale 1.2
+
+profile {
+    output eDP-1   disable
+	output "Dell Inc. DELL P2317H 9KFDW65A10FL" mode 1920x1080 position 0,0
+	output "'Dell Inc. DELL P2317H V2G5175GANCI" mode 1920x1080 position 1920,0
 }
+
+profile {
+    output eDP-1   enable   scale 1.0
+}
+
+
