@@ -1,2 +1,5 @@
 #!/bin/sh
-/bin/grep $1 /home/cyril/.cache/mailservers | cut -d':' -f2-3
+
+[ ! -f ~/.cache/mail.levis.name.gpg ] && echo "Data are store in 'pass mailservers', create ~/.cache/mail.levis.name.gpg with data from it." && exit 1
+
+gpg --quiet --decrypt ~/.cache/mail.levis.name.gpg | grep $1 | cut -d':' -f2-3

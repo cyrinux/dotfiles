@@ -169,23 +169,44 @@ pacman-key --lsign-key "$MY_GPG_KEY_ID"
 echo -e "\n### Adding blackarch repo"
 curl -sL https://blackarch.org/strap.sh | bash
 
-echo -e "\n### Downloading custom repo"
-mkdir /mnt/var/cache/pacman/cyrinux-aur
-wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur' $REPO_URL
+echo -e "\n### Configuring custom repo"
+mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 
-cat >> /etc/pacman.conf << EOF
-[cyrinux-aur]
+if [[ "${hostname}" == "work-"* ]]; then
+    wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' $REPO_URL
+    rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
+
+    cat >> /etc/pacman.conf << EOF
+[cyrinux-aur-local]
 SigLevel = Required
 Server = file:///mnt/var/cache/pacman/cyrinux-aur/
 
 [maximbaz]
 Server = https://pkgbuild.com/~maximbaz/repo/
 SigLevel = Required
+Usage = Install Sync
 
 [options]
 CacheDir = /var/cache/pacman/pkg
-CacheDir = /mnt/var/cache/pacman/cyrinux-aur
+CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
 EOF
+
+else
+    cat >> /etc/pacman.conf << EOF
+[cyrinux-aur-local]
+SigLevel = Required
+Server = http://aur.levis.ws/
+
+[maximbaz]
+Server = https://pkgbuild.com/~maximbaz/repo/
+SigLevel = Required
+Usage = Install Sync
+
+[options]
+CacheDir = /var/cache/pacman/pkg
+EOF
+
+fi
 
 echo -e "\n### Installing packages"
 pacstrap -i /mnt cyrinux
@@ -239,7 +260,7 @@ chmod +x /mnt/boot/grub/update.sh
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video audit plugdev informant; do
+for group in wheel network video audit plugdev; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
@@ -248,8 +269,8 @@ arch-chroot /mnt chsh -s /usr/bin/zsh
 echo "$user:$password" | chpasswd --root /mnt
 arch-chroot /mnt passwd -dl root
 
-echo -e "\n### Fixing local  repository perms"
-arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur/
+echo -e "\n### Settings permissions on the custom repo"
+arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local/
 
 echo -e "\n### Setting up Secure Boot for GRUB with custom keys"
 echo MB | arch-chroot /mnt cryptboot-efikeys create

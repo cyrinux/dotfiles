@@ -24,24 +24,23 @@ radio_state() {
 }
 
 before_lock() {
-    playerctl -a pause
-    # sudo systemctl stop pcscd.service
+    gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
+    playerctl -a pause > /dev/null 2>&1
     reset_kbd
     fusermount -u ~/Vault > /dev/null 2>&1
     fusermount -u ~/Vault-Share > /dev/null 2>&1
     physlock -lms
+    bluetoothctl disconnect > /dev/null 2>&1
 }
 
 after_lock() {
     physlock -L
-    pkill mako
-    mako &
 }
 
 case "$1" in
     lock)
         before_lock
-        swaylock-blur
+        swaylock
         after_lock
         ;;
     before_lock)
@@ -52,7 +51,6 @@ case "$1" in
         ;;
     suspend)
         before_lock
-        bluetoothctl disconnect > /dev/null 2>&1
         stop_vpn
         stop_wwan
         systemctl -i suspend

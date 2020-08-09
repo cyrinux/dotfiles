@@ -1,16 +1,12 @@
 import os
 import sys
 
-from qutebrowser.config.config import ConfigContainer
-from qutebrowser.config.configfiles import ConfigAPI
-
 # ui
 config.source(os.environ["HOME"] + "/.config/qutebrowser/gruvbox.py")
 c.colors.tabs.selected.odd.bg = c.colors.tabs.selected.even.bg
 c.colors.webpage.prefers_color_scheme_dark = True
 c.completion.shrink = True
 c.completion.use_best_match = True
-c.fonts.default_size = "11pt"
 c.statusbar.widgets = ["progress", "keypress", "url", "history"]
 c.scrolling.bar = "always"
 c.tabs.position = "left"
@@ -50,6 +46,7 @@ c.qt.args += [
     "enable-features=WebRTCPipeWireCapturer",
 ]
 c.qt.process_model = "process-per-site-instance"
+# c.qt.process_model = "process-per-site"
 c.spellcheck.languages = ["en-US", "fr-FR"]
 c.hints.chars = "qsdfghjklm"
 
@@ -84,13 +81,14 @@ with config.pattern("*://*.dm.gg/") as p:
 # urls
 c.url.searchengines = {
     "DEFAULT": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
-    "d": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
+    "dd": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
+    "e": "https://emojipedia.org/search/?q={}",
     "g": "https://google.com/search?q={}",
     "gh": "https://github.com/search?q={}",
     "y": "https://www.invidio.us/search?q={}",
     "w": "https://fr.wikipedia.org/w/index.php?search={}",
     "http": "https://httpstatuses.com/{}",
-    "dictccc": "https://www.dict.cc/?s={}",
+    "dict": "https://www.dict.cc/?s={}",
     "s": "https://search.levis.ws/?s={}",
 }
 
@@ -114,6 +112,7 @@ bindings = {
     ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
     ",r": "spawn --userscript readability",
     ",c": "spawn --userscript cast",
+    ",C": "spawn chromium {url}",
     "xx": "config-cycle tabs.show always switching",
     ",b": "config-cycle colors.webpage.bg '#32302f' 'white'",
     "xjn": "set content.javascript.enabled true",

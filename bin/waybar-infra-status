@@ -1,9 +1,8 @@
 #!/bin/bash
-trap 'pkill -P $$' EXIT
 
 get_status() {
     status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
-    if [[ "$status" == "up" ]]; then
+    if [ "$status" == "up" ]; then
         icon=''
         tooltip='Infra is OK'
         class=up

@@ -164,6 +164,7 @@ bindsym --to-code --locked {
 	# Media controls
 	Shift+XF86AudioMute           exec pamute
     XF86AudioMute                 exec pamixer -t
+    XF86AudioMicMute			  exec pamixer -t --source 1
     XF86AudioRaiseVolume          exec pamixer -i 5
     XF86AudioLowerVolume          exec pamixer -d 5
     $win+Up                       exec pamixer -t
@@ -319,17 +320,14 @@ bindsym --to-code {
 	$hyper+o exec makoctl menu dmenu
 }
 
-exec_always "pgrep -x sway-autoname-w || sway-autoname-workspaces -d"
-exec_always "pgrep -x inactive-window || inactive-windows-transparency -o 0.7"
-exec_always "pgrep -x flashfocus || flashfocus"
-exec_always "pgrep -x redshift || redshift"
-exec_always "pkill waybar; waybar"
-exec_always "pgrep -x mako || mako"
-exec_always "pgrep -x polkit-gnome-au || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-exec_always "pgrep -x nm-applet || nm-applet"
+# Signal that sway finished loading
+exec "systemctl --user import-environment; systemctl --user start sway-session.target"
+
+# Start some apps
 exec swayidle -w timeout 0 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep 'sway-exit lock'
 exec "kitty --class neomutt --title neomutt neomutt"
-exec kanshi
+exec_always "pgrep -x solaar || solaar -w hide"
+exec_always "pkill kanshi; kanshi"
 
 # Load host-specific configs
 include ~/.config/sway/`sway-config-selector`.conf

@@ -1,26 +1,24 @@
 {
     "layer": "top",
-    "height": 25,
+    "height": 26,
     "modules-left": [
         "sway/workspaces",
         "sway/mode"
     ],
     "modules-right": [
-        "custom/progress-cp",
-        "custom/progress-mv",
-        "custom/progress-rsync",
-        "custom/progress-gpg",
-        "custom/progress-tar",
+        "custom/netatmo",
+        "custom/fwupd",
+        "custom/progress",
         "custom/usbguard",
         "custom/infra-status",
         "custom/yubikey",
         "custom/decrypted",
+        "custom/systemd",
         "custom/updates",
         "custom/calendar",
         "custom/mail",
         "custom/recording",
         "custom/cast",
-        "custom/dnd",
         "pulseaudio",
         "network",
         "custom/vpn",
@@ -31,6 +29,7 @@
         "backlight",
         "battery",
         "clock",
+        "custom/dnd",
         "idle_inhibitor",
         "tray"
     ],
@@ -39,30 +38,20 @@
         "return-type": "json",
         "interval": 3600
     },
-    "custom/progress-cp": {
-        "exec": "waybar-progress cp",
+    "custom/netatmo": {
+        "exec": "waybar-netatmo",
         "return-type": "json",
-        "interval": 3
+        "interval": 600
     },
-    "custom/progress-mv": {
-        "exec": "waybar-progress mv",
+    "custom/fwupd": {
+        "exec": "waybar-fwupd",
         "return-type": "json",
-        "interval": 3
+        "interval": 43200
     },
-    "custom/progress-rsync": {
-        "exec": "waybar-progress rsync",
+    "custom/progress": {
+        "exec": "waybar-progress",
         "return-type": "json",
-        "interval": 3
-    },
-    "custom/progress-tar": {
-        "exec": "waybar-progress tar",
-        "return-type": "json",
-        "interval": 3
-    },
-    "custom/progress-gpg": {
-        "exec": "waybar-progress gpg",
-        "return-type": "json",
-        "interval": 3
+        "interval": 1
     },
     "custom/usbguard": {
         "exec": "waybar-usbguard",
@@ -85,12 +74,17 @@
         "exec": "waybar-decrypted",
         "return-type": "json"
     },
+    "custom/systemd": {
+        "exec": "waybar-systemd",
+        "return-type": "json",
+        "interval": 10
+    },
     "custom/updates": {
-        "exec": "cat ~/.cache/waybar-updates",
+        "exec": "waybar-updates show",
         "return-type": "json",
         "signal": 1,
-        "on-click-right": "pkill -RTMIN+1 -x waybar",
-        "interval": 120
+        "on-click-right": "waybar-updates refresh",
+        "interval": "once"
     },
     "custom/mail": {
         "exec": "waybar-mail",
@@ -150,10 +144,18 @@
 		"format": " {temperatureC}°C"
 	},
     "cpu": {
-        "format": " {usage}%"
+        "format": " {usage}%",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
     },
     "memory": {
-        "format": " {}%"
+        "format": " {}%",
+        "states": {
+            "warning": 70,
+            "critical": 90
+        }
     },
     "backlight": {
         "format": "{icon} {percent}%",

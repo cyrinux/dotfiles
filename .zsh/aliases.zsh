@@ -13,6 +13,11 @@ command -v pydf      &> /dev/null    && alias df='pydf'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 
+if [[ -x ~/bin/num-cpus ]]; then
+    command -v make  &>/dev/null && alias make='make -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
+    command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
+fi
+alias lmr='mr --config ~/.config/myrepos.conf'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
 alias e="$EDITOR"
@@ -41,6 +46,7 @@ alias mtr-report='mtr --report --report-cycles 10'
 alias o='xdg-open'
 alias play_cercle="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCPKT_csvP72boVX0XrMtagQ/videos"
 alias play_techno="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCmfF7JZv26UUKyRedViGIlw/videos"
+alias play_bloques="mpv --no-resume-playback --shuffle 'https://www.youtube.com/playlist?list=PL5e6ZkQmSoKeA-KmjgHVOTtYZFH7XIfeM'"
 alias readallmail="notmuch tag -unread folder:INBOX"
 alias rm!='\rm -rf'
 alias send="croc send"
@@ -141,13 +147,23 @@ getcertnames() {
         fi
 }
 
-# get dbus session
-dbs() {
-        local t=$1
-        if [[  -z "$t" ]]; then
-                local t="session"
-        fi
-        dbus-send --$t --dest=org.freedesktop.DBus \
-                --type=method_call      --print-reply \
-                /org/freedesktop/DBus org.freedesktop.DBus.ListNames
-}
+## systemctl
+alias sys='systemctl'
+alias sysu='systemctl --user'
+alias status='sys status'
+alias statusu='sysu status'
+alias start='sys start'
+alias startu='sysu start'
+alias stop='sys stop'
+alias stopu='sysu stop'
+alias restart='sys restart'
+alias restartu='sysu restart'
+alias enable='sys enable'
+alias enableu='sysu enable'
+alias disable='sys disable'
+alias disableu='sysu disable'
+alias reload='sys daemon-reload'
+alias reloadu='sysu daemon-reload'
+alias timers='sys list-timers'
+alias timersu='sysu list-timers'
+

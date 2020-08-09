@@ -10,7 +10,7 @@ export GTK2_RC_FILES="$HOME/.config/gtk-2.0/gtkrc-2.0"
 export LIBVA_DRIVER_NAME=iHD
 export LPASS_CLIPBOARD_COMMAND="wl-copy -o"
 export MOZ_ENABLE_WAYLAND=1
-export PATH="$HOME/bin:$PATH:$HOME/.go/bin:/usr/share/sway/scripts/"
+export PATH="$HOME/bin:$PATH:$HOME/.go/bin"
 export QT_QPA_PLATFORMTHEME=qt5ct
 export QT_QPA_PLATFORM=wayland-egl
 export QT_SCALE_FACTOR=1
@@ -23,6 +23,4 @@ export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export XKB_DEFAULT_LAYOUT="fr-hyper,us"
 
-if [[ "$(tty)" == "/dev/tty1" ]]; then
-    exec systemd-cat -t sway sway
-fi
+[[ -z $DISPLAY && "$(tty)" == "/dev/tty1" ]] && systemd-cat -t sway sway

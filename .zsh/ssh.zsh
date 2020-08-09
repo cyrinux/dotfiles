@@ -14,6 +14,7 @@ function z4h-ssh-configure() {
 }
 
 alias ssh='ssh_with_color_and_term'
+# alias ssh='z4h ssh'
 
 ssh-with-privoxy() {
     zstyle ':z4h:ssh:*' ssh-command command ssh -R 9999:localhost:8118

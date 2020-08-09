@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 pac() {
-    sudo -E pacman "$@"
+    sudo -E pacman "$@" || return 1
 
     is_removal=0
     while [[ "$1" == -* ]]; do
@@ -10,16 +10,15 @@ pac() {
     done
     if (( is_removal )); then
         echo "\nCleaning up AUR repo..."
-        repo-remove -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar "$@"
+        repo-remove -s /var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar "$@"
     fi
 
     echo "\nCleaning up repo cache..."
-    sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
-    sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur
+    sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
+    sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
 
     rehash
-
-    systemctl --user start waybar-updates.service
+    refresh-waybar-updates
 }
 command -v pacman &> /dev/null && compdef pac=pacman
 
@@ -31,7 +30,7 @@ alias pacf='SNAP_PAC_SKIP=true pac -U'
 alias pacF='pacman -F'
 alias pacq='pacman -Si'
 alias pacl='pacman -Ql'
-alias pacdiff='sudo \pacdiff; pkill -RTMIN+1 -x waybar'
+alias pacdiff='sudo \pacdiff; refresh-waybar-updates'
 
 pacs() (
     [ $# -lt 1 ] && { >&2 echo "No search term provided"; return 1; }
@@ -85,13 +84,16 @@ pacs!() {
 }
 
 pacQ() {
-    pacman -Qo `which "$1"`
+    [[ $# == 1 ]] || return 1;
+    [ -e "$1" ] && file="$1" || file="$(which "$1")"
+    [ -e "$file" ] || { echo >&2 "File '$1' not found, aborting."; return 1; }
+    pacman -Qo "$file"
 }
 
 aurs() {
     aur sync -Sc "$@"
     sudo -E pacman -Sy
-    pkill -RTMIN+1 -x waybar
+    refresh-waybar-updates
     post_aur
 }
 alias aurs!='aurs --nover-argv -f'
@@ -99,12 +101,15 @@ alias aurs!='aurs --nover-argv -f'
 aurb() {
     aur build -Scf --pkgver "$@"
     sudo -E pacman -Sy
-    pkill -RTMIN+1 -x waybar
+    refresh-waybar-updates
     post_aur
 }
 
 post_aur() {
     find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
-    find /var/cache/pacman/cyrinux-aur -group root -delete >/dev/null
+    find /var/cache/pacman/cyrinux-aur-local -group root -delete >/dev/null
 }
 
+refresh-waybar-updates() {
+    systemctl --user start waybar-updates.service
+}

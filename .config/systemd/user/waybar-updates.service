@@ -1,6 +1,5 @@
 [Unit]
-Description=Waybar packages updates notifications async
+Description=Refresh list of outdated packages in waybar
 
 [Service]
-ExecStart=/home/cyril/bin/waybar-updates
-
+ExecStart=%h/bin/waybar-updates refresh

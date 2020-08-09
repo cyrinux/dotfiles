@@ -2,6 +2,8 @@
 
 trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 
+export GST_VAAPI_ALL_DRIVERS=1
+
 pkill -x gst-launch-1.0
 
 [ $? -ne 0 ] && {

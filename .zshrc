@@ -1,11 +1,13 @@
 #!/usr/bin/env zsh
 
-zstyle ':z4h:' auto-update no
-zstyle ':z4h:*' channel stable
-zstyle ':z4h:' cd-key alt
-zstyle ':z4h:autosuggestions' forward-char partial-accept
-zstyle ':fzf-tab:*' continuous-trigger tab
-zstyle ':zle:(up|down)-line-or-beginning-search' leave-cursor no
+zstyle ':z4h:'                                    auto-update            no
+zstyle ':z4h:*'                                   channel                stable
+zstyle ':z4h:'                                    cd-key                 alt
+zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
+zstyle ':fzf-tab:*'                               continuous-trigger     tab
+zstyle ':zle:(up|down)-line-or-beginning-search'  leave-cursor           no
+zstyle ':z4h:term-title:ssh'                      preexec                '%* | %n@%m: ${1//\%/%%}'
+zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 
 z4h install romkatv/archive || return
 
@@ -55,7 +57,7 @@ z4h source -c ~/.zsh/pentest.zsh
 z4h source -c ~/.zsh/docker.zsh
 z4h source -c ~/.zshrc-private/personal.zsh
 z4h source -c ~/.zshrc-private/work.zsh
-z4h source -c ~/.zsh/server.zsh
+z4h source -c ~/.zsh/server.zsh # its on remote servers only
 z4h source -c ~/.zsh/completion.zsh
 
 # default mapping are unusable in azerty layout

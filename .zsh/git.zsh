@@ -6,6 +6,11 @@ g() {
     fi
 }
 
+gcl() {
+    git clone --recursive "$@"
+    cd -- "${${${@: -1}##*/}%.*}"
+}
+
 alias ga='git add'
 alias gaa='git add --all'
 alias gap='git add -p'
@@ -34,8 +39,6 @@ alias gcf='git commit --fixup'
 alias gcfh='git commit --fixup HEAD'
 alias gacf='git add --all && git commit --fixup'
 alias gacfh='git add --all && git commit --fixup HEAD'
-
-alias gcl='git clone --recursive'
 
 alias gco='git checkout'
 alias gcom='git checkout master'
@@ -93,12 +96,17 @@ grf() {
     upstream="$(git remote get-url upstream 2> /dev/null || git remote get-url origin)"
     if [[ $# == 1 ]]; then
         fork=$(echo "$upstream" | awk -v name="$1" -F/ '{print $1"/"$2"/"$3"/"name"/"$5}')
+        if [[ "$upstream" == https* ]]; then
+            fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print $1 "/" $2 "/" name "/" $5 }')
+        else
+            fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print "https://github.com/" name "/" $2 }')
+        fi
 
         git remote remove "$1" 2> /dev/null
         git remote add "$1" "$fork"
         git fetch "$1"
     else
-        myfork=$(echo "$upstream" | awk -v name="$USER" -F/ '{print "git@github.com:"name"/"$5}')
+        myfork=$(echo "$upstream" | awk -v name="$USER" -F/ '{ print "git@github.com:" name "/" $5 }')
 
         git remote remove upstream 2> /dev/null
         git remote remove origin 2> /dev/null

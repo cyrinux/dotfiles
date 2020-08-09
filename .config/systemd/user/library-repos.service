@@ -3,7 +3,7 @@ Description=Update library repositories
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/mr --config %h/library/src/myrepos.conf -j5 update
+ExecStart=%h/bin/library-repos
 
 [Install]
 WantedBy=multi-user.target
