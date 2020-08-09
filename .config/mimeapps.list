@@ -21,3 +21,4 @@ video/mp4=mpv.desktop
 text/csv=visidata.desktop
 text/tab-separated-values=visidata.desktop
 text/plain=kakoune.desktop
+text/x-diff=kakoune.desktop

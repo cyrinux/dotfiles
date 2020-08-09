@@ -1,9 +1,0 @@
-#!/bin/sh
-
-if usbctl check; then
-    (sudo usbctl temp 15 > /dev/null 2>&1 && pkill -RTMIN+8 -x waybar) &
-else
-    sudo usbctl protect > /dev/null 2>&1 &
-fi
-sleep 0.5
-pkill -RTMIN+8 -x waybar

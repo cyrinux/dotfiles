@@ -1,25 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-trap 'pkill -P $$' EXIT
+output="$(progress -q)"
+text="$(printf "%s" "$output" | sed 's/\[[^]]*\] //g' | awk 'BEGIN { ORS=" " } NR%3==1 { op=$1 } NR%3==2 { pct=($1+0); if (op != "gpg" && pct > 0 && pct < 100) { print op, $1 } }')"
+tooltip="$(printf "%s" "$output" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
 
-get_progress() {
-    class="$1"
-    output=$(progress -q -c "$class")
-    [ -n "$output" ] && percentage="$(echo -e "$output" | awk 'BEGIN {i=0} NR%3==2 {sum +=$1; i+=1} END {print sum/i}')"
-    text="${percentage}%"
-    tooltip="$(echo $output | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//'))"
-    if [ -n "$percentage" ] && [ "${percentage%.*}" -gt 0 ]; then
-        case $class in
-            "cp") text=" $text" ;;
-            "gpg") text=" $text" ;;
-            "mv") text=" $text" ;;
-            "rsync") text=" $text" ;;
-            "tar") text=" $text" ;;
-            *) text="" ;;
-        esac
-        json=$(printf '{"text": "%s", "tooltip": "%s", "class": "%s", "percentage": "%.0f"}\n' "$text" "$tooltip" "$class" "$percentage")
-        echo -n $json
-    fi
-}
-
-get_progress "$1"
+printf '{"text": "%s", "tooltip": "%s"}\n' "$text" "$tooltip"

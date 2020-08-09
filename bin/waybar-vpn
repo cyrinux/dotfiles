@@ -1,5 +1,4 @@
-#!/bin/bash
-trap 'pkill -P $$' EXIT
+#!/bin/sh
 
 vpn() {
     if [ -e "/sys/class/net/tun0" ]; then

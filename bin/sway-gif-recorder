@@ -17,5 +17,5 @@ encode() {
     wl-copy -t image/gif < "$path.gif"
     notify-send 'GIF recording' "Recording is ready: $path.gif"
 
-    inactive-windows-transparency.py -o 0.7 &
+    systemctl --user restart sway-inactive-window-transparency.service
 } &

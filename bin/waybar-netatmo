@@ -1,0 +1,73 @@
+#!/bin/bash
+
+nm-online -q -t 300
+
+accountfile=~/.dotfiles-private/.config/netatmo_account.json
+tokenfile=~/.cache/netatmo_token.json
+datafile=~/.cache/netatmo_data.json
+client_id=$(jq -r ".client_id" $accountfile)
+client_secret=$(jq -r ".client_secret" $accountfile)
+username=$(jq -r ".username" $accountfile)
+password=$(jq -r ".password" $accountfile)
+device_id=$(jq -r ".device_id" $accountfile)
+authurl="https://api.netatmo.net/oauth2/token"
+
+if [ ! -f $tokenfile ]; then
+    curl -s -d "grant_type=password&client_id=${client_id}&client_secret=${client_secret}&username=${username}&password=${password}&scope=read_station" "${authurl}" > ${tokenfile}
+fi
+
+atoken=$(jq -r ".access_token" $tokenfile)
+rtoken=$(jq -r ".refresh_token" $tokenfile)
+expiration=$(jq -r ".expires_in" $tokenfile)
+
+filedate=$(date "+%Y-%m-%d %H:%M:%S" -r $tokenfile)
+filedate=$(date -d "$filedate" +%s)
+limittime=$(expr $filedate + $expiration)
+currenttime=$(date +%s)
+
+if [ $limittime -lt $currenttime ]; then
+    echo "Using refresh token"
+    curl -s -d "grant_type=refresh_token&refresh_token=${rtoken}&client_id=${client_id}&client_secret=${client_secret}" "${authurl}" > $tokenfile
+    atoken=$(jq -r ".access_token" $tokenfile)
+fi
+
+curl -s -d "access_token=${atoken}&device_id=${device_id}" "https://api.netatmo.net/api/getstationsdata" > $datafile
+intemp=$(jq -r ".body.devices[0].dashboard_data.Temperature" $datafile)
+inhumi=$(jq -r ".body.devices[0].dashboard_data.Humidity" $datafile)
+intemptrend=$(jq -r ".body.devices[0].dashboard_data.temp_trend" $datafile)
+co2=$(jq -r ".body.devices[0].dashboard_data.CO2" $datafile)
+pres=$(jq -r ".body.devices[0].dashboard_data.Pressure" $datafile)
+extemp=$(jq -r ".body.devices[0].modules[0].dashboard_data.Temperature" $datafile)
+exhumi=$(jq -r ".body.devices[0].modules[0].dashboard_data.Humidity" $datafile)
+extemptrend=$(jq -r ".body.devices[0].modules[0].dashboard_data.temp_trend" $datafile)
+
+if [ $(bc <<< "$intemp >  $extemp") -eq 1 ]; then
+    class=high
+else
+    class=low
+fi
+
+if [ $(bc <<< "$intemp >  25.0") -eq 1 ]; then
+    icon=''
+else
+    icon=''
+fi
+
+case $intemptrend in
+    "up") in_trend='' ;;
+    "down") in_trend='' ;;
+    "stable") in_trend='' ;;
+    *) in_trend='' ;;
+esac
+
+case $extemptrend in
+    "up") ex_trend='' ;;
+    "down") ex_trend='' ;;
+    "stable") ex_trend='' ;;
+    *) ex_trend='' ;;
+esac
+
+tooltip="$in_trend Indoor:\n\nTemperature ${intemp}°C, Humidity ${inhumi}%, Pressure ${pres} hPa\n\n$ex_trend Outdoor:\n\nTemperature ${extemp}°C, Humidity ${exhumi}%, CO2 ${co2}ppm\n"
+text="$intemp°C"
+
+printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon $text" "$tooltip" "$class"

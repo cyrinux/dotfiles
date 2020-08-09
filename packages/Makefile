@@ -1,13 +1,16 @@
 .PHONY: all
-all: build install publish clean push ## Build install and publish everywhere
+all: build install refresh publish clean sync
 
 .PHONY: build
-build: ## Build the package
+build: ## Build the meta-package
 	PKGEXT='.pkg.tar.zst' makepkg -sf
 
 .PHONY: install
-install: ## Install the package
+install: ## Install the meta-package
 	SNAP_PAC_SKIP=true sudo -E pacman --noconfirm -U *.pkg.tar.zst
+
+.PHONY: refresh
+refresh: ## Refresh the backup lists
 	backup-packages
 	if [ -s unknown.list ]; then \
 		xargs -a unknown.list sudo -E pacman -D --asdeps; \
@@ -15,17 +18,17 @@ install: ## Install the package
 	backup-packages
 
 .PHONY: publish
-publish: ## Publish in local the repo
+publish: ## Publish the meta-package in local the repo
 	gpg --detach-sign --yes *.pkg.tar.zst
-	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur.db.tar *.pkg.tar.zst
-	cp *.pkg.tar* /var/cache/pacman/cyrinux-aur/
+	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur-local.db.tar *.pkg.tar.zst
+	cp *.pkg.tar* /var/cache/pacman/cyrinux-aur-local/
 
 .PHONY: clean
-clean:
+clean: ## Cleanup
 	rm -rf pkg src *.pkg.tar* *.log
 
-.PHONY: push
-push: ## Push online the repo
+.PHONY: sync
+push: ## Push online the local repo
 	rsyncrepo
 
 .PHONY: help

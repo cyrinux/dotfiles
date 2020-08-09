@@ -1,8 +1,8 @@
 [Unit]
-Description=Waybar packages updates notifications async
+Description=Periodically refresh list of outdated packages in waybar
 
 [Timer]
-OnCalendar=daily
+OnCalendar=00/6:00
 Persistent=true
 
 [Install]

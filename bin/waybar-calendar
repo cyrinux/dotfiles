@@ -1,7 +1,7 @@
 #!/bin/bash
 trap 'pkill -P $$' EXIT
 
-tooltip="$(timeout 5 khal list | grep -v 'No events' | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
+tooltip="$(timeout 5 khal at | grep -v 'No events' | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
 day="$(date +'%d/%m/%Y')"
 counter=$(echo $tooltip | grep -c ", $day")
 class=off
@@ -12,4 +12,4 @@ if [ "$counter" -gt 0 ]; then
     class=on
     text="$icon $counter"
 fi
-printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$text" "$tooltip" "$class"
+printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$text" "$tooltip" "$class"

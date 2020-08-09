@@ -13,4 +13,5 @@ timeout 10
 account personal
 host mail.levis.name
 user cyril@levis.name
-passwordeval "pass show mail/mailcow"
+passwordeval "vdirsyncer-get-creds password"
+

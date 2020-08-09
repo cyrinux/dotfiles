@@ -1,5 +1,5 @@
 REMOTE_ADDR=aur@backup-aur
-LOCAL_PATH=/var/cache/pacman/cyrinux-aur/
-REMOTE_PATH=/var/services/homes/cyril/www/aur/
+LOCAL_PATH=/var/cache/pacman/cyrinux-aur-local/
+REMOTE_PATH=/var/services/homes/cyril/www/aur
 LOCAL_PATH_AURUTILS=/home/cyril/.local/share/aurutils/
-REMOTE_PATH_AURUTILS=/var/services/homes/cyril/aurutils-cache/
+REMOTE_PATH_AURUTILS=/var/services/homes/cyril/aurutils-cache

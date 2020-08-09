@@ -380,6 +380,8 @@
 # # -a always,exit -F arch=b32 -S rename -S renameat -S truncate -S chmod -S setxattr -S lsetxattr -S removexattr -S lremovexattr -F exit=-EPERM -k file_modification
 # # -a always,exit -F arch=b64 -S rename -S renameat -S truncate -S chmod -S setxattr -S lsetxattr -S removexattr -S lremovexattr -F exit=-EPERM -k file_modification
 
+-w /home/cyril/0 -p wa -k puppet_ssl
+
 # ## Useless chromium seccomp alertes
 # -a exclude,always -F msgtype=SECCOMP
 

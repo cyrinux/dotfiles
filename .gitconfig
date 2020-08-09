@@ -78,10 +78,10 @@ cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 name = Cyril Levis
 useConfigOnly = true
 
-[includeIf "gitdir:~/library/src/work/"]
-path = ~/.gitconfig.work
-
 [include]
 path = ~/.gitconfig.personal
+
+[includeIf "gitdir:~/library/src/work/"]
+path = ~/.gitconfig.work
 
 # vim:ft=ini

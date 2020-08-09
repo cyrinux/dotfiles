@@ -3,7 +3,9 @@ Description=Tarsnap timer
 
 [Timer]
 Unit=tarsnap.service
-OnCalendar=daily
+OnCalendar=hourly
+RandomizedDelaySec=30
+Persistent=True
 
 [Install]
 WantedBy=timers.target

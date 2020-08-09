@@ -63,11 +63,14 @@ window#waybar {
 
 #custom-usbguard,
 #custom-decrypted,
+#custom-systemd,
 #custom-updates,
 #custom-calendar.on,
 #custom-mail,
 #custom-vpn.off,
 #battery.warning,
+#memory.warning,
+#cpu.warning,
 #custom-dnd.on {
   border-bottom: 3px solid @yellow;
 }
@@ -79,18 +82,19 @@ window#waybar {
 #custom-yubikey,
 #custom-recording,
 #custom-cast,
+#custom-systemd,
 #battery.critical,
+#memory.critical,
+#custom-netatmo.high,
+#cpu.critical,
+#custom-fwupd,
 #temperature.critical {
   border-bottom: 3px solid @red;
 }
 
 #mode,
 #pulseaudio,
-#custom-progress-cp,
-#custom-progress-mv,
-#custom-progress-rsync,
-#custom-progress-gpg,
-#custom-progress-tar,
+#custom-progress,
 #custom-usbguard,
 #custom-yubikey,
 #custom-decrypted,
@@ -118,20 +122,8 @@ window#waybar {
   margin: 0 6px;
 }
 
-#custom-progress-cp {
+#custom-progress {
   border-bottom: 3px solid @purple;
-}
-#custom-progress-mv {
-  border-bottom: 3px solid @orange;
-}
-#custom-progress-rsync {
-  border-bottom: 3px solid @blue;
-}
-#custom-progress-gpg {
-  border-bottom: 3px solid @yellow;
-}
-#custom-progress-tar {
-  border-bottom: 3px solid @yellow;
 }
 
 #custom-infra-status.up {

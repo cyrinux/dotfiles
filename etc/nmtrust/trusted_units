@@ -9,4 +9,3 @@ tarsnap.timer,user:cyril
 tor.service
 vdirsyncer.timer,user:cyril
 checkmail.timer,user:cyril
-waybar-updates.timer,user:cyril
