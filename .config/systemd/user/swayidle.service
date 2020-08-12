@@ -1,0 +1,12 @@
+[Unit]
+Description=Sway idle lock management
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/bin/swayidle-conf
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
