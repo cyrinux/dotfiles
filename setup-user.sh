@@ -196,6 +196,9 @@ echo "======================================="
 echo "Finishing various user configuration..."
 echo "======================================="
 
+echo "Create zsh history dir"
+mkdir ~/history/
+
 echo "Configuring MIME types"
 file --compile --magic-file ~/.magic
 
