@@ -1,5 +1,5 @@
 zstyle ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
-zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
+zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/history/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
 
 function z4h-ssh-configure() {
   z4h_ssh_prelude+=(
@@ -7,7 +7,7 @@ function z4h-ssh-configure() {
   )
 
   local file
-  for file in $ZDOTDIR/.zsh_history.*:$z4h_ssh_host(N); do
+  for file in $ZDOTDIR/history/.zsh_history.*:$z4h_ssh_host(N); do
     (( $+z4h_ssh_send_files[$file] )) && continue
     z4h_ssh_send_files[$file]='"$ZDOTDIR"/'${file:t}
   done
