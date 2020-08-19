@@ -35,13 +35,13 @@ whitespace = red reverse
 
 [core]
 autocrlf = input
-excludesfile = ~/.gitignore
+excludesfile = ~/.config/git/ignore
 untrackedCache = true
 editor = kak
 pager = diff-so-fancy | less -RFXMx4
 
 [commit]
-template = ~/.gitmessage
+template = ~/.config/git/message
 
 [diff]
 tool = kitty
@@ -79,9 +79,9 @@ name = Cyril Levis
 useConfigOnly = true
 
 [include]
-path = ~/.gitconfig.personal
+path = ~/.config/git/home
 
 [includeIf "gitdir:~/library/src/work/"]
-path = ~/.gitconfig.work
+path = ~/.config/git/work
 
 # vim:ft=ini

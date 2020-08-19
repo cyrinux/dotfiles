@@ -109,7 +109,7 @@ set hide_thread_subject = no
 set sidebar_visible = yes
 set sidebar_width = 25
 set sidebar_next_new_wrap = yes
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/? %?S?%S?'
+set sidebar_format = '%D%?F? [%F]?%* %?N?%N/? %?S?%S?'
 set mail_check_stats
 set mail_check_stats_interval = 5
 

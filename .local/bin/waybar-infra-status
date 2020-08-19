@@ -16,5 +16,5 @@ get_status() {
 
 while true; do
     nm-online -q -t 60 && get_status
-    sleep 60
+    sleep 10
 done

@@ -24,39 +24,34 @@ radio_state() {
 }
 
 before_lock() {
-    gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
     playerctl -a pause > /dev/null 2>&1
+    bluetoothctl disconnect > /dev/null 2>&1
+    gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
     reset_kbd
     fusermount -u ~/Vault > /dev/null 2>&1
-    fusermount -u ~/Vault-Share > /dev/null 2>&1
-    physlock -lms
-    bluetoothctl disconnect > /dev/null 2>&1
-}
-
-after_lock() {
-    physlock -L
 }
 
 case "$1" in
+    exit)
+        systemctl --user stop sway-session.target
+        swaymsg exit
+        ;;
     lock)
         before_lock
         swaylock
-        after_lock
         ;;
     before_lock)
         before_lock
-        ;;
-    after_lock)
-        after_lock
         ;;
     suspend)
         before_lock
         stop_vpn
         stop_wwan
-        systemctl -i suspend
-        swaylock-blur
-        after_lock
-        nmcli device wifi rescan
+        pkill kanshi
+        # swaymsg "output * enable"
+        # swaymsg "output * dpms on"
+        systemctl suspend
+        kanshi &
         ;;
     reboot)
         stop_vpn
@@ -69,7 +64,7 @@ case "$1" in
         systemctl -i poweroff
         ;;
     *)
-        echo "Usage: $0 {lock|suspend|reboot|shutdown}"
+        echo "Usage: $0 {exit|lock|suspend|reboot|shutdown}"
         exit 2
         ;;
 esac

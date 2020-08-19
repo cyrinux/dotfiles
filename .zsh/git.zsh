@@ -55,7 +55,7 @@ alias gd!='git difftool -d'
 alias gds!='git difftool -d --cached'
 
 alias gf='git fetch --tags'
-alias gl='git pull --tags -f'
+alias gl='git pull --tags -f --rebase --autostash'
 
 alias glog="git log --graph --pretty='%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)<%an>%Creset' --abbrev-commit"
 alias gloga="git log --graph --pretty='%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
@@ -106,7 +106,7 @@ grf() {
         git remote add "$1" "$fork"
         git fetch "$1"
     else
-        myfork=$(echo "$upstream" | awk -v name="$USER" -F/ '{ print "git@github.com:" name "/" $5 }')
+        myfork=$(echo "$upstream" | awk -v name="$USER_GITHUB" -F/ '{ print "git@github.com:" name "/" $5 }')
 
         git remote remove upstream 2> /dev/null
         git remote remove origin 2> /dev/null

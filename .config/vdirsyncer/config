@@ -1,6 +1,6 @@
 [general]
 # A folder where vdirsyncer can store some metadata about each pair.
-status_path = "~/.vdirsyncer/status/"
+status_path = "~/.local/share/vdirsyncer/status/"
 
 [pair my_contacts]
 a = "my_contacts_local"
@@ -16,9 +16,9 @@ fileext = ".vcf"
 
 [storage my_contacts_remote]
 type = "carddav"
-url.fetch = ["command", "~/bin/vdirsyncer-get-creds", "contacts_url"]
-username.fetch = ["command", "~/bin/vdirsyncer-get-creds", "username"]
-password.fetch = ["command", "~/bin/vdirsyncer-get-creds", "password"]
+url.fetch = ["command", "vdirsyncer-get-creds", "contacts_url"]
+username.fetch = ["command", "vdirsyncer-get-creds", "username"]
+password.fetch = ["command", "vdirsyncer-get-creds", "password"]
 
 
 [pair my_calendars]
@@ -35,6 +35,6 @@ fileext = ".ics"
 
 [storage my_calendars_remote]
 type = "caldav"
-url.fetch = ["command", "~/bin/vdirsyncer-get-creds", "calendars_url"]
-username.fetch = ["command", "~/bin/vdirsyncer-get-creds", "username"]
-password.fetch = ["command", "~/bin/vdirsyncer-get-creds", "password"]
+url.fetch = ["command", "vdirsyncer-get-creds", "calendars_url"]
+username.fetch = ["command", "vdirsyncer-get-creds", "username"]
+password.fetch = ["command", "vdirsyncer-get-creds", "password"]
