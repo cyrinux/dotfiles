@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-nm-online -q -t 300
+nm-online -t 60 -q
 
 accountfile=~/.dotfiles-private/.config/netatmo_account.json
 tokenfile=~/.cache/netatmo_token.json
@@ -31,7 +32,7 @@ if [ $limittime -lt $currenttime ]; then
     atoken=$(jq -r ".access_token" $tokenfile)
 fi
 
-curl -s -d "access_token=${atoken}&device_id=${device_id}" "https://api.netatmo.net/api/getstationsdata" > $datafile
+curl -s -d "access_token=${atoken}&device_id=${device_id}" "https://api.netatmo.net/api/getstationsdata" > $datafile || exit 0
 intemp=$(jq -r ".body.devices[0].dashboard_data.Temperature" $datafile)
 inhumi=$(jq -r ".body.devices[0].dashboard_data.Humidity" $datafile)
 intemptrend=$(jq -r ".body.devices[0].dashboard_data.temp_trend" $datafile)
@@ -41,13 +42,13 @@ extemp=$(jq -r ".body.devices[0].modules[0].dashboard_data.Temperature" $datafil
 exhumi=$(jq -r ".body.devices[0].modules[0].dashboard_data.Humidity" $datafile)
 extemptrend=$(jq -r ".body.devices[0].modules[0].dashboard_data.temp_trend" $datafile)
 
-if [ $(bc <<< "$intemp >  $extemp") -eq 1 ]; then
-    class=high
+if [ $(bc <<< "$intemp > $extemp") -eq 1 ]; then
+    class="high"
 else
-    class=low
+    class="low"
 fi
 
-if [ $(bc <<< "$intemp >  25.0") -eq 1 ]; then
+if [ $(bc <<< "$intemp > 25.0") -eq 1 ]; then
     icon=''
 else
     icon=''

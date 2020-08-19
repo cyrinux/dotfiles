@@ -2,5 +2,5 @@
 Description=Backup list of installed packages
 
 [Service]
-ExecStart=%h/bin/backup-packages
+ExecStart=%h/.local/bin/backup-packages
 

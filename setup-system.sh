@@ -51,7 +51,7 @@ copy() {
 }
 
 is_chroot() {
-    grep rootfs /proc/mounts > /dev/null
+    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
 }
 
 systemctl_enable() {
@@ -97,10 +97,8 @@ copy "etc/systemd/system/reflector.timer"
 copy "etc/systemd/system/system-dotfiles-sync.service"
 copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "usr/local/etc/tarsnapper.conf"
-copy "bin/backitup"
 copy "etc/NetworkManager/dispatcher.d/100vpn"
 copy "etc/NetworkManager/conf.d"
-copy "etc/systemd/system/iwd.service.d/90-networkmanager.conf"
 copy "etc/updatedb.conf"
 copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"

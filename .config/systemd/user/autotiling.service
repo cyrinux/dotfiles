@@ -1,11 +1,11 @@
 [Unit]
-Description=Sway idle lock management
+Description=Switches the layout splith / splitv depending on the currently focused window dimensions
 PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/.local/bin/swayidle-conf
+ExecStart=/usr/bin/autotiling
 Restart=always
 
 [Install]

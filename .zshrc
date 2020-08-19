@@ -6,8 +6,8 @@ zstyle ':z4h:'                                    cd-key                 alt
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
 zstyle ':fzf-tab:*'                               continuous-trigger     tab
 zstyle ':zle:(up|down)-line-or-beginning-search'  leave-cursor           no
-zstyle ':z4h:term-title:ssh'                      preexec                '%* | %n@%m: ${1//\%/%%}'
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
+zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
 
 z4h install romkatv/archive || return
 
@@ -47,7 +47,18 @@ command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
 setopt GLOB_DOTS
 
+[ -z "$EDITOR" ] && export EDITOR='vim'
+[ -z "$VISUAL" ] && export VISUAL='vim'
+
+export GPG_TTY=$TTY
+export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+export DIRENV_LOG_FORMAT=
+export SYSTEMD_LESS=FRXMK
+export FZF_DEFAULT_OPTS="--reverse --multi"
+export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
+
 z4h source -c /usr/share/LS_COLORS/dircolors.sh
+z4h source -c /usr/share/nnn/quitcd/quitcd.bash_zsh
 z4h source -c ~/.zsh/aliases.zsh
 z4h source -c ~/.zsh/pacman.zsh
 z4h source -c ~/.zsh/git.zsh

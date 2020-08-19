@@ -26,10 +26,12 @@ alias centos="sudo docker run --rm -it centos"
 alias trusty="sudo docker run --rm -it ubuntu:trusty"
 alias bionic="sudo docker run --rm -it ubuntu:bionic"
 alias xenial="sudo docker run --rm -it ubuntu:xenial"
+alias focal="sudo docker run --rm -it ubuntu:focal"
 
-alias java10-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jd"
+alias java10-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
+alias javaws="docker run -ti --rm -e DISPLAY=$DISPLAY -e HOSTNAME=$HOSTNAME -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 
 function dockershellhere() {
     dirname=${PWD##*/}

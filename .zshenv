@@ -1,27 +1,5 @@
 #!/usr/bin/env zsh
 
-command -v kak  &> /dev/null && export EDITOR='kak'     || export EDITOR='vim'
-command -v kak  &> /dev/null && export VISUAL='kak'     || export VISUAL='vim'
-command -v meld &> /dev/null && export DIFFPROG='meld'
-command -v kak  &> /dev/null && export MANPAGER='kak-man-pager'
-
-export AUR_PAGER='aurutils-nnn'
-export DIRENV_LOG_FORMAT=
-export FZF_DEFAULT_OPTS='-m --reverse'
-export GPG_TTY=$TTY
-export SYSTEMD_LESS=FRXMK
-
-export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/;r:/run/media/cyril;'
-export NNN_COLORS='4235'
-export NNN_OPTS='Aer'
-export NNN_PLUG='j:jump;r:remove;p:paperwork;c:croc'
-export NNN_TRASH=1
-
-export PASSWORD_STORE_CHARACTER_SET='a-zA-Z0-9~!@#$%^&*()-_=+[]{};:,.<>?'
-export PASSWORD_STORE_GENERATED_LENGTH=40
-
-export GOPATH="$HOME/.go"
-
 if [ -n "${ZSH_VERSION-}" ]; then
     : ${ZDOTDIR:=~}
     setopt no_global_rcs
@@ -54,5 +32,3 @@ fi
 . "$Z4H"/z4h.zsh || return
 
 setopt rcs
-
-# unset all_proxy ALL_PROXY

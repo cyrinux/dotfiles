@@ -3,4 +3,4 @@ Description=Run mbsync and notmuch then auto add cal events
 
 [Service]
 Type=oneshot
-ExecStart=%h/bin/checkmail
+ExecStart=%h/.local/bin/checkmail

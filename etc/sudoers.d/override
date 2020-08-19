@@ -1,6 +1,5 @@
 Defaults timestamp_timeout=10
 
-%wheel ALL=(ALL) ALL
 %wheel ALL=(ALL) NOPASSWD:SETENV: \
     /usr/bin/systemctl stop pcscd.service, \
     /usr/bin/pacman -Sy, \
@@ -8,6 +7,7 @@ Defaults timestamp_timeout=10
     /usr/bin/arch-nspawn, \
     /usr/bin/makechrootpkg, \
     /usr/bin/mkarchroot, \
+    /usr/bin/extra-x86_64-build, \
     /usr/bin/paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local, \
     /usr/bin/paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local, \
     /usr/bin/tlp, \

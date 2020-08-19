@@ -14,8 +14,6 @@ readonly resolution="3840x2160"
 readonly wait_sec="2"
 
 main() {
-    # check_args "$@"
-
     readonly n="$1"
     readonly download_dir="${2:-$def_download_dir}"
 
@@ -32,30 +30,14 @@ usage() {
     exit
 }
 
-check_args() {
-    if [[ $# -ne 0 && $# -ne 1 ]]; then
-        printf "Wrong number of arguments.\n"
-        usage
-    fi
-
-    if [[ ! "$1" =~ ^[0-9]+$ ]]; then
-        printf "First argument must be a number.\n"
-        usage
-    fi
-
-    if [[ -n "$2" && ! -d "$2" ]]; then
-        printf "'%s' is not a directory." "$2"
-        usage
-    fi
-}
-
 download() {
     for i in $(seq 1 "$n"); do
         log "Downloading wallpaper ${i}/${n}..."
 
         local rant="$(date +%s)"
         wget -O "${download_dir}/${rant}.jpg" -q "https://source.unsplash.com/${resolution}"
-
+        convert "${download_dir}/${rant}.jpg"  "${download_dir}/${rant}.png"
+        rm "${download_dir}/${rant}.jpg"
         sleep "$wait_sec"
     done
 }

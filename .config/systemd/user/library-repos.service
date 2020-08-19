@@ -3,7 +3,7 @@ Description=Update library repositories
 
 [Service]
 Type=oneshot
-ExecStart=%h/bin/library-repos
+ExecStart=%h/.local/bin/library-repos
 
 [Install]
 WantedBy=multi-user.target

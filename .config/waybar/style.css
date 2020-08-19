@@ -92,6 +92,7 @@ window#waybar {
   border-bottom: 3px solid @red;
 }
 
+#custom-scratchpad,
 #mode,
 #pulseaudio,
 #custom-progress,

@@ -1,10 +1,10 @@
 [Unit]
-Description=Make inactive windows in sway semi-transparent
+Description=Ambient Light Sensor Emulator for Wluma
+Before=wluma.service
 PartOf=graphical-session.target
-After=graphical-session.target
 
 [Service]
-ExecStart=/usr/share/sway/scripts/inactive-windows-transparency.py -o 0.7
+ExecStart=/usr/bin/wluma-als-emulator -t time
 ExecStop=/bin/kill -2 $MAINPID
 Restart=on-failure
 RestartSec=1
