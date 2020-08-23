@@ -20,6 +20,7 @@ fi
 atoken=$(jq -r ".access_token" $tokenfile)
 rtoken=$(jq -r ".refresh_token" $tokenfile)
 expiration=$(jq -r ".expires_in" $tokenfile)
+[ -z $expiration ] && rm $tokenfile
 
 filedate=$(date "+%Y-%m-%d %H:%M:%S" -r $tokenfile)
 filedate=$(date -d "$filedate" +%s)
@@ -42,7 +43,7 @@ extemp=$(jq -r ".body.devices[0].modules[0].dashboard_data.Temperature" $datafil
 exhumi=$(jq -r ".body.devices[0].modules[0].dashboard_data.Humidity" $datafile)
 extemptrend=$(jq -r ".body.devices[0].modules[0].dashboard_data.temp_trend" $datafile)
 
-if [ $(bc <<< "$intemp > $extemp") -eq 1 ]; then
+if [ $(bc <<< "$extemp > 26.0") -eq 1 ] && [ $(bc <<< "$intemp > $extemp") -eq 1 ]; then
     class="high"
 else
     class="low"

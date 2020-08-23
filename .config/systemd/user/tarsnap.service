@@ -3,11 +3,7 @@ Description=Tarsnap paperwork backup
 
 [Service]
 Nice=19
-Environment=SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 IOSchedulingClass=2
 IOSchedulingPriority=7
 Type=oneshot
-ExecStart=%h/.local/bin/backitup -l %h/.cache/tarsnap-backup -b %h/.local/bin/tarsnap-dematerialisation
-
-[Install]
-WantedBy=multi-user.target
+ExecStart=/bin/bash -c "%h/.local/bin/backitup -l %h/.cache/tarsnap-backup -b %h/.local/bin/tarsnap-dematerialisation"

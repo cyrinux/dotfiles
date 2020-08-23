@@ -103,6 +103,7 @@ window#waybar {
 #custom-mail,
 #network,
 #custom-infra-status,
+#custom-prod-status,
 #temperature,
 #cpu,
 #memory,
@@ -131,5 +132,8 @@ window#waybar {
   border-bottom: 3px solid @green;
 }
 #custom-infra-status.down {
+  border-bottom: 3px solid @red;
+}
+#custom-prod-status.warning {
   border-bottom: 3px solid @red;
 }

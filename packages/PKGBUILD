@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.2.15
+pkgver=2.2.18
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -72,7 +72,6 @@ depends=(
     'audit'
     'aurpublish'
     'aurutils-git'
-    'avahi'
     'awless'
     'azure-cli'
     'bash-completion'
@@ -97,7 +96,6 @@ depends=(
     'ccid'
     'cfssl'
     'checkbashisms'
-    'cherrytree-bin'
     'chromium'
     'chromium-widevine'
     'clang'
@@ -254,7 +252,7 @@ depends=(
     'mpv-mpris'
     'msmtp'
     'mtr'
-    'mullvad-vpn-cli'
+    'mullvad-vpn'
     'mupdf-gl'
     'mupdf-tools'
     'mutt-ics'
@@ -309,7 +307,6 @@ depends=(
     'perl-file-mimeinfo'
     'physlock'
     'pigz'
-    'pinentry-dmenu'
     'pixz'
     'pkgdiff'
     'playerctl'
@@ -463,7 +460,6 @@ depends=(
     'tmux'
     'tmux-cssh'
     'torsocks'
-    'tpm2-tss-engine'
     'traceroute'
     'transmission-gtk'
     'tree'
@@ -607,10 +603,11 @@ depends=(
     'systembus-notify'
     'thermald'
     'tor'
-    'tpm2-abrmd'
-    'tpm2-pkcs11'
-    'tpm2-tools'
     'ttf-weather-icons'
     'waybar'
     'wayvnc'
+    'autotiling'
+    'bolt'
+    'duolingo-desktop-git'
+    'staticcheck'
 )

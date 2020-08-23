@@ -1,5 +1,10 @@
+cracklib
+haskell-bitarray
+haskell-cmark-gfm
 js60
+mosh
 otf-fira-code
+pam-gnupg-git
 ttf-consolas-with-powerline
 universal-ctags-git
 zenity

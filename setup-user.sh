@@ -83,7 +83,6 @@ link ".config/pylint"
 link ".config/networkmanager-dmenu"
 link ".config/nnn/plugins"
 link ".config/pacman"
-link ".config/pulse/daemon.conf"
 link ".config/qalculate/qalc.cfg"
 link ".config/xkb"
 link ".config/qutebrowser"
@@ -143,7 +142,6 @@ link ".config/youtube-dl"
 link ".config/zathura"
 link ".curlrc"
 link ".config/git/message"
-link ".gnupg/pinentry-dmenu.conf"
 link ".ignore"
 link ".local/share/applications"
 link ".local/share/fonts/taskbar.ttf"
@@ -184,7 +182,7 @@ else
     systemctl_enable_start "solaar.service"
     systemctl_enable_start "wluma.service"
     systemctl_enable_start "autotiling.service"
-    systemctl_enable_start "yubikey-touch-detector.service"
+    systemctl_enable_start "yubikey-touch-detector.socket"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "
@@ -212,9 +210,9 @@ if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
     gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
 fi
 
-find "$GNUPGHOME" -type f -path "*#*" -delete
-find "$GNUPGHOME" -type f -not -path "*#*" -exec chmod 600 {} \;
-find "$GNUPGHOME" -type d -exec chmod 700 {} \;
+find "$HOME/.gnupg" -type f -path "*#*" -delete
+find "$HOME/.gnupg" -type f -not -path "*#*" -exec chmod 600 {} \;
+find "$HOME/.gnupg" -type d -exec chmod 700 {} \;
 
 if [[ -e "$HOME/.password-store" ]]; then
     echo "Configuring automatic git push for pass"

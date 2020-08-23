@@ -17,5 +17,13 @@ alias kgs!='kgs --all-namespaces'
 alias kl='kubectl logs -f'
 alias khpa='kg! hpa'
 alias klogs='stern'
-drain_node() {                                                                                                                                                                                                                             kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
+drain_node() {
+    kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
 }
+kout() {
+    while IFS= read -rd: config; do
+        [ -f "$config" ] || continue
+        sed -i -E '/^\s*(access-token|expires-in|expires-on|refresh-token)/d' "$config"
+    done <<< "${KUBECONFIG:-$HOME/.kube/config}:"
+}
+

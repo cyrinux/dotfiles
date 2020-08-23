@@ -40,18 +40,15 @@ case "$1" in
         before_lock
         swaylock
         ;;
-    before_lock)
-        before_lock
-        ;;
     suspend)
         before_lock
         stop_vpn
         stop_wwan
         pkill kanshi
-        # swaymsg "output * enable"
-        # swaymsg "output * dpms on"
         systemctl suspend
         kanshi &
+        sleep 5
+        systemctl --user restart gammastep.service
         ;;
     reboot)
         stop_vpn

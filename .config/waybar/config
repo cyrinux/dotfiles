@@ -11,6 +11,7 @@
         "custom/fwupd",
         "custom/progress",
         "custom/usbguard",
+        "custom/prod-status",
         "custom/infra-status",
         "custom/yubikey",
         "custom/decrypted",
@@ -110,8 +111,14 @@
         "interval": "once",
         "on-click": "waybar-dnd toggle"
     },
+    "custom/prod-status": {
+        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus",
+        "return-type": "json",
+        "interval": 30
+    },
     "custom/infra-status": {
         "exec": "waybar-infra-status",
+        "interval": 60,
         "return-type": "json",
         "signal": 9,
         "on-click-right": "pkill -RTMIN+9 -x waybar",
