@@ -167,9 +167,6 @@ export MY_GPG_KEY_ID="0x2653E033C3C07A2C"
 curl -s https://levis.name/pgp_keys.asc | pacman-key -a -
 pacman-key --lsign-key "$MY_GPG_KEY_ID"
 
-# echo -e "\n### Adding blackarch repo"
-# curl -sL https://blackarch.org/strap.sh | bash
-
 echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 
@@ -180,10 +177,10 @@ if [[ "${hostname}" == "work-"* ]]; then
     cat >> /etc/pacman.conf << EOF
 [cyrinux-aur-local]
 SigLevel = Required
-Server = file:///mnt/var/cache/pacman/cyrinux-aur/
+Server = file:///mnt/var/cache/pacman/cyrinux-aur-local/
 
-[maximbaz]
-Server = https://pkgbuild.com/~maximbaz/repo/
+[cyrinux-aur]
+Server = https://aur.levis.ws/
 SigLevel = Required
 Usage = Install Sync
 
@@ -194,14 +191,9 @@ EOF
 
 else
     cat >> /etc/pacman.conf << EOF
-[cyrinux-aur-local]
+[cyrinux-aur]
 SigLevel = Required
-Server = http://aur.levis.ws/
-
-[maximbaz]
-Server = https://pkgbuild.com/~maximbaz/repo/
-SigLevel = Required
-Usage = Install Sync
+Server = https://aur.levis.ws/
 
 [options]
 CacheDir = /var/cache/pacman/pkg
