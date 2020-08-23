@@ -66,6 +66,7 @@ get_choice() {
 }
 
 echo -e "\n### Setting up clock"
+pacman -Sy --noconfirm ntp
 timedatectl set-ntp true
 ntpdate fr.pool.ntp.org
 timedatectl set-timezone Europe/Paris
