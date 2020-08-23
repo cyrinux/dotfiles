@@ -16,10 +16,10 @@
 
 # Define the file that will hold the timestamp of the last successful backup.
 # It is recommended that this file be *inside* the directory to be backed up.
-LASTRUN="$HOME/.restic-lastrun"
+LASTRUN="$HOME/.cache/restic.lastrun"
 
 # Define the backup command.
-BACKUP="$HOME/bin/restic-backup"
+BACKUP="$HOME/.local/bin/restic-backup"
 
 # Define the command to be executed if the file which holds the time of the
 # previous backup does not exist. The default behaviour here is to simply
@@ -87,7 +87,7 @@ on_battery() {
     ac_status="/sys/class/power_supply/AC/online"
     local result=false # Assume negative unless proven otherwise
     if [ -e "$ac_status" ]; then
-        if [ "$(cat $ac_status)" = "0" ] ;then
+        if [ "$(cat $ac_status)" = "0" ]; then
             result=true
         fi
     fi
@@ -176,7 +176,7 @@ if [ -s "$LASTRUN" ]; then
     # between the stored timestamp and the current time is greater than the
     # defined period.
     else
-        diff=$(( $(date "$timeformat") - timestamp))
+        diff=$(( $(date "$timeformat") - timestamp ))
         if [ "$diff" -gt "$PERIOD" ]; then
             backup
         else

@@ -2,19 +2,24 @@
 
 zstyle ':z4h:'                                    auto-update            no
 zstyle ':z4h:*'                                   channel                stable
-zstyle ':z4h:'                                    cd-key                 alt
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
 zstyle ':fzf-tab:*'                               continuous-trigger     tab
-zstyle ':zle:(up|down)-line-or-beginning-search'  leave-cursor           no
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
+zstyle ':zle:up-line-or-beginning-search'         leave-cursor           true
+zstyle ':zle:down-line-or-beginning-search'       leave-cursor           true
+
+###
 
 z4h install romkatv/archive || return
-
 z4h init || return
 
+###
+
 fpath+=($Z4H/romkatv/archive)
-autoload -Uz archive lsarchive unarchive edit-command-line
+autoload -Uz archive lsarchive unarchive edit-command-line hist
+
+zle -N edit-command-line
 
 my-ctrl-z() {
     if [[ $#BUFFER -eq 0 ]]; then
@@ -26,7 +31,6 @@ my-ctrl-z() {
     fi
 }
 zle -N my-ctrl-z
-bindkey '^Z' my-ctrl-z
 
 toggle-sudo() {
     [[ -z "$BUFFER" ]] && zle up-history -w
@@ -38,48 +42,51 @@ toggle-sudo() {
     fi
 }
 zle -N toggle-sudo
-bindkey '^[s' toggle-sudo
 
-zle -N edit-command-line
-bindkey '^V^V' edit-command-line
+###
 
-command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
+z4h bindkey z4h-backward-kill-word  Ctrl+Backspace
+z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
+z4h bindkey z4h-kill-zword          Ctrl+Alt+Delete
+
+z4h bindkey z4h-forward-zword       Ctrl+Alt+Right
+z4h bindkey z4h-backward-zword      Ctrl+Alt+Left
+
+z4h bindkey z4h-cd-back             Alt+H
+z4h bindkey z4h-cd-forward          Alt+L
+z4h bindkey z4h-cd-up               Alt+K
+z4h bindkey z4h-cd-down             Alt+J
+
+z4h bindkey toggle-sudo             Alt+S
+z4h bindkey my-ctrl-z               Alt+Z
+
+z4h bindkey edit-command-line       Alt+E
+
+###
 
 setopt GLOB_DOTS
+
+###
 
 [ -z "$EDITOR" ] && export EDITOR='vim'
 [ -z "$VISUAL" ] && export VISUAL='vim'
 
-export GPG_TTY=$TTY
-export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
 export DIRENV_LOG_FORMAT=
 export SYSTEMD_LESS=FRXMK
 export FZF_DEFAULT_OPTS="--reverse --multi"
 export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
+export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/;r:/run/media/cyril;'
+export NNN_PLUG='j:jump;r:remove;p:paperwork;c:croc;'
 
-z4h source -c /usr/share/LS_COLORS/dircolors.sh
-z4h source -c /usr/share/nnn/quitcd/quitcd.bash_zsh
-z4h source -c ~/.zsh/aliases.zsh
-z4h source -c ~/.zsh/pacman.zsh
-z4h source -c ~/.zsh/git.zsh
-z4h source -c ~/.zsh/ssh.zsh
-z4h source -c ~/.zsh/kubectl.zsh
-z4h source -c ~/.zsh/pentest.zsh
-z4h source -c ~/.zsh/docker.zsh
-z4h source -c ~/.zshrc-private/personal.zsh
-z4h source -c ~/.zshrc-private/work.zsh
-z4h source -c ~/.zsh/server.zsh # its on remote servers only
-z4h source -c ~/.zsh/completion.zsh
+###
 
-# default mapping are unusable in azerty layout
-bindkey '^[r' redo # alt+r
-bindkey '^[z' undo # alt+z
-bindkey '^H'      z4h-backward-kill-word
-bindkey '^[[1;7C' z4h-forward-zword
-bindkey '^[[1;7D' z4h-backward-zword
-bindkey '^[[3;7~' z4h-kill-zword
-bindkey '^[^H'    z4h-backward-kill-zword
+command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
-command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
+z4h source -c -- /etc/bash_completion.d/azure-cli
+z4h source -c -- /usr/share/LS_COLORS/dircolors.sh
+z4h source -c -- /usr/share/nnn/quitcd/quitcd.bash_zsh
+z4h source -c -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
+z4h source -c -- ~/.zshrc-private/{personal,work}.zsh
+z4h compile   -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
 
-return 0
+# command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null

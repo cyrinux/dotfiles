@@ -4,7 +4,6 @@ Description=Check Backup of my laptop
 [Service]
 Type=simple
 Nice=19
-Environment=SSH_AUTH_SOCK=/run/user/1000/gnupg/S.gpg-agent.ssh
 IOSchedulingClass=2
 IOSchedulingPriority=7
 ExecStart=%h/.local/bin/restic-check

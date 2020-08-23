@@ -20,7 +20,7 @@ refresh: ## Refresh the backup lists
 .PHONY: publish
 publish: ## Publish the meta-package in local the repo
 	gpg --detach-sign --yes *.pkg.tar.zst
-	repo-add -s /var/cache/pacman/cyrinux-aur/cyrinux-aur-local.db.tar *.pkg.tar.zst
+	repo-add -s /var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar *.pkg.tar.zst
 	cp *.pkg.tar* /var/cache/pacman/cyrinux-aur-local/
 
 .PHONY: clean

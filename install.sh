@@ -17,7 +17,7 @@
 #
 # Run installation:
 #
-# - Connect to wifi via: `# iwctl station wlan0 connect WIFI-NETWORK or wifi-menu`
+# - Connect to wifi via: `# iwctl station wlan0 connect WIFI-NETWORK`
 #
 # bash <(curl -sL https://git.io/cyrinux-install)
 
