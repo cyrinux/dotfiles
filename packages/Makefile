@@ -29,7 +29,7 @@ clean: ## Cleanup
 
 .PHONY: sync
 push: ## Push online the local repo
-	rsyncrepo
+	systemctl start backup-repo@pkgbuild
 
 .PHONY: help
 help: ## This help

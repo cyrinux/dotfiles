@@ -333,5 +333,6 @@ include ~/.config/sway/`hostgroup`.conf
 # Load systemd integration
 include /etc/sway/config.d/*
 exec systemctl --user start sway-session.target
+exec chkboot-desktopalert
 
 # vi:ft=i3
