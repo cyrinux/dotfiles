@@ -1,0 +1,84 @@
+[alias]
+lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
+bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
+pushall = !git remote | xargs -L1 git push --all
+branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+createmr = !git push -o merge_request.create
+fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+
+[branch]
+autosetuprebase = always
+
+[color "branch"]
+current = green reverse
+local = green
+remote = yellow
+
+[color "status"]
+added = green
+changed = yellow
+untracked = blue
+
+[color "diff-highlight"]
+oldNormal = red bold
+oldHighlight = red bold 52
+newNormal = green bold
+newHighlight = green bold 22
+
+[color "diff"]
+meta = 11
+frag = magenta bold
+commit = yellow bold
+old = red bold
+new = green bold
+whitespace = red reverse
+
+[core]
+autocrlf = input
+excludesfile = ~/.config/git/ignore
+untrackedCache = true
+editor = kak
+pager = diff-so-fancy | less -RFXMx4
+
+[commit]
+template = ~/.config/git/message
+
+[diff]
+tool = kitty
+
+[difftool]
+prompt = false
+trustExitCode = true
+
+[difftool "kitty"]
+cmd = kitty +kitten diff $LOCAL $REMOTE
+
+[merge]
+tool = meld
+
+[mergetool]
+keepBackup = false
+prompt = false
+
+[diff "gpg"]
+binary = true
+textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+
+[push]
+default = current
+
+[rebase]
+autostash = true
+autosquash = true
+
+[mergetool "meld"]
+cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+
+[user]
+name = Cyril Levis
+useConfigOnly = true
+
+[commit]
+gpgsign = true
+
+# vim:ft=ini

@@ -114,9 +114,9 @@ bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo 
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
 parted --script "${device}" -- mklabel ${bios} \
-    mkpart ${part} fat32 1MiB 101MiB \
+    mkpart ${part} fat32 1MiB 550MiB \
     set 1 boot on \
-    mkpart primary 101MiB 100%
+    mkpart primary 550MiB 100%
 
 part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_root="$(ls ${device}* | grep -E "^${device}p?2$")"

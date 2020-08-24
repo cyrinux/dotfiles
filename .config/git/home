@@ -1,9 +1,9 @@
-[commit]
-gpgsign = true
+[include]
+    path = ~/.config/git/common
 
 [user]
-signingkey = 0x8538D68543979A20
-email = cyril@levis.name
+    signingkey = 0x8538D68543979A20
+    name = "Cyril Levis"
+    email = "cyril@levis.name"
 
 # vim:ft=ini
-
