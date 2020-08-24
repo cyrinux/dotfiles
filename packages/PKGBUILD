@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.2.26
+pkgver=2.2.29
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -286,7 +286,6 @@ depends=(
     'p7zip'
     'pacman-contrib'
     'pamixer'
-    'pam-u2f'
     'paperkey'
     'paperwork'
     'papirus-icon-theme'
@@ -585,7 +584,7 @@ depends=(
     'gst-plugins-good'
     'kakoune'
     'mellowplayer'
-    'pam_u2f-git'
+    'pam-u2f'
     'ps_mem'
     'systembus-notify'
     'thermald'
@@ -597,4 +596,6 @@ depends=(
     'bolt'
     'duolingo-desktop-git'
     'staticcheck'
+    'chkboot'
+    'edk2-ovmf'
 )

@@ -252,9 +252,15 @@ cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
 EOF
 chmod +x /mnt/boot/grub/update.sh
 
+echo -e "\n### Setting up Secure Boot for GRUB with custom keys"
+echo MB | arch-chroot /mnt cryptboot-efikeys create
+arch-chroot /mnt cryptboot-efikeys enroll
+arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
+arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/fwupdx64.efi
+
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video audit plugdev; do
+for group in wheel network video plugdev; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
@@ -265,12 +271,6 @@ arch-chroot /mnt passwd -dl root
 
 echo -e "\n### Settings permissions on the custom repo"
 arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local/
-
-echo -e "\n### Setting up Secure Boot for GRUB with custom keys"
-echo MB | arch-chroot /mnt cryptboot-efikeys create
-arch-chroot /mnt cryptboot-efikeys enroll
-arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
-arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/fwupdx64.efi
 
 echo -e "\n### Cloning dotfiles"
 arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'

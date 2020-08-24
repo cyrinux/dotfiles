@@ -1,5 +1,6 @@
 blackarch-keyring
 chkboot
+edk2-ovmf
 cracklib
 edk2-ovmf
 haskell-bitarray
