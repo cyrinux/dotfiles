@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.2.29
+pkgver=2.2.30
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -69,7 +69,6 @@ depends=(
     'aspell-en'
     'aspell-fr'
     'atool'
-    'audit'
     'aurpublish'
     'aurutils-git'
     'awless'
@@ -598,4 +597,5 @@ depends=(
     'staticcheck'
     'chkboot'
     'edk2-ovmf'
+    'secure-boot'
 )

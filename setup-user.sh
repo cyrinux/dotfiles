@@ -207,7 +207,7 @@ file --compile --magic-file ~/.magic
 if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
     echo "Importing my public PGP key"
     curl -s https://levis.name/pgp_keys.asc | gpg --import
-    gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
+    # gpg --trusted-key "$MY_GPG_KEY_ID" > /dev/null
 fi
 
 find "$HOME/.gnupg" -type f -path "*#*" -delete

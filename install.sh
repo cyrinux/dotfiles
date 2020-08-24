@@ -73,7 +73,7 @@ timedatectl set-timezone Europe/Paris
 hwclock --systohc --utc
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git reflector terminus-font dialog
+pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget
 
 echo -e "\n### HiDPI screens"
 noyes=("Yes" "The font is too small" "No" "The font size is just fine")
@@ -265,8 +265,8 @@ for group in wheel network video plugdev; do
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
 
+echo "$user:$password" | chpasswd --root /mnt || true
 arch-chroot /mnt chsh -s /usr/bin/zsh
-echo "$user:$password" | chpasswd --root /mnt
 arch-chroot /mnt passwd -dl root
 
 echo -e "\n### Settings permissions on the custom repo"
