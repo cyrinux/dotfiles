@@ -1,8 +1,6 @@
 blackarch-keyring
-chkboot
-edk2-ovmf
 cracklib
-edk2-ovmf
+edk2-shell
 haskell-bitarray
 haskell-cmark-gfm
 js60

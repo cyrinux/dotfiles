@@ -102,8 +102,8 @@ copy "etc/NetworkManager/conf.d"
 copy "etc/updatedb.conf"
 copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"
-copy "etc/audit/auditd.conf"
-copy "etc/audit/audit.rules"
+# copy "etc/audit/auditd.conf"
+# copy "etc/audit/audit.rules"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/tlp.conf" 644
 copy "etc/nmtrust/trusted_units" 644
@@ -156,7 +156,7 @@ else
     systemctl_enable_start "ufw.service"
     systemctl_enable_start "snapper-cleanup.timer"
     systemctl_enable_start "system-dotfiles-sync.timer"
-    systemctl_enable_start "auditd.service"
+    # systemctl_enable_start "auditd.service"
     systemctl_enable_start "vnstat.service"
     systemctl_enable_start "usbguard.service"
     systemctl_enable_start "usbguard-dbus.service"
