@@ -114,19 +114,19 @@ bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo 
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
 parted --script "${device}" -- mklabel ${bios} \
-    mkpart ${part} fat32 1MiB 550MiB \
-    set 1 boot on \
-    mkpart primary 550MiB 100%
+    mkpart primary 0% -551MiB \
+    mkpart ${part} fat32 -551MiB 100% \
+    set 2 boot on
 
-part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
-part_root="$(ls ${device}* | grep -E "^${device}p?2$")"
+part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
+part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
 
 echo -e "\n### Formatting partitions"
 wipefs "${part_boot}"
 wipefs "${part_root}"
 
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
-echo -n ${grubpw} | cryptsetup luksFormat --type luks1 "${part_root}"
+echo -n ${grubpw} | cryptsetup luksFormat --type luks2 --label=luks "${part_root}"
 echo -n ${grubpw} | cryptsetup luksOpen "${part_root}" luks
 mkfs.btrfs -L btrfs /dev/mapper/luks
 
@@ -145,8 +145,8 @@ btrfs subvolume create /mnt/snapshots
 umount /mnt
 
 mount -o noatime,nodiratime,compress=zstd,subvol=root /dev/mapper/luks /mnt
-mkdir -p /mnt/{mnt/btrfs-root,boot/efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild,docker}},.snapshots}
-mount "${part_boot}" /mnt/boot/efi
+mkdir -p /mnt/{mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild,docker}},.snapshots}
+mount "${part_boot}" /mnt/efi
 mount -o noatime,nodiratime,compress=zstd,subvol=/ /dev/mapper/luks /mnt/mnt/btrfs-root
 mount -o noatime,nodiratime,compress=zstd,subvol=home /dev/mapper/luks /mnt/home
 mount -o noatime,nodiratime,compress=zstd,subvol=pkgs /dev/mapper/luks /mnt/var/cache/pacman
@@ -156,11 +156,6 @@ mount -o noatime,nodiratime,compress=zstd,subvol=docker /dev/mapper/luks /mnt/va
 mount -o noatime,nodiratime,compress=zstd,subvol=logs /dev/mapper/luks /mnt/var/log
 mount -o noatime,nodiratime,compress=zstd,subvol=temp /dev/mapper/luks /mnt/var/tmp
 mount -o noatime,nodiratime,compress=zstd,subvol=snapshots /dev/mapper/luks /mnt/.snapshots
-
-echo -e "\n### Setting up an encrypted key for booting"
-dd bs=512 count=4 if=/dev/urandom of=/mnt/crypto_keyfile.bin
-chmod 000 /mnt/crypto_keyfile.bin
-echo -n "${grubpw}" | cryptsetup luksAddKey "${part_root}" /mnt/crypto_keyfile.bin
 
 echo -e "\n### Importing my public PGP key"
 export MY_GPG_KEY_ID="0x2653E033C3C07A2C"
@@ -177,7 +172,7 @@ if [[ "${hostname}" == "work-"* ]]; then
     cat >> /etc/pacman.conf << EOF
 [cyrinux-aur-local]
 SigLevel = Required
-Server = file:///mnt/var/cache/pacman/cyrinux-aur-local/
+Server = file:///var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
 Server = https://aur.levis.ws/
@@ -186,9 +181,8 @@ Usage = Install Sync
 
 [options]
 CacheDir = /var/cache/pacman/pkg
-CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
+CacheDir = /var/cache/pacman/cyrinux-aur-local
 EOF
-
 else
     cat >> /etc/pacman.conf << EOF
 [cyrinux-aur]
@@ -198,7 +192,6 @@ Server = https://aur.levis.ws/
 [options]
 CacheDir = /var/cache/pacman/pkg
 EOF
-
 fi
 
 echo -e "\n### Installing packages"
@@ -206,9 +199,10 @@ pacstrap -i /mnt cyrinux
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
+echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
-genfstab -U /mnt >> /mnt/etc/fstab
+genfstab -L /mnt >> /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
@@ -217,8 +211,8 @@ arch-chroot /mnt locale-gen
 cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=()
-FILES=(/crypto_keyfile.bin)
-HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard)
+FILES=()
+HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
 COMPRESSION="lz4"
 EOF
 arch-chroot /mnt mkinitcpio -p linux-hardened
@@ -228,35 +222,9 @@ root ALL=(ALL) ALL
 @includedir /etc/sudoers.d
 EOF
 
-echo -e "\n### Installing GRUB"
-chmod 600 /mnt/boot/initramfs-linux*
-cat << EOF > /mnt/etc/default/grub
-GRUB_DEFAULT=0
-GRUB_TIMEOUT=5
-GRUB_DISTRIBUTOR="Arch"
-GRUB_CMDLINE_LINUX_DEFAULT="apparmor=1 security=apparmor quiet loglevel=0 vga=current udev.log_priority=0 vt.global_cursor_default=0 consoleblank=60 mem_sleep_default=deep cgroup_enable=memory mitigations=off"
-GRUB_CMDLINE_LINUX="cryptdevice=${part_root}:luks:allow-discards"
-GRUB_PRELOAD_MODULES="part_gpt part_msdos"
-GRUB_ENABLE_CRYPTODISK=y
-GRUB_TIMEOUT_STYLE=menu
-GRUB_TERMINAL_INPUT=console
-GRUB_GFXMODE=1280x1024x32,1024x768x32,auto
-GRUB_DISABLE_RECOVERY=true
-EOF
-arch-chroot /mnt grub-install "${device}"
-arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
-cat << EOF > /mnt/boot/grub/update.sh
-#!/bin/sh
-grub-install ${device}
-cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
-EOF
-chmod +x /mnt/boot/grub/update.sh
-
 echo -e "\n### Setting up Secure Boot for GRUB with custom keys"
-echo MB | arch-chroot /mnt cryptboot-efikeys create
-arch-chroot /mnt cryptboot-efikeys enroll
-arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/grubx64.efi
-arch-chroot /mnt cryptboot-efikeys sign /boot/efi/EFI/arch/fwupdx64.efi
+echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
+arch-chroot /mnt arch-secure-boot initial-setup
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
@@ -265,8 +233,8 @@ for group in wheel network video plugdev; do
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
 
-echo "$user:$password" | chpasswd --root /mnt || true
 arch-chroot /mnt chsh -s /usr/bin/zsh
+echo "$user:$password" | arch-chroot /mnt chpasswd
 arch-chroot /mnt passwd -dl root
 
 echo -e "\n### Settings permissions on the custom repo"
@@ -278,6 +246,7 @@ arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com
 echo -e "\n### Running initial setup"
 arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
 arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
+arch-chroot /mnt sudo -u $user z4h update
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 umount -R /mnt
