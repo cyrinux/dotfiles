@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.2.30
+pkgver=2.3.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -104,7 +104,6 @@ depends=(
     'cppunit'
     'crda'
     'croc'
-    'cryptboot'
     'cups-pdf'
     'dangerzone'
     'dateutils'
@@ -127,7 +126,6 @@ depends=(
     'drawio-desktop'
     'drm_info-git'
     'editorconfig-core-c'
-    'efibootmgr'
     'enscript'
     'epson-inkjet-printer-escpr'
     'eslint'
@@ -167,7 +165,6 @@ depends=(
     'graphviz'
     'grim'
     'gron-bin'
-    'grub'
     'gsimplecal'
     'gst-libav'
     'gtk-theme-arc-gruvbox-git'
@@ -408,7 +405,6 @@ depends=(
     'slurp'
     'smbnetfs'
     'snap-pac'
-    'snap-pac-grub'
     'snapper-gui-git'
     'socat'
     'solaar'
@@ -597,5 +593,5 @@ depends=(
     'staticcheck'
     'chkboot'
     'edk2-ovmf'
-    'secure-boot'
+    'arch-secure-boot'
 )

@@ -1,6 +1,6 @@
 blackarch-keyring
 cracklib
-edk2-shell
+cryptboot
 haskell-bitarray
 haskell-cmark-gfm
 js60
@@ -13,6 +13,7 @@ python-ajpy
 python-pycrtsh
 python-rofi
 python-vulners
+spice-guest-tools-windows
 trufflehog
 ttf-consolas-with-powerline
 universal-ctags-git
