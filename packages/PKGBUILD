@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.3.0
+pkgver=2.3.1
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -225,11 +225,9 @@ depends=(
     'libvdpau-va-gl'
     'libzip'
     'light'
-    'linux'
     'linux-firmware'
     'linux-hardened'
     'linux-hardened-headers'
-    'linux-headers'
     'lm_sensors'
     'lscolors-git'
     'lsof'
