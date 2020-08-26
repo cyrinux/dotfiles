@@ -122,9 +122,9 @@ bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo 
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
 device_id=${device##/dev/}
-optimal_io_size=$(cat /sys/block/${device_id}/queue/optimal_io_size)
-physical_block_size=$(cat /sys/block/${device_id}/queue/physical_block_size)
-alignment_offset=$(cat /sys/block/${device_id}/alignment_offset)
+optimal_io_size=$(cat /sys/class/block/${device_id}/queue/optimal_io_size)
+physical_block_size=$(cat /sys/class/block/${device_id}/queue/physical_block_size)
+alignment_offset=$(cat /sys/class/block/${device_id}/alignment_offset)
 start_sector=$(bc <<< "($optimal_io_size + $alignment_offset) / $physical_block_size")
 
 parted --script "${device}" -- mklabel ${bios} \
