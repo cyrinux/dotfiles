@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # Arch Linux installation
+# https://github.com/cyrinux/dotfiles
+# https://github.com/maximbaz/dotfiles
 #
 # Bootable USB:
 # - [Download](https://archlinux.org/download/) ISO and GPG files
@@ -255,7 +257,7 @@ EOF
 echo -e "\n### Setting up Secure Boot with custom keys"
 echo YKFDE_CHALLENGE_PASSWORD_NEEDED="1" >> /mnt/etc/ykfde.conf
 echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
-arch-chroot /mnt arch-secure-boot initial-setup
+arch-chroot /mnt arch-secure-boot initial-setup || true
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
