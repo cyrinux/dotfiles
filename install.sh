@@ -136,12 +136,10 @@ wipefs "${part_root}"
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
-    luks="ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    ${luks} --type luks2 --label=luks "${part_root}"
+    ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512 --type luks2 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
-    luks="cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    echo -n ${lukspw} | ${luks} --type luks2 --label=luks "${part_root}"
+    echo -n ${lukspw} | cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --type luks2 --label=luks "${part_root}"
     echo -n ${lukspw} | cryptsetup luksOpen "${part_root}" luks
 fi
 
