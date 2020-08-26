@@ -242,12 +242,12 @@ ln -sf /usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 arch-chroot /mnt locale-gen
 cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
-BINARIES=()
+BINARIES=(/usr/bin/btrfs)
 FILES=()
 HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
 COMPRESSION="lz4"
 EOF
-arch-chroot /mnt mkinitcpio -p linux-hardened
+
 cat << EOF > /mnt/etc/sudoers
 root ALL=(ALL) ALL
 %wheel ALL=(ALL) ALL
@@ -255,8 +255,12 @@ root ALL=(ALL) ALL
 EOF
 
 echo -e "\n### Setting up Secure Boot with custom keys"
-echo YKFDE_CHALLENGE_PASSWORD_NEEDED="1" >> /mnt/etc/ykfde.conf
+[[ "$fde" == "Yes" ]] && {
+    sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
+    echo YKFDE_CHALLENGE_PASSWORD_NEEDED="1" >> /mnt/etc/ykfde.conf
+}
 echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
+arch-chroot /mnt mkinitcpio -p linux-hardened
 arch-chroot /mnt arch-secure-boot initial-setup || true
 
 echo -e "\n### Creating user"
