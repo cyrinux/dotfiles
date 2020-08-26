@@ -90,9 +90,11 @@ noyes=("Yes" "Use luks Yubikey full disk encryption" "No" "Use standard luks ful
 fde=$(get_choice "Luks Encryption" "Use Yubikey FDE project?" "${noyes[@]}") || exit 1
 clear
 
-lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
-clear
-: ${lukspw:?"password cannot be empty"}
+[[ "$fde" == "No" ]] && {
+    lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
+    clear
+    : ${lukspw:?"password cannot be empty"}
+}
 
 user=$(get_input "User" "Enter username") || exit 1
 clear
@@ -133,7 +135,6 @@ mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
     luks="ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    export YKFDE_CHALLENGE="${lukspw}"
     ${luks} --type luks2 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
