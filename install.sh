@@ -121,14 +121,8 @@ cryptsetup luksClose luks 2> /dev/null || true
 bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo "msdos"; fi)
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
-device_id=${device##/dev/}
-optimal_io_size=$(cat /sys/class/block/${device_id}/queue/optimal_io_size)
-physical_block_size=$(cat /sys/class/block/${device_id}/queue/physical_block_size)
-alignment_offset=$(cat /sys/class/block/${device_id}/alignment_offset)
-start_sector=$(bc <<< "($optimal_io_size + $alignment_offset) / $physical_block_size")
-
-parted --script "${device}" -- mklabel ${bios} \
-    mkpart primary ${start_sector%.*}s -551MiB \
+parted -a optimal --script "${device}" -- mklabel ${bios} \
+    mkpart primary 0% -551MiB \
     mkpart ${part} fat32 -551MiB 100% \
     set 2 boot on
 
