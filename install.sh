@@ -90,9 +90,9 @@ noyes=("Yes" "Use luks Yubikey full disk encryption" "No" "Use standard luks ful
 fde=$(get_choice "Luks Encryption" "Use Yubikey FDE project?" "${noyes[@]}") || exit 1
 clear
 
-grubpw=$(get_password "GRUB" "Enter grub password") || exit 1
+lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
 clear
-: ${grubpw:?"password cannot be empty"}
+: ${lukspw:?"password cannot be empty"}
 
 user=$(get_input "User" "Enter username") || exit 1
 clear
@@ -117,7 +117,7 @@ cryptsetup luksClose luks 2> /dev/null || true
 bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo "msdos"; fi)
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
-parted --script "${device}" -- mklabel ${bios} \
+parted -a optimal --script "${device}" -- mklabel ${bios} \
     mkpart primary 1MiB -551MiB \
     mkpart ${part} fat32 -551MiB 100% \
     set 2 boot on
@@ -133,13 +133,13 @@ mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
     luks="ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    export YKFDE_CHALLENGE="${grubpw}"
+    export YKFDE_CHALLENGE="${lukspw}"
     ${luks} --type luks2 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
     luks="cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    echo -n ${grubpw} | ${luks} --type luks2 --label=luks "${part_root}"
-    echo -n ${grubpw} | cryptsetup luksOpen "${part_root}" luks
+    echo -n ${lukspw} | ${luks} --type luks2 --label=luks "${part_root}"
+    echo -n ${lukspw} | cryptsetup luksOpen "${part_root}" luks
 fi
 
 mkfs.btrfs -L btrfs /dev/mapper/luks
