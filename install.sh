@@ -72,7 +72,7 @@ timedatectl set-timezone Europe/Paris
 hwclock --systohc --utc
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget
+pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget yubikey-full-disk-encryption
 
 echo -e "\n### HiDPI screens"
 noyes=("Yes" "The font is too small" "No" "The font size is just fine")
@@ -84,6 +84,11 @@ setfont "$font"
 hostname=$(get_input "Hostname" "Enter hostname") || exit 1
 clear
 : ${hostname:?"hostname cannot be empty"}
+
+echo -e "\n### Luks screens"
+noyes=("Yes" "Use luks Yubikey full disk encryption" "No" "Use standard luks full disk encryption")
+fde=$(get_choice "Luks Encryption" "Use Yubikey FDE project?" "${noyes[@]}") || exit 1
+clear
 
 grubpw=$(get_password "GRUB" "Enter grub password") || exit 1
 clear
@@ -125,8 +130,17 @@ wipefs "${part_boot}"
 wipefs "${part_root}"
 
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
-echo -n ${grubpw} | cryptsetup luksFormat --type luks2 --label=luks "${part_root}"
-echo -n ${grubpw} | cryptsetup luksOpen "${part_root}" luks
+
+if [[ "$fde" == "Yes" ]]; then
+    luks="ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512"
+    YKFDE_CHALLENGE="${grubpw}" ${luks} --type luks2 --label=luks "${part_root}"
+    YKFDE_CHALLENGE="${grubpw}" ykfde-open -d "${part_root}" -n luks
+else
+    luks="cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512"
+    echo -n ${grubpw} | ${luks} --type luks2 --label=luks "${part_root}"
+    echo -n ${grubpw} | cryptsetup luksOpen "${part_root}" luks
+fi
+
 mkfs.btrfs -L btrfs /dev/mapper/luks
 
 echo -e "\n### Setting up BTRFS subvolumes"
