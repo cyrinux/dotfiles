@@ -184,7 +184,7 @@ if [[ "${hostname}" == "work-"* ]]; then
     wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
     rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 else
-    repo-add /var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+    repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 fi
 
 if ! grep cyrinux /etc/pacman.conf > /dev/null; then
