@@ -133,8 +133,9 @@ mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
     luks="ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512"
-    YKFDE_CHALLENGE="${grubpw}" ${luks} --type luks2 --label=luks "${part_root}"
-    YKFDE_CHALLENGE="${grubpw}" ykfde-open -d "${part_root}" -n luks
+    export YKFDE_CHALLENGE="${grubpw}"
+    ${luks} --type luks2 --label=luks "${part_root}"
+    ykfde-open -d "${part_root}" -n luks
 else
     luks="cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512"
     echo -n ${grubpw} | ${luks} --type luks2 --label=luks "${part_root}"
@@ -190,21 +191,12 @@ SigLevel = Required
 Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
-Server = https://aur.levis.ws/
 SigLevel = Required
+Server = https://aur.levis.ws/
 
 [options]
 CacheDir = /mnt/var/cache/pacman/pkg
 CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
-EOF
-else
-    cat >> /etc/pacman.conf << EOF
-[cyrinux-aur]
-SigLevel = Required
-Server = https://aur.levis.ws/
-
-[options]
-CacheDir = /mnt/var/cache/pacman/pkg
 EOF
 fi
 
@@ -236,7 +228,8 @@ root ALL=(ALL) ALL
 @includedir /etc/sudoers.d
 EOF
 
-echo -e "\n### Setting up Secure Boot for GRUB with custom keys"
+echo -e "\n### Setting up Secure Boot with custom keys"
+echo YKFDE_CHALLENGE_PASSWORD_NEEDED="1" >> /mnt/etc/ykfde.conf
 echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
 arch-chroot /mnt arch-secure-boot initial-setup
 
