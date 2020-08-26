@@ -183,10 +183,8 @@ mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 if [[ "${hostname}" == "work-"* ]]; then
     wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
     rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
-fi
-
-if ! grep cyrinux /etc/pacman.conf > /dev/null; then
-    cat >> /etc/pacman.conf << EOF
+    if ! grep cyrinux /etc/pacman.conf > /dev/null; then
+        cat >> /etc/pacman.conf << EOF
 [cyrinux-aur-local]
 SigLevel = Required
 Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
@@ -199,10 +197,35 @@ Server = https://aur.levis.ws/
 CacheDir = /mnt/var/cache/pacman/pkg
 CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
 EOF
+    fi
+else
+    if ! grep cyrinux /etc/pacman.conf > /dev/null; then
+        cat >> /etc/pacman.conf << EOF
+[cyrinux-aur]
+SigLevel = Required
+Server = https://aur.levis.ws/
+
+[options]
+CacheDir = /mnt/var/cache/pacman/pkg
+
+EOF
+    fi
 fi
 
 echo -e "\n### Installing packages"
 pacstrap -i /mnt cyrinux
+
+if [[ "${hostname}" != "work-"* ]]; then
+    cat >> /etc/pacman.conf << EOF
+[cyrinux-aur-local]
+SigLevel = Required
+Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
+
+[options]
+CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
+
+EOF
+fi
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
