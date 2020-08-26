@@ -27,7 +27,6 @@ trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 exec 1> >(tee "stdout.log")
 exec 2> >(tee "stderr.log")
 
-REPO_URL="https://aur.levis.ws/"
 export SNAP_PAC_SKIP=y
 
 # Dialog
@@ -114,7 +113,7 @@ bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo 
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
 parted --script "${device}" -- mklabel ${bios} \
-    mkpart primary 0% -551MiB \
+    mkpart primary 1MiB -551MiB \
     mkpart ${part} fat32 -551MiB 100% \
     set 2 boot on
 
@@ -166,22 +165,23 @@ echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 
 if [[ "${hostname}" == "work-"* ]]; then
-    wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' $REPO_URL
+    wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
     rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
+fi
 
+if ! grep cyrinux /etc/pacman.conf > /dev/null; then
     cat >> /etc/pacman.conf << EOF
 [cyrinux-aur-local]
 SigLevel = Required
-Server = file:///var/cache/pacman/cyrinux-aur-local
+Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
 Server = https://aur.levis.ws/
 SigLevel = Required
-Usage = Install Sync
 
 [options]
-CacheDir = /var/cache/pacman/pkg
-CacheDir = /var/cache/pacman/cyrinux-aur-local
+CacheDir = /mnt/var/cache/pacman/pkg
+CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
 EOF
 else
     cat >> /etc/pacman.conf << EOF
@@ -190,7 +190,7 @@ SigLevel = Required
 Server = https://aur.levis.ws/
 
 [options]
-CacheDir = /var/cache/pacman/pkg
+CacheDir = /mnt/var/cache/pacman/pkg
 EOF
 fi
 
@@ -246,7 +246,7 @@ arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com
 echo -e "\n### Running initial setup"
 arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
 arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
-arch-chroot /mnt sudo -u $user z4h update
+arch-chroot /mnt sudo -u $user zsh -ic true
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 umount -R /mnt
