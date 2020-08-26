@@ -74,7 +74,7 @@ timedatectl set-timezone Europe/Paris
 hwclock --systohc --utc
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget yubikey-full-disk-encryption
+pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget yubikey-full-disk-encryption bc
 
 echo -e "\n### HiDPI screens"
 noyes=("Yes" "The font is too small" "No" "The font size is just fine")
@@ -121,9 +121,10 @@ cryptsetup luksClose luks 2> /dev/null || true
 bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo "msdos"; fi)
 part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
 
-optimal_io_size=$(cat /sys/block/${device}/queue/optimal_io_size)
-physical_block_size=$(cat /sys/block/${device}/queue/physical_block_size)
-alignment_offset=$(cat /sys/block/${device}/alignment_offset)
+device_id=${device##/dev/}
+optimal_io_size=$(cat /sys/block/${device_id}/queue/optimal_io_size)
+physical_block_size=$(cat /sys/block/${device_id}/queue/physical_block_size)
+alignment_offset=$(cat /sys/block/${device_id}/alignment_offset)
 start_sector=$(bc <<< "($optimal_io_size + $alignment_offset) / $physical_block_size")
 
 parted --script "${device}" -- mklabel ${bios} \
