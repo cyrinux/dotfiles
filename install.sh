@@ -124,16 +124,14 @@ echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-sgdisk --clear "${device}" --new 1:0:-551MiB -t 1:8300 -c 1:"luks" -g "${device}"
-sgdisk --new 2:0:0 -t 2:EF00 -A 2:set:2 -c 2:"EFI" -g "${device}"
+wipefs --all "${device}"
+sgdisk --clear "${device}" --new 1::-551MiB --change-name=1:"luks" -g "${device}"
+sgdisk --new 2::0 --type 2:ef00 --change-name=2:"EFI" -g "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
 
 echo -e "\n### Formatting partitions"
-wipefs "${part_boot}"
-wipefs "${part_root}"
-
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
