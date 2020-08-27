@@ -124,8 +124,8 @@ echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-sgdisk --clear /dev/sda --new 1:0:-551MiB -t 1:8300 -c 1:"luks" -g /dev/sda && sgdisk --new 2:0:0 -t 2:EF00 -A 2:set:2 -c 2:"EFI" -g /dev/sda
-sgdisk --print /dev/sda
+sgdisk --clear "${device}" --new 1:0:-551MiB -t 1:8300 -c 1:"luks" -g "${device}"
+sgdisk --new 2:0:0 -t 2:EF00 -A 2:set:2 -c 2:"EFI" -g "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
