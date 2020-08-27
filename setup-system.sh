@@ -155,7 +155,6 @@ else
     systemctl_enable_start "ufw.service"
     systemctl_enable_start "snapper-cleanup.timer"
     systemctl_enable_start "system-dotfiles-sync.timer"
-    # systemctl_enable_start "auditd.service"
     systemctl_enable_start "vnstat.service"
     systemctl_enable_start "usbguard.service"
     systemctl_enable_start "usbguard-dbus.service"
@@ -194,7 +193,7 @@ else
     echo "Configuring aurutils"
     ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
 
-    if is_chroot && in_docker; then
+    if is_chroot || in_docker; then
         echo >&2 "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
     else
         echo "Sudo config"
@@ -207,7 +206,7 @@ else
         ufw --force reset > /dev/null
         ufw default allow outgoing
         ufw default deny incoming
-        ufw enable
+        ufw enable || true
         find /etc/ufw -type f -name '*.rules.*' -delete
 
         echo "Reload udev rules"
