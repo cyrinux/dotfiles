@@ -66,6 +66,12 @@ get_choice() {
     dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --menu "$description" 0 0 0 "${options[@]}"
 }
 
+echo -e "\n### Testing if UEFI is supported"
+if [ ! -f /sys/firmware/efi/fw_platform_size ]; then
+    echo "Sorry your computer doesn't support EFI"
+    exit 2
+fi
+
 echo -e "\n### Setting up clock"
 pacman -Sy --noconfirm ntp
 timedatectl set-ntp true
@@ -118,13 +124,8 @@ echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-bios=$(if [ -f /sys/firmware/efi/fw_platform_size ]; then echo "gpt"; else echo "msdos"; fi)
-part=$(if [[ "$bios" == "gpt" ]]; then echo "ESP"; else echo "primary"; fi)
-
-parted -a optimal --script "${device}" -- mklabel ${bios} \
-    mkpart primary 0% -551MiB \
-    mkpart ${part} fat32 -551MiB 100% \
-    set 2 boot on
+sgdisk --clear /dev/sda --new 1:0:-551MiB -t 1:8300 -c 1:"luks" -g /dev/sda && sgdisk --new 2:0:0 -t 2:EF00 -A 2:set:2 -c 2:"EFI" -g /dev/sda
+sgdisk --print /dev/sda
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
@@ -136,10 +137,10 @@ wipefs "${part_root}"
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
-    ykfde-format --cipher aes-xts-plain64 --key-size 512 --hash sha512 --type luks2 --label=luks "${part_root}"
+    ykfde-format --align-payload 8192 --pbkdf argon2id -i 5000 --type luks2 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
-    echo -n ${lukspw} | cryptsetup luksFormat --cipher aes-xts-plain64 --key-size 512 --hash sha512 --type luks2 --label=luks "${part_root}"
+    echo -n ${lukspw} | cryptsetup luksFormat --align-payload 8192 --pbkdf argon2id -i 5000 --type luks2 --label=luks "${part_root}"
     echo -n ${lukspw} | cryptsetup luksOpen "${part_root}" luks
 fi
 
