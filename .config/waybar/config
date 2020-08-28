@@ -4,12 +4,12 @@
     "modules-left": [
         "sway/workspaces",
 	    "custom/scratchpad",
-        "sway/mode"
+        "sway/mode",
     ],
     "modules-right": [
-        "custom/netatmo",
-        "custom/fwupd",
         "custom/progress",
+        "custom/fwupd",
+        "custom/netatmo",
         "custom/usbguard",
         "custom/prod-status",
         "custom/infra-status",
@@ -48,7 +48,7 @@
     "custom/fwupd": {
         "exec": "waybar-fwupd",
         "return-type": "json",
-        "interval": 43200
+        "interval": 3600
     },
     "custom/progress": {
         "exec": "waybar-progress",

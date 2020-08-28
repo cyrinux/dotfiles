@@ -110,6 +110,7 @@ window#waybar {
 #backlight,
 #battery,
 #idle_inhibitor,
+#custom-fwupd,
 #clock {
   padding: 0 6px;
   margin: 0 6px;
@@ -117,7 +118,7 @@ window#waybar {
 
 #custom-vpn,
 #custom-vpn-work,
-#custom-recordind,
+#custom-recording,
 #custom-cast,
 #custom-dnd {
   padding: 0;
