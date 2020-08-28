@@ -1,11 +1,13 @@
 #!/bin/bash
-updates="$(fwupdmgr refresh > /dev/null 2>&1 && fwupdmgr get-updates 2> /dev/null)"
+updates="$(fwupdmgr refresh > /dev/null 2>&1 ; fwupdmgr get-updates 2> /dev/null)"
+updates=$(printf "${updates}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')
 icon=""
-tooltip="Firmware updates:\n fwupdmgr get-updates && fwupdmgr update"
-tooltip="$(printf "$tooltip" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
+tooltip="Firmware updates:\nfwupdmgr get-updates &amp;&amp; fwupdmgr update\n\nDetails:\n${updates}"
+tooltip=$(printf "${tooltip}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')
 
 if [ -z "$updates" ]; then
     printf '{"text": ""}\n'
 else
-    printf '{"text": "%s", "tooltip": "%s" }\n' "$icon" "$tooltip"
+    printf '{"text": "%s", "tooltip": "%s"}\n' "$icon" "$tooltip"
 fi
+

@@ -8,7 +8,7 @@ vpn() {
         icon=''
         class=off
     fi
-    tooltip="$(timeout 5 mullvad status -l | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
+    tooltip="$(timeout 5 mullvad status -l 2>/dev/null | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
     printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
