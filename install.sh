@@ -125,8 +125,8 @@ umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
 wipefs --all "${device}"
-sgdisk --clear "${device}" --new 1::-551MiB --change-name=1:"luks" -g "${device}"
-sgdisk --new 2::0 --type 2:ef00 --change-name=2:"EFI" -g "${device}"
+sgdisk --clear "${device}" --new 1::-551MiB "${device}"
+sgdisk --new 2::0 --type 2:ef00 --change-name=2:"EFI" "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
