@@ -6,3 +6,6 @@
 
 [includeIf "gitdir:~/.dotfiles*/"]
   path = ~/.config/git/home
+
+[includeIf "gitdir:~/.password-store/"]
+  path = ~/.config/git/home

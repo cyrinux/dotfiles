@@ -204,7 +204,8 @@ pacstrap -i /mnt cyrinux
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
-echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
+# echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
+echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
 genfstab -L /mnt >> /mnt/etc/fstab
@@ -218,7 +219,6 @@ MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
 HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
-COMPRESSION="lz4"
 EOF
 
 cat << EOF > /mnt/etc/sudoers
@@ -230,7 +230,8 @@ EOF
 echo -e "\n### Setting up Secure Boot with custom keys"
 [[ "$fde" == "Yes" ]] && {
     sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
-    echo YKFDE_CHALLENGE_PASSWORD_NEEDED="1" >> /mnt/etc/ykfde.conf
+    echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
+    # echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
 }
 echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
 arch-chroot /mnt mkinitcpio -p linux-hardened

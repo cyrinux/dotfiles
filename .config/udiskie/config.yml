@@ -3,3 +3,7 @@ program_options:
   automount: true
   notify: true
   password_prompt: ["pass", "crypt/usb/{id_uuid}"]
+
+device_config:
+  - device_file: /dev/mmcblk0
+    automount: False
