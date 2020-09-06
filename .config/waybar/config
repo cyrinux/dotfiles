@@ -29,6 +29,7 @@
         "cpu",
         "memory",
         "backlight",
+        "custom/px5-battery",
         "battery",
         "clock",
         "custom/dnd",
@@ -167,6 +168,11 @@
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": [""]
+    },
+    "custom/px5-battery": {
+        "exec": "waybar-px5-battery",
+        "interval": "120",
+		"format": " {}"
     },
     "battery": {
         "bat": "BAT0",
