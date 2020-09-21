@@ -88,10 +88,12 @@ elif [ "$container" = private ]; then # we need to make a new private instance
     QUTE_CONTAINER=private nohup $QUTE \
       --basedir $baseDir \
       --config-py "$HOME/.config/qutebrowser/config.py" \
-      $ARGS \
-      >/dev/null \
+      --set window.title_format "{perc} [${container}]{title_sep}{current_title}" \
+      $ARGS >/dev/null \
     && rm -rf $baseDir/*" &
 else # we need to make a new normal container
     export QUTE_CONTAINER=$container
-    setsid $QUTE --basedir "$baseDir" --config-py "$HOME/.config/qutebrowser/config.py" $ARGS &
+    setsid $QUTE --basedir "$baseDir" --config-py "$HOME/.config/qutebrowser/config.py" \
+        --set window.title_format "{perc} [${container}]{title_sep}{current_title}" \
+        $ARGS > /dev/null &
 fi

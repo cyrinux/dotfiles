@@ -1,0 +1,28 @@
+#!/bin/sh
+# https://hg.sr.ht/~begs/dotfiles/browse/home/begs/.config/waybar/layout.sh?rev=default
+
+swaymsg \
+    --type get_inputs |
+    jq \
+        --raw-output \ '
+      [
+        .[] |
+          select(.type == "keyboard") |
+          .xkb_active_layout_name |
+          select(contains("French") | not)
+      ] |
+        first // "French"
+    '
+
+swaymsg \
+    --type subscribe \
+    --monitor \
+    --raw \
+    '["input"]' |
+    jq \
+        --raw-output \
+        --unbuffered \ '
+      select(.change == "xkb_layout") |
+        .input.xkb_active_layout_name |
+        sub(" \\(US\\)"; "")
+    '

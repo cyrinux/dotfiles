@@ -28,6 +28,7 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
 
 hook global BufOpenFile  .* modeline-parse
 hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
+hook global BufCreate    .*Jenkinsfile %{ set buffer filetype javascript }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
 hook global BufWritePost .* %{ git show-diff }
 hook global BufReload    .* %{ git show-diff }

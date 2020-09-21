@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.3.3
+pkgver=2.3.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -591,4 +591,5 @@ depends=(
     'chkboot'
     'edk2-ovmf'
     'arch-secure-boot'
+    'bluetooth-headset-battery-level'
 )

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exit 0
+
 level=$(bluetooth-headset-battery-level B0:67:2F:13:7A:F1.12 2> /dev/null)
 
 echo $level | cut -d ' ' -f6
