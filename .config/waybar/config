@@ -5,6 +5,7 @@
         "sway/workspaces",
 	    "custom/scratchpad",
         "sway/mode",
+        "custom/pomodoro"
     ],
     "modules-right": [
         "custom/progress",
@@ -30,12 +31,28 @@
         "memory",
         "backlight",
         "custom/px5-battery",
+        "custom/keyboard-layout",
         "battery",
         "clock",
         "custom/dnd",
         "idle_inhibitor",
         "tray"
     ],
+    "custom/pomodoro": {
+	    "exec": "i3-gnome-pomodoro status --format=waybar --show-seconds",
+         "return-type": "json",
+         "interval": 2,
+         "format": " {}",
+         "on-click": "i3-gnome-pomodoro start",
+         "on-middle-click": "i3-gnome-pomodoro toggle",
+         "on-right-click": "i3-gnome-pomodoro stop",
+     },
+    "custom/keyboard-layout": {
+      "exec": "waybar-keyboard-layout",
+      "format": " {}",
+      "signal": 1,
+      "tooltip": false
+    },
     "custom/calendar": {
         "exec": "waybar-calendar",
         "return-type": "json",
@@ -54,7 +71,7 @@
     "custom/progress": {
         "exec": "waybar-progress",
         "return-type": "json",
-        "interval": 1
+        "interval": 2
     },
     "custom/usbguard": {
         "exec": "waybar-usbguard",
@@ -115,6 +132,7 @@
     "custom/prod-status": {
         "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus",
         "return-type": "json",
+	    "markup": true,
         "interval": 30
     },
     "custom/infra-status": {

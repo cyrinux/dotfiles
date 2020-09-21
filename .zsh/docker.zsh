@@ -31,7 +31,7 @@ alias focal="sudo docker run --rm -it ubuntu:focal"
 alias java10-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
-alias javaws="docker run -ti --rm -e DISPLAY=$DISPLAY -e HOSTNAME=$HOSTNAME -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
+alias javaws="docker run -ti --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 
 function dockershellhere() {
     dirname=${PWD##*/}

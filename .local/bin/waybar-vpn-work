@@ -1,7 +1,7 @@
 #!/bin/sh
 
 vpn() {
-    if [ -e "/sys/class/net/tun-prod" ]; then
+    if [ -e "/sys/class/net/tun-prod" ] || (( $(nmcli connection show --active | grep -q bb41bc5d-f4e5-4e9f-8a80-dbbd55011dcd) )); then
         icon=''
         class=on
     else

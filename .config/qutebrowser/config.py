@@ -14,7 +14,6 @@ c.tabs.width = "15%"
 c.tabs.title.format = "{index}: {audio}{current_title}"
 c.tabs.title.format_pinned = "{index}: {audio}{current_title}"
 
-
 # use a different color for work container to give visual distinction
 if "QUTE_CONTAINER" not in os.environ or os.environ["QUTE_CONTAINER"] == "facebook":
     c.colors.tabs.selected.even.bg = "#B48EAD"

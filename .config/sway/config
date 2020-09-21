@@ -60,6 +60,7 @@ workspace_auto_back_and_forth yes
 # Specific window configuration
 for_window    [app_id="org.ksnip.ksnip"]     floating enable
 for_window    [app_id=".*"]                  sticky enable
+for_window    [app_id="Zoom"]                sticky enable
 for_window    [window_role="pop-up"]         floating enable
 for_window    [class="ksnip"]                floating enable
 for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
@@ -88,7 +89,7 @@ mode $mode_audio {
 }
 
 
-set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted"
+set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted, (e)xit"
 mode $mode_system {
 	bindsym --to-code {
      # l exec 'sleep 1; pkill -USR1 swayidle', mode "default"
@@ -230,6 +231,10 @@ bindsym --to-code {
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
 	$win+p             fullscreen disable, exec "wl-clipboard-manager lock; PASSWORD_STORE_DIR="~/work/.password-store" passmenu -p 'pass work'; wl-clipboard-manager unlock"
     $hyper+Shift+m     fullscreen disable, exec udiskie-dmenu
+    $hyper+F9          exec i3-gnome-pomodoro start
+    $hyper+F10         exec i3-gnome-pomodoro toggle
+    $hyper+F11         exec i3-gnome-pomodoro skip
+    $hyper+F12         exec i3-gnome-pomodoro stop
 
 	# Switch to workspace using number row
 	$hyper+ampersand  $workspace1
@@ -333,6 +338,5 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 # Load systemd integration
 include /etc/sway/config.d/*
 exec systemctl --user start sway-session.target
-exec chkboot-desktopalert
 
 # vi:ft=i3

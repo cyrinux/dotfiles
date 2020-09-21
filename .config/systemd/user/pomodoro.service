@@ -1,0 +1,11 @@
+[Unit]
+Description=Run pomodoro daemon
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/i3-gnome-pomodoro daemon
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target
