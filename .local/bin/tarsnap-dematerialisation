@@ -1,6 +1,6 @@
 #!/bin/bash
 
-open-vault 3600
+open-vault 3600 &
 
 [ ! -f ~/.cache/tarsnap.key ] && pass backup/tarsnap-key > ~/.cache/tarsnap.key && chmod 400 ~/.cache/tarsnap.key
 

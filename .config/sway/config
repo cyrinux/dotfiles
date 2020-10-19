@@ -73,6 +73,7 @@ for_window    [app_id="mpv"]                 inhibit_idle fullscreen
 for_window    [title="Firefox - Sharing Indicator"] floating enable
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
+for_window    [app_id="dmenu-calc"]                      resize set width 40ppt height 30ppt
 
 # Audio settings
 set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, p(x)5"
@@ -223,7 +224,7 @@ bindsym --to-code {
 
 	# launcher
 	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
-	$hyper+equal       fullscreen disable, exec bash -c "echo 'enter expression to calculate' | dmenu | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
+	$hyper+equal       fullscreen disable, exec bash -c "echo 'enter expression to calculate' | dmenu -p "calc" | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
 	twosuperior        fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || rofi-todoist"
     $hyper+d           fullscreen disable, exec wofi
