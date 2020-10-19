@@ -53,8 +53,10 @@ c.hints.chars = "qsdfghjklm"
 # per-domain settings
 config.set("content.register_protocol_handler", True, "*://*.levis.name")
 config.set("content.register_protocol_handler", True, "*://app.slack.com")
-config.set("content.media_capture", True, "*://app.wire.com")
-config.set("content.media_capture", True, "*://app.slack.com")
+config.set("content.media.audio_video_capture", True, "*://app.wire.com")
+config.set("content.media.audio_video_capture", True, "*://app.slack.com")
+config.set("content.cookies.accept", "all", "*://*.dailymotion.com")
+config.set("content.cookies.accept", "all", "*://*.dm.gg")
 
 
 # privacy
@@ -66,7 +68,7 @@ with config.pattern("*://*.levis.name/") as p:
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks = False  # Change to True to be able to login to google
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
 c.content.canvas_reading = False
 c.content.host_blocking.enabled = True
 

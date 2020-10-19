@@ -125,10 +125,17 @@ umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
 wipefs --all "${device}"
-sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --type 2:ef00 --change-name=2:"EFI" "${device}"
+sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 --change-name=2:"EFI" "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
+
+if [ "$device" != "$luks_header_device" ]; then
+    cryptargs="--header $luks_header_device"
+else
+    cryptargs=""
+    luks_header_device="$part_root"
+fi
 
 echo -e "\n### Formatting partitions"
 mkfs.vfat -n "EFI" -F32 "${part_boot}"
@@ -137,8 +144,8 @@ if [[ "$fde" == "Yes" ]]; then
     ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
-    echo -n ${lukspw} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
-    echo -n ${lukspw} | cryptsetup luksOpen "${part_root}" luks
+    echo -n ${password} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
+    echo -n ${password} | cryptsetup luksOpen $cryptargs "${part_root}" luks
 fi
 
 mkfs.btrfs -L btrfs /dev/mapper/luks

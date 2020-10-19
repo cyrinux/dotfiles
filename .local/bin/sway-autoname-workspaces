@@ -30,7 +30,7 @@ WINDOW_ICONS = {
     "fontforge": "",
     "gcr-prompter": "",
     "kitty": "󰀀",
-    "ksnip": "",
+    "org.ksnip.ksnip": "",
     "krita": "",
     "vimiv": "",
     "libreoffice-calc": "",

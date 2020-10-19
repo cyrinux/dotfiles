@@ -4,8 +4,7 @@
     "modules-left": [
         "sway/workspaces",
 	    "custom/scratchpad",
-        "sway/mode",
-        "custom/pomodoro"
+        "sway/mode"
     ],
     "modules-right": [
         "custom/progress",
@@ -38,15 +37,6 @@
         "idle_inhibitor",
         "tray"
     ],
-    "custom/pomodoro": {
-	    "exec": "i3-gnome-pomodoro status --format=waybar --show-seconds",
-         "return-type": "json",
-         "interval": 2,
-         "format": " {}",
-         "on-click": "i3-gnome-pomodoro start",
-         "on-middle-click": "i3-gnome-pomodoro toggle",
-         "on-right-click": "i3-gnome-pomodoro stop",
-     },
     "custom/keyboard-layout": {
       "exec": "waybar-keyboard-layout",
       "format": " {}",

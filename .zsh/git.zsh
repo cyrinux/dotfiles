@@ -8,7 +8,7 @@ g() {
 
 gcl() {
     git clone --recursive "$@"
-    cd -- "${${${@: -1}##*/}%.*}"
+    cd -- "${${${@: -1}##*/}%*.git}"
 }
 
 alias ga='git add'

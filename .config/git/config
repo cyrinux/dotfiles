@@ -1,6 +1,9 @@
 [includeIf "gitdir:~/library/src/personal/"]
   path = ~/.config/git/home
 
+[includeIf "gitdir:~/library/pentest/"]
+  path = ~/.config/git/home
+
 [includeIf "gitdir:~/library/src/work/"]
   path = ~/.config/git/work
 
@@ -9,3 +12,5 @@
 
 [includeIf "gitdir:~/.password-store/"]
   path = ~/.config/git/home
+
+# vim:ft=ini

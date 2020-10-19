@@ -20,18 +20,18 @@ alias dcs='dc ps'
 alias dc="sudo docker-compose"
 alias dcu='docker-compose up'
 
-alias fedora="sudo docker run --rm -it fedora"
-alias ubuntu="sudo docker run --rm -it ubuntu"
-alias centos="sudo docker run --rm -it centos"
-alias trusty="sudo docker run --rm -it ubuntu:trusty"
-alias bionic="sudo docker run --rm -it ubuntu:bionic"
-alias xenial="sudo docker run --rm -it ubuntu:xenial"
-alias focal="sudo docker run --rm -it ubuntu:focal"
+alias fedora="sudo docker run -v $(pwd):/data --rm -it fedora:latest"
+alias ubuntu="sudo docker run -v $(pwd):/data --rm -it ubuntu:latest"
+alias centos="sudo docker run -v $(pwd):/data --rm -it centos:latest"
+alias trusty="sudo docker run -v $(pwd):/data --rm -it ubuntu:trusty"
+alias xenial="sudo docker run -v $(pwd):/data --rm -it ubuntu:xenial"
+alias bionic="sudo docker run -v $(pwd):/data --rm -it ubuntu:bionic"
+alias focal="sudo docker run -v $(pwd):/data --rm -it ubuntu:focal"
 
 alias java10-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="sudo docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
-alias javaws="docker run -ti --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
+alias javaws="docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 
 function dockershellhere() {
     dirname=${PWD##*/}
