@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 command -v bat       &> /dev/null    && alias c='bat -p'                                           || alias c='cat'
-command -v curlie    &> /dev/null    && alias curl='curlie'
+# command -v curlie    &> /dev/null    && alias curl='curlie'
 command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
