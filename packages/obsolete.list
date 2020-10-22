@@ -12,7 +12,6 @@ libu2f-host
 mkinitcpio-encrypt-detached-header
 mosh
 nemo
-opensnitch-git
 otf-fira-code
 pam-gnupg-git
 pass-rotate

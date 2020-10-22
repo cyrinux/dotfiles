@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export GST_VAAPI_ALL_DRIVERS=1
+
 pkill -x wf-recorder
 
 [ $? -ne 0 ] && {

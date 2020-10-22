@@ -3,11 +3,13 @@
 zstyle ':z4h:'                                    auto-update            no
 zstyle ':z4h:*'                                   channel                stable
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
+zstyle ':z4h:fzf-complete'                            fzf-command            my-fzf
+zstyle ':z4h:(fzf-complete|fzf-history|cd-down)'      fzf-flags              --no-exact --color=hl:14,hl+:14
+zstyle ':z4h:(fzf-complete|cd-down)'                  fzf-bindings           'tab:repeat'
 zstyle ':fzf-tab:*'                               continuous-trigger     tab
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
+zstyle ':zle:(up|down)-line-or-beginning-search'      leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
-zstyle ':zle:up-line-or-beginning-search'         leave-cursor           true
-zstyle ':zle:down-line-or-beginning-search'       leave-cursor           true
 
 ###
 
@@ -20,6 +22,12 @@ fpath+=($Z4H/romkatv/archive)
 autoload -Uz archive lsarchive unarchive edit-command-line hist
 
 zle -N edit-command-line
+
+my-fzf () {
+    emulate -L zsh -o extended_glob
+    local MATCH MBEGIN MEND
+    fzf "${@:/(#m)--query=?*/$MATCH }"
+}
 
 my-ctrl-z() {
     if [[ $#BUFFER -eq 0 ]]; then
@@ -82,11 +90,11 @@ export NNN_PLUG='j:jump;r:remove;p:paperwork;c:croc;'
 
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
-z4h source -c -- /etc/bash_completion.d/azure-cli
-z4h source -c -- /usr/share/LS_COLORS/dircolors.sh
-z4h source -c -- /usr/share/nnn/quitcd/quitcd.bash_zsh
-z4h source -c -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
-z4h source -c -- ~/.zshrc-private/{personal,work}.zsh
+z4h source -- /etc/bash_completion.d/azure-cli
+z4h source -- /usr/share/LS_COLORS/dircolors.sh
+z4h source -- /usr/share/nnn/quitcd/quitcd.bash_zsh
+z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
+z4h source -- ~/.zshrc-private/{personal,work}.zsh
 z4h compile   -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
 
 # command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null

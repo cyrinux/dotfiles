@@ -23,7 +23,7 @@
         vcs
         kubecontext
         azure
-        gcloud
+        # gcloud
         command_execution_time
 
         newline

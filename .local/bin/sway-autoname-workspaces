@@ -21,6 +21,7 @@ WINDOW_ICONS = {
     "calibre": "",
     "chromium": "",
     "code": "",
+    "vncviewer": "",
     "cssh": "",
     "darktable": "",
     "discord": "",
