@@ -8,11 +8,10 @@ usage() {
 
 connect() {
     bluetooth on
-    sleep 1
+    sleep 0.1
     echo 'default-agent' | bluetoothctl
-    sleep 1
-    echo "disconnect $mac" | bluetoothctl
-    sleep 1
+    sleep 0.1
+    # echo "disconnect $mac" | bluetoothctl
     echo "connect $mac" | bluetoothctl
 }
 

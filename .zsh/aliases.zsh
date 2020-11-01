@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 command -v bat       &> /dev/null    && alias c='bat -p'                                           || alias c='cat'
-# command -v curlie    &> /dev/null    && alias curl='curlie'
+command -v bat       &> /dev/null    && alias c='/usr/bin/bat -p'                                           || alias c='cat'
 command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
@@ -49,10 +49,9 @@ alias play_techno="mpv --no-resume-playback --shuffle https://www.youtube.com/ch
 alias play_bloques="mpv --no-resume-playback --shuffle 'https://www.youtube.com/playlist?list=PL5e6ZkQmSoKeA-KmjgHVOTtYZFH7XIfeM'"
 alias readallmail="notmuch tag -unread folder:INBOX"
 alias rm!='\rm -rf'
-alias send="croc send"
+alias send="croc --relay6 send"
 alias sudo='sudo -E '
 alias sysdig="sudo sysdig"
-alias tmux='tmux -f $HOME/.config/tmux/tmux.conf'
 alias tree='tree -a -I .git --dirsfirst'
 alias utc='env TZ="UTC" date'
 alias yubikey-fix='sudo systemctl stop pcscd.service'
@@ -87,15 +86,6 @@ dataurl() {
                 mimeType="${mimeType};charset=utf-8"
         fi
         echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
-}
-
-# Create a git.io short URL
-gitio() {
-        if [ -z "${1}" ] || [ -z "${2}" ]; then
-                echo "Usage: \`gitio slug url\`"
-                return 1
-        fi
-        curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
 

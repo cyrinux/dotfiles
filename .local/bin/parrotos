@@ -1,0 +1,20 @@
+#!/bin/bash
+
+trap 'pkill -P $$' EXIT
+
+wol 88:b1:11:e2:46:90
+wol a4:4c:c8:13:75:57
+
+echo "Please wait..."
+sleep 10
+ping -c 5 parrotos.lan
+
+ssh parrotos sudo /usr/local/bin/wake
+ssh -f -N -q -L5901:localhost:5900 parrotos &
+
+sleep 4
+vncviewer localhost:5901
+
+ssh parrotos sudo /usr/local/bin/suspend
+
+ping -c 10 parrotos.lan
