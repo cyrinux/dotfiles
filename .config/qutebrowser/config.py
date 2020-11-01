@@ -52,11 +52,17 @@ c.hints.chars = "qsdfghjklm"
 
 # per-domain settings
 config.set("content.register_protocol_handler", True, "*://*.levis.name")
-config.set("content.register_protocol_handler", True, "*://app.slack.com")
-config.set("content.media.audio_video_capture", True, "*://app.wire.com")
-config.set("content.media.audio_video_capture", True, "*://app.slack.com")
 config.set("content.cookies.accept", "all", "*://*.dailymotion.com")
 config.set("content.cookies.accept", "all", "*://*.dm.gg")
+
+config.set("content.register_protocol_handler", True, "*://app.slack.com")
+config.set("content.media.audio_capture", True, "*://app.slack.com")
+config.set("content.media.video_capture", True, "*://app.slack.com")
+config.set("content.desktop_capture", True, "*://app.slack.com")
+
+config.set("content.media.audio_capture", True, "*://app.wire.com")
+config.set("content.media.video_capture", True, "*://app.wire.com")
+config.set("content.desktop_capture", True, "*://app.wire.com")
 
 
 # privacy
