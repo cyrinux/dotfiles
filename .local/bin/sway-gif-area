@@ -1,8 +1,6 @@
 #!/bin/sh
 
-export GST_VAAPI_ALL_DRIVERS=1
-
-pkill -x wf-recorder
+pkill -x wf-recorder -SIGINT
 
 [ $? -ne 0 ] && {
     systemctl --user stop sway-inactive-window-transparency.service

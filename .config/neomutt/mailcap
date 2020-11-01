@@ -7,7 +7,7 @@ application/epub+zip; firewarden -q -c zathura %s
 application/pgp-encrypted; gpg -d '%s'; copiousoutput;
 application/pgp-keys; pgp -f < %s ; copiousoutput;
 text/plain; kak %s ; needsterminal
-text/html; firewarden -q -c qutebrowser %s; needsterminal; nametemplate=%s.html
+text/html; qutebrowser --temp-basedir -s content.images false -s content.javascript.enabled false %s; needsterminal; nametemplate=%s.html;
 text/html; w3m -o display_link_number=1 -I %{charset} -T text/html; copiousoutput;
 text/calendar; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;
 video/*; setsid mpv --quiet %s &; copiousoutput;

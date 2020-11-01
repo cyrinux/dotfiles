@@ -5,6 +5,7 @@ cracklib
 electron7
 haskell-bitarray
 haskell-cmark-gfm
+haskell-regex-pcre
 js60
 js68
 lens-bin
@@ -12,12 +13,14 @@ libu2f-host
 mkinitcpio-encrypt-detached-header
 mosh
 nemo
+opera-ffmpeg-codecs
 otf-fira-code
 pam-gnupg-git
 pass-rotate
 perl-test-tester
 python-ajpy
 python-bluepy
+python-natsort
 python-pycrtsh
 python-rofi
 python-vulners

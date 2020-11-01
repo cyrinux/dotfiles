@@ -4,9 +4,10 @@ zstyle ':z4h:'                                    auto-update            no
 zstyle ':z4h:*'                                   channel                stable
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
 zstyle ':z4h:fzf-complete'                            fzf-command            my-fzf
-zstyle ':z4h:(fzf-complete|fzf-history|cd-down)'      fzf-flags              --no-exact --color=hl:14,hl+:14
+zstyle ':z4h:(fzf-complete|cd-down|fzf-history)'      fzf-flags              --no-exact --color=hl:14,hl+:14
 zstyle ':z4h:(fzf-complete|cd-down)'                  fzf-bindings           'tab:repeat'
 zstyle ':fzf-tab:*'                               continuous-trigger     tab
+zstyle ':z4h:(fzf-complete|cd-down)'                  find-flags             -name '.git' -prune -print -o -print
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 zstyle ':zle:(up|down)-line-or-beginning-search'      leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable

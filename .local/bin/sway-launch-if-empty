@@ -1,0 +1,8 @@
+#!/bin/sh
+ws=${1:?$0: Missing workspace name.}
+shift
+swaymsg -- set "\$${ws}" workspace number "$ws"
+swaymsg -- workspace "$ws"
+swaymsg -t get_tree |
+    jq --arg ws "$ws" -re '.nodes[].nodes[]|select(.name==$ws).nodes[]' > /dev/null &&
+    "${@:?$0: Missing program.}"

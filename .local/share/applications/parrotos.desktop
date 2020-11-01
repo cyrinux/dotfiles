@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=Network;
+Exec=/home/cyril/.local/bin/parrotos
+GenericName=ParrotOS
+Icon=/usr/share/doc/neomutt/logo/neomutt-128.png
+Name=ParrotOS
+StartupNotify=true
+Type=Application
+Terminal=true

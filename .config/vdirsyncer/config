@@ -17,6 +17,7 @@ fileext = ".vcf"
 [storage my_contacts_remote]
 type = "carddav"
 url.fetch = ["command", "vdirsyncer-get-creds", "contacts_url"]
+verify_fingerprint = "26:EE:B3:A5:71:6D:DE:25:E2:AD:B0:73:84:7B:24:AE:08:6E:CC:D7"
 username.fetch = ["command", "vdirsyncer-get-creds", "username"]
 password.fetch = ["command", "vdirsyncer-get-creds", "password"]
 
@@ -36,5 +37,6 @@ fileext = ".ics"
 [storage my_calendars_remote]
 type = "caldav"
 url.fetch = ["command", "vdirsyncer-get-creds", "calendars_url"]
+verify_fingerprint = "26:EE:B3:A5:71:6D:DE:25:E2:AD:B0:73:84:7B:24:AE:08:6E:CC:D7"
 username.fetch = ["command", "vdirsyncer-get-creds", "username"]
 password.fetch = ["command", "vdirsyncer-get-creds", "password"]

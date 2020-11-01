@@ -107,6 +107,7 @@ bindings = {
     ",A": "hint links userscript youtube-dl-mp3",
     ",d": "spawn --userscript youtube-dl",
     ",D": "hint links userscript youtube-dl",
+    ",k": "jseval javascript:(function(){ document.querySelector('html').style.filter = 'invert(1)';})(); })",
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
     ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
     ",w": "spawn --userscript send_to_wallabag",
@@ -118,6 +119,11 @@ bindings = {
     ",b": "config-cycle colors.webpage.bg '#32302f' 'white'",
     "xjn": "set content.javascript.enabled true",
     "xjf": "set content.javascript.enabled false",
+    "M": "nop",
+    "co": "nop",
+    "<Shift-Escape>": "fake-key <Escape>",
+    "o": "set-cmd-text -s :open -s",
+    "O": "set-cmd-text -s :open -t -s",
 }
 
 
