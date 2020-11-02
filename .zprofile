@@ -4,7 +4,6 @@
 
 export $(systemctl --user show-environment)
 
-export GST_VAAPI_ALL_DRIVERS=1
 export GPG_TTY="$TTY"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 systemctl --user import-environment GPG_TTY SSH_AUTH_SOCK
