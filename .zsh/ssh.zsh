@@ -1,7 +1,7 @@
 zstyle ':z4h:ssh:*'                               send-extra-files       '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
 zstyle ':z4h:term-title:ssh'                      preexec                '%* | %n@%m: ${1//\%/%%}'
+zstyle ':z4h:ssh:*'                               enable 'yes'
 # zstyle -e ':z4h:ssh:*'                            retrieve-history       'reply=($XDG_DATA_HOME/zsh-history/${z4h_ssh_host##*:})'
-# zstyle ':z4h:ssh:*'                               ssh-command             command ssh -S none
 
 z4h-ssh-configure() {
     (( z4h_ssh_passthrough )) && return
@@ -22,13 +22,10 @@ z4h-ssh-configure() {
     return 0
 }
 
-# alias ssh='ssh_with_color_and_term'
-alias ssh="z4h ssh"
-
 sshproxy() {
     zstyle ':z4h:ssh:*' ssh-command command ssh -S none -R 9999:localhost:8118
     export PROXY='http://127.0.0.1:9999'
-    z4h ssh "$@"
+    ssh "$@"
 }
 compdef sshproxy=ssh
 
@@ -43,37 +40,3 @@ kssh() {
 compdef kssh=ssh
 
 tmux-connect() { ssh "$@" "tmux attach || tmux new"; }
-
-# ssh_with_term() {
-#     z4h ssh "$@"
-# }
-
-# ssh_with_color_and_term() {
-#     trap 'bg_color_reset' SIGINT
-#     bg_color_set "$@"
-#     printf '\033]2;%s\033\\' "$@"
-#     ssh_with_term "$@"
-#     retval=$?
-#     bg_color_reset
-#     return $retval
-# }
-# compdef ssh_with_color_and_term=ssh
-
-# bg_color_reset() {
-#     printf '\033]11;#202020\007'
-#     trap - SIGINT
-# }
-
-# bg_color_set() {
-#     color='#202020'
-#     for arg in "$@"; do
-#         if [[ "${arg:0:1}" != "-" ]]; then
-#             if [[ "$arg" =~ '^.*.dc3.*$' ]]; then
-#                 color='#322828'
-#             elif [[ "$arg" =~ '^.*.(ix7|nyc|sv4|ty4|sg1).*$' ]]; then
-#                 color='#323228'
-#             fi
-#         fi
-#     done
-#     printf "\033]11;$color\007"
-# }

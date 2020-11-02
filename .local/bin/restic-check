@@ -8,7 +8,7 @@ main() {
 }
 
 check() {
-    eval "$(pass "restic/$1" 2> /dev/null)"
+    eval "$(pass "personal/restic/$1" 2> /dev/null)"
 
     echo
     echo "Checking up to $RESTIC_REPOSITORY..."

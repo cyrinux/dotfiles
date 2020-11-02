@@ -9,7 +9,7 @@ main() {
 }
 
 backup() {
-    eval "$(pass "restic/$1" 2> /dev/null)"
+    eval "$(pass "personal/restic/$1" 2> /dev/null)"
 
     echo
     echo "Unlocking $RESTIC_REPOSITORY..."

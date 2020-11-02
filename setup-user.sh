@@ -54,6 +54,7 @@ echo "======================================="
 echo "Setting up dotfiles for current user..."
 echo "======================================="
 
+link ".config/user-tmpfiles.d"
 link ".config/environment.d"
 link ".config/captive-browser.toml"
 link ".config/chromium-flags.conf"
@@ -185,6 +186,7 @@ else
     systemctl_enable_start "wluma.service"
     systemctl_enable_start "autotiling.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
+    systemctl_enable_start "systemd-tmpfiles-setup.service"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "
