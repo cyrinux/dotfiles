@@ -1,2 +1,2 @@
 #!/bin/sh
-pass show spotify | head -1
+pass show personal/spotify | head -1

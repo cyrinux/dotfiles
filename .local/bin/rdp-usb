@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-credentials=$(pass rdp/${1})
+credentials=$(pass personal/rdp/${1})
 
 password=$(echo "$credentials" | head -n1)
 user=$(echo "$credentials" | grep 'rdp_user' | awk '{ print $2 }')

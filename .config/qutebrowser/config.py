@@ -96,7 +96,7 @@ c.url.searchengines = {
     "w": "https://fr.wikipedia.org/w/index.php?search={}",
     "http": "https://httpstatuses.com/{}",
     "dict": "https://www.dict.cc/?s={}",
-    "s": "https://search.levis.ws/?s={}",
+    "s": "https://search.levis.ws/?q={}",
 }
 
 c.url.default_page = "~/.config/qutebrowser/blank.html"
