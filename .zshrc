@@ -12,6 +12,8 @@ zstyle ':z4h:term-title:local'                    preexec                '%* | $
 zstyle ':zle:(up|down)-line-or-beginning-search'      leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
+zstyle ':z4h:sudo' term ''
+
 
 
 ###
