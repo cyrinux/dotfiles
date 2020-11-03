@@ -231,7 +231,6 @@ bindsym --to-code {
     $hyper+d           fullscreen disable, exec wofi
     $hyper+f           fullscreen disable, exec wl-clipboard-manager dmenu
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
-	$win+p             fullscreen disable, exec "wl-clipboard-manager lock; PASSWORD_STORE_DIR="~/work/.password-store" passmenu -p 'pass work'; wl-clipboard-manager unlock"
     $hyper+Shift+m     fullscreen disable, exec udiskie-dmenu
     $hyper+F9          exec i3-gnome-pomodoro start
     $hyper+F10         exec i3-gnome-pomodoro toggle
