@@ -1,0 +1,9 @@
+#!/bin/bash
+
+state="$(pulseeffects -b 3 2>&1)"
+
+if [[ "$state" -eq 0 ]]; then
+    pulseeffects -b 1
+else
+    pulseeffects -b 2
+fi

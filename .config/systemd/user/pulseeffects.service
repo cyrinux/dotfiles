@@ -1,0 +1,12 @@
+[Unit]
+Description=PulseEffects audio mixer
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pulseeffects --gapplication-service
+Restart=always
+
+[Install]
+WantedBy=graphical-session.target

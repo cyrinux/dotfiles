@@ -18,8 +18,8 @@
     "input": {
         "blacklist": "",
         "plugins_order": [
-            "gate",
             "webrtc",
+            "gate",
             "limiter",
             "compressor",
             "filter",
@@ -485,7 +485,7 @@
             "treble-cut": "5000"
         },
         "webrtc": {
-            "state": "false",
+            "state": "true",
             "high-pass-filter": "true",
             "echo-cancel": "true",
             "echo-suppression-level": "moderate",
@@ -616,25 +616,26 @@
     "output": {
         "blacklist": "",
         "plugins_order": [
-            "equalizer",
-            "convolver",
-            "bass_enhancer",
             "limiter",
-            "filter",
-            "compressor",
-            "exciter",
-            "reverb",
-            "crossfeed",
-            "maximizer",
-            "multiband_compressor",
-            "loudness",
+            "autogain",
             "gate",
             "multiband_gate",
+            "compressor",
+            "multiband_compressor",
+            "convolver",
+            "bass_enhancer",
+            "exciter",
             "crystalizer",
             "stereo_tools",
+            "reverb",
+            "equalizer",
             "deesser",
-            "autogain",
-            "pitch"
+            "crossfeed",
+            "loudness",
+            "maximizer",
+            "filter",
+            "pitch",
+            "delay"
         ],
         "bass_enhancer": {
             "state": "false",
@@ -681,9 +682,9 @@
             "sc-listen": "false"
         },
         "equalizer": {
-            "state": "true",
+            "state": "false",
             "num-bands": "10",
-            "input-gain": "0",
+            "input-gain": "-2",
             "output-gain": "0",
             "split-channels": "false",
             "left": {
@@ -1023,7 +1024,7 @@
             "stereo-phase": "0"
         },
         "convolver": {
-            "state": "false",
+            "state": "true",
             "input-gain": "-2",
             "output-gain": "0",
             "kernel-path": "\/home\/matteo\/.config\/PulseEffects\/irs\/Razor Surround ((48k Z-Edition)) 2.Stereo +20 bass.irs",
@@ -1043,6 +1044,13 @@
             "weight-m": "1",
             "weight-s": "1",
             "weight-i": "1"
+        },
+        "delay": {
+            "state": "false",
+            "input-gain": "0",
+            "output-gain": "0",
+            "time-l": "0",
+            "time-r": "0"
         }
     }
 }

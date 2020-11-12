@@ -77,13 +77,14 @@ for_window    [app_id="dmenu-calc"]                      resize set width 40ppt 
 for_window    [title="x11 - TigerVNC"]             move container to $workspace9, title_format "VNC"
 
 # Audio settings
-set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, p(x)5"
+set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, p(x)5, loudn(e)ss equalizer"
 mode $mode_audio {
     bindsym --to-code {
 		 p exec pavucontrol, mode "default"
 	     s exec "connect-a2dp 00:0E:DD:06:24:1C", mode "default"
 	     a exec "connect-a2dp 20:74:CF:3B:36:A9", mode "default"
 	     x exec "connect-a2dp B0:67:2F:13:7A:F1", mode "default"
+	     e exec "pulseeffects-toggle", mode "default"
 
         Return mode "default"
 	    Escape mode "default"
@@ -215,7 +216,8 @@ bindsym --to-code {
 
 	# open terminal
 	$hyper+Return exec kitty
-	$win+Return exec kitty /bin/bash
+	$hyper+Shift+Return exec kitty --config NONE
+	$win+Return exec kitty --config NONE /bin/bash
 
 	# vault
 	Shift+F2 exec "open-vault 7200 &"
