@@ -2,6 +2,13 @@ zstyle ':z4h:ssh:*'                               send-extra-files       '~/.zsh
 zstyle ':z4h:term-title:ssh'                      preexec                '%* | %n@%m: ${1//\%/%%}'
 zstyle ':z4h:ssh:*'                               enable 'yes'
 zstyle ':z4h:ssh:*'                               ssh-command             command ssh -S none
+zstyle -e ':z4h:ssh:*'                            retrieve-history 'reply=($ZDOTDIR/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
+zstyle    ':z4h:term-title:ssh'                   preexec                '%* | %n@%m: ${1//\%/%%}'
+
+if ! (( P9K_SSH )); then
+    zstyle ':z4h:sudo' term ''
+fi
+
 # zstyle -e ':z4h:ssh:*'                            retrieve-history       'reply=($XDG_DATA_HOME/zsh-history/${z4h_ssh_host##*:})'
 
 z4h-ssh-configure() {

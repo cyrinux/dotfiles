@@ -81,7 +81,7 @@ copy "etc/conf.d/snapper"
 copy "etc/fwupd/uefi.conf"
 copy "etc/iwd/main.conf"
 copy "etc/vnstat.conf"
-copy "etc/intel-undervolt.conf"
+# copy "etc/intel-undervolt.conf"
 copy "etc/modules-load.d/v4l2loopback.conf"
 copy "etc/modprobe.d/v4l2loopback.conf"
 copy "etc/pacman.d/hooks"
@@ -104,7 +104,7 @@ copy "etc/parcimonie.sh.d/cyril.conf"
 # copy "etc/audit/auditd.conf"
 # copy "etc/audit/audit.rules"
 copy "etc/modules-load.d/pkcs8.conf"
-copy "etc/tlp.conf" 644
+# copy "etc/tlp.conf" 644
 copy "etc/nmtrust/trusted_units" 644
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
@@ -159,7 +159,8 @@ else
     systemctl_enable_start "vnstat.service"
     systemctl_enable_start "usbguard.service"
     systemctl_enable_start "usbguard-dbus.service"
-    systemctl_enable_start "tlp.service"
+    # systemctl_enable_start "tlp.service"
+    systemctl_enable_start "tuned.service"
     systemctl_enable_start "thermald.service"
     systemctl_enable_start "privoxy.service"
     systemctl_enable_start "btrfs-scrub@-.timer"
@@ -192,7 +193,7 @@ else
     timedatectl set-ntp true
 
     echo "Configuring aurutils"
-    ln -sf /etc/pacman.conf /usr/share/devtools/pacman-aur.conf
+    ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
     if is_chroot || in_docker; then
         echo >&2 "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."

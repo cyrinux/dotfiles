@@ -8,13 +8,13 @@ usage() {
 
 connect() {
     bluetooth on
-    sleep 0.5
+    sleep 1
     echo 'default-agent' | bluetoothctl
-    sleep 0.5
-    # echo "disconnect $mac" | bluetoothctl
-    # sleep 0.5
+    sleep 1
+    echo "disconnect $mac" | bluetoothctl
+    sleep 1
     echo "connect $mac" | bluetoothctl
-    sleep 0.5
+    sleep 1
 }
 
 set_a2dp() {

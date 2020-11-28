@@ -81,4 +81,7 @@ useConfigOnly = true
 [commit]
 gpgsign = true
 
+[absorb]
+maxStack=50
+
 # vim:ft=ini

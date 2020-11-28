@@ -29,7 +29,7 @@
         "cpu",
         "memory",
         "backlight",
-        "custom/px5-battery",
+        "custom/headset-battery",
         "custom/keyboard-layout",
         "battery",
         "clock",
@@ -139,7 +139,8 @@
         "signal": 3,
         "interval": "once",
         "on-click-right": "sway-cast lq",
-        "on-click": "sway-cast hq"
+        "on-click": "sway-cast hq",
+        "on-click-middle": "pkill -f wf-recorder"
     },
     "custom/cast": {
         "exec": "waybar-cast",
@@ -147,7 +148,8 @@
         "signal": 3,
         "interval": "once",
         "on-click-right": "sway-cast lq",
-        "on-click": "sway-cast hq"
+        "on-click": "sway-cast hq",
+        "on-click-middle": "pkill -f gst-launch-1.0"
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -177,9 +179,9 @@
         "format": "{icon} {percent}%",
         "format-icons": [""]
     },
-    "custom/px5-battery": {
-        "exec": "waybar-px5-battery",
-        "interval": "120",
+    "custom/headset-battery": {
+        "exec": "waybar-headset-battery",
+        "interval": "600",
 		"format": " {}"
     },
     "battery": {

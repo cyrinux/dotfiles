@@ -18,7 +18,7 @@ backup() {
 }
 
 lsrepos() {
-    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/restic" -type f |
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personalrestic" -type f |
         sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 
