@@ -95,5 +95,6 @@ else # we need to make a new normal container
     export QUTE_CONTAINER=$container
     setsid $QUTE --basedir "$baseDir" --config-py "$HOME/.config/qutebrowser/config.py" \
         --set window.title_format "{perc} [${container}]{title_sep}{current_title}" \
+        --debug --logfilter greasemonkey,js \
         $ARGS > /dev/null &
 fi

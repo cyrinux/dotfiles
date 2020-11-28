@@ -2,37 +2,39 @@
 
 trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 
-pkill -x gst-launch-1.0
+webcam &
 
-[ $? -ne 0 ] && {
-    export GST_VAAPI_ALL_DRIVERS=1
-    { sleep 2 && pkill -RTMIN+3 -x waybar; } &
-    case $1 in
-        hq | rtp)
-            notify-send 'Cast' 'RTP high quality only'
-            gst-launch-1.0 v4l2src device=/dev/video9 \
-                ! videoconvert \
-                ! videoscale ! video/x-raw,width=1920,height=1080 \
-                ! vaapih264enc quality-level=4 \
-                ! h264parse \
-                ! queue \
-                ! rtph264pay config-interval=1 pt=96 ! udpsink host=live.levis.name port=8004
-            ;;
-        lq | rtmp | streaming)
-            notify-send 'Cast' 'RTMP all quality streaming'
-            gst-launch-1.0 v4l2src device=/dev/video9 \
-                ! videoscale ! video/x-raw,width=1920,height=1080 \
-                ! videoconvert ! vaapih264enc \
-                ! h264parse ! flvmux ! rtmpsink location='rtmp://live.levis.name:1935/stream/cyrinux live=1'
-            ;;
-        preview)
-            mpv rtmp://live.levis.name:1935/stream/cyrinux &
-            ;;
-        *)
-            echo "Help: $0 hq|lq"
-            ;;
-    esac
-}
+export GST_VAAPI_ALL_DRIVERS=1
+{ sleep 2 && pkill -RTMIN+3 -x waybar; } &
+case $1 in
+    hq | rtp | hq-only)
+        pkill -x gst-launch-1.0
+        notify-send 'Cast' 'RTP high quality only'
+        gst-launch-1.0 v4l2src device=/dev/video9 \
+            ! videoconvert \
+            ! videoscale ! video/x-raw,width=1920,height=1080 \
+            ! vaapih264enc quality-level=4 \
+            ! h264parse \
+            ! mux. audiotestsrc wave=silence freq=200 ! voaacenc ! aacparse ! mux. mpegtsmux name=mux \
+            ! rtph264pay config-interval=1 pt=96 \
+            ! udpsink host=live.levis.name port=8004
+        ;;
+    lq | rtmp | streaming | all)
+        pkill -x gst-launch-1.0
+        notify-send 'Cast' 'RTMP all quality streaming'
+        gst-launch-1.0 v4l2src device=/dev/video9 \
+            ! videoscale ! video/x-raw,width=1920,height=1080 \
+            ! videoconvert ! vaapih264enc ! h264parse \
+            ! flvmux \
+            ! rtmpsink location='rtmp://live.levis.name:1935/stream/cyrinux live=1'
+        ;;
+    preview)
+        nohup mpv rtmp://live.levis.name:1935/stream/cyrinux
+        ;;
+    *)
+        echo "Help: $0 hq|lq|preview"
+        ;;
+esac
 
 # Cast in RTMP with gstreamer
 # gst-launch-1.0 v4l2src device=/dev/video9 ! videoscale ! video/x-raw,width=1920,height=1080 ! videoconvert ! vaapih264enc ! h264parse ! flvmux ! rtmpsink location='rtmp://live.levis.name:1935/stream/cyrinux live=1'
@@ -42,3 +44,34 @@ pkill -x gst-launch-1.0
 
 # Watch live from mpv
 # mpv rtmp://live.levis.name:1935/stream/cyrinux
+#
+# Test
+# ffmpeg -re -f lavfi -i testsrc -c:v libx264 -b:v 1600k -preset ultrafast -b 900k -c:a libfdk_aac -b:a 128k -s 1920x1080 -x264opts keyint=50 -g 25 -pix_fmt yuv420p -f flv "rtmp://live.levis.name:1935/stream/cyrinux live=1"
+#
+# ffmpeg -f v4l2 -video_size 1920x1080 -framerate 30 -i /dev/video9 \
+#     -f v4l2 -video_size 320x240 -framerate 30 -i /dev/video0 \
+#     -f alsa -ac 2 -i hw:0,0 -filter_complex \
+#     "[0:v]scale=1024:-1,setpts=PTS-STARTPTS[bg]; \
+#  [1:v]scale=120:-1,setpts=PTS-STARTPTS[fg]; \
+#  [bg][fg]overlay=W-w-10:10,format=yuv420p[v]" \
+#     -map "[v]" -map 2:a -c:v libx264 -preset veryfast \
+#     -b:v 3000k -maxrate 3000k -bufsize 4000k -c:a aac -b:a 160k -ar 44100 \
+#     -f flv "rtmp://live.levis.name:1935/stream/cyrinux live=1"
+
+# # RTP OK
+# ffmpeg -hwaccel vaapi -vaapi_device /dev/dri/renderD128 -f v4l2 -video_size 1920x1080 -framerate 30 -i /dev/video9 \
+#     -f v4l2 -video_size 320x240 -i /dev/video0  -threads 7 -y -filter_complex \
+#     "[0:v]scale=3840:2160,setpts=PTS-STARTPTS[bg]; \
+#     [1:v]scale=120:-1,setpts=PTS-STARTPTS[fg]; \
+#     [bg][fg]overlay=W-w-10:10,format=nv12,hwupload,scale_vaapi=w=3840:h=2160[v]" \
+#     -map "[v]" -vcodec h264_vaapi -qp 22 -bf 2 \
+#     -f rtp "udp://live.levis.name:8004"
+
+# ffmpeg -hwaccel vaapi -vaapi_device /dev/dri/renderD128 -f v4l2 -framerate 30 -video_size 3840x2160 -i /dev/video9 \
+#     -f v4l2 -video_size 320x240 -framerate 30 -i /dev/video0 \
+#     -f pulse -i default -filter_complex \
+#     "[0:v]scale=1920:-1,setpts=PTS-STARTPTS[bg]; \
+#     [1:v]scale=120:-1,setpts=PTS-STARTPTS[fg]; \
+#     [bg][fg]overlay=W-w-10:10,format=yuv420p,scale=1920:-1[v]" \
+#     -map "[v]" -map 2:a -vcodec:v libx264 -preset veryfast -maxrate 3000k -bufsize 4000k -g 60 -c:a aac -b:a 160k -ar 44100 \
+#     -f flv "rtmp://live.levis.name:1935/stream/cyrinux live=1"
