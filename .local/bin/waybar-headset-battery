@@ -1,0 +1,9 @@
+#!/bin/sh
+exit 0
+# aftershock
+level=$(bluetooth-headset-battery-level 20:74:CF:3B:36:A9.12 | grep -v denied 2> /dev/null)
+
+# px5
+# level=$(bluetooth-headset-battery-level B0:67:2F:13:7A:F1.12 2> /dev/null)
+
+echo $level | cut -d ' ' -f6

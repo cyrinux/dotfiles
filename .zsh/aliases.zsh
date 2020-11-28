@@ -52,7 +52,7 @@ alias rm!='\rm -rf'
 alias send="croc --relay6 send"
 alias sudo='sudo -E '
 alias sysdig="sudo sysdig"
-alias tree='tree -a -I .git --dirsfirst'
+alias tree='LS_COLORS= tree -aC -I .git --dirsfirst'
 alias utc='env TZ="UTC" date'
 alias yubikey-fix='sudo systemctl stop pcscd.service'
 alias zshupdate='z4h update'

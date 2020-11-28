@@ -11,10 +11,6 @@ zstyle ':z4h:(fzf-complete|cd-down)'                  find-flags             -na
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 zstyle ':zle:(up|down)-line-or-beginning-search'      leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
-zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh_history.${(%):-%m}:$z4h_ssh_host)'
-zstyle ':z4h:sudo' term ''
-
-
 
 ###
 
@@ -100,6 +96,6 @@ z4h source -- /usr/share/LS_COLORS/dircolors.sh
 z4h source -- /usr/share/nnn/quitcd/quitcd.bash_zsh
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
-z4h compile   -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
+z4h compile -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
 
 # command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null

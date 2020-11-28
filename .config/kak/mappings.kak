@@ -41,6 +41,8 @@ map global user -docstring 'select up'                <a-v>  ': vertical-selecti
 map global user -docstring 'select up and down'       v      ': vertical-selection-up-and-down<ret>'
 map global user -docstring 'new terminal in cwd'      n      ': kitty-terminal zsh<ret>'
 map global user -docstring 'disable autoformat'       d      ': disable-autoformat<ret>'
+map global user -docstring 'set yaml style' Y ': set buffer filetype yaml<ret>'
+
 
 define-command -hidden -params 1 extend-line-down %{ execute-keys "<a-:>%arg{1}X" }
 define-command -hidden -params 1 extend-line-up   %{
