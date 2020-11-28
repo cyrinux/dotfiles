@@ -17,6 +17,7 @@ alias kgs!='kgs --all-namespaces'
 alias kl='kubectl logs -f'
 alias khpa='kg! hpa'
 alias klogs='stern'
+alias koff='kubectl config unset current-context'
 drain_node() {
     kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
 }
@@ -26,4 +27,3 @@ kout() {
         sed -i -E '/^\s*(access-token|expires-in|expires-on|refresh-token)/d' "$config"
     done <<< "${KUBECONFIG:-$HOME/.kube/config}:"
 }
-

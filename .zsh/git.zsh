@@ -75,6 +75,7 @@ alias gm='git merge'
 alias gma='git merge --abort'
 
 alias gp='git push -u'
+alias gpc='git createmr'
 alias gpf='git push --force-with-lease'
 alias gpf!='git push --force'
 

@@ -19,6 +19,8 @@ fi
 kill $!
 
 [ -f area.png ] && swappy -f area.png
+convert area.png -resize 50% reduced.png
+wl-copy < reduced.png
 
 systemctl --user start sway-inactive-window-transparency.service
 

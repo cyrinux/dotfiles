@@ -61,6 +61,7 @@ workspace_auto_back_and_forth yes
 for_window    [app_id="org.ksnip.ksnip"]     floating enable
 for_window    [app_id=".*"]                  sticky enable
 for_window    [app_id="Zoom"]                sticky enable
+for_window    [title="webcamfloat"]          floating enable, sticky enable, resize set with 80ppt height 60ppt
 for_window    [window_role="pop-up"]         floating enable
 for_window    [class="ksnip"]                floating enable
 for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
@@ -77,7 +78,7 @@ for_window    [app_id="dmenu-calc"]                      resize set width 40ppt 
 for_window    [title="x11 - TigerVNC"]             move container to $workspace9, title_format "VNC"
 
 # Audio settings
-set $mode_audio "Audio: (p)avucontrol, connect (s)hure-bt1, (a)eropex, p(x)5, loudn(e)ss equalizer"
+set $mode_audio "(p)avucontrol, (s)hure-bt1, (a)eropex, p(x)5, loudn(e)ss equalizer"
 mode $mode_audio {
     bindsym --to-code {
 		 p exec pavucontrol, mode "default"
@@ -336,7 +337,7 @@ bindsym --to-code {
 exec_always $kanshi
 
 # Load host-specific configs
-include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
+# include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 
 # Load systemd integration
 include /etc/sway/config.d/*
