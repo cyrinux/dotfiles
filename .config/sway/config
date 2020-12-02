@@ -205,7 +205,6 @@ bindsym --to-code {
     $win+Tab					  [con_mark=_prev] focus
 
     # Misc
-	$hyper+F1                     exec "resolvectl flush-caches"
 	$win+F1                       exec "resolvectl flush-caches"
 
     Print                         exec sway-screenshot-area
@@ -251,6 +250,17 @@ bindsym --to-code {
 	$hyper+underscore $workspace8
 	$hyper+ccedilla   $workspace9
 	$hyper+agrave     $workspace0
+
+	F1  $workspace1
+	F2  $workspace2
+	F3  $workspace3
+	F4  $workspace4
+	F5  $workspace5
+	F6  $workspace6
+	F7  $workspace7
+	F8  $workspace8
+	F9  $workspace9
+	F10 $workspace0
 
 	# Move window to workspace using number row
 	$win+ampersand  move container to $workspace1

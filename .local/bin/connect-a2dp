@@ -28,7 +28,7 @@ else
     mac="${1::17}"
     echo "Connecting to $mac ..."
     connect
-    sleep 2
+    sleep 4
     echo "Set a2dp profile to $mac ..."
     set_a2dp
     notify-send -i /usr/share/icons/Adwaita/scalable/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to $1"
