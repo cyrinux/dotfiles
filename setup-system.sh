@@ -13,7 +13,7 @@ dotfiles_dir="$(
 )"
 cd "$dotfiles_dir"
 
-if (( "$EUID" )); then
+if (("$EUID")); then
     sudo -s "$dotfiles_dir/$script_name" "$@"
     exit 0
 fi
@@ -84,6 +84,7 @@ copy "etc/vnstat.conf"
 # copy "etc/intel-undervolt.conf"
 copy "etc/modules-load.d/v4l2loopback.conf"
 copy "etc/modprobe.d/v4l2loopback.conf"
+copy "etc/modprobe.d/kvm.conf"
 copy "etc/pacman.d/hooks"
 copy "etc/snap-pac.conf"
 copy "etc/snapper/configs/root"
@@ -120,7 +121,7 @@ copy "etc/systemd/system/backup-repo@.service"
 copy "etc/systemd/system/backup-repo@.timer"
 copy "usr/local/bin/cpu"
 
-(( "$reverse" ))&& exit 0
+(("$reverse"))  && exit 0
 
 echo ""
 echo "==============================="

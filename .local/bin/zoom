@@ -1,5 +1,0 @@
-#!/bin/sh
-export QT_QPA_PLATFORM=""
-export XDG_SESSION_TYPE=wayland
-export XDG_CURRENT_DESKTOP=GNOME
-exec /usr/bin/zoom "$@"
