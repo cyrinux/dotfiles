@@ -191,6 +191,7 @@ else
     systemctl_enable_start "autotiling.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
     systemctl_enable_start "systemd-tmpfiles-setup.service"
+    systemctl_enable_start "gamemoded.service"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "

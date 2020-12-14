@@ -43,6 +43,8 @@ c.tabs.mousewheel_switching = False
 c.qt.args += [
     "enable-gpu-rasterization",
     "enable-features=WebRTCPipeWireCapturer",
+    "enable-experimental-web-platform-features",
+    "blink-settings=preferredColorScheme=1",
 ]
 c.qt.process_model = "process-per-site-instance"
 # c.qt.process_model = "process-per-site"
@@ -55,15 +57,30 @@ config.set("content.register_protocol_handler", True, "*://*.levis.name")
 config.set("content.cookies.accept", "all", "*://*.dailymotion.com")
 config.set("content.cookies.accept", "all", "*://*.dm.gg")
 
-config.set("content.register_protocol_handler", True, "*://app.slack.com")
-config.set("content.media.audio_capture", True, "*://app.slack.com")
-config.set("content.media.video_capture", True, "*://app.slack.com")
-config.set("content.desktop_capture", True, "*://app.slack.com")
+config.set("content.register_protocol_handler", True, "*://calendar.google.com")
 
+config.set("content.media.audio_video_capture", True, "*://app.wire.com")
 config.set("content.media.audio_capture", True, "*://app.wire.com")
 config.set("content.media.video_capture", True, "*://app.wire.com")
 config.set("content.desktop_capture", True, "*://app.wire.com")
 
+config.set("content.register_protocol_handler", True, "*://teams.microsoft.com")
+config.set("content.media.audio_video_capture", True, "*://teams.microsoft.com")
+config.set("content.media.audio_capture", True, "*://teams.microsoft.com")
+config.set("content.media.video_capture", True, "*://teams.microsoft.com")
+config.set("content.desktop_capture", True, "*://teams.microsoft.com")
+config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
+
+config.set("content.register_protocol_handler", True, "*://app.slack.com")
+config.set("content.media.audio_video_capture", True, "*://app.slack.com")
+config.set("content.media.audio_capture", True, "*://app.slack.com")
+config.set("content.media.video_capture", True, "*://app.slack.com")
+config.set("content.desktop_capture", True, "*://app.slack.com")
+
+# privacy
+c.content.webrtc_ip_handling_policy = "default-public-interface-only"
+c.content.site_specific_quirks = False
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
 
 # privacy
 c.content.cookies.accept = "no-3rdparty"
@@ -72,9 +89,6 @@ c.content.autoplay = False
 with config.pattern("*://*.levis.name/") as p:
     p.content.autoplay = True
 
-c.content.webrtc_ip_handling_policy = "default-public-interface-only"
-c.content.site_specific_quirks = False  # Change to True to be able to login to google
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"
 c.content.canvas_reading = False
 c.content.host_blocking.enabled = True
 
