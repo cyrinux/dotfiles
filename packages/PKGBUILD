@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.4.5
+pkgver=2.4.6
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -632,10 +632,8 @@ depends=(
     'mozilla-common'
     'nemo'
     'opera-ffmpeg-codecs'
-    'otf-fira-code'
     'pass-rotate'
     'pdftk'
-    'perl-test-tester'
     'pulseeffects'
     'pulsemixer'
     'python-bluepy'
