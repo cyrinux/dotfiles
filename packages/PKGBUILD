@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.4.1
+pkgver=2.4.3
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -579,7 +579,6 @@ depends=(
     'writeas-cli'
     'wrk'
     'xdg-user-dirs'
-    'xmind-2020'
     'xorg-fonts-misc'
     'xorg-server'
     'xorg-server-xwayland'
@@ -668,4 +667,7 @@ depends=(
     'vulkan-tools'
     'wgcf'
     'zoom-firefox'
+    'linux-steam-integration'
+    'steam-native-runtime'
+    'mesa-git'
 )
