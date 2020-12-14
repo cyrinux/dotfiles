@@ -117,8 +117,12 @@ read -r -a devicelist <<< "$devicelist"
 device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
 clear
 
-echo -e "\n### Setting up fastest mirrors"
-reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
+# echo -e "\n### Setting up fastest mirrors"
+# reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
+
+luks_header_device=$(get_choice "Installation" "Select disk to write LUKS header to" "${devicelist[@]}") || exit 1
+
+clear
 
 echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
