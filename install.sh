@@ -215,8 +215,8 @@ pacstrap -i /mnt cyrinux
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
-# echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
-echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
+echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
+# echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet i915.fastboot=1" > /mnt/etc/kernel/cmdline
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
 genfstab -L /mnt >> /mnt/etc/fstab
