@@ -117,7 +117,6 @@ copy "etc/systemd/logind.conf"
 copy "etc/systemd/system/backup-repo@pkgbuild"
 copy "etc/systemd/system/backup-repo@.service"
 copy "etc/systemd/system/backup-repo@.timer"
-copy "usr/local/bin/cpu"
 
 (("$reverse"))  && exit 0
 
