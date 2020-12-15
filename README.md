@@ -6,7 +6,7 @@ From last archlinux live iso:
 
 ```
 $ loadkeys fr
-$ wifi-menu
+$ iwctl
 $ bash <(curl -sL git.io/cyrinux-install)
 ```
 
