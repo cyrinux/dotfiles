@@ -13,10 +13,15 @@ command -v pydf      &> /dev/null    && alias df='pydf'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 
+man() (
+    command man "$@" || "$1" --help || "$1" -h
+)
+
 if [[ -x ~/bin/num-cpus ]]; then
     command -v make  &>/dev/null && alias make='make -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
     command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
 fi
+
 alias lmr='mr --config ~/.config/myrepos.conf'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
