@@ -148,8 +148,8 @@ if [[ "$fde" == "Yes" ]]; then
     ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
     ykfde-open -d "${part_root}" -n luks
 else
-    echo -n ${password} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
-    echo -n ${password} | cryptsetup luksOpen $cryptargs "${part_root}" luks
+    echo -n ${lukspw} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
+    echo -n ${lukspw} | cryptsetup luksOpen $cryptargs "${part_root}" luks
 fi
 
 mkfs.btrfs -L btrfs /dev/mapper/luks
