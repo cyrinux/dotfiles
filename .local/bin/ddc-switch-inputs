@@ -1,0 +1,19 @@
+#!/bin/bash
+# Usage: ddc-switch-inputs 1
+case $1 in
+    1)
+        # Config 1: Laptop
+        OUT="0x0f"
+        ;;
+    2)
+        # Config 2: Workstation
+        OUT="0x10"
+        ;;
+    *)
+        echo "Unknown input '$1'"
+        exit 1
+        ;;
+esac
+
+ddcutil --bus=6 setvcp 60 ${OUT} &
+wait
