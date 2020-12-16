@@ -81,6 +81,7 @@ copy "etc/conf.d/snapper"
 copy "etc/fwupd/uefi.conf"
 copy "etc/iwd/main.conf"
 copy "etc/vnstat.conf"
+copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/v4l2loopback.conf"
 copy "etc/modprobe.d/v4l2loopback.conf"
 copy "etc/pacman.d/hooks"
@@ -90,6 +91,7 @@ copy "etc/snapper/configs/config"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/51-tcp-ip-stack.conf"
 copy "etc/sysctl.d/99-sysrq.conf"
+copy "etc/udev/rules.d/45-ddcutil-i2c.rules"
 copy "etc/systemd/journald.conf"
 copy "etc/systemd/system/reflector.service"
 copy "etc/systemd/system/reflector.timer"
@@ -100,10 +102,8 @@ copy "etc/NetworkManager/conf.d"
 copy "etc/updatedb.conf"
 copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"
-# copy "etc/audit/auditd.conf"
-# copy "etc/audit/audit.rules"
 copy "etc/modules-load.d/pkcs8.conf"
-# copy "etc/tlp.conf" 644
+copy "etc/tlp.conf" 644
 copy "etc/nmtrust/trusted_units" 644
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
