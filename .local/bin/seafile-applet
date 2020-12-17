@@ -1,3 +1,3 @@
 #!/bin/sh
 
-QT_SCALE_FACTOR=0.5 /usr/bin/seafile-applet "$@"
+QT_SCALE_FACTOR=1.0 /usr/bin/seafile-applet "$@"
