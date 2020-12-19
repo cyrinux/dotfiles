@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Faeria
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/397060
+Icon=steam_icon_397060
+Terminal=false
+Type=Application
+Categories=Game;

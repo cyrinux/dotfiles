@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Cyberpunk 2077
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/1091500
+Icon=steam_icon_1091500
+Terminal=false
+Type=Application
+Categories=Game;

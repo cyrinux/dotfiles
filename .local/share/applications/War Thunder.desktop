@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=War Thunder
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/236390
+Icon=steam_icon_236390
+Terminal=false
+Type=Application
+Categories=Game;
