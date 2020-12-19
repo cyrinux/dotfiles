@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.4.9
+pkgver=2.4.10
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -88,6 +88,7 @@ depends=(
     'beets'
     'bind-tools'
     'bluetooth-headset-battery-level'
+    'pulseaudio-bluetooth'
     'bluez-firmware'
     'bluez-utils'
     'bolt'
