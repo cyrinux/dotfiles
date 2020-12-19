@@ -255,7 +255,7 @@ arch-chroot /mnt arch-secure-boot initial-setup || true
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video plugdev; do
+for group in wheel network video render plugdev ddc libvirt; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done

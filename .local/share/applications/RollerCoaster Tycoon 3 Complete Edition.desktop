@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=RollerCoaster Tycoon® 3: Complete Edition
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/1368820
+Icon=steam_icon_1368820
+Terminal=false
+Type=Application
+Categories=Game;
