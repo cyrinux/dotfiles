@@ -161,6 +161,12 @@
 		"format-critical": " {temperatureC}°C",
 		"format": " {temperatureC}°C"
 	},
+    "temperature": {
+		"thermal-zone": 2,
+		"critical-threshold": 80,
+		"format-critical": " {temperatureC}°C",
+		"format": " {temperatureC}°C"
+	},
     "cpu": {
         "format": " {usage}%",
         "states": {

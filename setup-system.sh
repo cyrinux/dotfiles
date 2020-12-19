@@ -65,6 +65,12 @@ systemctl_enable_start() {
     systemctl start "$1"
 }
 
+systemctl_disable_stop() {
+    echo "systemctl disable --now "$1""
+    systemctl disable "$1"
+    systemctl stop "$1"
+}
+
 echo ""
 echo "=========================="
 echo "Setting up /etc configs..."
@@ -146,7 +152,8 @@ else
     systemctl_enable_start "NetworkManager.service"
     systemctl_enable_start "NetworkManager-dispatcher.service"
     systemctl_enable_start "earlyoom.service"
-    systemctl_enable_start "ModemManager.service"
+    # systemctl_enable_start "ModemManager.service"
+    systemctl_disable_stop "ModemManager.service"
     systemctl_enable_start "iwd.service"
     systemctl_enable_start "linux-modules-cleanup.service"
     systemctl_enable_start "systemd-resolved"

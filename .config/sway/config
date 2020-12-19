@@ -248,17 +248,6 @@ bindsym --to-code {
 	$hyper+ccedilla   $workspace9
 	$hyper+agrave     $workspace0
 
-	F1  $workspace1
-	F2  $workspace2
-	F3  $workspace3
-	F4  $workspace4
-	F5  $workspace5
-	F6  $workspace6
-	F7  $workspace7
-	F8  $workspace8
-	F9  $workspace9
-	F10 $workspace0
-
 	# Move window to workspace using number row
 	$win+ampersand  move container to $workspace1
 	$win+eacute     move container to $workspace2

@@ -1,8 +1,8 @@
 # Beware! This file is rewritten by htop when settings are changed in the interface.
 # The parser is also very primitive, and not human-friendly.
 fields=0 48 46 47 39 40 1
-sort_key=46
-sort_direction=1
+sort_key=0
+sort_direction=-1
 hide_kernel_threads=1
 hide_userland_threads=1
 shadow_other_users=1
