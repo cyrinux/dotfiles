@@ -54,6 +54,7 @@ echo "======================================="
 echo "Setting up dotfiles for current user..."
 echo "======================================="
 
+link ".config/display-switch"
 link ".config/pythonrc.py"
 link ".config/user-tmpfiles.d"
 link ".config/environment.d"

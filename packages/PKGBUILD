@@ -652,4 +652,5 @@ depends=(
     'wgcf'
     'zoom-firefox'
     'aws-cli-v2-bin'
+    "python-qutescript-git"
 )
