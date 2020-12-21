@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.4.10
+pkgver=2.4.11
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -166,8 +166,8 @@ depends=(
     'freerdp'
     'fwupd'
     'fzf'
-    'gammastep'
     'gegl'
+    'wlsunset'
     'ghc'
     'git'
     'git-crypt'
