@@ -17,7 +17,11 @@ zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
 z4h install romkatv/archive || return
 z4h init || return
 
-###
+####
+
+zstyle ':completion:*' matcher-list "m:{a-z}={A-Z}" "l:|=* r:|=*"
+
+####
 
 fpath+=($Z4H/romkatv/archive)
 autoload -Uz archive lsarchive unarchive edit-command-line hist
@@ -41,17 +45,6 @@ my-ctrl-z() {
 }
 zle -N my-ctrl-z
 
-toggle-sudo() {
-    [[ -z "$BUFFER" ]] && zle up-history -w
-    if [[ "$BUFFER" != "sudo "* ]]; then
-        BUFFER="sudo $BUFFER"
-        CURSOR=$(( CURSOR + 5 ))
-    else
-        BUFFER="${BUFFER#sudo }"
-    fi
-}
-zle -N toggle-sudo
-
 ###
 
 z4h bindkey z4h-backward-kill-word  Ctrl+Backspace
@@ -66,7 +59,6 @@ z4h bindkey z4h-cd-forward          Alt+L
 z4h bindkey z4h-cd-up               Alt+K
 z4h bindkey z4h-cd-down             Alt+J
 
-z4h bindkey toggle-sudo             Alt+S
 z4h bindkey my-ctrl-z               Alt+Z
 
 z4h bindkey edit-command-line       Alt+E
@@ -97,5 +89,3 @@ z4h source -- /usr/share/nnn/quitcd/quitcd.bash_zsh
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
 z4h compile -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
-
-# command -v patch > /dev/null && patch -Np1 -i ~/.dotfiles/z4h.patch -r /dev/null -d $Z4H/zsh4humans/ > /dev/null
