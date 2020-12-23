@@ -159,7 +159,7 @@ else
     systemctl_enable_start "linux-modules-cleanup.service"
     systemctl_enable_start "systemd-resolved"
     systemctl_enable_start "bluetooth.service"
-    systemctl_enable_start "ufw.service"
+    systemctl_enable_start "firewalld.service"
     systemctl_enable_start "snapper-boot.timer"
     systemctl_enable_start "snapper-timeline.timer"
     systemctl_enable_start "snapper-cleanup.timer"
@@ -210,13 +210,6 @@ else
 
         echo "Applying kernel tuning"
         sysctl --system > /dev/null
-
-        echo "Configuring firewall rules and dev"
-        ufw --force reset > /dev/null
-        ufw default allow outgoing
-        ufw default deny incoming
-        ufw enable || true
-        find /etc/ufw -type f -name '*.rules.*' -delete
 
         echo "Reload udev rules"
         udevadm control --reload

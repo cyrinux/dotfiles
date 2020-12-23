@@ -339,6 +339,4 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 include /etc/sway/config.d/*
 exec systemctl --user start sway-session.target
 
-exec kitty
-
 # vi:ft=i3
