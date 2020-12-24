@@ -120,7 +120,7 @@
         "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
-        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus",
+        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus 2>/dev/null",
         "return-type": "json",
 	    "markup": true,
         "interval": 30
@@ -228,9 +228,7 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol",
-        "on-right-click": "pulseeffects",
-        "on-middle-click": "pulseeffects-toggle"
+        "on-click": "pavucontrol"
     },
     "custom/scratchpad": {
 	    "format": "{} 󰀿",
