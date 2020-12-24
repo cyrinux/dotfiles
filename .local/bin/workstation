@@ -1,0 +1,19 @@
+#!/bin/bash
+
+trap 'pkill -P $$' EXIT
+
+wol 6c:6a:77:5e:08:ee
+
+echo "Please wait..."
+sleep 10
+ping -c 5 workstation.lan
+
+ssh workstation sudo /usr/local/bin/wake
+ssh -f -N -q -L5902:localhost:5900 workstation &
+
+sleep 4
+vncviewer localhost:5902
+
+ssh workstation sudo /usr/local/bin/suspend
+
+ping -c 10 workstation.lan

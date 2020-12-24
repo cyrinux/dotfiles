@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.1
+pkgver=2.5.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -88,7 +88,6 @@ depends=(
     'beets'
     'bind-tools'
     'bluetooth-headset-battery-level'
-    'pulseaudio-bluetooth'
     'bluez-firmware'
     'bluez-utils'
     'bolt'
@@ -144,7 +143,6 @@ depends=(
     'drm_info-git'
     'droidcam'
     'earlyoom'
-    'ebtables'
     'editorconfig-core-c'
     'edk2-ovmf'
     'enscript'
@@ -358,8 +356,7 @@ depends=(
     'proxychains-ng'
     'ps_mem'
     'publicsuffix-list'
-    'pulseaudio'
-    'pulseaudio-alsa'
+    'pipewire-pulse'
     'pv'
     'pwgen'
     'pydf'
@@ -617,7 +614,6 @@ depends=(
     'haskell-cmark-gfm'
     'haskell-regex-pcre'
     'hyperfine'
-    'i3-gnome-pomodoro-git'
     'js68'
     'k3s-bin'
     'lens-bin'

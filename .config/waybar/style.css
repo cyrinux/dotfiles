@@ -61,7 +61,6 @@ window#waybar {
   border-bottom: 3px solid @blue;
 }
 
-#custom-pomodoro.paused,
 #custom-usbguard,
 #custom-decrypted,
 #custom-systemd,
