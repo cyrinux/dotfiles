@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.2
+pkgver=2.5.3
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -505,8 +505,7 @@ depends=(
     'tlp'
     'tmux'
     'tmux-cssh'
-    'tor'
-    'torsocks'
+    'torbrowser-launcher'
     'traceroute'
     'transmission-gtk'
     'tree'
@@ -617,7 +616,6 @@ depends=(
     'js68'
     'k3s-bin'
     'lens-bin'
-    'lxdm-gtk3'
     'materia-gtk-theme'
     'minder'
     'mkinitcpio-encrypt-detached-header'
@@ -626,7 +624,6 @@ depends=(
     'nemo'
     'opera-ffmpeg-codecs'
     'pdftk'
-    'pulseeffects'
     'pulsemixer'
     'python-bluepy'
     'python-gphoto2'
@@ -639,8 +636,6 @@ depends=(
     'spiped'
     'standardnotes-desktop'
     'startup-notification'
-    'strawberry'
-    'tuned'
     'velero-bin'
     'vlc-nox'
     'vulkan-tools'
