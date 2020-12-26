@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.3
+pkgver=2.5.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -498,7 +498,6 @@ depends=(
     'tesseract-data-fra'
     'testssl.sh'
     'texlive-moderncv-git'
-    'thermald'
     'the_silver_searcher'
     'tig'
     'tigervnc'
