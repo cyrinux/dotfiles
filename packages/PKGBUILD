@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.4
+pkgver=2.5.5
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -644,5 +644,13 @@ depends=(
     'python-qutescript-git'
     'qrencode'
     'scli-git'
-
+    'linux-steam-integration'
+    'kubectl-krew'
+    'lib32-mangohud'
+    'mangohud'
+    'python-conda'
+    'python-pytorch-rocm'
+    'radeontop'
+    'rocm-libs'
+    'safeeyes'
 )
