@@ -107,7 +107,6 @@ copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "usr/local/etc/tarsnapper.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/updatedb.conf"
-copy "etc/pulse/default.pa" 644
 copy "etc/parcimonie.sh.d/cyril.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/tlp.conf" 644
