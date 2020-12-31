@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.6
+pkgver=2.5.8
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -651,4 +651,7 @@ depends=(
     'radeontop'
     'rocm-libs'
     'safeeyes'
+    'obs-studio-wayland'
+    'wlrobs-hg'
+    'obs-websocket'
 )
