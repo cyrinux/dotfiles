@@ -19,105 +19,105 @@
 */
 
 .window_main {
-    background: black;
-    opacity: 0.9;
-    border-color: transparent;
+  background: #282828;
+  opacity: 0.9;
+  border-color: transparent;
 }
 
 .btn_skip {
-    color: white;
-    font-size: 10pt;
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-color: white;
-    background: transparent;
-    border-width: 2px;
-    border-image: none;
+  color: white;
+  font-size: 10pt;
+  border-radius: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-color: white;
+  background: transparent;
+  border-width: 2px;
+  border-image: none;
 }
 
 .btn_skip:hover {
-    background: white;
-    color: black;
+  background: white;
+  color: #282828;
 }
 
 .btn_postpone {
-    color: white;
-    font-size: 10pt;
-    border-radius: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-color: white;
-    background: transparent;
-    border-width: 2px;
-    border-image: none;
+  color: white;
+  font-size: 10pt;
+  border-radius: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-color: white;
+  background: transparent;
+  border-width: 2px;
+  border-image: none;
 }
 
 .btn_postpone:hover {
-    background: white;
-    color: black;
+  background: white;
+  color: #282828;
 }
 
 .lbl_message {
-    font-size: 22pt;
-    color: white;
-    font-weight: bold;
+  font-size: 22pt;
+  color: white;
+  font-weight: bold;
 }
 
 .lbl_count {
-    font-size: 12pt;
-    color: white;
+  font-size: 12pt;
+  color: white;
 }
 
 .lbl_widget {
-    font-size: 9pt;
-    color: white;
+  font-size: 9pt;
+  color: white;
 }
 
 .btn_circle {
-    border-radius: 25px;
+  border-radius: 25px;
 }
 
 .lbl_plugin_name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .lbl_plugin_description {
-    color: #9B9B9B;
+  color: #9b9b9b;
 }
 
 .info_bar_long_break {
-    opacity: 0.9;
-    border-radius: 5px;
+  opacity: 0.9;
+  border-radius: 5px;
 }
 
 .warn_bar_rpc_server {
-    opacity: 0.9;
-    border-radius: 5px;
+  opacity: 0.9;
+  border-radius: 5px;
 }
 
 .toolbar {
-    background: black;
-    opacity: 0.9;
-    border-color: transparent;
+  background: #282828;
+  opacity: 0.9;
+  border-color: transparent;
 }
 
 .btn_menu {
-    border-width: 0px;
-    border-radius: 0px;
-    border-image: None;
-    background: white;
-    border-color: transparent;
+  border-width: 0px;
+  border-radius: 0px;
+  border-image: None;
+  background: white;
+  border-color: transparent;
 }
 
 .btn_menu:hover {
-    border-width: 0px;
-    border-radius: 0px;
-    border-image: None;
-    background: whitesmoke;
-    border-color: transparent;
+  border-width: 0px;
+  border-radius: 0px;
+  border-image: None;
+  background: whitesmoke;
+  border-color: transparent;
 }
