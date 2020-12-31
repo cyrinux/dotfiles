@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=The Dungeon Of Naheulbeuk: The Amulet Of Chaos
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/970830
+Icon=steam_icon_970830
+Terminal=false
+Type=Application
+Categories=Game;

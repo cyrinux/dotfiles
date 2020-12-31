@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-alias docker="sudo \docker"
+# alias docker="sudo \docker"
 alias dr="docker run --rm -it"
 alias di="docker images | head -n 1 && docker images | tail -n +2 | sort"
 alias dps="docker ps -a"
