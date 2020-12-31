@@ -134,6 +134,7 @@
     typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false
     typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_WITH_PYENV=true
     typeset -g POWERLEVEL9K_VIRTUALENV_{LEFT,RIGHT}_DELIMITER=
+    typeset -g POWERLEVEL9K_PYTHON_ICON=""
 
     ################[ pyenv: python environment (https://github.com/pyenv/pyenv) ]################
     typeset -g POWERLEVEL9K_PYENV_FOREGROUND=37

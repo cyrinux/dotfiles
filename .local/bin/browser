@@ -1,5 +1,5 @@
 #!/bin/sh
-menu=$(echo "personal\nwork\nshopping\ndisposable\ntor browser\ndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
+menu=$(echo "personal\nwork\nshopping\ndisposable\nndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
     "qutebrowser")
@@ -10,9 +10,6 @@ case $menu in
         ;;
     "disposable")
         firewarden qutebrowser "$@" &
-        ;;
-    "tor browser")
-        tor-browser-en "$@" &
         ;;
     "personal")
         qutebrowser-personal "$@" &

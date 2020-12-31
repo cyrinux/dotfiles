@@ -1,3 +1,5 @@
+export PATH="${PATH}:${HOME}/.krew/bin"
+
 alias k='kubectl'
 alias kc='kubectx "$(kubectx | fzf --height=10%)"'
 alias kn='kubens "$(kubens | fzf --height=10%)"'
