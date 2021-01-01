@@ -1,39 +1,24 @@
-# color=333333
-# indicator-idle-visible
-
-
-
-# ignore-empty-password
-# show-failed-attempts
-
-# font="Cantarell 10"
-# scaling=fill
-
-# indicator-radius=100
-# indicator-thickness=20
-
-# inside-color=1d2021b3
-# text-color=ebdbb2
-# ring-color=98971a
-# key-hl-color=b8bb26
-# bs-hl-color=d77921
-
-# text-clear-color=1d2021
-# inside-clear-color=fabd2fb3
-# ring-clear-color=d79921
-
-# text-caps-lock-color=b16286
-
-# text-ver-color=1d2021
-# ring-ver-color=458588
-# inside-ver-color=83a598b3
-
-# text-wrong-color=1d2021
-# ring-wrong-color=cc241d
-# inside-wrong-color=fb4934b3
-
 color=222222
-inside-color=282828
+hide-keyboard-layout
+ignore-empty-password
+indicator-caps-lock
+indicator-radius=100
+indicator-thickness=10
 inside-clear-color=222222
+inside-color=282828
+inside-ver-color=ff99441c
+inside-wrong-color=ffffff1c
+key-hl-color=ffffff80
+line-clear-color=00000000
+line-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+ring-clear-color=ff994430
 ring-color=282828
+ring-ver-color=ffffff00
+ring-wrong-color=ffffff55
+separator-color=22222260
+text-caps-lock-color=00000000
 text-clear-color=222222
+text-ver-color=00000000
+text-wrong-color=00000000
