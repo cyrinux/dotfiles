@@ -326,6 +326,7 @@ bindsym --to-code {
 }
 
 exec_always $kanshi
+exec_always import-gsettings
 
 # Load host-specific configs
 # include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
