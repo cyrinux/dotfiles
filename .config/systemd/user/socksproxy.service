@@ -1,0 +1,10 @@
+[Unit]
+Description=Local socks proxy to proxychains
+
+[Service]
+ExecStart=/usr/bin/proxychains microsocks -p 1080
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
