@@ -70,6 +70,7 @@ for_window    [class="Wire"]                 move container to $workspace3
 for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
 for_window    [app_id="wev"]                 floating enable
 for_window    [app_id="udiskie"]             floating enable
+for_window    [class="Steam"]                 inhibit_idle fullscreen
 for_window    [app_id="mpv"]                 inhibit_idle fullscreen
 for_window    [title="Firefox - Sharing Indicator"] floating enable
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
