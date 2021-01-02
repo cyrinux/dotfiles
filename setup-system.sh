@@ -109,7 +109,6 @@ copy "etc/NetworkManager/conf.d"
 copy "etc/updatedb.conf"
 copy "etc/parcimonie.sh.d/cyril.conf"
 copy "etc/modules-load.d/pkcs8.conf"
-copy "etc/tlp.conf" 644
 copy "etc/nmtrust/trusted_units" 644
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
