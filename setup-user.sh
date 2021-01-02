@@ -115,6 +115,7 @@ link ".config/systemd/user/restic.service"
 link ".config/systemd/user/restic.timer"
 link ".config/systemd/user/tarsnap.service"
 link ".config/systemd/user/tarsnap.timer"
+link ".config/systemd/user/socksproxy.service"
 link ".config/systemd/user/udiskie.service"
 link ".config/systemd/user/urlwatch.service"
 link ".config/systemd/user/urlwatch.timer"
@@ -189,6 +190,7 @@ else
     systemctl_enable_start "yubikey-touch-detector.socket"
     systemctl_enable_start "systemd-tmpfiles-setup.service"
     systemctl_enable_start "gamemoded.service"
+    systemctl_enable_start "socksproxy.service"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "
