@@ -1,7 +1,7 @@
-#!/usr/bin/env zsh
+# !/usr/bin/env zsh
 
-alias docker="sudo \docker"
-alias dr="docker run --rm -it"
+# alias docker="sudo \docker"
+alias dr="docker run --rm --runtime=runsc -it"
 alias di="docker images | head -n 1 && docker images | tail -n +2 | sort"
 alias dps="docker ps -a"
 alias drm="docker rm"
@@ -43,4 +43,4 @@ function dockershellshhere() {
     docker run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
-alias drun='docker run -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --shm-size 16G --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $HOME/dockerx:/dockerx'
+alias drun='docker run --rm --runtime=runsc -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --shm-size 16G --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $HOME/dockerx:/dockerx'
