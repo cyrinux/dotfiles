@@ -1,14 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+
+state="$(timeout 5 piactl get connectionstate)"
 
 vpn() {
-    if [ -e "/sys/class/net/tun0" ]; then
+    if [[ "x${state}x" == "xConnectedx" ]]; then
         icon=''
         class=on
     else
         icon=''
         class=off
     fi
-    tooltip="$(timeout 5 mullvad status -l 2>/dev/null | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
+    tooltip="$(timeout 5 piactl get region 2> /dev/null)"
     printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
