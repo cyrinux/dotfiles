@@ -78,3 +78,9 @@ Search engines:
 # Spotify
 
 - start oomox, select Arc-gruvbox-dark theme, then apply spotify theme.
+
+# PIA login
+
+```
+piactl login <(pass personal/http/privateinternetaccess.com-pactl-login)
+```
