@@ -1,8 +1,7 @@
 #!/bin/bash
 
-state="$(timeout 5 piactl get connectionstate)"
-
 vpn() {
+    state=$1
     if [[ "x${state}x" == "xConnectedx" ]]; then
         icon=''
         class=on
@@ -16,4 +15,4 @@ vpn() {
 
 vpn
 
-ip monitor link | while read -r line; do vpn; done
+piactl monitor connectionstate | while read -r state; do vpn $state; done

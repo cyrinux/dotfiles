@@ -1,3 +1,34 @@
-#!/bin/sh
-piactl set region $(piactl get regions | dmenu -p "vpn region")
-piactl connect
+#!/bin/bash
+# dont forgot to first `piactl login /tmp/login`
+set -e
+# force background mode
+piactl background enable
+
+# force wireguard protocol
+piactl set protocol wireguard
+
+state="$(piactl get connectionstate)"
+current_region="$(piactl get region)"
+
+if [[ "$state" == "Connected" || "$state" == "Connecting" ]]; then
+    state="disconnect from $current_region"
+else
+    state="connect to $current_region"
+fi
+
+# pop select box
+selection=$( ( echo "$state"; echo '---'; piactl get regions ) | dmenu -p 'vpn region')
+
+# switcher
+case "$selection" in
+    disconnect*)
+        piactl disconnect;;
+    connect*)
+        piactl connect;;
+    ---)
+        exit 0;;
+    *)
+        [ -n "$selection" ] && piactl set region "$selection" \
+            && piactl connect
+    ;;
+esac

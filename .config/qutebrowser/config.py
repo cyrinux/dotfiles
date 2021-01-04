@@ -49,7 +49,7 @@ c.qt.args += [
 c.qt.process_model = "process-per-site-instance"
 # c.qt.process_model = "process-per-site"
 c.spellcheck.languages = ["en-US", "fr-FR"]
-c.hints.chars = "qsdfghjklm"
+c.hints.chars = "qsdfgbv"
 
 
 # per-domain settings
