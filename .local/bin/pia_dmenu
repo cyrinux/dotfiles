@@ -1,0 +1,2 @@
+#!/bin/sh
+piactl set region $(piactl get regions | dmenu -p "vpn region")
