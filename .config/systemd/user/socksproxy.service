@@ -2,7 +2,7 @@
 Description=Local socks proxy to proxychains
 
 [Service]
-ExecStart=/usr/bin/proxychains microsocks -p 1080
+ExecStart=/usr/bin/proxychains microsocks -i 127.0.0.1 -p 1080
 Restart=always
 RestartSec=10
 

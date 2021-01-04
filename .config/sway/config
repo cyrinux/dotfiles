@@ -59,7 +59,8 @@ workspace_auto_back_and_forth yes
 
 # Specific window configuration
 for_window    [app_id="org.ksnip.ksnip"]     floating enable
-for_window    [class="Tor Browser"]     floating enable
+for_window    [class="Tor Browser"]          floating enable
+for_window    [class="chatty-Chatty"]        floating enable
 for_window    [app_id=".*"]                  sticky enable
 for_window    [app_id="Zoom"]                sticky enable
 for_window    [title="webcamfloat"]          floating enable, sticky enable, resize set with 80ppt height 60ppt
@@ -224,6 +225,7 @@ bindsym --to-code {
 	$win+q kill
 
 	# launcher
+	$win+n             fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || pia_dmenu"
 	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
 	$hyper+equal       fullscreen disable, exec bash -c "echo 'enter expression to calculate' | dmenu -p "calc" | xargs -r qalc -t | tee >(wl-copy) >(xargs -I{} notify-send 'calc result' '{}')"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
