@@ -84,3 +84,9 @@ Search engines:
 ```
 piactl login <(pass personal/http/privateinternetaccess.com-pactl-login)
 ```
+
+# Auth by certificat
+
+```
+pk12util -d "sql:${HOME}/.pki/nssdb" -i user.p12 -n "My User Certificat"
+```
