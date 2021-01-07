@@ -9,7 +9,7 @@ vpn() {
         icon=''
         class=off
     fi
-    tooltip="$(timeout 5 piactl get region 2> /dev/null)"
+    tooltip="$(piactl get region; echo: piactl get pubip)"
     printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
