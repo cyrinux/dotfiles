@@ -20,7 +20,7 @@ WINDOW_ICONS = {
     "burp-startburp": "",
     "calibre": "",
     "chromium": "",
-    "code": "",
+    "code-oss": "",
     "vncviewer": "",
     "cssh": "",
     "darktable": "",

@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.5.9
+pkgver=2.5.11
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -655,4 +655,6 @@ depends=(
     'wlrobs-hg'
     'obs-websocket'
     'parcimonie-sh-git'
+    'xdg-desktop-portal-wlr'
+    'libpipewire02'
 )
