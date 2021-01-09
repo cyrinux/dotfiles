@@ -11,6 +11,7 @@ zstyle ':z4h:(fzf-complete|cd-down)'                  find-flags             -na
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 zstyle ':zle:(up|down)-line-or-beginning-search'      leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
+zstyle ':z4h:' start-tmux  no
 
 ###
 

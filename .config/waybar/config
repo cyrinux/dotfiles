@@ -122,8 +122,7 @@
     "custom/prod-status": {
         "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus 2>/dev/null",
         "return-type": "json",
-	    "markup": true,
-        "interval": 30
+	    "markup": true
     },
     "custom/infra-status": {
         "exec": "waybar-infra-status",
