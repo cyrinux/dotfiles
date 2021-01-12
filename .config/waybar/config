@@ -103,14 +103,14 @@
     "custom/vpn": {
         "exec": "waybar-vpn",
         "return-type": "json",
-        "on-click": "mullvad connect",
-        "on-click-right": "mullvad disconnect"
+        "on-click": "piactl connect",
+        "on-click-right": "piactl disconnect"
     },
     "custom/vpn#work": {
         "exec": "waybar-vpn-work",
         "return-type": "json",
-        "on-click": "nmcli c up VPN-Prod",
-        "on-click-right": "nmcli c down VPN-Prod"
+        "on-click": "nmcli con up VPN-Prod",
+        "on-click-right": "nmcli con down VPN-Prod"
     },
     "custom/dnd": {
         "exec": "waybar-dnd",
@@ -120,9 +120,10 @@
         "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
-        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus 2>/dev/null",
+        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus -c",
         "return-type": "json",
-	    "markup": true
+	    "markup": true,
+        "on-click": "pkill -SIGUSR1 -x waybar-livestat",
     },
     "custom/infra-status": {
         "exec": "waybar-infra-status",

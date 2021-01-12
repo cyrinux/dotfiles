@@ -136,5 +136,40 @@ window#waybar {
   border-bottom: 3px solid @red;
 }
 #custom-prod-status.warning {
+  border-bottom: 3px solid @yellow;
+}
+#custom-prod-status.pause {
+  border-bottom: 3px solid @purple;
+}
+#custom-prod-status.okcritical {
+  border-top: 3px solid @green;
+  border-bottom: 3px solid @red;
+}
+#custom-prod-status.okwarning {
+  border-top: 3px solid @green;
+  border-bottom: 3px solid @yellow;
+}
+#custom-prod-status.warningok {
+  border-top: 3px solid @yellow;
+  border-bottom: 3px solid @green;
+}
+#custom-prod-status.criticalok {
+  border-top: 3px solid @red;
+  border-bottom: 3px solid @green;
+}
+#custom-prod-status.warningwarning {
+  border-top: 3px solid @yellow;
+  border-bottom: 3px solid @yellow;
+}
+#custom-prod-status.warningcritical {
+  border-top: 3px solid @yellow;
+  border-bottom: 3px solid @red;
+}
+#custom-prod-status.criticalwarning {
+  border-top: 3px solid @red;
+  border-bottom: 3px solid @yellow;
+}
+#custom-prod-status.criticalcritical {
+  border-top: 3px solid @red;
   border-bottom: 3px solid @red;
 }
