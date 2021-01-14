@@ -87,7 +87,8 @@ window#waybar {
 #custom-netatmo.high,
 #cpu.critical,
 #custom-fwupd,
-#temperature.critical {
+#temperature-pc.critical,
+#temperature-laptop.critical {
   border-bottom: 3px solid @red;
 }
 
@@ -137,6 +138,10 @@ window#waybar {
 
 #custom-prod-status.warning {
   border-bottom: 3px solid @yellow;
+}
+
+#custom-prod-status.ok {
+  border-bottom: 3px solid @green;
 }
 #custom-prod-status.pause {
   border-bottom: 3px solid @purple;

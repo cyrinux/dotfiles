@@ -2,4 +2,4 @@ server = "shinken-livestatus.vip.dailymotion.com:50000"
 refresh = 30
 hosts_pattern = [".adm.", ".oob.", ".stg."]
 warnings = false
-debug = false
+debug = true

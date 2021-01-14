@@ -25,7 +25,8 @@
         "network",
         "custom/vpn",
         "custom/vpn#work",
-        "temperature",
+        "temperature#laptop",
+        "temperature#pc",
         "cpu",
         "memory",
         "backlight",
@@ -155,13 +156,13 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "format": " {:%a, %d %b    %H:%M}"
     },
-    "temperature": {
-		"thermal-zone": 5,
+    "temperature#laptop": {
+		"hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
 		"critical-threshold": 80,
 		"format-critical": " {temperatureC}°C",
 		"format": " {temperatureC}°C"
 	},
-    "temperature": {
+    "temperature#pc": {
 		"thermal-zone": 2,
 		"critical-threshold": 80,
 		"format-critical": " {temperatureC}°C",
