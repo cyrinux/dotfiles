@@ -62,6 +62,7 @@ for_window    [app_id="org.ksnip.ksnip"]     floating enable
 for_window    [class="Tor Browser"]          floating enable
 for_window    [class="chatty-Chatty"]        floating enable
 for_window    [app_id=".*"]                  sticky enable
+for_window    [app_id="qalculate-gtk"]       floating enable
 for_window    [app_id="Zoom"]                sticky enable
 for_window    [title="webcamfloat"]          floating enable, sticky enable, resize set with 80ppt height 60ppt
 for_window    [window_role="pop-up"]         floating enable
@@ -77,7 +78,7 @@ for_window    [app_id="mpv"]                 inhibit_idle fullscreen
 for_window    [title="Firefox - Sharing Indicator"] floating enable
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
-for_window    [app_id="dmenu-calc"]                      resize set width 40ppt height 30ppt
+# for_window    [app_id="dmenu-calc"]                      resize set width 40ppt height 30ppt
 for_window    [title="x11 - TigerVNC"]             move container to $workspace9, title_format "VNC"
 
 # Audio settings
@@ -228,8 +229,8 @@ bindsym --to-code {
 	# launcher
 	$win+n             fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || pia_dmenu"
 	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
-	$hyper+equal       fullscreen disable, exec calculator
-	XF86Calculator     fullscreen disable, exec calculator
+	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
+	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
 	twosuperior        fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || rofi-todoist"
     $hyper+d           fullscreen disable, exec wofi

@@ -38,7 +38,9 @@ case "$1" in
         ;;
     lock)
         before_lock
+        safeeyes -d
         swaylock
+        safeeyes -e
         ;;
     suspend)
         before_lock
