@@ -121,7 +121,7 @@
         "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
-        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus -c",
+        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus",
         "return-type": "json",
 	    "markup": true,
         "on-click": "pkill -SIGUSR1 -x waybar-livestat",

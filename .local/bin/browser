@@ -1,5 +1,5 @@
 #!/bin/sh
-menu=$(echo "personal\nwork\nshopping\ndisposable\nndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
+menu=$(echo "personal\nwork\nshopping\ndisposable\ndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
     "qutebrowser")

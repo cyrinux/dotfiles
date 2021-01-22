@@ -1,5 +1,11 @@
 server = "shinken-livestatus.vip.dailymotion.com:50000"
 refresh = 30
 hosts_pattern = [".adm.", ".oob.", ".stg."]
+popup = true
 warnings = false
-debug = true
+debug = false
+in_notification_period = 0
+limit = 0
+get_duration = true
+# auto_stop = "* 12-15 * * *"
+# auto_start = "* 15-19 * * *"

@@ -36,3 +36,4 @@ left_meters=Uptime LeftCPUs Memory Tasks
 left_meter_modes=2 1 1 2
 right_meters=Clock RightCPUs Swap LoadAverage
 right_meter_modes=2 1 1 2
+hide_function_bar=0
