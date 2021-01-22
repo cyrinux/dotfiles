@@ -70,11 +70,10 @@ for_window    [class="Zoom"]                 floating enable
 for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
 for_window    [app_id="wev"]                 floating enable
 for_window    [app_id="udiskie"]             floating enable
-for_window    [class="Steam"]                 inhibit_idle fullscreen
-for_window    [app_id="mpv"]                 inhibit_idle fullscreen
-for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
-for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
-for_window    [title="x11 - TigerVNC"]             move container to $workspace9, title_format "VNC"
+for_window    [class="Steam"]                inhibit_idle fullscreen
+for_window    [app_id="dmenu.*"]             floating enable, resize set width 60ppt height 80ppt
+for_window    [app_id="dmenu-browser"]       resize set height 20ppt
+for_window    [title="x11 - TigerVNC"]       move container to $workspace9, title_format "VNC"
 
 # Audio settings
 set $mode_audio "(p)avucontrol, (s)hure-bt1, (a)eropex, p(x)5"
@@ -328,7 +327,7 @@ bindsym --to-code {
 }
 
 exec_always $kanshi
-exec_always import-gsettings
+exec_always import-gsettings &
 
 # Load host-specific configs
 include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
