@@ -1,8 +1,10 @@
 import os
 import sys
 
+config.load_autoconfig(False)
+
 # ui
-config.source(os.environ["HOME"] + "/.config/qutebrowser/gruvbox.py")
+config.source("gruvbox.py")
 c.colors.tabs.selected.odd.bg = c.colors.tabs.selected.even.bg
 c.colors.webpage.prefers_color_scheme_dark = True
 c.completion.shrink = True
@@ -10,7 +12,6 @@ c.completion.use_best_match = True
 c.statusbar.widgets = ["progress", "keypress", "url", "history"]
 c.scrolling.bar = "always"
 c.tabs.position = "left"
-c.tabs.width = "15%"
 c.tabs.title.format = "{index}: {audio}{current_title}"
 c.tabs.title.format_pinned = "{index}: {audio}{current_title}"
 
@@ -33,11 +34,13 @@ c.content.default_encoding = "utf-8"
 c.content.javascript.can_access_clipboard = True
 c.content.notifications = True  # notifications aren't supported now anyway
 c.content.pdfjs = True
-c.editor.command = ["kitty", "kak", "-e", "exec {line}g{column0}l", "{file}"]
+c.editor.command = ["kitty", "kak", "-e", "exec {line}g{column0}l", "{}"]
+c.fileselect.handler = "external"
+c.fileselect.single_file.command = ["kitty", "nnn", "-p", "{}"]
+c.fileselect.multiple_files.command = ["kitty", "nnn", "-p", "{}"]
 c.downloads.location.prompt = False
 c.downloads.location.directory = "~/Downloads/"
 c.input.insert_mode.auto_load = True
-c.tabs.background = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
 c.qt.args += [
@@ -45,37 +48,12 @@ c.qt.args += [
     "enable-features=WebRTCPipeWireCapturer",
     "enable-experimental-web-platform-features",
     "blink-settings=preferredColorScheme=1",
+    "enable-webrtc-pipewire-capturer",
 ]
 c.qt.process_model = "process-per-site-instance"
 # c.qt.process_model = "process-per-site"
 c.spellcheck.languages = ["en-US", "fr-FR"]
 c.hints.chars = "qsdfgbv"
-
-
-# per-domain settings
-config.set("content.register_protocol_handler", True, "*://*.levis.name")
-config.set("content.cookies.accept", "all", "*://*.dailymotion.com")
-config.set("content.cookies.accept", "all", "*://*.dm.gg")
-
-config.set("content.register_protocol_handler", True, "*://calendar.google.com")
-
-config.set("content.media.audio_video_capture", True, "*://app.wire.com")
-config.set("content.media.audio_capture", True, "*://app.wire.com")
-config.set("content.media.video_capture", True, "*://app.wire.com")
-config.set("content.desktop_capture", True, "*://app.wire.com")
-
-config.set("content.register_protocol_handler", True, "*://teams.microsoft.com")
-config.set("content.media.audio_video_capture", True, "*://teams.microsoft.com")
-config.set("content.media.audio_capture", True, "*://teams.microsoft.com")
-config.set("content.media.video_capture", True, "*://teams.microsoft.com")
-config.set("content.desktop_capture", True, "*://teams.microsoft.com")
-config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
-
-config.set("content.register_protocol_handler", True, "*://app.slack.com")
-config.set("content.media.audio_video_capture", True, "*://app.slack.com")
-config.set("content.media.audio_capture", True, "*://app.slack.com")
-config.set("content.media.video_capture", True, "*://app.slack.com")
-config.set("content.desktop_capture", True, "*://app.slack.com")
 
 # privacy
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
@@ -90,7 +68,7 @@ with config.pattern("*://*.levis.name/") as p:
     p.content.autoplay = True
 
 c.content.canvas_reading = False
-c.content.host_blocking.enabled = True
+c.content.blocking.enabled = True
 
 with config.pattern("*://*.dm.gg/") as p:
     p.content.autoplay = True
@@ -147,6 +125,19 @@ bindings = {
     "O": "set-cmd-text -s :open -t -s",
 }
 
+# per-domain settings
+config.set("content.register_protocol_handler", True, "*://*.levis.name")
+config.set("content.cookies.accept", "all", "*://*.dailymotion.com")
+config.set("content.cookies.accept", "all", "*://*.dm.gg")
+
+config.set("content.register_protocol_handler", True, "*://calendar.google.com")
+
+config.set("content.register_protocol_handler", True, "*://teams.microsoft.com")
+config.set("content.media.audio_video_capture", True, "*://teams.microsoft.com")
+config.set("content.media.audio_capture", True, "*://teams.microsoft.com")
+config.set("content.media.video_capture", True, "*://teams.microsoft.com")
+config.set("content.desktop_capture", True, "*://teams.microsoft.com")
+config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
 
 for key, bind in bindings.items():
     config.bind(key, bind)

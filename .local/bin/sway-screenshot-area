@@ -19,8 +19,13 @@ fi
 kill $!
 
 [ -f area.png ] && swappy -f area.png
-convert area.png -resize 50% reduced.png
-wl-copy < reduced.png
+WITDH=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .current_mode.width')
+if [[ $WITDH > 1920 ]]; then
+    convert area.png -resize 50% reduced.png
+    wl-copy < reduced.png
+else
+    wl-copy < area.png
+fi
 
 systemctl --user start sway-inactive-window-transparency.service
 

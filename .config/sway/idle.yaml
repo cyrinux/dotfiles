@@ -2,7 +2,7 @@
 debug: true
 wait: true
 timeouts:
-  - timeout: 600
+  - timeout: 400
     command: 'swaymsg "output * dpms off"'
     resume: 'swaymsg "output * dpms on"'
   - timeout: 300

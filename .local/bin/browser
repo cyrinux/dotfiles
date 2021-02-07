@@ -2,14 +2,11 @@
 menu=$(echo "personal\nwork\nshopping\ndisposable\ndisposable without network\ncopy to clipboard\nplay" | dmenu -p "browser")
 
 case $menu in
-    "qutebrowser")
-        open_url_in_instance.sh "$@" &
-        ;;
     "disposable without network")
-        firewarden -n qutebrowser "$@" &
+        firewarden -q -n qutebrowser "$@" &
         ;;
     "disposable")
-        firewarden qutebrowser "$@" &
+        firewarden -q qutebrowser "$@" &
         ;;
     "personal")
         qutebrowser-personal "$@" &

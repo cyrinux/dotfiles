@@ -249,7 +249,6 @@ depends=(
     'libldac'
     'libmfx'
     'libotr'
-    'libqalculate'
     'libreoffice-fresh'
     'libreoffice-fresh-fr'
     'libusb-compat'

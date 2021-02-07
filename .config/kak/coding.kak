@@ -79,7 +79,7 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
 }
 
 hook global WinSetOption filetype=sh %{
-    set-option buffer formatcmd 'shfmt -i 4 -ci -sr -kp'
+    set-option buffer formatcmd 'shfmt -i 4 -ci -sr'
     hook buffer -group format BufWritePre .* format
 
     set-option buffer lintcmd 'shellcheck -x -fgcc'
@@ -90,3 +90,4 @@ hook global WinSetOption filetype=terraform %{
     set-option buffer formatcmd 'terraform fmt -'
     hook buffer -group format BufWritePre .* format
 }
+

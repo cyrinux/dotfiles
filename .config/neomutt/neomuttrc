@@ -34,8 +34,6 @@ set use_envelope_from = yes
 set edit_headers = yes
 set user_agent = no
 
-set mailcap_path = ~/.config/neomutt/mailcap
-
 set ts_enabled = yes
 set help = no
 
@@ -54,7 +52,7 @@ macro index,pager B "<enter-command>set sidebar_visible=yes<enter><enter-command
 unbind b
 macro index,pager b "<enter-command>set sidebar_visible=no<enter><enter-command>set wrap=0<enter>"
 bind editor <space> noop
-bind editor <Tab> complete-query
+bind editor <tab> complete-query
 bind editor ^T    complete
 bind index G last-entry
 bind index gg first-entry
@@ -80,7 +78,8 @@ bind index,pager \Cp sidebar-prev-new
 bind index,pager \Cn sidebar-next-new
 bind index,pager B sidebar-toggle-visible
 bind index,pager V sidebar-toggle-virtual
-macro index,pager <Tab> "<sync-mailbox>y<check-stats>"
+bind index,pager y noop
+macro index,pager <tab> "<sync-mailbox>y<check-stats>"
 macro index,pager \Cv "<view-attachments><search>html<enter><view-mailcap><exit>"
 macro index,pager \Cx "<pipe-message>ripmime -i - -d ~/Downloads/<enter>" "save attachments in downloads folder"
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
@@ -89,13 +88,14 @@ macro index \\ "<vfolder-from-query>"
 macro index,pager \cb "<pipe-message> urlscan<Enter>"
 macro attach,compose \cb "<pipe-entry> urlscan<Enter>"
 bind index,pager + entire-thread
-bind index,pager y modify-labels
+bind index,pager Y modify-labels
 bind index,pager X change-vfolder
 bind attach <return> view-mailcap
 macro attach s "<save-entry><bol>~/Downloads<eol>"
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
 auto_view application/pgp-encrypted text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
+set mailcap_path = ~/.config/neomutt/mailcap
 
 set fcc_attach           # save attachments with the body
 set forward_format = "Fwd: %s"       # format of subject when forwarding
@@ -192,7 +192,7 @@ virtual-mailboxes "Trash" "notmuch://?query=folder:Trash"
 virtual-mailboxes "Drafts" "notmuch://?query=folder:Drafts"
 virtual-mailboxes "Sent" "notmuch://?query=folder:Sent"
 virtual-mailboxes "Junk" "notmuch://?query=folder:Junk"
-virtual-mailboxes "Archive" "notmuch://?query=folder:Archive/2020"
+virtual-mailboxes "Archive" "notmuch://?query=folder:Archive/2021"
 virtual-mailboxes "GMAIL" "notmuch://?query=tag:gmail"
 
 set auto_tag = yes
@@ -214,7 +214,7 @@ tag-transforms "attachment" " " \
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"
 macro pager a "<modify-tags>!archive<enter><next-undeleted>"
 macro index A "<tag-thread><clear-flag>N<modify-tags>+archive<enter><untag-pattern>.<enter>"
-macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2020<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
+macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2021<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
 
 #Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
@@ -226,7 +226,7 @@ macro index o noop
 macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
 
 # Printing
-set print_command="$HOME/.config/neomutt/print.sh"
-macro index,pager s "<pipe-message>$HOME/.config/neomutt/print.sh -s"
+# set print_command="$HOME/.config/neomutt/print.sh"
+# macro index,pager s "<pipe-message>$HOME/.config/neomutt/print.sh -s"
 
 set sidebar_short_path=yes
