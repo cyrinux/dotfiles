@@ -2,6 +2,12 @@ colorscheme gruvbox
 
 face global Information rgb:ebdbb2,rgb:282828
 
+# Highlight trailing whitespace
+add-highlighter global/ regex \h+$ 0:Error
+# Highlight TODO
+add-highlighter global/ regex TODO 0:Error #TODO
+
+
 add-highlighter global/ number-lines -hlcursor
 add-highlighter global/ show-matching
 add-highlighter global/ wrap -word -indent

@@ -25,3 +25,6 @@
 [submodule ".config/kak/prelude.kak"]
 	path = .config/kak/prelude.kak
 	url = https://github.com/alexherbo2/prelude.kak.git
+[submodule ".config/kak/kakoune-buffer-switcher"]
+	path = .config/kak/kakoune-buffer-switcher
+	url = https://github.com/occivink/kakoune-buffer-switcher.git

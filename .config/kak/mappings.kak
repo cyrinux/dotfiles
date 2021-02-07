@@ -21,6 +21,7 @@ map global normal <down>  ': git next-hunk<ret>'
 map global insert <c-w> '<esc>bdi'
 map global insert <c-u> '<esc>xdO'
 
+map global user l %{: enter-user-mode lsp<ret>} -docstring "LSP mode"
 map global user -docstring 'clip-paste (before)'      p      'o<esc>!wl-paste|dos2unix<ret><a-d>'
 map global user -docstring 'clip-paste (after)'       P      'O<esc><a-!>wl-paste|dos2unix<ret><a-d>'
 map global user -docstring 'clip-replace'             R      '|wl-paste|dos2unix<ret>'
