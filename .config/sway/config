@@ -17,7 +17,6 @@ output * {
     bg "#222222" solid_color
 }
 
-
 # hide cursor if idle while 10s
 seat * hide_cursor 10000
 
