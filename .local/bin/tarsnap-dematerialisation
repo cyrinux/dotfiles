@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/bin/sh
 
-open-vault 3600 &
+while true; do
+    [ -f ~/Vault/.lock ] && break
+    echo "waiting for Vault"
+    sleep 1
+done
 
 [ ! -f ~/.cache/tarsnap.key ] && pass personal/backup/tarsnap-key > ~/.cache/tarsnap.key && chmod 400 ~/.cache/tarsnap.key
 
-[ -f ~/Vault/.lock ] && tarsnap --keyfile ~/.cache/tarsnap.key --cachedir /tmp/tarsnap-cache --fsck
-[ -f ~/Vault/.lock ] && tarsnap --keyfile ~/.cache/tarsnap.key -c --cachedir /tmp/tarsnap-cache -f "$(hostname)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/library/contacts ~/library/calendars ~/.password-store
+tarsnap --keyfile ~/.cache/tarsnap.key --cachedir /tmp/tarsnap-cache --fsck
+tarsnap --keyfile ~/.cache/tarsnap.key -c --cachedir /tmp/tarsnap-cache -f "$(hostname)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/library/contacts ~/library/calendars ~/.password-store
