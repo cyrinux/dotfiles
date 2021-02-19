@@ -1,7 +1,6 @@
 #!/bin/bash
 
-BASEDIR="$FIREWARDEN_HOME/basedir"
-
-# Import config file.
-mkdir -p "$BASEDIR/config"
-cp "$HOME/.config/qutebrowser/*.py" "$BASEDIR/config"
+mkdir -p "$FIREWARDEN_HOME/.config/qutebrowser"
+for f in config.py gruvbox.py qutepreview.py; do
+    cp "$HOME/.config/qutebrowser/${f}" "$FIREWARDEN_HOME/.config/qutebrowser"
+done
