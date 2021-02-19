@@ -205,8 +205,8 @@ bindsym --to-code {
     # Misc
 	$win+F1                       exec "resolvectl flush-caches"
 
-    Print                         exec sway-screenshot-area
-    $hyper+Print                  exec sway-gif-area
+    Print                         exec "killall flameshot; flameshot screen -c"
+    $hyper+Print                  exec "killall flameshot; flameshot gui"
     $win+Print                    exec sway-screenshare
 
 	# open terminal

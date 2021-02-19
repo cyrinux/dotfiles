@@ -3,7 +3,7 @@ Description=Daily backup laptop with restic
 
 [Timer]
 OnCalendar=*-*-* 19:00:00
-RandomizedDelaySec=10min
+RandomizedDelaySec=30min
 Persistent=true
 WakeSystem=false
 
