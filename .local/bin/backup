@@ -19,7 +19,10 @@ for backup_path in "${BACKUP_PATH[@]}"; do
         fi
     fi
 
-    [ ! -f /home/cyril/Vault/.lock ] && vault!
+    while true; do
+        [ -f ~/Vault/.lock ] && break
+        sleep 1
+    done
 
     cd "$HOME"
     echo -e "\nBackup STARTED\n\nSource(s):   $SOURCE\nDestination: $BACKUP_DIR\n"
