@@ -90,3 +90,10 @@ piactl login <(pass personal/http/privateinternetaccess.com-pactl-login)
 ```
 pk12util -d "sql:${HOME}/.pki/nssdb" -i user.p12 -n "My User Certificat"
 ```
+
+# Import user certificat p12 on a Yubikey (using PIV)
+
+```
+$ yubico-piv-tool -s 9a -i thecertificate.p12 -K PKCS12 -a import-key -a import-certificate --touch-policy=always
+$ yubico-piv-tool -s 9a -a change-pin (default pin: 123456)
+```

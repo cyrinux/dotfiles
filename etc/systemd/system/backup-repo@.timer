@@ -3,6 +3,7 @@ Description=Periodic backup pacman repository to %I
 
 [Timer]
 OnCalendar=hourly
+RandomizedDelaySec=10m
 
 [Install]
 WantedBy=timers.target

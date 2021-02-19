@@ -7,9 +7,13 @@ branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authorda
 createmr = !git push -o merge_request.create
 fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 workflow = "!hub ci-status -v"
+fork = "!hub fork"
 
 [branch]
 autosetuprebase = always
+
+[init]
+defaultBranch = master
 
 [color "branch"]
 current = green reverse
