@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ -f ~/tmp/Dream_Aquarium_-_2_Hours_-_8_Tanks_4K.mkv ]; then
+if [ ! -f ~/tmp/Dream_Aquarium_-_2_Hours_-_8_Tanks_4K.mkv ]; then
     youtube-dl -f 401 "https://www.youtube.com/watch?v=HHi8qOtHnhE"
 fi
 killall swaybg
