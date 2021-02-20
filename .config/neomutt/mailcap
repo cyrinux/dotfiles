@@ -8,8 +8,7 @@ application/pgp-encrypted; gpg -d '%s'; copiousoutput;
 application/pgp-keys; pgp -f < %s ; copiousoutput;
 text/plain; kak %s ; needsterminal
 text/calendar; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;
-# text/html; qutebrowser --desktop-file-name qutepreview --temp-basedir -C ~/.config/qutebrowser/qutepreview.py %s; needsterminal; nametemplate=%s.html;
-text/html; LS_COLORS= firewarden -q -c qutebrowser --desktop-file-name qutepreview --temp-basedir -C ~/.config/qutebrowser/qutepreview.py %s; needsterminal; nametemplate=%s.html;
+text/html; LS_COLORS= exec firewarden -q -c qutebrowser --desktop-file-name qutepreview --temp-basedir -C ~/.config/qutebrowser/qutepreview.py %s; needsterminal; nametemplate=%s.html;
 video/*; setsid mpv --quiet %s &; copiousoutput;
 image/jpeg; vimiv %s;
 image/png; vimiv %s;
