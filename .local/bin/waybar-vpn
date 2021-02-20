@@ -1,5 +1,11 @@
 #!/bin/bash
 
+tooltip() {
+    piactl get region
+    echo
+    piactl get pubip
+}
+
 vpn() {
     state=$1
     if [[ "x${state}x" == "xConnectedx" ]]; then
@@ -9,11 +15,7 @@ vpn() {
         icon=''
         class=off
     fi
-    tooltip="$(
-               piactl get region
-                                  echo
-                                        piactl get pubip
-    )"
+    tooltip=tooltip
     printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
