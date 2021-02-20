@@ -245,9 +245,9 @@ echo -e "\n### Setting up Secure Boot with custom keys"
 echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
 
 if [[ "$fde" == "Yes" ]]; then
-    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
+    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
 else
-    echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
+    echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
 fi
 
 arch-chroot /mnt mkinitcpio -p linux-hardened
