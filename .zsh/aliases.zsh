@@ -22,6 +22,8 @@ if [[ -x ~/bin/num-cpus ]]; then
     command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
 fi
 
+alias btm='\btm --color gruvbox'
+alias bottom='btm'
 alias lmr='mr --config ~/.config/myrepos.conf'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"

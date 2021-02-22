@@ -1,1 +1,2 @@
 .config/qutebrowser/greasemonkey/requires
+.config/environment.d/60-wayland.conf
