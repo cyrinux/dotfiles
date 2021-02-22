@@ -62,7 +62,8 @@ RUN pacman -Syy --noconfirm \
     subfinder \
     proxify \
     wpscan \
-    seclists
+    seclists \
+    amass
 
 RUN useradd -m -r -s /bin/bash aur && \
     passwd -d aur && \
