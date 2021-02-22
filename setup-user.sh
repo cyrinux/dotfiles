@@ -15,9 +15,17 @@ in_docker() {
     grep -q docker /proc/1/cgroup > /dev/null
 }
 
+detectgpu() {
+    lsmod | grep '^i915' | awk '{print $1}' || lsmod | grep '^amdgpu' | awk '{print $1}'
+}
+
 link() {
     orig_file="$dotfiles_dir/$1"
-    dest_file="$HOME/$1"
+    if [ -n "$2" ]; then
+        dest_file="$HOME/$2"
+    else
+        dest_file="$HOME/$1"
+    fi
 
     mkdir -p "$(dirname "$orig_file")"
     mkdir -p "$(dirname "$dest_file")"
@@ -58,6 +66,7 @@ link ".config/display-switch"
 link ".config/pythonrc.py"
 link ".config/user-tmpfiles.d"
 link ".config/environment.d"
+link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/captive-browser.toml"
 link ".config/chromium-flags.conf"
 link ".config/safeeyes"
@@ -100,6 +109,8 @@ link ".config/resticignore"
 link ".config/swappy"
 link ".config/sway"
 link ".config/swaylock"
+link ".config/systemd/user/qutebrowser-update-useragent.service"
+link ".config/systemd/user/qutebrowser-update-useragent.timer"
 link ".config/systemd/user/safeeyes.service"
 link ".config/systemd/user/gocryptfs-automount.service"
 link ".config/systemd/user/wlsunset.service"
@@ -170,30 +181,31 @@ echo "================================="
 if is_chroot; then
     echo >&2 "=== Running in chroot, skipping user services..."
 else
+    systemctl_enable_start "autotiling.service"
     systemctl_enable_start "backup-packages.timer"
-    systemctl_enable_start "wluma-als-emulator.service"
-    systemctl_enable_start "udiskie.service"
     systemctl_enable_start "flashfocus.service"
+    systemctl_enable_start "gamemoded.service"
     systemctl_enable_start "gocryptfs-automount.service"
-    systemctl_enable_start "wlsunset.service"
+    systemctl_enable_start "nm-applet.service"
     systemctl_enable_start "polkit-gnome.service"
+    systemctl_enable_start "qutebrowser-update-useragent.timer"
+    systemctl_enable_start "safeeyes.service"
+    systemctl_enable_start "socksproxy.service"
+    systemctl_enable_start "solaar.service"
     systemctl_enable_start "sway-autoname-workspaces.service"
+    systemctl_enable_start "swayidle.service"
     systemctl_enable_start "sway-inactive-window-transparency.service"
     systemctl_enable_start "systembus-notify.service"
+    systemctl_enable_start "systemd-tmpfiles-setup.service"
     systemctl_enable_start "udiskie.service"
-    systemctl_enable_start "nm-applet.service"
+    systemctl_enable_start "udiskie.service"
     systemctl_enable_start "waybar.service"
     systemctl_enable_start "waybar-updates.timer"
     systemctl_enable_start "wl-clipboard-manager.service"
-    systemctl_enable_start "swayidle.service"
-    systemctl_enable_start "solaar.service"
-    systemctl_enable_start "safeeyes.service"
+    systemctl_enable_start "wlsunset.service"
+    systemctl_enable_start "wluma-als-emulator.service"
     systemctl_enable_start "wluma.service"
-    systemctl_enable_start "autotiling.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
-    systemctl_enable_start "systemd-tmpfiles-setup.service"
-    systemctl_enable_start "gamemoded.service"
-    systemctl_enable_start "socksproxy.service"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "

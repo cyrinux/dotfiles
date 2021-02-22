@@ -1,4 +1,8 @@
 [Default Applications]
+text/csv=visidata.desktop
+text/tab-separated-values=visidata.desktop
+text/plain=kakoune.desktop
+text/x-diff=kakoune.desktop
 inode/directory=nnn.desktop
 application/vnd.ms-word.document.macroenabled.12=libreoffice-writer.desktop
 application/vnd.openxmlformats-officedocument.wordprocessingml.document=libreoffice-writer.desktop
@@ -18,7 +22,3 @@ image/jpeg=vimiv.desktop
 image/svg+xml=vimiv.desktop
 video/x-matroska=mpv.desktop
 video/mp4=mpv.desktop
-text/csv=visidata.desktop
-text/tab-separated-values=visidata.desktop
-text/plain=kakoune.desktop
-text/x-diff=kakoune.desktop
