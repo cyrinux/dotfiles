@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=qutebrowser facebook
 StartupWMClass=qutebrowser
-con=qutebrowser
+Icon=qutebrowser
 Type=Application
 Categories=Network;WebBrowser;
 Exec=qutebrowser-facebook %u
