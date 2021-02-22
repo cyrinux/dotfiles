@@ -91,6 +91,7 @@ copy "etc/vnstat.conf"
 copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/v4l2loopback.conf"
 copy "etc/modprobe.d/v4l2loopback.conf"
+copy "etc/modprobe.d/droidcam.conf"
 copy "etc/pacman.d/hooks"
 copy "etc/snap-pac.conf"
 copy "etc/snapper/configs/home"
@@ -123,8 +124,9 @@ copy "etc/systemd/logind.conf"
 copy "etc/systemd/system/backup-repo@pkgbuild"
 copy "etc/systemd/system/backup-repo@.service"
 copy "etc/systemd/system/backup-repo@.timer"
+copy "etc/docker/daemon.json"
 
-(("$reverse"))  && exit 0
+(("$reverse")) && exit 0
 
 echo ""
 echo "==============================="
