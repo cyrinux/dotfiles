@@ -277,12 +277,3 @@ git config user.email "cyril@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"
 git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
-
-echo "Configure pendock"
-if is_chroot; then
-    echo >&2 "=== Running in chroot, skipping pendock configuration..."
-else
-    if [ ! -d $HOME/pendock ]; then
-        git clone https://github.com/drtychai/pendock.git $HOME/pendock
-    fi
-fi

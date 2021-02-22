@@ -85,7 +85,7 @@ export NNN_PLUG='j:jump;r:remove;p:paperwork;c:croc;'
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
 z4h source -- /etc/bash_completion.d/azure-cli
-z4h source -- /usr/share/LS_COLORS/dircolors.sh
+# z4h source -- /usr/share/LS_COLORS/dircolors.sh
 z4h source -- /usr/share/nnn/quitcd/quitcd.bash_zsh
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
