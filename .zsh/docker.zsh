@@ -1,6 +1,7 @@
 # !/usr/bin/env zsh
 
 # alias docker="sudo \docker"
+alias dockertop="ctop"
 alias dr="docker run --rm --runtime=runsc -it"
 alias di="docker images | head -n 1 && docker images | tail -n +2 | sort"
 alias dps="docker ps -a"
@@ -11,7 +12,7 @@ alias drmvd='docker volume rm $(docker volume ls -q -f dangling=true)'
 alias drmid='drmi $(docker images -q -f dangling=true)'
 alias dpurge="drmcd ; drmvd ; drmid ;docker network prune -f"
 
-command -v podman-compose       &> /dev/null    && alias docker-compose='podman-compose'
+command -v podman-compose &> /dev/null && alias docker-compose='podman-compose'
 alias dcd='docker-compose down'
 alias dcl='docker-compose logs -f --tail=1000'
 alias dclp='docker-compose pull'
