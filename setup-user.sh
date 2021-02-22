@@ -16,7 +16,7 @@ in_docker() {
 }
 
 detectgpu() {
-    lsmod | grep '^i915' | awk '{print $1}' || lsmod | grep '^amdgpu' | awk '{print $1}'
+    (lsmod | grep '^i915' || lsmod | grep '^amdgpu') | awk '{print $1}'
 }
 
 link() {
@@ -197,7 +197,6 @@ else
     systemctl_enable_start "sway-inactive-window-transparency.service"
     systemctl_enable_start "systembus-notify.service"
     systemctl_enable_start "systemd-tmpfiles-setup.service"
-    systemctl_enable_start "udiskie.service"
     systemctl_enable_start "udiskie.service"
     systemctl_enable_start "waybar.service"
     systemctl_enable_start "waybar-updates.timer"
