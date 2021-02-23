@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.6.1
+pkgver=2.6.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -479,7 +479,6 @@ depends=(
     'python-qutescript-git'
     'python-readability-lxml'
     'python-rofi'
-    'python-salt'
     'python-simplebayes'
     'python-suds'
     'python-timeago'
