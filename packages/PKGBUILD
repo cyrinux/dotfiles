@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.6.0
+pkgver=2.6.1
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -177,7 +177,6 @@ depends=(
     'ffmpeg'
     'filezilla'
     'firejail'
-    'firewalld'
     'firewarden'
     'flashfocus-git'
     'fontforge'
@@ -283,7 +282,6 @@ depends=(
     'libldac'
     'libmfx'
     'libotr'
-    'libpipewire02'
     'libreoffice-fresh'
     'libreoffice-fresh-fr'
     'libusb-compat'
@@ -394,11 +392,9 @@ depends=(
     'pdftk'
     'perl-file-mimeinfo'
     'perl-image-exiftool'
-    'physlock'
     'piavpn-bin'
     'pigz'
     'pipewire'
-    'pipewire-pulse'
     'pixz'
     'pkgdiff'
     'playerctl'
@@ -479,7 +475,6 @@ depends=(
     'python-pysmbc'
     'python-pytest-flake8'
     'python-pytoml'
-    'python-pytorch-rocm'
     'python-pyudev'
     'python-qutescript-git'
     'python-readability-lxml'
@@ -517,7 +512,6 @@ depends=(
     'ripgrep-all-bin'
     'ripmime'
     'rmtrash'
-    'rocm-libs'
     'rpmextract'
     'rsync'
     'ruby-bundler'
