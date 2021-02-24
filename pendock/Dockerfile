@@ -42,28 +42,28 @@ RUN pacman -Syy --noconfirm \
 	samba \
 	smbclient \
 	openldap \
+    amass \
+	binwalk \
+	dirb \
+    dnsx \
+	enum4linux \
+	evil-winrm \
+	gnu-netcat \
+	gobuster \
+    httpx \
+    masscan \
 	metasploit \
 	mitmproxy \
-	binwalk \
-	gnu-netcat \
-	evil-winrm \
-	padbuster \
-	wfuzz \
-	dirb \
-	gobuster \
-	enum4linux \
-	stegsolve \
-	steghide \
-    httpx \
     naabu \
-    dnsx \
-    masscan \
-    shuffledns \
-    subfinder \
+	padbuster \
     proxify \
-    wpscan \
     seclists \
-    amass
+    shuffledns \
+	steghide \
+	stegsolve \
+    subfinder \
+	wfuzz \
+    wpscan
 
 RUN useradd -m -r -s /bin/bash aur && \
     passwd -d aur && \
