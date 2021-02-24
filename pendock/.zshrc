@@ -107,3 +107,4 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games:/home/administrator/.vimpkg/bin"
+export PATH="$PATH:/root/go/bin"
