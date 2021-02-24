@@ -82,7 +82,7 @@ mode $mode_audio {
 		 p exec pavucontrol, mode "default"
 	     s exec "connect-a2dp 00:0E:DD:06:24:1C", mode "default"
 	     a exec "connect-a2dp 20:74:CF:3B:36:A9", mode "default"
-	     x exec "connect-a2dp B0:67:2F:13:7A:F1", mode "default"
+	     x exec "connect-a2dp B0:67:2F:13:E9:34", mode "default"
 
         Return mode "default"
 	    Escape mode "default"
