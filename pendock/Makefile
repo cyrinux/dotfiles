@@ -1,4 +1,6 @@
-all:
+all: build run
+
+build:
 	docker build -t pendock:latest .
 
 run:
