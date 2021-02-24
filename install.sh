@@ -242,7 +242,7 @@ echo -e "\n### Setting up Secure Boot with custom keys"
     echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
     # echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
 }
-echo KERNEL=linux-hardened > /mnt/etc/arch-secure-boot/config
+echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
 
 if [[ "$fde" == "Yes" ]]; then
     echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
@@ -250,7 +250,7 @@ else
     echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
 fi
 
-arch-chroot /mnt mkinitcpio -p linux-hardened
+arch-chroot /mnt mkinitcpio -p linux
 arch-chroot /mnt arch-secure-boot initial-setup || true
 
 echo -e "\n### Creating user"
