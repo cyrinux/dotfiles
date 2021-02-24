@@ -35,6 +35,7 @@ RUN pacman -Syy --noconfirm \
 	openssl \
 	libffi \
 	mlocate \
+    go \
 	nmap \
 	nikto \
 	openssh \
@@ -64,6 +65,8 @@ RUN pacman -Syy --noconfirm \
     subfinder \
 	wfuzz \
     wpscan
+
+RUN go get -u github.com/tomnomnom/anew
 
 RUN useradd -m -r -s /bin/bash aur && \
     passwd -d aur && \

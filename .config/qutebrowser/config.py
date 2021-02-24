@@ -46,27 +46,18 @@ c.tabs.mousewheel_switching = False
 c.qt.args += [
     "enable-gpu-rasterization",
     "enable-features=WebRTCPipeWireCapturer",
-    "enable-experimental-web-platform-features",
     "blink-settings=preferredColorScheme=1",
-    "enable-webrtc-pipewire-capturer",
+    "enable-webrtc-pipewire-capturer"
 ]
-c.qt.process_model = "process-per-site-instance"
-# c.qt.process_model = "process-per-site"
 c.spellcheck.languages = ["en-US", "fr-FR"]
 c.hints.chars = "qsdfgbv"
 
-# privacy
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks = False
 c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"
 
-
-# privacy
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
-
-with config.pattern("*://*.levis.name/") as p:
-    p.content.autoplay = True
 
 c.content.canvas_reading = False
 c.content.blocking.enabled = True
@@ -78,7 +69,6 @@ with config.pattern("*://*.dm.gg/") as p:
         True  # Change to True to be able to login to google
     )
 
-# urls
 c.url.searchengines = {
     "DEFAULT": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
     "dd": "https://duckduckgo.com/?&kn=1&kam=osm&kaj=m&kaq=-1&kao=-1&kau=-1&kp=-2&q={}",
@@ -101,7 +91,6 @@ bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
     ",m": "spawn --userscript view_in_mpv",
-    # ",M": "hint links spawn streamlink {hint-url} best --twitch-low-latency --player mpv",
     ",M": "spawn streamlink {url} best --twitch-low-latency --player mpv",
     ",a": "spawn --userscript youtube-dl-mp3",
     ",A": "hint links userscript youtube-dl-mp3",
