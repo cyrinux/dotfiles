@@ -1,0 +1,11 @@
+[Unit]
+Description=Auto display switch with DDC
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+ExecStart=/usr/bin/display_switch
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
