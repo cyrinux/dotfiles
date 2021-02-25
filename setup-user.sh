@@ -63,6 +63,8 @@ echo "Setting up dotfiles for current user..."
 echo "======================================="
 
 link ".config/display-switch"
+link ".config/display-switch/display-switch.ini.$(detectgpu)" ".config/display-switch/display-switch.ini"
+link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/pythonrc.py"
 link ".config/user-tmpfiles.d"
 link ".config/environment.d"
