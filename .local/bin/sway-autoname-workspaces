@@ -16,7 +16,7 @@ import sys
 import i3ipc
 
 WINDOW_ICONS = {
-    "bleachbit": "",
+    "taskwarrior-tui": "",
     "burp-startburp": "",
     "calibre": "",
     "chromium": "",

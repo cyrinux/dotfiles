@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Network;Task;
+Exec=/usr/bin/taskwarrior-tui
+GenericName=Task Manager
+Name=taskwarrior
+StartupNotify=true
+Type=Application
+Terminal=true
