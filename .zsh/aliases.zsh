@@ -23,6 +23,11 @@ if [[ -x ~/bin/num-cpus ]]; then
 fi
 
 alias tt="taskwarrior-tui"
+alias tpa="task add +home"
+alias twa="task add +work"
+alias twc="task context work"
+alias tpc="task context personal"
+
 alias btm='\btm --color gruvbox'
 alias bottom='btm'
 alias lmr='mr --config ~/.config/myrepos.conf'
