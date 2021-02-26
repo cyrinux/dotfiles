@@ -1,0 +1,11 @@
+[Unit]
+Description=Unseal work auth
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/work-unseal
+Restart=always
+
+[Install]
+WantedBy=default.target
+

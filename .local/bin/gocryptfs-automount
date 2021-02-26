@@ -4,6 +4,6 @@
 
 inotifywait -q -m -e access ~/Vault/ | while read -r line; do
     if [ ! -f ~/Vault/.lock ]; then
-        gocryptfs -extpass "pass personal/crypt/gocryptfs-mega" -idle ${1:-60}m -fg -noprealloc -- ~/Seafile/gocryptfs ~/Vault
+        gocryptfs -extpass "pass personal/crypt/gocryptfs-seafile" -idle ${1:-60}m -fg -noprealloc -- ~/Seafile/gocryptfs ~/Vault
     fi
 done

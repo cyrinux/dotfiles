@@ -1,7 +1,5 @@
 [Unit]
 Description=Gocryptfs automount on ~/Vault access
-PartOf=graphical-session.target
-After=graphical-session.target
 
 [Service]
 Type=simple
@@ -9,4 +7,5 @@ ExecStart=%h/.local/bin/gocryptfs-automount 30
 Restart=always
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=default.target
+
