@@ -1,15 +1,1 @@
-server = "shinken-livestatus.vip.dailymotion.com:50000"
-# server = "mon-29.adm.dc3.dailymotion.com"
-refresh = 30
-hosts_pattern = [".adm.", ".oob.", ".stg.", "site_daily"]
-popup = true
-warnings = false
-debug = false
-# in_notification_period = 1
-# in_notification_period = 0
-limit = 0
-get_duration = true
-notes_url = true
-# notification_snooze_cycle = 20
-# auto_stop = "* 12-15 * * *"
-# auto_start = "* 15-19 * * *"
+/home/cyril/.dotfiles-private/.config/waybar/livestatus.toml
