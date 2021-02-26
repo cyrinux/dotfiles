@@ -8,7 +8,7 @@ main() {
 }
 
 check() {
-    eval "$(pass "personal/restic/$1" 2> /dev/null)"
+    eval "$(pass "personal/backup/restic/$1" 2> /dev/null)"
 
     echo
     echo "Checking up to $RESTIC_REPOSITORY..."
@@ -20,7 +20,7 @@ check() {
 }
 
 lsrepos() {
-    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/restic" -type f |
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
         sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 

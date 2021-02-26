@@ -1,0 +1,4 @@
+[screencast]
+max_fps=10
+chooser_type="dmenu"
+exec_before="waybar-dnd on"

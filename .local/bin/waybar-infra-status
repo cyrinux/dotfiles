@@ -2,16 +2,12 @@
 set -e
 get_status() {
     status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
-    if [ "$status" == "up" ]; then
-        icon=''
-        tooltip='Infra is OK'
-        class=up
-    else
-        icon=''
+    if [ "$status" != "up" ]; then
+        icon="<span foreground='#928374'></span>"
         tooltip='Infra got a problem!'
         class=down
     fi
-    printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+    printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
 nm-online -q -t 60 && get_status

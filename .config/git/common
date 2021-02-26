@@ -1,6 +1,7 @@
 [alias]
+alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
 lg = !tig
-; lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
+lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
 bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
 pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
 branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
@@ -8,12 +9,21 @@ createmr = !git push -o merge_request.create
 fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 workflow = "!hub ci-status -v"
 fork = "!hub fork"
+last = for-each-ref --sort=-committerdate --count=20 --format='%(align:50,left)%(refname:short)%(end)%(committerdate:relative)' refs/heads/
+edit = "!sh -c \"exec kak $(git list $@ | tr '\n' ' ')\""
+who = shortlog -s --no-merges --
+whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+unstage = reset HEAD --
+review = push origin HEAD:refs/for/master
+td = log --stat --oneline --since='12 hour ago'
+ls = ls-files
 
 [branch]
 autosetuprebase = always
 
 [init]
-defaultBranch = master
+defaultBranch = main
 
 [color "branch"]
 current = green reverse
@@ -76,9 +86,11 @@ default = current
 [rebase]
 autostash = true
 autosquash = true
+preserve = true
+stat = true
 
 [mergetool "meld"]
-cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
+cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
 [user]
 name = Cyril Levis

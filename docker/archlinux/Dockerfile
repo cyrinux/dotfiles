@@ -1,11 +1,19 @@
-FROM archlinux/base:latest
+FROM archlinux:latest
+
+# WORKAROUND for glibc 2.33 and old Docker
+# See https://github.com/actions/virtual-environments/issues/2658
+# Thanks to https://github.com/lxqt/lxqt-panel/pull/1562
+RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
+    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
+    bsdtar -C / -xvf "$patched_glibc"
+
 # Locales keyboard
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
  && locale-gen \
  && echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
 ENV LANG="en_US.UTF-8"
 # Archlinux Deps
-RUN pacman -Syu --noconfirm \ 
+RUN yes y | pacman -Sy --noconfirm \
       sudo \
       binutils \
       util-linux \
@@ -23,19 +31,18 @@ RUN pacman -Syu --noconfirm \
       gettext \
       patch \
       rsync \
-      xorg-server-xephyr 
-ENV PATH="${PATH}:/usr/bin/core_perl"
-# Project deps
-RUN pacman -S --noconfirm \ 
+      xorg-server-xephyr \
       git \
-      kakoune
+      arch-install-scripts
+
+ENV PATH="${PATH}:/usr/bin/core_perl"
 # Fix tmp dir perms
 RUN chmod 1777 /tmp
 # Create test user
 RUN useradd -m user \
  && chown -R user:user /home/user \
  && echo -e "user\nuser" | passwd user
-RUN echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers 
+RUN echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # gpg keys
 RUN pacman-key --init && curl -s https://levis.name/pgp_keys.asc | pacman-key -a - && \
@@ -46,6 +53,7 @@ RUN curl -sL https://blackarch.org/strap.sh | bash
 
 # pacman config
 COPY docker/archlinux/pacman.conf /etc/pacman.conf
+RUN pacman -Sy
 
 # User run
 USER user

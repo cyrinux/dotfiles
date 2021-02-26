@@ -1,6 +1,7 @@
 [Desktop Entry]
 Categories=Network;Task;
 Exec=/usr/bin/taskwarrior-tui
+Icon=task-due
 GenericName=Task Manager
 Name=taskwarrior
 StartupNotify=true

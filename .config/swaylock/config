@@ -1,4 +1,7 @@
+# gruvbox
 color=222222
+# transparent
+# color=00000000
 font=monospace
 hide-keyboard-layout
 ignore-empty-password

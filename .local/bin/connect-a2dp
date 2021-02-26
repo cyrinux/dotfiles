@@ -2,34 +2,25 @@
 set -ef -o pipefail
 
 usage() {
-    echo "$(basename $0) bluetooth_mac [00:11:22:33:44:55]"
+    echo "$(basename $0) bluetooth_mac 00:11:22:33:44:55 [name]"
     exit 1
 }
 
 connect() {
     bluetooth on
-    sleep 1
+    sleep 0.5
     echo 'default-agent' | bluetoothctl
     sleep 1
-    echo "disconnect $mac" | bluetoothctl
+    echo "connect $1" | bluetoothctl
     sleep 1
-    echo "connect $mac" | bluetoothctl
-    sleep 1
-}
-
-set_a2dp() {
-    pacmd set-card-profile bluez_card.$(echo -n $mac | tr ':' '_') a2dp_sink
-    pacmd set-default-sink bluez_sink.$(echo -n $mac | tr ':' '_').a2dp_sink
 }
 
 if [ -z "$1" ]; then
     usage
 else
     mac="${1::17}"
-    echo "Connecting to $mac ..."
-    connect
-    sleep 4
-    echo "Set a2dp profile to $mac ..."
-    set_a2dp
-    notify-send -i /usr/share/icons/Adwaita/scalable/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to $1"
+    name="${2:-$1}"
+    echo "Connecting to $name ..."
+    connect "$mac"
+    notify-send -i /usr/share/icons/ePapirus-Dark/symbolic/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to ${name}"
 fi

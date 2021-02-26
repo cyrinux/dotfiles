@@ -1,6 +1,6 @@
 application/vnd.openxmlformats-officedocument.wordprocessingml.document; firewarden -q pandoc --from docx --to markdown %s; copiousoutput
 application/vnd.oasis.opendocument.text; firewarden -q pandoc --from odt --to markdown %s; copiousoutput
-application/pdf; dangerzone %s
+application/pdf; firewarden zathura %s
 application/pdf; pdftotext -l 10 -nopgbrk -q -- %s - | fmt -w 120; copiousoutput;
 application/ics; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;
 application/epub+zip; firewarden -q -c zathura %s

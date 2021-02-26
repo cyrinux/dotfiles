@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=The Talos Principle
-Comment=Play this game on Steam
-Exec=steam steam://rungameid/257510
-Icon=steam_icon_257510
-Terminal=false
-Type=Application
-Categories=Game;

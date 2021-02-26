@@ -1,2 +1,2 @@
 #!/bin/sh
-sudo mkinitcpio -P && sudo arch-secure-boot generate-efi && sudo chkboot -u
+sudo mkinitcpio -P && sudo arch-secure-boot generate-efi

@@ -23,7 +23,7 @@ alias koff='kubectl config unset current-context'
 drain_node() {
     kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
 }
-kout() {
+kcout() {
     while IFS= read -rd: config; do
         [ -f "$config" ] || continue
         sed -i -E '/^\s*(access-token|expires-in|expires-on|refresh-token)/d' "$config"

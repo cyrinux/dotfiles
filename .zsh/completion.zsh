@@ -5,3 +5,4 @@
 
 # azure
 z4h source -c /etc/bash_completion.d/azure-cli
+#z4h source -c /etc/bash_completion.d/k3d

@@ -1,7 +1,9 @@
 #!/bin/sh
 
+trap 'pkill -P $$' EXIT
+
 if pgrep -x wf-recorder > /dev/null; then
-    printf '{"text": "  "}\n'
+    printf "{\"text\": \" <span foreground='#928374'></span> \"}\n"
 else
     printf '{"text": ""}\n'
 fi
