@@ -19,6 +19,29 @@ detectgpu() {
     (lsmod | grep '^i915' || lsmod | grep '^amdgpu') | awk '{print $1}'
 }
 
+copy() {
+    if [ -z "$reverse" ]; then
+        orig_file="$dotfiles_dir/$1"
+        dest_file="$HOME/$1"
+    else
+        orig_file="$HOME/$1"
+        dest_file="$dotfiles_dir/$1"
+    fi
+
+    mkdir -p "$(dirname "$orig_file")"
+    mkdir -p "$(dirname "$dest_file")"
+
+    rm -rf "$dest_file"
+
+    cp -R "$orig_file" "$dest_file"
+    if [ -z "$reverse" ]; then
+        [ -n "$2" ] && chmod "$2" "$dest_file"
+    else
+        chown -R cyril "$dest_file"
+    fi
+    echo "$dest_file <= $orig_file"
+}
+
 link() {
     orig_file="$dotfiles_dir/$1"
     if [ -n "$2" ]; then
@@ -62,8 +85,8 @@ echo "======================================="
 echo "Setting up dotfiles for current user..."
 echo "======================================="
 
-link ".config/display-switch"
-link ".config/display-switch/display-switch.ini.$(detectgpu)" ".config/display-switch/display-switch.ini"
+copy ".config/display-switch-all"
+link ".config/display-switch-all/display-switch.ini.$(detectgpu)" ".config/display-switch/display-switch.ini"
 link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/pythonrc.py"
 link ".config/user-tmpfiles.d"
