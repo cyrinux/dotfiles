@@ -22,6 +22,7 @@ if [[ -x ~/bin/num-cpus ]]; then
     command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
 fi
 
+alias tt="taskwarrior-tui"
 alias btm='\btm --color gruvbox'
 alias bottom='btm'
 alias lmr='mr --config ~/.config/myrepos.conf'
