@@ -11,3 +11,4 @@ vdirsyncer.timer,user:cyril
 checkmail.timer,user:cyril
 urlwatch.timer,user:cyril
 fwupd-refresh.timer
+task-sync.timer:cyril

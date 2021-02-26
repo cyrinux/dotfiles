@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.6.4
+pkgver=2.6.6
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -667,4 +667,7 @@ depends=(
     'zps'
     'zsh'
     'python-croniter'
+    'wkhtmltopdf'
+    'taskopen'
+    'taskwarrior-tui'
 )
