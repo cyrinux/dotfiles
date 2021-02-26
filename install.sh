@@ -117,19 +117,19 @@ read -r -a devicelist <<< "$devicelist"
 device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
 clear
 
-# echo -e "\n### Setting up fastest mirrors"
-# reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
-
 luks_header_device=$(get_choice "Installation" "Select disk to write LUKS header to" "${devicelist[@]}") || exit 1
 
 clear
+
+echo -e "\n### Setting up fastest mirrors"
+reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-wipefs --all "${device}"
-sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 --change-name=2:"EFI" "${device}"
+sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
+sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
@@ -165,20 +165,23 @@ btrfs subvolume create /mnt/archbuild
 btrfs subvolume create /mnt/docker
 btrfs subvolume create /mnt/logs
 btrfs subvolume create /mnt/temp
+btrfs subvolume create /mnt/swap
 btrfs subvolume create /mnt/snapshots
 umount /mnt
 
 mount -o noatime,nodiratime,compress=zstd,subvol=root /dev/mapper/luks /mnt
-mkdir -p /mnt/{mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild,docker,steam}},.snapshots}
+mkdir -p /mnt/{mnt/btrfs-root,efi,home/cyril/.local/share/docker,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild,docker,steam}},swap,.snapshots}
 mount "${part_boot}" /mnt/efi
 mount -o noatime,nodiratime,compress=zstd,subvol=/ /dev/mapper/luks /mnt/mnt/btrfs-root
 mount -o noatime,nodiratime,compress=zstd,subvol=home /dev/mapper/luks /mnt/home
 mount -o noatime,nodiratime,compress=zstd,subvol=pkgs /dev/mapper/luks /mnt/var/cache/pacman
 mount -o noatime,nodiratime,compress=zstd,subvol=aurbuild /dev/mapper/luks /mnt/var/lib/aurbuild
 mount -o noatime,nodiratime,compress=zstd,subvol=archbuild /dev/mapper/luks /mnt/var/lib/archbuild
-mount -o noatime,nodiratime,compress=zstd,subvol=docker /dev/mapper/luks /mnt/var/lib/docker
+mount -o noatime,nodiratime,compress=zstd,subvol=docker /dev/mapper/luks /mnt/home/${user}/.local/share/docker
+chown -R $user /mnt/home/$user
 mount -o noatime,nodiratime,compress=zstd,subvol=logs /dev/mapper/luks /mnt/var/log
 mount -o noatime,nodiratime,compress=zstd,subvol=temp /dev/mapper/luks /mnt/var/tmp
+mount -o noatime,nodiratime,compress=zstd,subvol=swap /dev/mapper/luks /mnt/swap
 mount -o noatime,nodiratime,compress=zstd,subvol=snapshots /dev/mapper/luks /mnt/.snapshots
 
 echo -e "\n### Importing my public PGP key"
@@ -215,20 +218,42 @@ pacstrap -i /mnt cyrinux
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
+
+cryptsetup luksHeaderBackup "${luks_header_device}" --header-backup-file /tmp/header.img
+luks_header_size="$(stat -c '%s' /tmp/header.img)"
+rm -f /tmp/header.img
+
+if [[ "$fde" == "Yes" ]]; then
+    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size mem_sleep_default=deep loglevel=3 nowatchdog l1tf=full,force spec_store_bypass_disable=on spectre_v2=on apparmor=1 lsm=lockdown,yama,apparmor init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 slab_nomerge vsyscall=none slub_debug=F,Z,P systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
+else
+    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep loglevel=3 nowatchdog l1tf=full,force spec_store_bypass_disable=on spectre_v2=on apparmor=1 lsm=lockdown,yama,apparmor init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 slab_nomerge vsyscall=none slub_debug=F,Z,P systemd.unified_cgroup_hierarchy=1 quiet
+    " > /mnt/etc/kernel/cmdline
+fi
+
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
 genfstab -L /mnt >> /mnt/etc/fstab
+sed -i 's|subvol=docker|subvol=docker,user_subvol_rm_allowed|' /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 ln -sf /usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 arch-chroot /mnt locale-gen
-cat << EOF > /mnt/etc/mkinitcpio.conf
+if [[ "$fde" == "Yes" ]]; then
+    cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
 HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
 EOF
+else
+    cat << EOF > /mnt/etc/mkinitcpio.conf
+MODULES=()
+BINARIES=(/usr/bin/btrfs)
+FILES=()
+HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems keyboard shutdown)
+EOF
+fi
 
 cat << EOF > /mnt/etc/sudoers
 root ALL=(ALL) ALL
@@ -240,22 +265,27 @@ echo -e "\n### Setting up Secure Boot with custom keys"
 [[ "$fde" == "Yes" ]] && {
     sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
     echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
-    # echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
+    if [ "$device" != "$luks_header_device" ]; then
+        echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
+    fi
 }
 echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
-
-if [[ "$fde" == "Yes" ]]; then
-    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:2097152 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mem_sleep_default=deep mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
-else
-    echo "cryptdevice=LABEL=luks:luks:allow-discards root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep pti=on page_alloc.shuffle=1 apparmor=1 security=apparmor lsm=lockdown,yama,apparmor,bpf mitigations=on loglevel=0 vga=current consoleblank=60 quiet" > /mnt/etc/kernel/cmdline
-fi
 
 arch-chroot /mnt mkinitcpio -p linux
 arch-chroot /mnt arch-secure-boot initial-setup || true
 
+echo -e "\n### Configuring swap file"
+truncate -s 0 /mnt/swap/swapfile
+chattr +C /mnt/swap/swapfile
+btrfs property set /mnt/swap/swapfile compression none
+dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=4096
+chmod 600 /mnt/swap/swapfile
+mkswap /mnt/swap/swapfile
+echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video render plugdev ddc libvirt; do
+for group in wheel network video render plugdev ddc libvirt audit input; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
@@ -267,6 +297,11 @@ arch-chroot /mnt passwd -dl root
 echo -e "\n### Settings permissions on the custom repo"
 arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local/
 
+echo "\n### Setup docker rootless"
+echo $user:231072:65536 > /etc/subuid
+arch-chroot /mnt echo "$user:231072:65536" > /etc/subgid
+arch-chroot /mnt echo "$user:231072:65536" > /etc/subuid
+
 echo -e "\n### Cloning dotfiles"
 arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
 
@@ -276,4 +311,6 @@ arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
 arch-chroot /mnt sudo -u $user zsh -ic true
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
+echo -e "\n### Remember to unplug the installation USB stick before the next boot!"
+
 umount -R /mnt

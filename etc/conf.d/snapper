@@ -3,5 +3,5 @@
 ## Type:        string
 ## Default:     ""
 # List of snapper configurations.
-SNAPPER_CONFIGS="home root"
+SNAPPER_CONFIGS="root"
 

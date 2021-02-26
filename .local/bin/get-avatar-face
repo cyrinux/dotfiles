@@ -1,0 +1,6 @@
+#!/bin/bash
+
+read -p "email:" email
+
+EMAIL_HASH=$(echo -n $email | md5sum - | cut -d " " -f 1)
+wget --quiet -O ~/.face http://www.gravatar.com/avatar/${EMAIL_HASH}.png?size=160

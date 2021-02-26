@@ -1,0 +1,2 @@
+#!/usr/bin/zsh -i
+z4h ssh "$@"

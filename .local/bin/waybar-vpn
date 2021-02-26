@@ -1,5 +1,7 @@
 #!/bin/bash
 
+trap 'pkill -P $$' EXIT
+
 tooltip() {
     piactl get region
     echo
@@ -9,10 +11,10 @@ tooltip() {
 vpn() {
     state=$1
     if [[ "x${state}x" == "xConnectedx" ]]; then
-        icon=''
+        icon="<span foreground='#928374'></span>"
         class=on
     else
-        icon=''
+        icon="<span foreground='#928374'></span>"
         class=off
     fi
     tooltip=tooltip

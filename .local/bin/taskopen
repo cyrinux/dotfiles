@@ -1,2 +1,2 @@
 #!/bin/sh
-taskopen -c ~/.config/taskwarrior/taskopenrc
+/usr/bin/taskopen -c ~/.config/taskwarrior/taskopenrc "$@"

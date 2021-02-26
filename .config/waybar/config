@@ -1,19 +1,21 @@
+[{
+    "layer": "top",
+    "modules-left": [
+        "sway/mode"
+    ]
+},
 {
     "layer": "top",
-    "height": 26,
     "modules-left": [
-        "sway/workspaces",
-	    "custom/scratchpad",
-        "sway/mode"
+        "sway/workspaces"
     ],
     "modules-right": [
+        "custom/prod-status",
+        "custom/infra-status",
         "custom/progress",
         "custom/fwupd",
         "custom/netatmo",
         "custom/usbguard",
-        "custom/prod-status",
-        "custom/infra-status",
-        "custom/yubikey",
         "custom/decrypted",
         "custom/systemd",
         "custom/updates",
@@ -25,8 +27,6 @@
         "network",
         "custom/vpn",
         "custom/vpn#work",
-        "temperature#laptop",
-        "temperature#pc",
         "cpu",
         "memory",
         "backlight",
@@ -36,11 +36,12 @@
         "clock",
         "custom/dnd",
         "idle_inhibitor",
-        "tray"
+        "tray",
+        "custom/yubikey"
     ],
     "custom/keyboard-layout": {
       "exec": "waybar-keyboard-layout",
-      "format": " {}",
+      "format": "<span foreground='#928374'> </span>{}",
       "signal": 1,
       "tooltip": false
     },
@@ -121,7 +122,7 @@
         "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
-        "exec": "~/library/src/personal/waybar-livestatus/waybar-livestatus",
+        "exec": "waybar-livestatus",
         "return-type": "json",
 	    "markup": true,
         "on-click": "pkill -SIGUSR1 -x waybar-livestat",
@@ -154,7 +155,9 @@
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format": " {:%a, %d %b    %H:%M}"
+        "on-click": "exec gsimplecal",
+        "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
+
     },
     "temperature#laptop": {
 		"hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
@@ -169,21 +172,21 @@
 		"format": " {temperatureC}°C"
 	},
     "cpu": {
-        "format": " {usage}%",
+        "format": "<span foreground='#928374'></span> {usage}% {avg_frequency}GHz",
         "states": {
             "warning": 70,
             "critical": 90
         }
     },
     "memory": {
-        "format": " {}%",
+        "format": "<span foreground='#928374'></span> {}%",
         "states": {
             "warning": 70,
             "critical": 90
         }
     },
     "backlight": {
-        "format": "{icon} {percent}%",
+        "format": "<span foreground='#928374'>{icon}</span> {percent}%",
         "format-icons": [""]
     },
     "custom/headset-battery": {
@@ -197,29 +200,28 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-alt": "{time} {icon}",
+        "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
+        "format-charging": "<span foreground='#928374'></span>{capacity}%",
+        "format-alt": "{time} <span foreground='#928374'>{icon}</span>",
         "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        "format-wifi": " ",
-        "format-ethernet": " {ifname}",
-        "format-linked": " {ifname}",
-        "format-disconnected": "  ",
+        "interval": 2,
+        "format-wifi": "<span foreground='#928374'></span> {signalStrength}%",
+        "format-ethernet": "<span foreground='#928374'></span> {ifname}",
+        "format-linked": "<span foreground='#928374'></span> {ifname}",
+        "format-disconnected": " <span foreground='#928374'></span> ",
         "tooltip-format-wifi": "{ifname}: {essid} ({signalStrength}%)\n{ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
         "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
         "tooltip-format-disconnect": "",
-        "interval": 2,
-        "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
-        "format": "{icon} {volume}%   {format_source}",
-        "format-bluetooth": "{icon} {volume}%   {format_source}",
-        "format-bluetooth-muted": " {icon}   {format_source}",
-        "format-muted": "   {format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": "",
+        "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+        "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+        "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
+        "format-muted": "<span foreground='#928374'></span>   {format_source}",
+        "format-source": "<span foreground='#928374'></span> {volume}%",
+        "format-source-muted": "<span foreground='#928374'></span>",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -229,11 +231,8 @@
             "car": "",
             "default": ["", "", ""]
         },
-        "on-click": "pavucontrol"
-    },
-    "custom/scratchpad": {
-	    "format": "{} 󰀿",
-	    "interval": 1,
-	    "exec": "swaymsg -t get_tree | jq '.nodes[].nodes[] | select(.name==\"__i3_scratch\").floating_nodes | length'"
-   }
-}
+    }
+}]
+
+
+// vi: ft=json

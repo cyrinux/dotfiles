@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-command -v bat       &> /dev/null    && alias c='bat -p'                                           || alias c='cat'
-command -v bat       &> /dev/null    && alias c='/usr/bin/bat -p'                                           || alias c='cat'
+command -v bat       &> /dev/null    && alias c='bat'                                        || alias c='cat'
 command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
@@ -9,9 +8,10 @@ command -v exa       &> /dev/null    && alias ls='exa -ga --group-directories-fi
 command -v fd        &> /dev/null    && alias fd='fd --hidden --follow'                            || alias fd='find . -name'
 command -v git       &> /dev/null    && alias diff='git diff --no-index'
 command -v htop      &> /dev/null    && alias top='htop'
-command -v pydf      &> /dev/null    && alias df='pydf'
+command -v dfrs      &> /dev/null    && alias df='dfrs'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
+command -v dog       &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h
@@ -22,19 +22,33 @@ if [[ -x ~/bin/num-cpus ]]; then
     command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
 fi
 
+# Taskwarrior
 alias tt="taskwarrior-tui"
-alias tpa="task add +home"
-alias twa="task add +work"
-alias twc="task context work"
-alias tpc="task context personal"
+alias t='task'
+alias ta='task add'
+alias tm='task modify'
+alias to='taskopen'
+alias ti='task add due:tomorrow tag:inbox'
+tn() {
+    if ! taskopen -a $1; then
+        task annotate notes $1
+        taskopen -a $1
+    fi
+}
 
+# Udiskie
+alias um='udiskie-mount -r'
+alias uu='udiskie-umount'
+alias up='um -p "builtin:tty"'
+
+# Misc
+alias hex='teehee'
 alias btm='\btm --color gruvbox'
+alias e="$EDITOR"
 alias bottom='btm'
 alias lmr='mr --config ~/.config/myrepos.conf'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
-alias e="$EDITOR"
-alias apparmor-notify="sudo /usr/bin/aa-notify -p -f /var/log/audit/audit.log --display :0"
 alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(pass personal/bios)"'
 alias battery-normal='sudo cctk --PrimaryBattChargeCfg=custom:50-86 --ValSetupPwd="$(pass personal/bios)"'
 alias bc='bc -lq'
@@ -80,9 +94,6 @@ compdef _directories md
 
 # Make a temporary directory and enter it
 tmpd() { cd "$(mktemp -d -t "${1:-tmp}.XXXXXXXXXX")" }
-
-# Run `dig` and display the most useful info
-alias d='dig +nocmd +multiline +noall +answer'
 
 # ping test
 p() { [ -n "$DOMAIN" ] && ping ${1}.${DOMAIN} || ping "${1:-1.1.1.1}" }
@@ -154,3 +165,14 @@ alias reloadu='sysu daemon-reload'
 alias timers='sys list-timers'
 alias timersu='sysu list-timers'
 
+rga-fzf() {
+    RG_PREFIX="rga --files-with-matches"
+    xdg-open "$(
+        FZF_DEFAULT_COMMAND="$RG_PREFIX $@" \
+            fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
+                --bind=tab:down,btab:up \
+                --phony -q "$1" \
+                --bind "change:reload:$RG_PREFIX {q}" \
+                --preview-window="70%:wrap"
+    )"
+}

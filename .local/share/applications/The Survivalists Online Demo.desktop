@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=The Survivalists Online Demo
-Comment=Play this game on Steam
-Exec=steam steam://rungameid/1311980
-Icon=steam_icon_1311980
-Terminal=false
-Type=Application
-Categories=Game;

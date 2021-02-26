@@ -1,10 +1,10 @@
 ---
-debug: true
+debug: false
 wait: true
 timeouts:
-  - timeout: 400
-    command: 'swaymsg "output * dpms off"'
-    resume: 'swaymsg "output * dpms on"'
   - timeout: 300
     command: "sway-exit lock"
+  - timeout: 360
+    command: 'swaymsg "output * dpms off"'
+    resume: 'swaymsg "output * dpms on"'
 before-sleep: "sway-exit lock"

@@ -8,9 +8,11 @@ input type:keyboard {
 }
 
 input type:touchpad {
-    natural_scroll enabled
-    tap enabled
-    dwt enabled
+	accel_profile adaptive
+	dwt enabled
+	drag enabled
+	tap enabled
+	natural_scroll enabled
 }
 
 output * {
@@ -57,16 +59,17 @@ set $workspace0 workspace number 10
 workspace_auto_back_and_forth yes
 
 # Specific window configuration
+for_window    [app_id="MellowPlayer"]        move container to $workspace10
+for_window    [app_id="SongRec"]             move container to $workspace10
+for_window    [class="^zoom$"]               floating enable move container to $workspace9
+for_window    [class="Zoom"]                 floating enable
 for_window    [class="Tor Browser"]          floating enable
 for_window    [app_id=".*"]                  sticky enable
 for_window    [app_id="qalculate-gtk"]       floating enable
 for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
 for_window    [class="Signal"]                           move container to $workspace3
-for_window    [title="webcamfloat"]          floating enable, sticky enable, resize set with 80ppt height 60ppt
-for_window    [app_id="iriunwebcam"]         floating disable
 for_window    [window_role="pop-up"]         floating enable
 for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
-for_window    [class="Zoom"]                 floating enable
 for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
 for_window    [app_id="taskwarrior-tui"]     move container to $workspace4, title_format "Taskwarrior"
 for_window    [app_id="wev"]                 floating enable
@@ -75,15 +78,17 @@ for_window    [class="Steam"]                inhibit_idle fullscreen
 for_window    [app_id="dmenu.*"]             floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]       resize set height 20ppt
 for_window    [title="x11 - TigerVNC"]       move container to $workspace9, title_format "VNC"
+for_window    [app_id="mpv"]                 floating enable, resize set width 531 height 300, move position 1005 113
+for_window    [app_id="iriunwebcam"]         floating disable
 
 # Audio settings
-set $mode_audio "(p)avucontrol, (s)hure-bt1, (a)eropex, p(x)5"
+set $mode_audio "Audio: (a)eropex, p(x)5, (s)hure-bt1, (p)avucontrol"
 mode $mode_audio {
     bindsym --to-code {
 		 p exec pavucontrol, mode "default"
-	     s exec "connect-a2dp 00:0E:DD:06:24:1C", mode "default"
-	     a exec "connect-a2dp 20:74:CF:3B:36:A9", mode "default"
-	     x exec "connect-a2dp B0:67:2F:13:E9:34", mode "default"
+	     s exec "connect-a2dp 00:0E:DD:06:24:1C Share-BT1", mode "default"
+	     a exec "connect-a2dp 20:74:CF:74:2F:11 OpenComm", mode "default"
+	     x exec "connect-a2dp B0:67:2F:13:E9:34 PX5", mode "default"
 
         Return mode "default"
 	    Escape mode "default"
@@ -94,9 +99,8 @@ mode $mode_audio {
 set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted, (e)xit"
 mode $mode_system {
 	bindsym --to-code {
-     # l exec 'sleep 1; pkill -USR1 swayidle', mode "default"
+     l exec 'sleep 1; pkill -USR1 swayidle', mode "default"
      e exec sway-exit exit, mode "default"
-     l exec 'sleep 1; sway-exit lock', mode "default"
      s exec sway-exit suspend, mode "default"
      r exec sway-exit reboot, mode "default"
      h exec sway-exit shutdown, mode "default"
@@ -201,10 +205,11 @@ bindsym --to-code {
     Shift+XF86MonBrightnessDown exec light -U 5%
 
     # Go to previous windows
-    $win+Tab					  [con_mark=_prev] focus
+    # $win+Tab					  [con_mark=_prev] focus
+    alt+Tab      exec sway-window-switch
 
     # Misc
-	$win+F1                       exec "resolvectl flush-caches"
+	$win+F1      exec "resolvectl flush-caches"
 
 	Print        exec sway-screenshot-area
     $hyper+Print exec sway-gif-area
@@ -277,6 +282,13 @@ bindsym --to-code {
 	# Split
 	$hyper+s split toggle
 
+    # Focus the parent container
+    $hyper+u focus parent
+
+    # Focus the child container
+    $hyper+i focus child
+
+
 	# move workspace to the right monitor
 	$win+BackSpace move workspace to output right
 	$hyper+BackSpace move container to output right
@@ -325,10 +337,9 @@ bindsym --to-code {
 	$win+m        mode $mode_workspaces_monitors
 	$hyper+r      mode $mode_resize
 
-	# notification
-    $hyper+q       exec makoctl dismiss
-	$hyper+Shift+q exec makoctl dismiss --all
-	$hyper+o       exec makoctl menu dmenu
+	# Notification actions
+    $hyper+q exec makoctl dismiss
+    $hyper+o exec makoctl menu dmenu
 }
 
 exec_always $kanshi

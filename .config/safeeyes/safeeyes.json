@@ -1,19 +1,13 @@
 {
-    "allow_postpone": true,
-    "long_break_duration": 15,
-    "long_break_interval": 120,
+    "allow_postpone": false,
+    "long_break_duration": 60,
+    "long_break_interval": 75,
     "long_breaks": [
         {
             "name": "Walk for a while"
         },
         {
             "name": "Lean back at your seat and relax"
-        },
-        {
-            "name": "Get some water"
-        },
-        {
-            "name": "Go outside and breathe some fresh air"
         }
     ],
     "meta": {
@@ -27,7 +21,7 @@
             "settings": {
                 "skip_break_windows": "",
                 "take_break_windows": "",
-                "unfullscreen": false,
+                "unfullscreen": true,
                 "while_on_battery": false
             },
             "version": "0.0.2"
@@ -38,7 +32,7 @@
             "version": "0.0.1"
         },
         {
-            "enabled": false,
+            "enabled": true,
             "id": "audiblealert",
             "settings": {
                 "post_break_alert": true,
@@ -47,7 +41,7 @@
             "version": "0.0.3"
         },
         {
-            "enabled": false,
+            "enabled": true,
             "id": "trayicon",
             "settings": {
                 "allow_disabling": true,
@@ -77,18 +71,18 @@
             "enabled": false,
             "id": "smartpause",
             "settings": {
-                "idle_time": 5.0,
+                "idle_time": 5,
                 "interpret_idle_as_break": false,
                 "postpone_if_active": false
             },
             "version": "0.0.3"
         },
         {
-            "enabled": false,
+            "enabled": true,
             "id": "screensaver",
             "settings": {
-                "command": "sway-exit lock",
-                "min_seconds": 10.0
+                "command": "",
+                "min_seconds": 3
             },
             "version": "0.0.2"
         },
@@ -117,40 +111,22 @@
             "name": "Tightly close your eyes"
         },
         {
-            "name": "Roll your eyes to each side"
+            "name": "Roll your eyes a few times to each side"
         },
         {
             "name": "Rotate your eyes in clockwise direction"
         },
         {
-            "name": "Rotate your eyes in counter-clockwise direction"
+            "name": "Rotate your eyes in counterclockwise direction"
         },
         {
-            "name": "Blink your eyes very frequently"
+            "name": "Blink your eyes"
         },
         {
             "name": "Focus on a point in the far distance"
         },
         {
-            "name": "Roll your eyes up and down"
-        },
-        {
-            "name": "Roll your eyes in a diagonal motion"
-        },
-        {
-            "name": "Cross your eyes by focusing on a point in a very close distance"
-        },
-        {
-            "name": "Draw an \"8\" shape with your eyes"
-        },
-        {
-            "name": "Close your eyes and massage them with your fingers"
-        },
-        {
-            "name": "Close your eyes and rotate them in clockwise direction"
-        },
-        {
-            "name": "Close your eyes and rotate them in counter-clockwise direction"
+            "name": "Have some water"
         }
     ],
     "shortcut_disable_time": 2,

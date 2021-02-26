@@ -115,7 +115,7 @@ set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
 " :mark mark /full/directory/path [filename]
 
-mark b ~/bin/
+mark b ~/.local/bin/
 mark h ~/
 
 " ------------------------------------------------------------------------------
@@ -140,6 +140,8 @@ command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart
+command attachnew /usr/share/taskopen/scripts/attach_vifm -f %d/%f
+command attach /usr/share/taskopen/scripts/attach_vifm -t %a -f %d/%f
 
 " ------------------------------------------------------------------------------
 

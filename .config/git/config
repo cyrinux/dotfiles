@@ -1,3 +1,9 @@
+[include]
+    path = ~/.config/git/common
+
+[ghq]
+  root = ./
+
 [includeIf "gitdir:~/library/src/personal/"]
   path = ~/.config/git/home
 

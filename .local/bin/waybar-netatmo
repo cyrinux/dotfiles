@@ -50,9 +50,9 @@ else
 fi
 
 if [ $(bc <<< "$intemp > 25.0") -eq 1 ]; then
-    icon=''
+    icon="<span foreground='#928374'></span>"
 else
-    icon=''
+    icon="<span foreground='#928374'></span>"
 fi
 
 case $intemptrend in

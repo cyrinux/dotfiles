@@ -7,18 +7,23 @@ main() {
     done
 }
 
-backup() {
-    eval "$(pass "personal/restic/$1" 2> /dev/null)"
+restore() {
+    repo=shift
+    args=shift
+    eval "$(pass "personal/backup/restic/$repo" 2> /dev/null)"
 
     echo
     echo "Restore from $RESTIC_REPOSITORY..."
     echo
 
-    restic restore --tag="$RESTIC_TAG" "$HOME" "$@"
+    restic snapshots --tag="$RESTIC_TAG" --host="$(hostname)"
+    echo "Enter the snapshot id to restore:"
+    read -r snapshot
+    restic restore "$snapshot" --tag="$RESTIC_TAG" --host="$(hostname)" --target /tmp/restore-restic $args
 }
 
 lsrepos() {
-    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personalrestic" -type f |
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
         sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 

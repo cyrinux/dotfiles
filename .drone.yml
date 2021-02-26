@@ -1,0 +1,34 @@
+---
+kind: pipeline
+name: dotfiles-testing
+
+steps:
+  - name: build archlinux test image
+    image: docker:latest
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    commands:
+      - docker build --no-cache -t archlinux/dotfiles:${DRONE_COMMIT} -f docker/archlinux/Dockerfile .
+    when:
+      branch:
+        - test
+      event:
+        - push
+
+  - name: test dotfiles
+    image: archlinux/dotfiles:${DRONE_COMMIT}
+    commands:
+      - sudo pacman -Rs --noconfirm -dd iptables
+      - sudo pacman -Sy --noconfirm cyrinux
+      - make test
+    when:
+      branch:
+        - test
+      event:
+        - push
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock

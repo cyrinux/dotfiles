@@ -1,8 +1,10 @@
 #!/bin/sh
 
+trap 'pkill -P $$' EXIT
+
 vpn() {
     if [ -e "/sys/class/net/tun-prod" ] || (($(nmcli --terse -f name conn show --active | grep -q VPN-Prod))); then
-        icon=''
+        icon="<span foreground='#928374'></span>"
         class=on
     else
         icon=''

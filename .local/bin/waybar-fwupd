@@ -1,7 +1,7 @@
 #!/bin/bash
 updates="$(fwupdmgr get-updates 2> /dev/null)"
 updates=$(printf "${updates}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')
-icon=""
+icon="<span foreground='#928374'></span>"
 tooltip="Firmware updates:\nfwupdmgr get-updates &amp;&amp; fwupdmgr update\n\nDetails:\n${updates}"
 tooltip=$(printf "${tooltip}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')
 
@@ -10,4 +10,3 @@ if [ -z "$updates" ]; then
 else
     printf '{"text": "%s", "tooltip": "%s"}\n' "$icon" "$tooltip"
 fi
-

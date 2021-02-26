@@ -6,27 +6,22 @@ g() {
     fi
 }
 
-
 # Create a git.io short URL
 gitio() {
-        if [ -z "${1}" ] || [ -z "${2}" ]; then
-                echo "Usage: \`gitio slug url\`"
-                return 1
-        fi
-        curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
+    if [ -z "${1}" ] || [ -z "${2}" ]; then
+        echo "Usage: \`gitio slug url\`"
+        return 1
+    fi
+    curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
-gcl() {
-    git clone --recursive "$@"
-    cd -- "${${${@: -1}##*/}%*.git}"
-}
-
+alias gcl='ghq get --look'
 alias ga='git add'
 alias gaa='git add --all'
 alias gap='git add -p'
 
-alias gb='git branch'
-alias gba='git branch --all'
+alias gb='git branch | fzf'
+alias gba='git branch --all | fzf'
 alias gbd='git branch -D'
 alias gbda='git branch --no-color --merged | command grep -vE "^(\*|\s*(master|develop|dev)\s*$)" | command xargs -n 1 git branch -d'
 alias gbo='git branch --set-upstream-to=origin/$(git symbolic-ref --short HEAD) $(git symbolic-ref --short HEAD)'
@@ -78,6 +73,7 @@ alias gp='git push -u'
 alias gpc='git createmr'
 alias gpf='git push --force-with-lease'
 alias gpf!='git push --force'
+alias gpfa!='git pushall --force'
 
 alias gra='git remote add'
 alias grr='git remote remove'

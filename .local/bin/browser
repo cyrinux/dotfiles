@@ -6,7 +6,7 @@ case $menu in
         firewarden -q -n qutebrowser "$@" &
         ;;
     "disposable")
-        firewarden -q qutebrowser "$@" &
+        firewarden -z 127.1.1.1 -q qutebrowser "$@" &
         ;;
     "personal")
         qutebrowser-personal "$@" &

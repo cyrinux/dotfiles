@@ -69,15 +69,20 @@ install: setup-system setup-user
 
 .PHONY: install-metapackage
 install-metapackage:
-	sudo pacman -Sy --noconfirm cyrinux
+	sudo pacman -Sy
+	sudo pacman -Rs --noconfirm -dd iptables
+	yes Y | sudo pacman -Sy --noconfirm cyrinux
 
-.PHONY: travis
-travis: setup-system setup-user install-metapackage
+.PHONY: ci
+ci: install-metapackage setup-system setup-user
+
+.PHONY: build-docker
+build-docker:
+	docker build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
 
 .PHONY: test
-test:
-	docker build -t archlinux/dotfiles -f docker/archlinux/Dockerfile .
-	docker run --rm -it archlinux/dotfiles make travis
+test: build-docker
+	docker run --rm -it archlinux/dotfiles make ci
 
 .PHONY: clean
 clean:

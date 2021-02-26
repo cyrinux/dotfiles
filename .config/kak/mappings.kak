@@ -17,14 +17,18 @@ map global normal <left>  ': bp<ret>'
 map global normal <right> ': bn<ret>'
 map global normal <up>    ': git prev-hunk<ret>'
 map global normal <down>  ': git next-hunk<ret>'
+map global normal <c-n>   ': connect-terminal<ret>'
 
 map global insert <c-w> '<esc>bdi'
 map global insert <c-u> '<esc>xdO'
 
-map global user l %{: enter-user-mode lsp<ret>} -docstring "LSP mode"
-map global user -docstring 'clip-paste (before)'      p      'o<esc>!wl-paste|dos2unix<ret><a-d>'
-map global user -docstring 'clip-paste (after)'       P      'O<esc><a-!>wl-paste|dos2unix<ret><a-d>'
-map global user -docstring 'clip-replace'             R      '|wl-paste|dos2unix<ret>'
+map global user -docstring 'toggle line numbers'      L      ': toggle-highlighter global/ number-lines -hlcursor<ret>'
+map global user -docstring 'toggle line wrap'         W      ': toggle-highlighter global/ wrap -word -indent<ret>'
+
+map global user -docstring 'clip-paste (before)'      p      'o<esc>!wl-paste --no-newline | dos2unix<ret><a-d>'
+map global user -docstring 'clip-paste (after)'       P      'O<esc><a-!>wl-paste --no-newline | dos2unix<ret><a-d>'
+map global user -docstring 'clip-replace'             R      '|wl-paste --no-newline | dos2unix<ret>'
+
 map global user -docstring 'clip-yank'                y      '<a-|>wl-copy<ret>'
 map global user -docstring 'save buffer'              w      ': w<ret>'
 map global user -docstring 'close buffer'             c      ': db<ret>'
@@ -42,8 +46,8 @@ map global user -docstring 'select up'                <a-v>  ': vertical-selecti
 map global user -docstring 'select up and down'       v      ': vertical-selection-up-and-down<ret>'
 map global user -docstring 'new terminal in cwd'      n      ': kitty-terminal zsh<ret>'
 map global user -docstring 'disable autoformat'       d      ': disable-autoformat<ret>'
-map global user -docstring 'set yaml style' Y ': set buffer filetype yaml<ret>'
-
+map global user -docstring 'set yaml style'           Y      ': set buffer filetype yaml<ret>'
+map global user -docstring 'LSP mode'                 l      ': enter-user-mode lsp<ret>'
 
 define-command -hidden -params 1 extend-line-down %{ execute-keys "<a-:>%arg{1}X" }
 define-command -hidden -params 1 extend-line-up   %{
@@ -56,8 +60,9 @@ define-command -hidden -params 1 extend-line-up   %{
 }
 
 hook global InsertChar \t %{ try %{
-  execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@"
+    execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@"
 }}
+
 hook global InsertDelete ' ' %{ try %{
-  execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>'
+    execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>'
 }}

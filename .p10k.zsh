@@ -19,7 +19,6 @@
         goenv
         pyenv
         virtualenv
-        nnn
         vcs
         kubecontext
         azure
@@ -123,11 +122,6 @@
     #######################[ direnv: direnv status (https://direnv.net/) ]########################
     typeset -g POWERLEVEL9K_DIRENV_FOREGROUND=179
     typeset -g POWERLEVEL9K_DIRENV_VISUAL_IDENTIFIER_EXPANSION=" "
-
-    ######################[ nnn: nnn shell (https://github.com/jarun/nnn) ]#######################
-    typeset -g POWERLEVEL9K_NNN_FOREGROUND=43
-    typeset -g POWERLEVEL9K_NNN_CONTENT_EXPANSION=
-    typeset -g POWERLEVEL9K_NNN_VISUAL_IDENTIFIER_EXPANSION=" "
 
     ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
     typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=37
