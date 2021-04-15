@@ -73,7 +73,9 @@ alias gp='git push -u'
 alias gpc='git createmr'
 alias gpf='git push --force-with-lease'
 alias gpf!='git push --force'
+alias gpa='git pushall'
 alias gpfa!='git pushall --force'
+alias gci="git ci"
 
 alias gra='git remote add'
 alias grr='git remote remove'

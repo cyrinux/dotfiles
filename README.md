@@ -1,4 +1,4 @@
-[![Build Status](https://ci.levis.ws/api/badges/cyril/dotfiles/status.svg)](https://ci.levis.ws/cyril/dotfiles)
+[![Dotfiles CI](https://github.com/cyrinux/dotfiles/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/cyrinux/dotfiles/actions/workflows/ci.yml)
 
 # ~/.dotfiles
 

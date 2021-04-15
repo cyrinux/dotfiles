@@ -15,6 +15,14 @@ in_docker() {
     grep -q docker /proc/1/cgroup > /dev/null
 }
 
+in_ci() {
+    [ "$ESP" = "/tmp" ]
+}
+
+is_chroot() {
+    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
+}
+
 detectgpu() {
     (lsmod | grep '^i915' || lsmod | grep '^amdgpu') | awk '{print $1}'
 }
@@ -58,12 +66,8 @@ link() {
     echo "$dest_file -> $orig_file"
 }
 
-is_chroot() {
-    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
-}
-
 systemctl_enable() {
-    if ! in_docker; then
+    if ! in_docker && ! in_ci; then
         systemctl --user daemon-reload
     fi
     echo "systemctl --user enable \"$1\""
@@ -71,13 +75,13 @@ systemctl_enable() {
 }
 
 systemctl_enable_start() {
-    if in_docker; then
-        echo "systemctl --user enable \"$1\""
-        systemctl --user enable "$1"
-    else
+    if ! in_docker && ! in_ci; then
         systemctl --user daemon-reload
         echo "systemctl --user enable --now \"$1\""
         systemctl --user enable --now "$1"
+    else
+        echo "systemctl --user enable \"$1\""
+        systemctl --user enable "$1"
     fi
 }
 
@@ -115,10 +119,8 @@ link ".config/libinput-gestures.conf"
 link ".config/mimeapps.list"
 link ".config/mpv"
 link ".config/msmtp"
-link ".config/myrepos.conf"
 link ".config/neomutt"
 link ".config/networkmanager-dmenu"
-link ".config/nnn/plugins"
 link ".config/pacman"
 link ".config/pylint"
 link ".config/pythonrc.py"
@@ -143,7 +145,7 @@ link ".config/systemd/user/display-switch.service"
 link ".config/systemd/user/gocryptfs-automount.service"
 link ".config/systemd/user/library-repos.service"
 link ".config/systemd/user/library-repos.timer"
-link ".config/systemd/user/mako.service"
+# link ".config/systemd/user/mako.service"
 link ".config/systemd/user/nm-applet.service"
 link ".config/systemd/user/polkit-gnome.service"
 link ".config/systemd/user/qutebrowser-update-useragent.service"
@@ -180,7 +182,6 @@ link ".config/USBGuard"
 link ".config/user-dirs.dirs"
 link ".config/user-tmpfiles.d"
 link ".config/vdirsyncer"
-link ".config/vifm/vifmrc"
 link ".config/vimiv"
 link ".config/waybar"
 link ".config/wget"
@@ -215,6 +216,18 @@ echo "Enabling and starting services..."
 echo "================================="
 
 if is_chroot; then
+    echo >&2 "!!!! Running in chroot !!!!!!!!!"
+else
+    echo >&2 "!!!! NOT Running in chroot !!!!!!!!!"
+fi
+
+if in_ci; then
+    echo >&2 "!!!! Running in CI !!!!!!!!!"
+else
+    echo >&2 "!!!! NOT Running in CI !!!!!!!!!"
+fi
+
+if is_chroot; then
     echo >&2 "=== Running in chroot, skipping user services..."
 else
     systemctl_enable_start "display-switch.service"
@@ -245,7 +258,7 @@ else
     systemctl_enable_start "wluma.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
     systemctl_enable_start "gotify-dunst.service"
-    systemctl_enable_start "mako.service"
+    # systemctl_enable_start "mako.service"
     systemctl_enable_start "libinput-gestures.service"
 
     if [ ! -d "$HOME/.mail" ]; then
@@ -266,17 +279,18 @@ echo "Create zsh history dir"
 mkdir -p ~/.zsh-history/
 
 echo "Configuring MIME types"
-file --compile --magic-file ~/.magic
+file --compile --magic-file ~/.magic || true
 
+echo "Configuring GPG key"
 if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
     echo "Importing my public PGP key"
     curl -s https://levis.name/pgp_keys.asc | gpg --import
     echo "5\ny\n" | gpg --command-fd 0 --no-tty --batch --edit-key "$MY_GPG_KEY_ID" trust
 fi
-
 find "$HOME/.gnupg" -type f -not -path "*#*" -exec chmod 600 {} \;
 find "$HOME/.gnupg" -type d -exec chmod 700 {} \;
 
+echo "Configuring password-store"
 if [[ -e "$HOME/.password-store" ]]; then
     echo "Configuring automatic git push for pass"
     echo -e "#!/usr/bin/zsh\n\npass git push" > "$HOME/.password-store/.git/hooks/post-commit"
@@ -291,9 +305,9 @@ else
 fi
 
 echo "Ignoring further changes to often changing config"
-git update-index --assume-unchanged ".config/transmission/settings.json"
+git update-index --assume-unchanged ".config/transmission/settings.json" || true
 
-if is_chroot; then
+if is_chroot || in_ci; then
     echo >&2 "=== Running in chroot, skipping YubiKey configuration..."
 else
     if [[ ! -e "$HOME/.config/Yubico/u2f_keys" ]]; then
@@ -303,7 +317,7 @@ else
     fi
 fi
 
-if is_chroot; then
+if is_chroot || in_ci; then
     echo >&2 "=== Running in chroot, skipping private dotiles configuration..."
 else
     if [ ! -d "$HOME/.dotfiles-private" ]; then
@@ -313,8 +327,16 @@ else
     fi
 fi
 
+echo "Configuring seafile"
+if [ ! -d "$HOME/.ccnet" ]; then
+    echo >&2 "=== Seafile is not initialized, skipping..., run seafile-applet"
+fi
+
 echo "Configure repo-local git settings"
 git config user.email "cyril@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"
 git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
+
+echo "Generating fonts cache"
+fc-cache -r

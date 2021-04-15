@@ -46,7 +46,6 @@ alias hex='teehee'
 alias btm='\btm --color gruvbox'
 alias e="$EDITOR"
 alias bottom='btm'
-alias lmr='mr --config ~/.config/myrepos.conf'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
 alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(pass personal/bios)"'

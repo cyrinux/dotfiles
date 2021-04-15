@@ -1,11 +1,3 @@
-# Generate PDFs from the Markdown source files
-#
-# In order to use this makefile, you need some tools:
-# - GNU make
-# - Pandoc
-# - LuaLaTeX
-# - DejaVu Sans fonts
-
 # Directory containing source (Markdown) files
 source := ./
 
@@ -17,7 +9,7 @@ sources := $(wildcard $(source)/*.md)
 
 all: install doc
 
-doc: lualatex wkhtmltopdf
+doc: wkhtmltopdf
 
 # Convert the list of source files (Markdown files in directory src/)
 # into a list of output files (PDFs in directory print/).
@@ -73,16 +65,23 @@ install-metapackage:
 	sudo pacman -Rs --noconfirm -dd iptables
 	yes Y | sudo pacman -Sy --noconfirm cyrinux
 
-.PHONY: ci
-ci: install-metapackage setup-system setup-user
-
 .PHONY: build-docker
 build-docker:
 	docker build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
 
+.PHONY: ci
+# ci: install-metapackage setup-system setup-user
+ci: install-metapackage
+
+
 .PHONY: test
 test: build-docker
-	docker run --rm -it archlinux/dotfiles make ci
+	docker run --rm \
+	    --tmpfs /tmp \
+	    --tmpfs /run \
+	    -v "/sys/fs/cgroup:/sys/fs/cgroup:ro" \
+	    archlinux/dotfiles \
+	    make ci && curl https://hc-ping.com/7f30f854-8bd6-41a8-817d-edcf83eef981
 
 .PHONY: clean
 clean:
