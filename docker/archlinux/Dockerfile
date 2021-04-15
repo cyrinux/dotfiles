@@ -7,11 +7,19 @@ RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
     curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
     bsdtar -C / -xvf "$patched_glibc"
 
+# WORKAROUND for systemd
+# https://serverfault.com/questions/607769/running-systemd-inside-a-docker-container-arch-linux
+STOPSIGNAL SIGRTMIN+3
+
+# WORKAROUND for arch-secure-boot and systemd
+ENV ESP="/tmp"
+
 # Locales keyboard
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
  && locale-gen \
  && echo 'LANG="en_US.UTF-8"' > /etc/locale.conf
 ENV LANG="en_US.UTF-8"
+
 # Archlinux Deps
 RUN yes y | pacman -Sy --noconfirm \
       sudo \
@@ -39,10 +47,10 @@ ENV PATH="${PATH}:/usr/bin/core_perl"
 # Fix tmp dir perms
 RUN chmod 1777 /tmp
 # Create test user
-RUN useradd -m user \
- && chown -R user:user /home/user \
- && echo -e "user\nuser" | passwd user
-RUN echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN useradd -m cyril \
+ && chown -R cyril:cyril /home/cyril \
+ && echo -e "cyril\ncyril" | passwd cyril
+RUN echo "cyril ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # gpg keys
 RUN pacman-key --init && curl -s https://levis.name/pgp_keys.asc | pacman-key -a - && \
@@ -56,8 +64,7 @@ COPY docker/archlinux/pacman.conf /etc/pacman.conf
 RUN pacman -Sy
 
 # User run
-USER user
-WORKDIR /home/user/.dotfiles
-ENV LANG="fr_FR.UTF-8"
+USER cyril
+WORKDIR /home/cyril/.dotfiles
 COPY . .
 CMD ["/bin/bash"]

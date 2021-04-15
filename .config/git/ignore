@@ -1,13 +1,11 @@
 .#.*
-*.antigen-compat
 bin/checkmail
-.config/copyq/*.dat
 **/index-v*.db/.*
 *.log
 *./logs/.*
 .magic.mgc
-packages/pkg/**
 packages/*.list
+packages/pkg/**
 *.pdf
 *.pem
 __pycache__
@@ -28,5 +26,3 @@ tags
 .vscode
 watch_later
 *.zwc
-pendoc
-.magic.mgc

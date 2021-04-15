@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
@@ -14,7 +13,7 @@ dotfiles_dir="$(
 cd "$dotfiles_dir"
 
 if (("$EUID")); then
-    sudo -s "$dotfiles_dir/$script_name" "$@"
+    sudo -E "$dotfiles_dir/$script_name" "$@"
     exit 0
 fi
 
@@ -23,8 +22,12 @@ if [ "$1" = "-r" ]; then
     reverse=1
 fi
 
-in_docker() {
-    grep -q docker /proc/1/cgroup > /dev/null
+in_ci() {
+    [ "$ESP" = "/tmp" ]
+}
+
+is_chroot() {
+    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
 }
 
 copy() {
@@ -50,26 +53,37 @@ copy() {
     echo "$dest_file <= $orig_file"
 }
 
-is_chroot() {
-    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
-}
-
 systemctl_enable() {
-    echo "systemctl enable "$1""
-    systemctl enable "$1"
+    if in_ci; then
+        echo "systemctl enable "$1" (noop)"
+    else
+        echo "systemctl enable "$1""
+        systemctl enable "$1"
+    fi
 }
 
 systemctl_enable_start() {
-    echo "systemctl enable --now "$1""
-    systemctl enable "$1"
-    systemctl start "$1"
+    if in_ci; then
+        echo "systemctl enable --now "$1" (noop)"
+    else
+        echo "systemctl enable --now "$1""
+        systemctl daemon-reload
+        systemctl enable "$1"
+        systemctl start "$1"
+    fi
 }
 
 systemctl_disable_stop() {
-    echo "systemctl disable --now "$1""
-    systemctl disable "$1"
-    systemctl stop "$1"
+    if in_ci; then
+        echo "systemctl disable --now "$1" (noop)"
+    else
+        echo "systemctl disable --now "$1""
+        systemctl disable "$1"
+        systemctl stop "$1"
+    fi
 }
+
+in_ci && echo "!!! Running in CI !!!"
 
 echo ""
 echo "=========================="
@@ -145,94 +159,84 @@ echo "================================="
 echo "Enabling and starting services..."
 echo "================================="
 
-if in_docker; then
-    echo >&2 "=== Running in docker, skipping services configuration..."
+# systemctl_disable_stop "ModemManager.service"
+systemctl_enable_start "apparmor-notify@cyril.service"
+systemctl_enable_start "apparmor.service"
+systemctl_enable_start "auditd.service"
+systemctl_enable_start "backup-repo@pkgbuild.timer"
+systemctl_enable_start "bluetooth.service"
+systemctl_enable_start "btrfs-scrub@home.timer"
+systemctl_enable_start "btrfs-scrub@mnt-btrfs\x2droot.timer"
+systemctl_enable_start "btrfs-scrub@-.timer"
+systemctl_enable_start "btrfs-scrub@var-cache-pacman.timer"
+systemctl_enable_start "btrfs-scrub@var-lib-archbuild.timer"
+systemctl_enable_start "btrfs-scrub@var-lib-aurbuild.timer"
+systemctl_enable_start "btrfs-scrub@var-lib-docker-docker.timer"
+systemctl_enable_start "btrfs-scrub@var-log.timer"
+systemctl_enable_start "btrfs-scrub@var-tmp.timer"
+systemctl_enable_start "btrfs-scrub@\x2esnapshots.timer"
+if is_chroot; then
+    echo >&2 "=== Running in chroot, skipping docker service setup..."
 else
-    systemctl daemon-reload
-    systemctl_disable_stop "ModemManager.service"
-    systemctl_enable_start "apparmor-notify@cyril.service"
-    systemctl_enable_start "apparmor.service"
-    systemctl_enable_start "auditd.service"
-    systemctl_enable_start "backup-repo@pkgbuild.timer"
-    systemctl_enable_start "bluetooth.service"
-    systemctl_enable_start "btrfs-scrub@home.timer"
-    systemctl_enable_start "btrfs-scrub@mnt-btrfs\x2droot.timer"
-    systemctl_enable_start "btrfs-scrub@-.timer"
-    systemctl_enable_start "btrfs-scrub@var-cache-pacman.timer"
-    systemctl_enable_start "btrfs-scrub@var-lib-archbuild.timer"
-    systemctl_enable_start "btrfs-scrub@var-lib-aurbuild.timer"
-    systemctl_enable_start "btrfs-scrub@var-lib-docker-docker.timer"
-    systemctl_enable_start "btrfs-scrub@var-log.timer"
-    systemctl_enable_start "btrfs-scrub@var-tmp.timer"
-    systemctl_enable_start "btrfs-scrub@\x2esnapshots.timer"
     systemctl_enable_start "docker.service"
     systemctl_enable_start "docker.socket"
-    systemctl_enable_start "earlyoom.service"
-    systemctl_enable_start "fstrim.timer"
-    systemctl_enable_start "iwd.service"
-    systemctl_enable_start "libvirtd.socket"
-    systemctl_enable_start "linux-modules-cleanup.service"
-    # systemctl_enable_start "ModemManager.service"
-    systemctl_enable_start "NetworkManager-dispatcher.service"
-    systemctl_enable_start "NetworkManager.service"
-    systemctl_enable_start "nftables.service"
-    systemctl_enable_start "pcscd.socket"
-    systemctl_enable_start "piavpn.service"
-    systemctl_enable_start "privoxy.service"
-    systemctl_enable_start "snapper-boot.timer"
-    systemctl_enable_start "snapper-cleanup.timer"
-    # systemctl_enable_start "snapper-timeline.timer"
-    systemctl_enable_start "system-dotfiles-sync.timer"
-    systemctl_enable_start "systemd-resolved"
-    # systemctl_enable_start "usbguard-dbus.service"
-    # systemctl_enable_start "usbguard.service"
-    systemctl_enable_start "vnstat.service"
-    systemctl_enable_start "smartd.service"
+fi
+systemctl_enable_start "earlyoom.service"
+systemctl_enable_start "fstrim.timer"
+systemctl_enable_start "iwd.service"
+systemctl_enable_start "libvirtd.socket"
+systemctl_enable_start "linux-modules-cleanup.service"
+# systemctl_enable_start "ModemManager.service"
+systemctl_enable_start "NetworkManager-dispatcher.service"
+systemctl_enable_start "NetworkManager.service"
+systemctl_enable_start "nftables.service"
+systemctl_enable_start "pcscd.socket"
+systemctl_enable_start "piavpn.service"
+systemctl_enable_start "privoxy.service"
+systemctl_enable_start "snapper-boot.timer"
+systemctl_enable_start "snapper-cleanup.timer"
+# systemctl_enable_start "snapper-timeline.timer"
+systemctl_enable_start "system-dotfiles-sync.timer"
+systemctl_enable_start "systemd-resolved"
+# systemctl_enable_start "usbguard-dbus.service"
+# systemctl_enable_start "usbguard.service"
+systemctl_enable_start "vnstat.service"
+systemctl_enable_start "smartd.service"
 
-    echo ""
-    echo "======================================="
-    echo "Finishing various user configuration..."
-    echo "======================================="
+echo ""
+echo "======================================="
+echo "Finishing various user configuration..."
+echo "======================================="
 
-    if [ ! -s "/etc/usbguard/rules.conf" ]; then
-        echo >&2 "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
-    fi
+if [ ! -s "/etc/usbguard/rules.conf" ]; then
+    echo >&2 "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
+fi
 
-    if [ -d "$HOME/.ccnet" ]; then
-        systemctl_enable_start "seaf-cli@cyril.service"
-    else
-        echo >&2 "=== Seafile is not initialized, skipping..., run seafile-applet"
-    fi
+echo "Configuring NTP"
+in_ci || timedatectl set-ntp true
 
-    echo "Configuring NTP"
-    timedatectl set-ntp true
+echo "Configuring aurutils"
+ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
-    echo "Configuring aurutils"
-    ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
+echo "Fixing NetworkManager trust (nmtrust), config conflict with PIA"
+rm -f /etc/NetworkManager/conf.d/wgpia.conf
 
-    echo "Fix Nmtrust"
-    rm -f /etc/NetworkManager/conf.d/wgpia.conf
+echo "Fixing local AUR repository"
+install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp
 
-    echo "Fix repository"
-    install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp
+if is_chroot || in_ci; then
+    echo >&2 "=== Running in chroot or CI, skipping firewall, resolv.conf and udev setup..."
+else
+    echo "Sudo config"
+    copy "etc/sudoers.d/override"
 
-    echo "Fix k3d completion"
-    k3d completion zsh | tee /etc/bash_completion.d/k3d
+    echo "Applying kernel tuning"
+    sysctl --system > /dev/null
 
-    if is_chroot || in_docker; then
-        echo >&2 "=== Running in chroot, skipping firewall, resolv.conf and udev setup..."
-    else
-        echo "Sudo config"
-        copy "etc/sudoers.d/override"
+    echo "Reload udev rules"
+    udevadm control --reload
+    udevadm trigger
 
-        echo "Applying kernel tuning"
-        sysctl --system > /dev/null
-
-        echo "Reload udev rules"
-        udevadm control --reload
-        udevadm trigger
-
-        echo "Force dns config"
-        ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-    fi
+    echo "Force dns config"
+    ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi

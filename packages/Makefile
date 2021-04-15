@@ -29,7 +29,17 @@ clean: ## Cleanup
 
 .PHONY: sync
 push: ## Push online the local repo
-	systemctl start backup-repo@pkgbuild
+	sudo systemctl start backup-repo@pkgbuild
+	sudo systemctl status backup-repo@pkgbuild
+
+.PHONY: became-official
+became-official: ## Clean packages that became official
+	@for pkg in $(checkofficial); do rm -f /var/cache/pacman/cyrinux-aur*/${pkg}*; repoctl update; sudo pacman -Sy --no-confirm community/${pkg}; done
+	sudo pacman -Sy
+
+.PHONY: show-packages-by-size
+show-packages-by-size: ## Show installed packages list sorted by size
+	@expac "%n %m" -l'\n' -Q $(pacman -Qq) | sort -rhk 2 | less
 
 .PHONY: help
 help: ## This help

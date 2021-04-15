@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
-
+zstyle ':z4h:' start-tmux no
 zstyle ':z4h:'                                    auto-update            no
 zstyle ':z4h:*'                                   channel                stable
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
@@ -80,14 +79,11 @@ export DIRENV_LOG_FORMAT=
 export SYSTEMD_LESS=FRXMK
 export FZF_DEFAULT_OPTS='--reverse --multi --color="bg+:-1"'
 export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
-export NNN_BMS='d:~/Vault/Documents;D:~/Downloads/;r:/run/media/cyril;'
-export NNN_PLUG='j:jump;r:remove;p:paperwork;c:croc;'
 
 ###
 
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
-z4h source -- /etc/bash_completion.d/azure-cli
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
 z4h source -- ~/.zsh/you-should-use.plugin.zsh

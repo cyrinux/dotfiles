@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+# WARNING: this script will destroy data on the selected disk.
+#
 # Arch Linux installation
 # https://github.com/cyrinux/dotfiles
 # https://github.com/maximbaz/dotfiles
@@ -142,7 +144,7 @@ else
 fi
 
 echo -e "\n### Formatting partitions"
-mkfs.vfat -n "EFI" -F32 "${part_boot}"
+mkfs.vfat -n "EFI" -F 32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
     ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
@@ -310,7 +312,8 @@ arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
 arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
 arch-chroot /mnt sudo -u $user zsh -ic true
 
-echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
-echo -e "\n### Remember to unplug the installation USB stick before the next boot!"
-
 umount -R /mnt
+cryptsetup luksClose /dev/mapper/luks
+
+echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
+echo -e "\n### Reboot now, and after power off remember to unplug the installation USB"

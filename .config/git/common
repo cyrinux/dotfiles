@@ -18,6 +18,7 @@ unstage = reset HEAD --
 review = push origin HEAD:refs/for/master
 td = log --stat --oneline --since='12 hour ago'
 ls = ls-files
+ci = "!browser $(hub ci-status -v | awk '{print $3}')"
 
 [branch]
 autosetuprebase = always

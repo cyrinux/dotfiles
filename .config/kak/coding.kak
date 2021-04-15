@@ -87,7 +87,6 @@ hook global WinSetOption filetype=sh %{
 }
 
 hook global WinSetOption filetype=terraform %{
-    set-option buffer formatcmd 'terraform fmt -'
-    hook buffer -group format BufWritePre .* format
+   hook buffer -group format BufWritePre .* lsp-formatting-sync
 }
 

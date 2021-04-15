@@ -18,7 +18,7 @@ case $menu in
         qutebrowser-shopping "$@" &
         ;;
     "copy to clipboard")
-        echo "$@" | wl-copy
+        echo "$@" | wl-copy &
         ;;
     "play")
         mpv "$@" &
