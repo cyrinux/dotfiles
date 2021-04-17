@@ -42,5 +42,6 @@ for backup_path in "${BACKUP_PATH[@]}"; do
 
     echo -e "\nRemaining disk space\n"
     df -kh $backup_path
+    echo
 done
 exit $exitcode
