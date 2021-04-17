@@ -126,6 +126,10 @@ window#waybar {
   margin: 0 6px;
 }
 
+#custom-updates.down {
+  border-bottom: 3px solid @red;
+}
+
 #custom-progress {
   border-bottom: 3px solid @purple;
 }

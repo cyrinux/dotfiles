@@ -11,6 +11,7 @@ case "$1" in
         fi
         ;;
     refresh)
+        repo_status="$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/3V1Imjf0-2/aur.json | jq -r '.status')"
         pac="$(checkupdates)"
         aur="$(aur repo -u)"
         vcs="$(aur vercmp-devel)"
@@ -49,6 +50,8 @@ case "$1" in
 
         if [ -z "$text" ]; then
             printf '{"text": ""}\n' > "$cache_path"
+        elif [ -n "$repo_status" ] && [ "$repo_status" = "down" ]; then
+            printf "{\"text\": \"<span foreground='#928374'></span> %s\", \"tooltip\": \"%s\", \"class\": \"down\" }\n" "$text" "$tooltip" > "$cache_path"
         else
             printf "{\"text\": \"<span foreground='#928374'></span> %s\", \"tooltip\": \"%s\" }\n" "$text" "$tooltip" > "$cache_path"
         fi
