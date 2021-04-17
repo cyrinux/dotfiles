@@ -57,7 +57,12 @@ setup-user:
 	@./setup-user.sh
 
 .PHONY: install
-install: setup-system setup-user
+install: build-metapackage setup-system setup-user
+
+.PHONY: build-metapackage
+build-metapackage:
+	@cd packages && \
+	make
 
 .PHONY: install-metapackage
 install-metapackage:
