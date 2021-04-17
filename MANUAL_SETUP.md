@@ -1,47 +1,4 @@
-# Thunderbird
-
-## Preferences
-
-### General:
-
-- Thunderbird Start Page - FALSE
-
-### Privacy:
-
-- Allow remote content - FALSE
-- Accept third-party cookies - Never
-- Tell sites that I do not want to be tracked - TRUE
-
-### Advanced:
-
-- Enable Global Search and Indexer - TRUE
-- Use hardware acceleration - TRUE
-- Config editor:
-  - `mail.wrap_long_lines` - FALSE
-  - `mailnews.wraplength`- 0
-
-## Account settings:
-
-- Junk Settings
-  - Adaptive junk - FALSE
-  - Trust junk mail headers set by SpamAssassin
-
-## Account settings AND for every identity:
-
-- Composition & Addressing
-  - Compose messages in HTML format - FALSE
-- OpenPGP Security
-  - Enable - TRUE
-  - Specific key ID
-  - Advanced - Send key ID and URL
-
-## Extensions:
-
-- Enigmail
-- Expression Search / Google Mail UI
-- GNotifier
-
-# urlwatch
+# Urlwatch
 
 - Configure `mailgun` section in: `$ urlwatch --edit-config`
 - Configure `pushover` section in: `$ urlwatch --edit-config`
@@ -75,10 +32,6 @@ Search engines:
 # firecfg
 ```
 
-# Spotify
-
-- start oomox, select Arc-gruvbox-dark theme, then apply spotify theme.
-
 # PIA login
 
 ```
@@ -97,3 +50,12 @@ pk12util -d "sql:${HOME}/.pki/nssdb" -i user.p12 -n "My User Certificat"
 $ yubico-piv-tool -s 9a -i thecertificate.p12 -K PKCS12 -a import-key -a import-certificate --touch-policy=always
 $ yubico-piv-tool -s 9a -a change-pin (default pin: 123456)
 ```
+
+# Steam / CyberPunk 2077
+
+## Requirements (on Radeon RX850)
+
+- mesa-git
+- steam beta enable
+- proton experimental
+- launcher command set to `gamemoderun idle-inhibitor %command% --launcher-skip`

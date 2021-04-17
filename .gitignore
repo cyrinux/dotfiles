@@ -1,6 +1,7 @@
-.config/qutebrowser/greasemonkey/requires
-.config/environment.d/60-wayland.conf
 .config/display-switch/display-switch.ini
+.config/environment.d/60-wayland.conf
+.config/qutebrowser/greasemonkey/requires
 .config/waybar/livestatus.toml
 etc/NetworkManager/conf.d/wgpia.conf
 exegol
+.local/bin/backup-mailserver

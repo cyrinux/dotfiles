@@ -94,6 +94,7 @@ link ".config/display-switch-all/display-switch.ini.$(detectgpu)" ".config/displ
 copy ".config/environment.d"
 link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/bat"
+link ".spacemacs"
 link ".config/chromium-flags.conf"
 link ".config/dunst"
 link ".config/firejail"

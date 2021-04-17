@@ -58,28 +58,45 @@ set $workspace0 workspace number 10
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
 
+# # Specific window configuration
+# # for_window    [app_id="MellowPlayer"]        move container to $workspace10
+# # for_window    [app_id="SongRec"]             move container to $workspace10
+# # for_window    [class="^zoom$"]               floating enable move container to $workspace9
+# # for_window    [class="Zoom"]                 floating enable
+# # for_window    [class="Tor Browser"]          floating enable
+# for_window    [app_id=".*"]                  sticky enable
+# for_window    [app_id="qalculate-gtk"]       floating enable
+# # for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
+# for_window    [class="Signal"]                           move container to $workspace3
+# # for_window    [window_role="pop-up"]         floating enable
+# # for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
+# # for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
+# # for_window    [app_id="taskwarrior-tui"]     move container to $workspace4, title_format "Taskwarrior"
+# for_window    [app_id="wev"]                 floating enable
+# for_window    [app_id="udiskie"]             floating enable
+# # for_window    [class="Steam"]                inhibit_idle fullscreen
+# for_window    [app_id="dmenu.*"]             floating enable, resize set width 60ppt height 80ppt
+# # for_window    [app_id="dmenu-browser"]       resize set height 20ppt
+# # for_window    [title="x11 - TigerVNC"]       move container to $workspace9, title_format "VNC"
+# for_window    [app_id="mpv"]                 floating enable, resize set width 531 height 300, move position 1005 113
+# # for_window    [app_id="iriunwebcam"]         floating disable
+
 # Specific window configuration
-for_window    [app_id="MellowPlayer"]        move container to $workspace10
-for_window    [app_id="SongRec"]             move container to $workspace10
-for_window    [class="^zoom$"]               floating enable move container to $workspace9
-for_window    [class="Zoom"]                 floating enable
-for_window    [class="Tor Browser"]          floating enable
-for_window    [app_id=".*"]                  sticky enable
-for_window    [app_id="qalculate-gtk"]       floating enable
-for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
+for_window    [app_id=".*"]                              sticky enable
+for_window    [window_role="pop-up"]                     floating enable
+for_window    [app_id="udiskie"]                         floating enable
+for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace2
 for_window    [class="Signal"]                           move container to $workspace3
-for_window    [window_role="pop-up"]         floating enable
-for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
-for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
-for_window    [app_id="taskwarrior-tui"]     move container to $workspace4, title_format "Taskwarrior"
-for_window    [app_id="wev"]                 floating enable
-for_window    [app_id="udiskie"]             floating enable
-for_window    [class="Steam"]                inhibit_idle fullscreen
-for_window    [app_id="dmenu.*"]             floating enable, resize set width 60ppt height 80ppt
-for_window    [app_id="dmenu-browser"]       resize set height 20ppt
-for_window    [title="x11 - TigerVNC"]       move container to $workspace9, title_format "VNC"
-for_window    [app_id="mpv"]                 floating enable, resize set width 531 height 300, move position 1005 113
-for_window    [app_id="iriunwebcam"]         floating disable
+for_window    [app_id="neomutt"]                         move container to $workspace4, title_format "NeoMutt"
+for_window    [app_id="taskwarrior-tui"]                 move container to $workspace4, title_format "Taskwarrior"
+for_window    [app_id="MellowPlayer"]                    move container to $workspace10
+for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
+for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
+for_window    [app_id="dmenu-calc"]                      resize set width 40ppt height 30ppt
+for_window    [app_id="qalculate-gtk"]                   floating enable
+for_window    [app_id="mpv"]                             floating enable, resize set width 531 height 300, move position 1005 113
+for_window    [app_id="iriunwebcam"]                     floating disable
+for_window    [class="Steam"]                            inhibit_idle fullscreen
 
 # Audio settings
 set $mode_audio "Audio: (a)eropex, p(x)5, (s)hure-bt1, (p)avucontrol"
@@ -343,7 +360,7 @@ bindsym --to-code {
 }
 
 exec_always $kanshi
-exec_always import-gsettings &
+exec_always import-gsettings
 
 # Load host-specific configs
 include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
