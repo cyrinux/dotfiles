@@ -223,6 +223,9 @@ rm -f /etc/NetworkManager/conf.d/wgpia.conf
 echo "Fixing local AUR repository"
 install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp
 
+echo "Regenerating fonts cache"
+fc-cache -r
+
 if is_chroot || in_ci; then
     echo >&2 "=== Running in chroot or CI, skipping firewall, resolv.conf and udev setup..."
 else

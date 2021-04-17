@@ -1,9 +1,8 @@
 name: Dotfiles CI
 on:
-  push:
-    branches:
-      - main
-      - test
+  # push:
+  #   branches:
+  #     - main
   schedule:
     - cron: "0 8 * * *"
 
