@@ -81,7 +81,7 @@ test: build-docker
 	    --tmpfs /run \
 	    -v "/sys/fs/cgroup:/sys/fs/cgroup:ro" \
 	    archlinux/dotfiles \
-	    make ci && curl https://hc-ping.com/7f30f854-8bd6-41a8-817d-edcf83eef981
+	    make ci
 
 .PHONY: clean
 clean:
