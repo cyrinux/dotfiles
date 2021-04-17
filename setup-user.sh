@@ -337,6 +337,3 @@ git config user.email "cyril@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"
 git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
-
-echo "Generating fonts cache"
-fc-cache -r

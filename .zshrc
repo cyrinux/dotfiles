@@ -87,4 +87,5 @@ command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
 z4h source -- ~/.zsh/you-should-use.plugin.zsh
+z4h source -- /etc/bash_completion.d/azure-cli
 z4h compile -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
