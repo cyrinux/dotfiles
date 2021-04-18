@@ -36,6 +36,7 @@ c.content.notifications.enabled = True  # notifications aren't supported now any
 c.content.pdfjs = True
 c.editor.command = ["kitty", "kak", "-e", "exec {line}g{column0}l", "{}"]
 c.fileselect.handler = "external"
+c.fileselect.folder.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.fileselect.single_file.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.fileselect.multiple_files.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.downloads.location.prompt = False
