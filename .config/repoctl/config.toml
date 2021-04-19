@@ -35,7 +35,7 @@ default_profile = "default"
 
   # require_signature prevents packages from being added that do not
   # also have a signature file.
-  require_signature = false
+  require_signature = true
 
   # backup specifies whether package files should be backed up or deleted.
   # If it is set to false, then obsolete package files are deleted.
@@ -77,7 +77,7 @@ default_profile = "default"
 
   # require_signature prevents packages from being added that do not
   # also have a signature file.
-  require_signature = false
+  require_signature = true
 
   # backup specifies whether package files should be backed up or deleted.
   # If it is set to false, then obsolete package files are deleted.
