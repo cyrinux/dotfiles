@@ -189,20 +189,15 @@
         "format": "<span foreground='#928374'>{icon}</span> {percent}%",
         "format-icons": [""]
     },
-    "custom/headset-battery": {
-        "exec": "waybar-headset-battery",
-        "interval": "600",
-		"format": " {}"
-    },
     "battery": {
         "bat": "BAT0",
+        "design-capacity": true,
         "states": {
             "warning": 30,
             "critical": 15
         },
         "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
         "format-charging": "<span foreground='#928374'></span>{capacity}%",
-        "format-alt": "{time} <span foreground='#928374'>{icon}</span>",
         "format-icons": ["", "", "", "", ""]
     },
     "network": {

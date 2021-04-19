@@ -141,6 +141,8 @@ copy "etc/udev/rules.d/45-ddcutil-i2c.rules"
 copy "etc/updatedb.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
+copy "usr/local/bin/browser"
+copy "usr/bin/firejail-handler-settings-http.inc"
 
 (("$reverse")) && exit 0
 

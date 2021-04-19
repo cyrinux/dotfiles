@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Browser Chooser
 GenericName=Web Browser
-Exec=browser %U
+Exec=/usr/bin/firejail-handler-http %U
 Terminal=false
 Type=Application
 Icon=browser

@@ -1,0 +1,11 @@
+[Unit]
+Description=Firejail http handler
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/firejail-handler-http-ctl
+Restart=always
+
+[Install]
+WantedBy=default.target
+

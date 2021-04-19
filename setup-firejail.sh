@@ -11,3 +11,4 @@ sudo ln -sfv /usr/bin/firejail /usr/local/bin/signal-desktop
 sudo ln -sfv /usr/bin/firejail /usr/local/bin/slack
 sudo ln -sfv /usr/bin/firejail /usr/local/bin/zathura
 sudo ln -sfv /usr/bin/firejail /usr/local/bin/discord
+sudo ln -sfv /usr/bin/firejail /usr/local/bin/libreoffice
