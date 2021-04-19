@@ -62,7 +62,7 @@ z4h bindkey z4h-cd-forward          Alt+L
 z4h bindkey z4h-cd-up               Alt+K
 z4h bindkey z4h-cd-down             Alt+J
 
-z4h bindkey my-ctrl-z               Alt+Z
+z4h bindkey my-ctrl-z               Ctrl+Z
 
 z4h bindkey edit-command-line       Alt+E
 

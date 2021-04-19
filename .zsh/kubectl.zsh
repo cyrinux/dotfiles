@@ -21,7 +21,7 @@ alias khpa='kg! hpa'
 alias klogs='stern'
 alias koff='kubectl config unset current-context'
 drain_node() {
-    kubectl drain "$1" --force --delete-local-data --ignore-daemonsets
+    kubectl drain "$1" --force --delete-emptydir-data --ignore-daemonsets
 }
 kcout() {
     while IFS= read -rd: config; do
