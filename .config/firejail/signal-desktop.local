@@ -1,2 +1,6 @@
-ignore private-tmp
+dbus-user.talk org.freedesktop.portal.Desktop
+ignore dbus-user none
+dbus-user filter
+ignore noexec /tmp
+private-bin xdg-open,signal-desktop,gdbus
 private-etc alternatives,ca-certificates,crypto-policies,fonts,ld.so.cache,ld.so.conf,ld.so.conf.d,ld.so.preload,machine-id,nsswitch.conf,pki,resolv.conf,ssl,localtime

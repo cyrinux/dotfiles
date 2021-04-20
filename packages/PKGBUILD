@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.12
+pkgver=2.8.14
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -392,7 +392,7 @@ depends=(
     'python-black'
     'python-docker'
     'python-dukpy'
-    'python-gitlab'
+    'gitlab-glab'
     'python-google-api-python-client'
     'python-gphoto2'
     'python-h2'
@@ -596,6 +596,7 @@ depends=(
     'wofi'
     'wol'
     'wrk'
+    'xdg-desktop-portal-gtk'
     'xdg-desktop-portal-wlr'
     'xdg-user-dirs'
     'xorg-fonts-misc'
@@ -643,7 +644,6 @@ depends=(
     'lib32-gcc-libs'
     'teehee'
     'rust-analyzer'
-    'vagrant-libvirt'
     'songrec'
     'ghq'
     'ledger-live-bin'
