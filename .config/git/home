@@ -1,9 +1,9 @@
-[user]
-signingkey = 0x8538D68543979A20
-name = "Cyril Levis"
-email = "cyril@levis.name"
-
 [ghq]
   root = ~/library/src/personal/
+
+[user]
+    signingkey = 0x8538D68543979A20
+    name = "Cyril Levis"
+    email = "cyril@levis.name"
 
 # vim:ft=ini

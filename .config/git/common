@@ -1,106 +1,105 @@
 [alias]
-alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
-lg = !tig
-lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
-bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
-pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
-branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
-createmr = !git push -o merge_request.create
-fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
-workflow = "!hub ci-status -v"
-fork = "!hub fork"
-last = for-each-ref --sort=-committerdate --count=20 --format='%(align:50,left)%(refname:short)%(end)%(committerdate:relative)' refs/heads/
-edit = "!sh -c \"exec kak $(git list $@ | tr '\n' ' ')\""
-who = shortlog -s --no-merges --
-whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
-whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
-unstage = reset HEAD --
-review = push origin HEAD:refs/for/master
-td = log --stat --oneline --since='12 hour ago'
-ls = ls-files
-ci = "!browser $(hub ci-status -v | awk '{print $3}')"
+    alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
+    lg = !tig
+    lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
+    bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
+    pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
+    branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
+    createmr = !git push -o merge_request.create
+    fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+    workflow = "!hub ci-status -v"
+    fork = "!hub fork"
+    last = for-each-ref --sort=-committerdate --count=20 --format='%(align:50,left)%(refname:short)%(end)%(committerdate:relative)' refs/heads/
+    edit = "!sh -c \"exec kak $(git list $@ | tr '\n' ' ')\""
+    who = shortlog -s --no-merges --
+    whois = "!sh -c 'git log -i -1 --pretty=\"format:%an <%ae>\n\" --author=\"$1\"' -"
+    whatis = show -s --pretty='tformat:%h (%s, %ad)' --date=short
+    unstage = reset HEAD --
+    review = push origin HEAD:refs/for/master
+    td = log --stat --oneline --since='12 hour ago'
+    ls = ls-files
+    ci = "!browser $(hub ci-status -v | awk '{print $3}')"
 
 [branch]
-autosetuprebase = always
+    autosetuprebase = always
 
 [init]
-defaultBranch = main
+    defaultBranch = main
 
 [color "branch"]
-current = green reverse
-local = green
-remote = yellow
+    current = green reverse
+    local = green
+    remote = yellow
 
 [color "status"]
-added = green
-changed = yellow
-untracked = blue
+    added = green
+    changed = yellow
+    untracked = blue
 
 [color "diff-highlight"]
-oldNormal = red bold
-oldHighlight = red bold 52
-newNormal = green bold
-newHighlight = green bold 22
+    oldNormal = red bold
+    oldHighlight = red bold 52
+    newNormal = green bold
+    newHighlight = green bold 22
 
 [color "diff"]
-meta = 11
-frag = magenta bold
-commit = yellow bold
-old = red bold
-new = green bold
-whitespace = red reverse
+    meta = 11
+    frag = magenta bold
+    commit = yellow bold
+    old = red bold
+    new = green bold
+    whitespace = red reverse
 
 [core]
-autocrlf = input
-excludesfile = ~/.config/git/ignore
-untrackedCache = true
-editor = kak
-pager = diff-so-fancy | less -RFXMx4
+    autocrlf = input
+    excludesfile = ~/.config/git/ignore
+    untrackedCache = true
+    editor = kak
+    pager = diff-so-fancy | less -RFXMx4
 
 [commit]
-template = ~/.config/git/message
+    template = ~/.config/git/message
 
 [diff]
-tool = kitty
+    tool = kitty
 
 [difftool]
-prompt = false
-trustExitCode = true
+    prompt = false
+    trustExitCode = true
 
 [difftool "kitty"]
-cmd = kitty +kitten diff $LOCAL $REMOTE
+    cmd = kitty +kitten diff $LOCAL $REMOTE
 
 [merge]
-tool = meld
+    tool = meld
 
 [mergetool]
-keepBackup = false
-prompt = false
+    keepBackup = false
+    prompt = false
 
 [diff "gpg"]
-binary = true
-textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
+    binary = true
+    textconv = gpg --decrypt --quiet --yes --compress-algo=none --no-encrypt-to --batch --use-agent
 
 [push]
-default = current
+    default = current
 
 [rebase]
-autostash = true
-autosquash = true
-preserve = true
-stat = true
+    autostash = true
+    autosquash = true
+    preserve = true
+    stat = true
 
 [mergetool "meld"]
-cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
 [user]
-name = Cyril Levis
-useConfigOnly = true
+    useConfigOnly = true
 
 [commit]
-gpgsign = true
+    gpgsign = true
 
 [absorb]
-maxStack=50
+    maxStack=50
 
 # vim:ft=ini

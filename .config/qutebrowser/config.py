@@ -1,11 +1,10 @@
 import os
-import sys
 
 config.load_autoconfig(False)
 
 # ui
 config.source("gruvbox.py")
-# c.colors.tabs.selected.odd.bg = c.colors.tabs.selected.even.bg
+
 c.colors.webpage.preferred_color_scheme = "dark"
 c.completion.shrink = True
 c.completion.use_best_match = True
@@ -16,7 +15,7 @@ c.tabs.title.format = "{index}: {audio}{current_title}"
 c.tabs.title.format_pinned = "{index}: {audio}{current_title}"
 
 # use a different color for work container to give visual distinction
-if "QUTE_CONTAINER" not in os.environ or os.environ["QUTE_CONTAINER"] == "facebook":
+if "QUTE_CONTAINER" not in os.environ:
     c.colors.tabs.selected.even.bg = "#B48EAD"
 elif os.environ["QUTE_CONTAINER"] == "personal":
     c.colors.tabs.selected.even.bg = "#504955"
@@ -30,6 +29,7 @@ elif os.environ["QUTE_CONTAINER"] == "private":
 
 # general
 c.auto_save.session = True
+c.session.lazy_restore = True
 c.content.default_encoding = "utf-8"
 c.content.javascript.can_access_clipboard = True
 c.content.notifications.enabled = True  # notifications aren't supported now anyway
@@ -41,6 +41,8 @@ c.fileselect.single_file.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.fileselect.multiple_files.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.downloads.location.prompt = False
 c.downloads.location.directory = "~/Downloads/"
+c.downloads.position = "bottom"
+c.downloads.remove_finished = 2000
 c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
@@ -121,7 +123,10 @@ bindings = {
     ",s": "open https://rss.levis.name/bookmarklet?uri={url}",
     ",c": "spawn --userscript stream",
     ",g": "spawn --userscript open-portal",
+    ";I": "hint images download",
 }
+for key, bind in bindings.items():
+    config.bind(key, bind)
 
 # per-domain settings
 config.set("content.register_protocol_handler", True, "*://*.levis.name")
@@ -134,6 +139,3 @@ config.set("content.media.audio_capture", True, "*://teams.microsoft.com")
 config.set("content.media.video_capture", True, "*://teams.microsoft.com")
 config.set("content.desktop_capture", True, "*://teams.microsoft.com")
 config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
-
-for key, bind in bindings.items():
-    config.bind(key, bind)

@@ -1,22 +1,25 @@
+[ghq]
+    root = ./
+
+[includeIf "gitdir:~/library/src/work/"]
+    path = ~/.config/git/work
+
+[includeIf "gitdir:~/library/src/personal/"]
+    path = ~/.config/git/home
+
+[includeIf "gitdir:~/library/pentest/"]
+    path = ~/.config/git/home
+
+[includeIf "gitdir:~/.dotfiles*/"]
+    path = ~/.config/git/home
+
+[includeIf "gitdir:~/.password-store/"]
+    path = ~/.config/git/home
+
 [include]
     path = ~/.config/git/common
 
-[ghq]
-  root = ./
-
-[includeIf "gitdir:~/library/src/personal/"]
-  path = ~/.config/git/home
-
-[includeIf "gitdir:~/library/pentest/"]
-  path = ~/.config/git/home
-
-[includeIf "gitdir:~/library/src/work/"]
-  path = ~/.config/git/work
-
-[includeIf "gitdir:~/.dotfiles*/"]
-  path = ~/.config/git/home
-
-[includeIf "gitdir:~/.password-store/"]
-  path = ~/.config/git/home
+[aurutils]
+    rebase = true
 
 # vim:ft=ini

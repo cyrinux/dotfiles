@@ -12,9 +12,10 @@ zstyle ':z4h:(fzf-complete|cd-down)'              find-flags             -name '
 zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
 zstyle ':zle:(up|down)-line-or-beginning-search'  leave-cursor           yes
 zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
+# zstyle ':completion:*:(ssh|scp|rdp):*:hosts'      hosts
+zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 zstyle ':completion:*:ssh:argument-1:'            tag-order hosts users
 zstyle ':completion:*:scp:argument-rest:'         tag-order hosts files users
-zstyle ':completion:*:(ssh|scp|rdp):*:hosts'      hosts
 ###
 
 z4h install romkatv/archive || return
