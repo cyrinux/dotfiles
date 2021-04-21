@@ -23,12 +23,15 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
     remove-hooks buffer format
 }
 
+define-command  github-link -docstring 'return github permalink' %{
+   evaluate-commands %sh{get-github-permalink ${kak_buffile} ${kak_cursor_line}}
+}
+
 
 # Hooks
 
 hook global BufOpenFile  .* modeline-parse
 hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
-hook global BufCreate    .*Jenkinsfile %{ set buffer filetype javascript }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
 hook global BufWritePost .* %{ git show-diff }
 hook global BufReload    .* %{ git show-diff }
