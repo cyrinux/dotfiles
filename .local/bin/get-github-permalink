@@ -1,8 +1,28 @@
 #!/bin/sh
 set -e
-[ -z $1 ] && exit 1
-cd $(git rev-parse --show-toplevel)
-commitid=$(git rev-parse HEAD)
-remote=$(echo $(git remote get-url origin) | sed 's#git@##' | sed 's#:#/#' | sed 's#.git$##')
-file=$(git ls-files $1)
-echo "https://$remote/blob/$commitid/$file#"
+
+usage() {
+    echo "$0 file line_number"
+    exit 1
+}
+
+[ -z $1 ] && usage
+
+cd "$(dirname $1)"
+
+root="$(git rev-parse --show-toplevel)"
+[ -z $root ] && exit 2
+
+commitid="$(git -C $root rev-parse HEAD)"
+remote="$(echo $(git -C $root remote get-url origin) | sed 's#git@##' | sed 's#http[s?]://##' | sed 's#:#/#' | sed 's#.git$##')"
+file="$(git -C $root ls-files $1)"
+
+if [ -z $2 ]; then
+    echo "https://$remote/blob/$commitid/$file#"
+    wl-copy "https://$remote/blob/$commitid/$file"
+else
+    echo "https://$remote/blob/$commitid/$file#L$2"
+    wl-copy "https://$remote/blob/$commitid/$file#L$2"
+fi
+
+exit 0
