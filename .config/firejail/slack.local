@@ -1,5 +1,4 @@
 dbus-user.talk org.freedesktop.portal.Desktop
 ignore dbus-user none
 dbus-user filter
-# ignore noexec /tmp
 private-bin xdg-open,slack,gdbus

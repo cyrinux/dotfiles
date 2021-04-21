@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+[ -z $1 ] && exit 1
+cd $(git rev-parse --show-toplevel)
+commitid=$(git rev-parse HEAD)
+remote=$(echo $(git remote get-url origin) | sed 's#git@##' | sed 's#:#/#' | sed 's#.git$##')
+file=$(git ls-files $1)
+echo "https://$remote/blob/$commitid/$file#"
