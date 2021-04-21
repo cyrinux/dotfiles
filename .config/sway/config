@@ -316,8 +316,8 @@ bindsym --to-code {
 	# container layout: tabbed
 	$hyper+t layout tabbed
 
-	# container layout: tabbed
-	$hyper+Shift+t layout stacked
+	# container layout: stacking
+	$hyper+Shift+t layout stacking
 
 	# container layout: split
 	$hyper+e layout toggle split
