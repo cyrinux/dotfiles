@@ -6,24 +6,23 @@
 # *.work.org:work
 #
 # first match win
-set -e
-
-list="$HOME/.cache/works-url-patterns"
-
-[ -s "$list" ] || pass work/works-url-patterns > $list
+set -x
 
 url="$1"
 
-container=""
+list="$HOME/.cache/works-url-patterns"
+[ -s "$list" ] || pass work/works-url-patterns > $list
 
-while read line; do
-    rule=$(echo $line | cut -d':' -f1)
-    matched=$(echo $url | grep -q -E "^${rule}")
-    if (($matched)); then
-        container=$(echo $line | cut -d':' -f2)
-        break
-    fi
-done < $list
+if [ -s "$list" ]; then
+    while read line; do
+        rule=$(echo $line | cut -d':' -f1)
+        echo $url | grep -q -E "^${rule}"
+        if [ $? -eq 0 ]; then
+            container=$(echo $line | cut -d':' -f2)
+            break
+        fi
+    done < $list
+fi
 
 if [ -z $container ]; then
     container=$(echo "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nplay" | dmenu -p "browser")

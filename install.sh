@@ -297,7 +297,7 @@ echo "$user:$password" | arch-chroot /mnt chpasswd
 arch-chroot /mnt passwd -dl root
 
 echo -e "\n### Settings permissions on the custom repo"
-arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local/
+arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/${user}-local/
 
 echo "\n### Setup docker rootless"
 echo $user:231072:65536 > /etc/subuid
@@ -305,12 +305,17 @@ arch-chroot /mnt echo "$user:231072:65536" > /etc/subgid
 arch-chroot /mnt echo "$user:231072:65536" > /etc/subuid
 
 echo -e "\n### Cloning dotfiles"
-arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
+if [ "${user}" = "cyril" ]; then
+    arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
+    echo -e "\n### Running initial setup"
+    arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
+    arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
+    arch-chroot /mnt sudo -u $user zsh -ic true
 
-echo -e "\n### Running initial setup"
-arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
-arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
-arch-chroot /mnt sudo -u $user zsh -ic true
+    echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
+else
+    echo -e "\n### DONE - read POST_INSTALL.md for tips on configuring your setup"
+fi
 
 umount -R /mnt
 cryptsetup luksClose /dev/mapper/luks
