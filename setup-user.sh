@@ -131,7 +131,6 @@ link ".config/qalculate/qalculate-gtk.cfg"
 link ".config/qutebrowser"
 link ".config/repoctl"
 link ".config/resticignore"
-link ".config/safeeyes"
 link ".config/swappy"
 link ".config/sway"
 link ".config/swaylock"
@@ -156,7 +155,6 @@ link ".config/systemd/user/restic-check.service"
 link ".config/systemd/user/restic-check.timer"
 link ".config/systemd/user/restic.service"
 link ".config/systemd/user/restic.timer"
-link ".config/systemd/user/safeeyes.service"
 link ".config/systemd/user/socksproxy.service"
 link ".config/systemd/user/solaar.service"
 link ".config/systemd/user/sway-autoname-workspaces.service"
@@ -242,7 +240,6 @@ else
     systemctl_enable_start "nm-applet.service"
     systemctl_enable_start "polkit-gnome.service"
     systemctl_enable_start "qutebrowser-update-useragent.timer"
-    systemctl_enable_start "safeeyes.service"
     systemctl_enable_start "socksproxy.service"
     systemctl_enable_start "solaar.service"
     systemctl_enable_start "sway-autoname-workspaces.service"
@@ -314,7 +311,7 @@ else
     if [[ ! -e "$HOME/.config/Yubico/u2f_keys" ]]; then
         echo "Configuring YubiKey for sudo access (touch it now)"
         mkdir -p "$HOME/.config/Yubico"
-        pamu2fcfg -ucyril > "$HOME/.config/Yubico/u2f_keys"
+        pamu2fcfg -u$USER > "$HOME/.config/Yubico/u2f_keys"
     fi
 fi
 

@@ -2,11 +2,13 @@
 set -e
 
 usage() {
-    echo "$0 file line_number"
+    echo "$0 file [line_number]"
     exit 1
 }
 
 [ -z $1 ] && usage
+
+line=$2
 
 cd "$(dirname $1)"
 
@@ -14,15 +16,15 @@ root="$(git rev-parse --show-toplevel)"
 [ -z $root ] && exit 2
 
 commitid="$(git -C $root rev-parse HEAD)"
-remote="$(echo $(git -C $root remote get-url origin) | sed 's#git@##' | sed 's#http[s?]://##' | sed 's#:#/#' | sed 's#.git$##')"
+remote="$(echo $(git -C $root remote get-url origin) | sed 's#git@##' | sed 's#ssh://##' | sed 's#http[s?]://##' | sed 's#:#/#' | sed 's#.git$##')"
 file="$(git -C $root ls-files $1)"
 
 if [ -z $2 ]; then
-    echo "https://$remote/blob/$commitid/$file#"
-    wl-copy "https://$remote/blob/$commitid/$file"
+    echo echo "https://$remote/blob/$commitid/$file#"
+    echo "https://$remote/blob/$commitid/$file" | wl-copy > /dev/null 2>&1
 else
-    echo "https://$remote/blob/$commitid/$file#L$2"
-    wl-copy "https://$remote/blob/$commitid/$file#L$2"
+    echo echo "https://$remote/blob/$commitid/$file#L$2"
+    echo "https://$remote/blob/$commitid/$file#L$2" | wl-copy > /dev/null 2>&1
 fi
 
 exit 0

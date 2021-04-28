@@ -78,6 +78,7 @@ window#waybar {
   border-bottom: 3px solid @green;
 }
 
+#custom-eyes,
 #custom-yubikey,
 #custom-recording,
 #custom-cast,
@@ -97,6 +98,7 @@ window#waybar {
 #pulseaudio,
 #custom-progress,
 #custom-usbguard,
+#custom-eyes,
 #custom-yubikey,
 #custom-decrypted,
 #custom-updates,

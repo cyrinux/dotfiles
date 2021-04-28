@@ -6,7 +6,6 @@
 # *.work.org:work
 #
 # first match win
-set -x
 
 url="$1"
 

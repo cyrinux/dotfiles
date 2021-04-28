@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.14
+pkgver=2.8.15
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -465,7 +465,6 @@ depends=(
     'ruby-bundler'
     'ruby-connection_pool'
     'rust'
-    'safeeyes'
     'salt-lint'
     'samba'
     'sane-frontends'

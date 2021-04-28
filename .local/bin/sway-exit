@@ -43,9 +43,7 @@ case "$1" in
             exit 1
         }
         before_lock
-        [ -f /tmp/waybar-dnd ] || safeeyes -d
         swaylock
-        [ -f /tmp/waybar-dnd ] || safeeyes -e
         sudo /usr/bin/systemctl stop pcscd.service
         ;;
     suspend)
@@ -56,7 +54,6 @@ case "$1" in
         systemctl suspend
         sleep 1
         kanshi &
-        [ -f /tmp/waybar-dnd ] || safeeyes -e
         systemctl --user restart wlsunset
         sudo /usr/bin/systemctl stop pcscd.service
         ;;
