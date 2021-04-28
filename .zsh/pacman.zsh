@@ -31,6 +31,8 @@ alias pacF='pacman -F'
 alias pacq='pacman -Si'
 alias pacl='pacman -Ql'
 alias pacdiff='sudo \pacdiff; refresh-waybar-updates'
+alias repodelete='repoctl -P nobackup remove'
+alias repoupdate='repoctl update'
 
 pacs() {
     [ $# -lt 1 ] && {

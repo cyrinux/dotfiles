@@ -24,7 +24,7 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
 }
 
 define-command  github-link -docstring 'return github permalink' %{
-   evaluate-commands %sh{get-github-permalink ${kak_buffile} ${kak_cursor_line}}
+   evaluate-commands echo %sh{get-github-permalink ${kak_buffile} ${kak_cursor_line}}
 }
 
 
