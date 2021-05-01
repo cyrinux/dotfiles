@@ -27,13 +27,12 @@ In case system doesn't boot:
    # iwctl station wlan0 scan
    # iwctl station wlan0 connect SSID
    # pacman -Sy && pacman -S yubikey-full-disk-encryption
-   # ykfde-open -d /dev/nvme0n1p2 -n luks
+   # cryptsetup luksOpen /dev/nvme0n1p2 luks || ykfde-open -d /dev/nvme0n1p2 -n luks
    ```
 
 2. Make it the default snapshot
 
    ```
-   # cryptsetup luksOpen /dev/xxx1 luks
    # mkdir /mnt/btrfs-root/
    # mount -o subol=root /dev/mapper/luks /mnt/btrfs-root/
    # cd /mnt/btrfs-root/
