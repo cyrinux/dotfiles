@@ -11,7 +11,7 @@ port 465
 timeout 10
 
 account personal
-host mail.levis.name
+host mail.vpn.levis.name
 user cyril@levis.name
 passwordeval "vdirsyncer-get-creds password"
 

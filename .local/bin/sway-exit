@@ -44,6 +44,7 @@ case "$1" in
         }
         before_lock
         swaylock
+        waybar-eyes done
         sudo /usr/bin/systemctl stop pcscd.service
         ;;
     suspend)
@@ -55,6 +56,7 @@ case "$1" in
         sleep 1
         kanshi &
         systemctl --user restart wlsunset
+        waybar-eyes done
         sudo /usr/bin/systemctl stop pcscd.service
         ;;
     reboot)

@@ -4,7 +4,7 @@ command -v bat       &> /dev/null    && alias c='bat'                           
 command -v exa       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v exa       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v exa       &> /dev/null    && alias lm='ll -s=modified'                                  || alias lm='ll -r --sort=time'
-command -v exa       &> /dev/null    && alias ls='exa -ga --group-directories-first --time-style=long-iso --color-scale'     || alias ls='ls --color=auto --group-directories-first -h'
+command -v exa       &> /dev/null    && alias ls='exa -g --group-directories-first --time-style=long-iso --color-scale'     || alias ls='ls --color=auto --group-directories-first -h'
 command -v fd        &> /dev/null    && alias fd='fd --hidden --follow'                            || alias fd='find . -name'
 command -v git       &> /dev/null    && alias diff='git diff --no-index'
 command -v htop      &> /dev/null    && alias top='htop'
@@ -42,6 +42,7 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
+alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'
 alias e="$EDITOR"
@@ -64,6 +65,7 @@ alias httpdump='sysdig -s 2000 -A -c echo_fds proc.name='
 alias http-serve='python3 -m http.server'
 alias ip='ip -color -brief'
 alias ll='ls -l'
+alias la='ls -la'
 alias locate='locate -i'
 alias logviewer="lnav -q"
 alias mkdir='mkdir -p'
