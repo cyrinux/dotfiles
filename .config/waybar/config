@@ -33,17 +33,15 @@
         "backlight",
         "custom/dnd",
         "idle_inhibitor",
-        "custom/keyboard-layout",
+        "sway/language",
         "battery",
         "clock",
         "tray",
         "custom/yubikey"
     ],
-    "custom/keyboard-layout": {
-      "exec": "waybar-keyboard-layout",
-      "format": "<span foreground='#928374'> </span>{}",
-      "signal": 1,
-      "tooltip": false
+    "sway/language": {
+        "format": "<span foreground='#928374'></span> {}",
+        "min-length": 5,
     },
     "custom/calendar": {
         "exec": "waybar-calendar",

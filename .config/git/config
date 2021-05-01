@@ -16,6 +16,9 @@
 [includeIf "gitdir:~/.password-store/"]
     path = ~/.config/git/home
 
+[includeIf "gitdir:~/selfhosting/"]
+    path = ~/.config/git/home
+
 [include]
     path = ~/.config/git/common
 
