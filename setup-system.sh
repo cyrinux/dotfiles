@@ -110,6 +110,7 @@ copy "etc/nftables.conf"
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/nmtrust/trusted_units" 644
 copy "etc/pacman.conf" 644
+copy "etc/pipewire/media-session.d/media-session.conf"
 copy "etc/pacman.d/hooks"
 copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"

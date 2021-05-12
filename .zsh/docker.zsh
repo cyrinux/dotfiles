@@ -17,7 +17,7 @@ alias dpurge="drmcd ; drmvd ; drmid ;docker network prune -f"
 command -v podman-compose &> /dev/null && alias docker-compose='podman-compose'
 alias dc="docker-compose"
 alias dcd='dc down'
-alias dcl='dc logs -f --tail=1000'
+alias dcl='dc logs -t -f --tail=1000'
 alias dclp='dc pull'
 alias dcr='dcd; dcu'
 alias dce='dc exec'

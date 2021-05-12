@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.15
+pkgver=2.8.16
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -339,8 +339,6 @@ depends=(
     'overdue'
     'p11-kit'
     'p7zip'
-    'packer'
-    'packer-builder-arm-image'
     'pacman-contrib'
     'pamixer'
     'pam-u2f'
