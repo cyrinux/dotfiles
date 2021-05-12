@@ -1,6 +1,5 @@
 #!/usr/bin/env zsh
 
-zstyle ':z4h:' start-tmux no
 zstyle ':z4h:'                                    auto-update            no
 zstyle ':z4h:*'                                   channel                stable
 zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
@@ -16,6 +15,7 @@ zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
 zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 zstyle ':completion:*:ssh:argument-1:'            tag-order hosts users
 zstyle ':completion:*:scp:argument-rest:'         tag-order hosts files users
+zstyle ':z4h:' start-tmux no
 ###
 
 z4h install romkatv/archive || return

@@ -102,4 +102,7 @@
 [absorb]
     maxStack=50
 
+[remote "origin"]
+    fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
 # vim:ft=ini
