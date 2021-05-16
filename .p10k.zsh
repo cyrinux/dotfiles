@@ -284,6 +284,10 @@
     typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=red
     typeset -g POWERLEVEL9K_PROMPT_CHAR_CONTENT_EXPANSION='%(#.#.$)'
 
+    ################################[ xpkr: prompt symbol ]#######################################
+    typeset -g POWERLEVEL9K_XPLR_FOREGROUND=43
+    typeset -g POWERLEVEL9K_XPLR_VISUAL_IDENTIFIER_EXPANSION=""
+
     (( ! $+functions[p10k] )) || p10k reload
 }
 
