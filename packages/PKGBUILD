@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.16
+pkgver=2.8.17
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -637,7 +637,6 @@ depends=(
     'localtime-git'
     'wtype'
     'mako'
-    'xplr'
     'lib32-gcc-libs'
     'teehee'
     'rust-analyzer'
