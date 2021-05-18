@@ -20,6 +20,7 @@
         pyenv
         virtualenv
         vcs
+        xplr
         kubecontext
         azure
         gcloud
