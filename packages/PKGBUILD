@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.17
+pkgver=2.8.18
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -522,8 +522,8 @@ depends=(
     'the_silver_searcher'
     'tig'
     'tigervnc'
-    'tlp'
     'tmux'
+    'libpipewire02'
     'tmux-cssh'
     'torbrowser-launcher'
     'traceroute'
