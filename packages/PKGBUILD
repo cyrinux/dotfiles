@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.18
+pkgver=2.8.19
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -552,7 +552,6 @@ depends=(
     'urlwatch'
     'usbguard'
     'util-linux'
-    'v4l2loopback-dc-dkms'
     'v4l2loopback-dkms'
     'vault'
     'vdirsyncer'
