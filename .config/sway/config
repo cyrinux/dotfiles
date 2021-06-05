@@ -58,35 +58,12 @@ set $workspace0 workspace number 10
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
 
-# # Specific window configuration
-# # for_window    [app_id="MellowPlayer"]        move container to $workspace10
-# # for_window    [app_id="SongRec"]             move container to $workspace10
-# # for_window    [class="^zoom$"]               floating enable move container to $workspace9
-# # for_window    [class="Zoom"]                 floating enable
-# # for_window    [class="Tor Browser"]          floating enable
-# for_window    [app_id=".*"]                  sticky enable
-# for_window    [app_id="qalculate-gtk"]       floating enable
-# # for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
-# for_window    [class="Signal"]                           move container to $workspace3
-# # for_window    [window_role="pop-up"]         floating enable
-# # for_window    [app_id="firefox"]             move container to $workspace2, title_format "Firefox", inhibit_idle fullscreen
-# # for_window    [app_id="neomutt"]             move container to $workspace4, title_format "NeoMutt"
-# # for_window    [app_id="taskwarrior-tui"]     move container to $workspace4, title_format "Taskwarrior"
-# for_window    [app_id="wev"]                 floating enable
-# for_window    [app_id="udiskie"]             floating enable
-# # for_window    [class="Steam"]                inhibit_idle fullscreen
-# for_window    [app_id="dmenu.*"]             floating enable, resize set width 60ppt height 80ppt
-# # for_window    [app_id="dmenu-browser"]       resize set height 20ppt
-# # for_window    [title="x11 - TigerVNC"]       move container to $workspace9, title_format "VNC"
-# for_window    [app_id="mpv"]                 floating enable, resize set width 531 height 300, move position 1005 113
-# # for_window    [app_id="iriunwebcam"]         floating disable
-
 # Specific window configuration
 for_window    [app_id=".*"]                              sticky enable
 for_window    [window_role="pop-up"]                     floating enable
 for_window    [app_id="udiskie"]                         floating enable
 for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace2
-for_window    [class="Signal"]                           move container to $workspace3
+for_window    [app_id="Signal"]                           move container to $workspace3
 for_window    [app_id="neomutt"]                         move container to $workspace4, title_format "NeoMutt"
 for_window    [app_id="taskwarrior-tui"]                 move container to $workspace4, title_format "Taskwarrior"
 for_window    [app_id="MellowPlayer"]                    move container to $workspace10
@@ -99,18 +76,23 @@ for_window    [app_id="iriunwebcam"]                     floating disable
 for_window    [class="Steam"]                            inhibit_idle fullscreen
 
 # Audio settings
-set $mode_audio "Audio: (a)eropex, p(x)5, (s)hure-bt1, (p)avucontrol"
+set $mode_audio "Audio: (h)eadphones, he(a)dset, (s)peaker, (t)oggle, (p)avucontrol"
 mode $mode_audio {
     bindsym --to-code {
-		 p exec pavucontrol, mode "default"
-	     s exec "connect-a2dp 00:0E:DD:06:24:1C Share-BT1", mode "default"
-	     a exec "connect-a2dp 20:74:CF:74:2F:11 OpenComm", mode "default"
-	     x exec "connect-a2dp B0:67:2F:13:E9:34 PX5", mode "default"
+        h exec sway-audio bt-connect-headphones, mode "default"
+        a exec sway-audio bt-connect-headset, mode "default"
+        s exec sway-audio bt-connect-speakers, mode "default"
+        t exec sway-audio bt-toggle-profile, mode "default"
+        d exec sway-audio bt-disconnect, mode "default"
+        p exec pavucontrol, mode "default"
 
         Return mode "default"
 	    Escape mode "default"
     }
 }
+
+
+
 
 
 set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted, (e)xit"
@@ -189,20 +171,18 @@ client.urgent             $color_bright_yellow   $color_bright_yellow   $color_n
 client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused        $color_unused
 
 bindsym --to-code --locked {
-	# Media controls
-	Shift+XF86AudioMute           exec pamute
-    XF86AudioMute                 exec pamixer -t
-    XF86AudioMicMute			  exec pamixer -t --source 1
-    XF86AudioRaiseVolume          exec pamixer -i 5
-    XF86AudioLowerVolume          exec pamixer -d 5
-    $win+Up                       exec pamixer -t
-    $win+Down                     exec pamixer -t
-    $win+Right                    exec pamixer -i 5
-    $win+Left                     exec pamixer -d 5
-	$win+Shift+Up                 exec pamixer -t --source 1
-    $win+Shift+Down               exec pamixer -t --source 1
-    $win+Shift+Right              exec pamixer -i 5 --source 1
-    $win+Shift+Left               exec pamixer -d 5 --source 1
+    XF86AudioMute                 exec sway-audio output-mute
+    XF86AudioRaiseVolume          exec sway-audio output-volume-up
+    XF86AudioLowerVolume          exec sway-audio output-volume-down
+    $win+Up                       exec sway-audio output-mute
+    $win+Down                     exec sway-audio output-mute
+    $win+Right                    exec sway-audio output-volume-up
+    $win+Left                     exec sway-audio output-volume-down
+    $win+Shift+Up                 exec sway-audio input-mute
+    $win+Shift+Down               exec sway-audio input-mute
+    $win+Shift+Right              exec sway-audio input-volume-up
+    $win+Shift+Left               exec sway-audio input-volume-down
+
     XF86AudioPlay                 exec playerctl --player playerctld play-pause
     XF86AudioNext                 exec playerctl --player playerctld next
     XF86AudioPrev                 exec playerctl --player playerctld previous

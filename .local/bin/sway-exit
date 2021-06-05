@@ -43,7 +43,7 @@ case "$1" in
             exit 1
         }
         before_lock
-        swaylock
+        swaylock -i ~/.local/share/bsod.png
         waybar-eyes done
         sudo /usr/bin/systemctl stop pcscd.service
         ;;

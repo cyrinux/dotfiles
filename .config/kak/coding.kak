@@ -82,7 +82,7 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
 }
 
 hook global WinSetOption filetype=sh %{
-    set-option buffer formatcmd 'shfmt -i 4 -ci -sr'
+    set-option buffer formatcmd "shfmt -i %opt{indentwidth} -ci -sr"
     hook buffer -group format BufWritePre .* format
 
     set-option buffer lintcmd 'shellcheck -x -fgcc'
@@ -93,3 +93,7 @@ hook global WinSetOption filetype=terraform %{
    hook buffer -group format BufWritePre .* lsp-formatting-sync
 }
 
+hook global WinSetOption filetype=lua %{
+    set-option buffer formatcmd 'stylua --config-path ~/.config/stylua/stylua.toml -- -'
+    hook buffer -group format BufWritePre .* format
+}

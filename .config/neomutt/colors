@@ -1,82 +1,72 @@
-# gruvbox dark (contrast dark):
-# source: https://www.sthu.org/code/codesnippets/mutt-gruvbox.html
+# vim: filetype=neomuttrc
 
-# bg     = 235
-# bg0_h  = 234
-# bg1    = 237
-# bg2    = 239
-# bg3    = 241
-# bg4    = 243
-#
-# gray   = 245
-#
-# fg0    = 229
-# fg1    = 223
-# fg2    = 250
-# fg3    = 248
-# fg4    = 246
-#
-# red    = 167
-# green  = 142
-# yellow = 214
-# blue   = 109
-# purple = 175
-# aqua   = 108
-# orange = 208
+# Default index colors:
+color index yellow default '.*'
+color index_author red default '.*'
+color index_number blue default
+color index_subject cyan default '.*'
 
+# For new mail:
+color index brightyellow black "~N"
+color index_author brightred black "~N"
+color index_subject brightcyan black "~N"
 
-# See http://www.mutt.org/doc/manual/#color
+# Header colors:
+color header blue default ".*"
+color header brightmagenta default "^(From)"
+color header brightcyan default "^(Subject)"
+color header brightwhite default "^(CC|BCC)"
 
-color attachment  color109 color235
-color bold        color229 color235
-color error       color167 color235
-color hdrdefault  color246 color235
-color indicator   color223 color237
-color markers     color243 color235
-color normal      color223 color235
-color quoted      color250 color235
-color quoted1     color108 color235
-color quoted2     color250 color235
-color quoted3     color108 color235
-color quoted4     color250 color235
-color quoted5     color108 color235
-color search      color235 color208
-color signature   color108 color235
-color status      color246 color239
-color tilde       color243 color235
-color tree        color142 color235
-color underline   color223 color239
+mono bold bold
+mono underline underline
+mono indicator reverse
+mono error bold
+color normal default default
+color indicator brightblack white
+color sidebar_highlight red default
+color sidebar_divider brightblack black
+color sidebar_flagged red black
+color sidebar_new green black
+color normal brightyellow default
+color error red default
+color tilde black default
+color message cyan default
+color markers red white
+color attachment white default
+color search brightmagenta default
+color status brightyellow black
+color hdrdefault brightgreen default
+color quoted green default
+color quoted1 blue default
+color quoted2 cyan default
+color quoted3 yellow default
+color quoted4 red default
+color quoted5 brightred default
+color signature brightgreen default
+color bold black default
+color underline black default
+color normal default default
 
-color sidebar_divider    color250 color235
-color sidebar_new        color142 color235
+color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
+color body green default "\`[^\`]*\`" # Green text between ` and `
+color body brightblue default "^# \.*" # Headings as bold blue
+color body brightcyan default "^## \.*" # Subheadings as bold cyan
+color body brightgreen default "^### \.*" # Subsubheadings as bold green
+color body yellow default "^(\t| )*(-|\\*) \.*" # List items as yellow
+color body brightcyan default "[;:][-o][)/(|]" # emoticons
+color body brightcyan default "[;:][)(|]" # emoticons
+color body brightcyan default "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body brightcyan default "[ ]?[*][^*]*[*][ ]" # more emoticon?
+color body red default "(BAD signature)"
+color body cyan default "(Good signature)"
+color body brightblack default "^gpg: Good signature .*"
+color body brightyellow default "^gpg: "
+color body brightyellow red "^gpg: BAD signature from.*"
+mono body bold "^gpg: Good signature"
+mono body bold "^gpg: BAD signature from.*"
+color body red default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
 
-color index color142 color235 ~N  # new
-color index color108 color235 ~O  # old
-color index color167 color235 ~F  # flagged
-color index color167 color235 ~=  # dupe
-color index color235 color223 ~T  # tagged
-color index color235 color167 ~D  # deleted
-color index color109 color235 ~v  # collapsed thread
-
-color header color214 color235 "^(To:|From:)"
-color header color142 color235 "^Subject:"
-color header color108 color235 "^X-Spam-Status:"
-color header color108 color235 "^Received:"
-
-color body color142 color235 "[a-z]{3,256}://[-a-zA-Z0-9@:%._\\+~#=/?&,]+"
-#color body color142 color235 "[a-zA-Z]([-a-zA-Z0-9_]+\\.){2,256}[-a-zA-Z0-9_]{2,256}"
-color body color208 color235 "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
-color body color208 color235 "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
-color body color235 color214 "[;:]-*[)>(<lt;|]"
-color body color229 color235 "\\*[- A-Za-z]+\\*"
-
-color body color214 color235 "^-.*PGP.*-*"
-color body color142 color235 "^gpg: Good signature from"
-color body color167 color235 "^gpg: Can't.*$"
-color body color214 color235 "^gpg: WARNING:.*$"
-color body color167 color235 "^gpg: BAD signature from"
-color body color167 color235 "^gpg: Note: This key has expired!"
-color body color214 color235 "^gpg: There is no indication that the signature belongs to the owner."
-color body color214 color235 "^gpg: can't handle these multiple signatures"
-color body color214 color235 "^gpg: signature verification suppressed"
-color body color214 color235 "^gpg: invalid node with packet of type"
+# Git patches
+color body brightred   default '^-[^-].*'
+color body brightgreen default '^\+[^\+].*'

@@ -1,9 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-marker="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-eyes"
+cache="${XDG_CACHE_HOME:-$HOME/.cache}"
+marker="${cache}/waybar-eyes"
+lock="${cache}/waybar-eyes.lock"
 eyes=""
 
 run() {
+    exec 100> ${lock} || exit 1
+    flock 100 || exit 1
     while true; do
         printf '{"text": "%s"}\n' "$(echo "$eyes" | xargs)"
         touch "$marker"

@@ -1,34 +1,40 @@
 #!/usr/bin/env zsh
 
-zstyle ':z4h:'                                    auto-update            no
-zstyle ':z4h:*'                                   channel                stable
-zstyle ':z4h:autosuggestions'                     forward-char           partial-accept
-zstyle ':z4h:fzf-complete'                        fzf-command            my-fzf
-zstyle ':z4h:(fzf-complete|cd-down|fzf-history)'  fzf-flags              --no-exact --color=hl:14,hl+:14
-zstyle ':z4h:(fzf-complete|cd-down)'              fzf-bindings           'tab:repeat'
-zstyle ':fzf-tab:*'                               continuous-trigger     tab
-zstyle ':z4h:(fzf-complete|cd-down)'              find-flags             -name '.git' -prune -print -o -print
-zstyle ':z4h:term-title:local'                    preexec                '%* | ${1//\%/%%}'
-zstyle ':zle:(up|down)-line-or-beginning-search'  leave-cursor           yes
-zstyle ':z4h:zsh-syntax-highlighting'             channel                stable
-# zstyle ':completion:*:(ssh|scp|rdp):*:hosts'      hosts
-zstyle -e ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
-zstyle ':completion:*:ssh:argument-1:'            tag-order hosts users
-zstyle ':completion:*:scp:argument-rest:'         tag-order hosts files users
-zstyle ':z4h:' start-tmux no
-###
+zstyle    ':z4h:'                                              auto-update            no
+zstyle    ':z4h:*'                                             channel                stable
+zstyle    ':z4h:autosuggestions'                               forward-char           accept
+zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
+zstyle    ':z4h:(fzf-complete|fzf-dir-history|fzf-history)'    fzf-flags              --no-exact --color=hl:14,hl+:14
+zstyle    ':z4h:(fzf-complete|fzf-dir-history)'                fzf-bindings           'tab:repeat'
+zstyle    ':z4h:fzf-complete'                                  find-flags             -name '.git' -prune -print -o -print
+zstyle    ':z4h:ssh:*'                                         ssh-command            command ssh
+zstyle    ':z4h:ssh:*'                                         send-extra-files       '~/.zsh-aliases'
+zstyle    ':z4h:ssh:*'                                         enable                 no
+zstyle    ':zle:(up|down)-line-or-beginning-search'            leave-cursor           yes
+zstyle    ':z4h:term-title:ssh'                                preexec                '%* | %n@%m: ${1//\%/%%}'
+zstyle    ':z4h:term-title:local'                              preexec                '%* | ${1//\%/%%}'
+zstyle    ':completion:*:ssh:argument-1:'                      tag-order              hosts users
+zstyle    ':completion:*:scp:argument-rest:'                   tag-order              hosts files users
+zstyle    ':z4h:'                                              start-tmux             no
+zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts'       hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
+if ! (( P9K_SSH )); then
+    zstyle ':z4h:sudo' term ''
+fi
+
+##
 
 z4h install romkatv/archive || return
 z4h init || return
 
-####
+##
 
 zstyle ':completion:*' matcher-list "m:{a-z}={A-Z}" "l:|=* r:|=*"
 
-####
+##
 
 fpath+=($Z4H/romkatv/archive)
-autoload -Uz archive lsarchive unarchive edit-command-line hist
+autoload -Uz archive lsarchive unarchive edit-command-line
 
 zle -N edit-command-line
 
@@ -55,13 +61,17 @@ z4h bindkey z4h-backward-kill-word  Ctrl+Backspace
 z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 z4h bindkey z4h-kill-zword          Ctrl+Alt+Delete
 
+z4h bindkey backward-kill-line      Ctrl+U
+z4h bindkey kill-line               Alt+U
+z4h bindkey kill-whole-line         Alt+I
+
 z4h bindkey z4h-forward-zword       Ctrl+Alt+Right
 z4h bindkey z4h-backward-zword      Ctrl+Alt+Left
 
 z4h bindkey z4h-cd-back             Alt+H
 z4h bindkey z4h-cd-forward          Alt+L
 z4h bindkey z4h-cd-up               Alt+K
-z4h bindkey z4h-cd-down             Alt+J
+z4h bindkey z4h-fzf-dir-history     Alt+J
 
 z4h bindkey my-ctrl-z               Ctrl+Z
 
@@ -77,7 +87,7 @@ setopt GLOB_DOTS
 [ -z "$VISUAL" ] && export VISUAL='vim'
 
 export DIRENV_LOG_FORMAT=
-export SYSTEMD_LESS=FRXMK
+export SYSTEMD_LESS="${LESS}S"
 export FZF_DEFAULT_OPTS='--reverse --multi --color="bg+:-1"'
 export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
 

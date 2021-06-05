@@ -42,6 +42,7 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
+alias x='xplr'
 alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'
@@ -83,6 +84,7 @@ alias tree='LS_COLORS= tree -aC -I .git --dirsfirst'
 alias utc='env TZ="UTC" date'
 alias yubikey-fix='sudo systemctl stop pcscd.service'
 alias zshupdate='z4h update'
+alias shareterm='gotty --permit-write tmux new -A -s gotty sudo docker run -it --rm busybox'
 
 e64() { [[ $# == 1 ]] && base64 <<<"$1" || base64 }
 d64() { [[ $# == 1 ]] && base64 --decode <<<"$1" || base64 --decode }

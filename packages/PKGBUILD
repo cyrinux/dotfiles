@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.19
+pkgver=2.8.20
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -314,7 +314,7 @@ depends=(
     'networkmanager-openvpn'
     'newsboat'
     'nfs-utils'
-    'ngrok-bin'
+    'ngrok'
     'nmap'
     'nm-connection-editor'
     'nmtrust-git'
@@ -376,8 +376,7 @@ depends=(
     'proselint'
     'proxychains-ng'
     'publicsuffix-list'
-    'pulseaudio'
-    'pulseaudio-bluetooth'
+    'pipewire-pulse'
     'pulsemixer'
     'pv'
     'pwgen'
