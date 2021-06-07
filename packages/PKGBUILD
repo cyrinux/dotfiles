@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.8.20
+pkgver=2.9.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -295,7 +295,7 @@ depends=(
     'microsocks'
     'minder'
     'mlocate'
-    # 'modemmanager'
+    'modemmanager'
     'mpv'
     'mpv-mpris'
     'mpvpaper'
@@ -378,6 +378,7 @@ depends=(
     'publicsuffix-list'
     'pipewire-pulse'
     'pulsemixer'
+    'acpi'
     'pv'
     'pwgen'
     'dfrs'
@@ -591,7 +592,6 @@ depends=(
     'wofi'
     'wol'
     'wrk'
-    'xdg-desktop-portal-gtk'
     'xdg-desktop-portal-wlr'
     'xdg-user-dirs'
     'xorg-fonts-misc'

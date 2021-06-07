@@ -90,6 +90,8 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
+copy "usr/share/devtools/pacman-extra.conf"
+copy "usr/share/devtools/pacman-staging.conf"
 copy "etc/apparmor/parser.conf"
 copy "etc/geoclue/geoclue.conf"
 copy "etc/audit/auditd.conf"
