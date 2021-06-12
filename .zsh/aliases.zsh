@@ -42,7 +42,7 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
-alias x='xplr'
+alias x='PAGER="less -+F" xplr'
 alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'

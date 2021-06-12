@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.9.0
+pkgver=2.9.1
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -288,7 +288,6 @@ depends=(
     'mailcap'
     'mangohud'
     'meld'
-    'mellowplayer'
     'mesa'
     'mesa-vdpau'
     'meson'
@@ -328,7 +327,7 @@ depends=(
     'ntp'
     'nuspell'
     'nvme-cli'
-    'obs-studio-wayland'
+    'obs-studio'
     'obs-websocket'
     'ocrad'
     'openbsd-netcat'
@@ -562,7 +561,6 @@ depends=(
     'virt-viewer'
     'visidata'
     'viu'
-    'vlc-nox'
     'vnstat'
     'vulkan-headers'
     'vulkan-intel'

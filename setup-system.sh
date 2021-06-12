@@ -103,7 +103,6 @@ copy "etc/fwupd/uefi_capsule.conf"
 copy "etc/iwd/main.conf"
 copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/pkcs8.conf"
-copy "usr/share/pipewire/media-session.d/bluez-monitor.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/nftables.conf"
 copy "etc/nmtrust/excluded_networks" 644
