@@ -21,7 +21,7 @@ profile {
 }
 
 profile {
-	output "Dell Inc. DELL P2317H HH77Y71IC5YS" mode 1920x1080 position 0,0
+	output "Dell Inc. DELL P2317H HH77Y71IC5YS" mode 1920x1080 position 0,0 scale 1.0
     output eDP-1   disable
 }
 

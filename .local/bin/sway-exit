@@ -43,9 +43,8 @@ case "$1" in
             exit 1
         }
         before_lock
-        swaylock -i ~/.local/share/bsod.png
+        swaylock
         waybar-eyes done
-        sudo /usr/bin/systemctl stop pcscd.service
         ;;
     suspend)
         before_lock
@@ -53,11 +52,9 @@ case "$1" in
         stop_wwan
         pkill kanshi
         systemctl suspend
-        sleep 1
         kanshi &
         systemctl --user restart wlsunset
         waybar-eyes done
-        sudo /usr/bin/systemctl stop pcscd.service
         ;;
     reboot)
         stop_vpn

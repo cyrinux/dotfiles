@@ -57,7 +57,12 @@ bind editor ^T    complete
 bind index G last-entry
 bind index gg first-entry
 bind pager gg top
-bind pager G bottom
+bind pager gj bottom
+bind pager [ half-up
+bind pager ] half-down
+bind pager <PageUp> half-up
+bind pager <PageDown> half-down
+
 bind index d delete-message
 bind index U undelete-message
 bind index u toggle-new
@@ -94,7 +99,7 @@ bind attach <return> view-mailcap
 macro attach s "<save-entry><bol>~/Downloads<eol>"
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
-auto_view application/pgp-encrypted text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
+auto_view application/pgp-encrypted text/calendar text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
 set mailcap_path = ~/.config/neomutt/mailcap
 
 set fcc_attach           # save attachments with the body

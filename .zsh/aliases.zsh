@@ -12,6 +12,7 @@ command -v dfrs      &> /dev/null    && alias df='dfrs'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
 command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
 command -v dog       &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
+command -v curlie       &> /dev/null    && alias curl='curlie'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h
@@ -42,7 +43,9 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
-alias x='PAGER="less -+F" xplr'
+alias gob='go build'
+alias got='go test'
+alias x='cd "${$(PAGER="less -+F" xplr):-.}"'
 alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'

@@ -33,8 +33,13 @@ local function setup()
     }
 
     key.n = {
-        help = "go to nzb",
-        messages = { { ChangeDirectory = "/home/nzbget/dst" } },
+        help = "go to Downloads",
+        messages = { { ChangeDirectory = "/home/cyril/Downloads/" } },
+    }
+
+    key.Q = {
+        help = "quit cd",
+        messages = { "PrintPwdAndQuit" },
     }
 
     -- action mode

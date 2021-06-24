@@ -34,7 +34,7 @@ set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
 set $kanshi bash -c "killall kanshi; kanshi"
-floating_modifier $hyper
+floating_modifier $win
 
 gaps inner 5
 smart_gaps on

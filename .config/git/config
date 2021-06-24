@@ -22,7 +22,4 @@
 [include]
     path = ~/.config/git/common
 
-; [aurutils]
-;     rebase = true
-
 # vim:ft=ini

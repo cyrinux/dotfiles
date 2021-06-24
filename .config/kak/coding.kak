@@ -76,6 +76,10 @@ hook global WinSetOption filetype=rust %{
     hook buffer -group format BufWritePre .* lsp-formatting-sync
 }
 
+hook global WinSetOption filetype=markdown %{
+  spell
+}
+
 hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|yaml|html) %{
     set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
     hook buffer -group format BufWritePre .* format
