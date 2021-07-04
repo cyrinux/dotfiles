@@ -1,0 +1,283 @@
+diff --git a/.config/kak/colors/gruvbox.kak b/.config/kak/colors/gruvbox.kak
+new file mode 100644
+index 00000000..5fd627e6
+--- /dev/null
++++ b/.config/kak/colors/gruvbox.kak
+@@ -0,0 +1,77 @@
++# gruvbox theme
++
++evaluate-commands %sh{
++    gray="rgb:928374"
++    red="rgb:fb4934"
++    green="rgb:b8bb26"
++    yellow="rgb:fabd2f"
++    blue="rgb:83a598"
++    purple="rgb:d3869b"
++    aqua="rgb:8ec07c"
++    orange="rgb:fe8019"
++
++    bg="rgb:1d2021"
++    bg_alpha="rgba:1d2021a0"
++    bg1="rgb:3c3836"
++    bg2="rgb:504945"
++    bg3="rgb:665c54"
++    bg4="rgb:7c6f64"
++
++    fg="rgb:ebdbb2"
++    fg_alpha="rgba:ebdbb2a0"
++    fg0="rgb:fbf1c7"
++    fg2="rgb:d5c4a1"
++    fg3="rgb:bdae93"
++    fg4="rgb:a89984"
++
++    echo "
++        # Code highlighting
++        face global value         ${purple}
++        face global type          ${yellow}
++        face global variable      ${blue}
++        face global module        ${green}
++        face global function      ${fg}
++        face global string        ${green}
++        face global keyword       ${red}
++        face global operator      ${fg}
++        face global attribute     ${orange}
++        face global comment       ${gray}+i
++        face global documentation comment
++        face global meta          ${aqua}
++        face global builtin       ${fg}+b
++
++        # Markdown highlighting
++        face global title     ${green}+b
++        face global header    ${orange}
++        face global mono      ${fg4}
++        face global block     ${aqua}
++        face global link      ${blue}+u
++        face global bullet    ${yellow}
++        face global list      ${fg}
++
++        face global Default            ${fg},${bg}
++        face global PrimarySelection   ${fg_alpha},${blue}+g
++        face global SecondarySelection ${bg_alpha},${blue}+g
++        face global PrimaryCursor      ${bg},${fg}+fg
++        face global SecondaryCursor    ${bg},${bg4}+fg
++        face global PrimaryCursorEol   ${bg},${fg4}+fg
++        face global SecondaryCursorEol ${bg},${bg2}+fg
++        face global LineNumbers        ${bg4}
++        face global LineNumberCursor   ${yellow},${bg1}
++        face global LineNumbersWrapped ${bg1}
++        face global MenuForeground     ${bg2},${blue}
++        face global MenuBackground     ${fg},${bg2}
++        face global MenuInfo           ${bg}
++        face global Information        ${fg},${bg}
++        face global Error              ${bg},${red}
++        face global StatusLine         ${fg},${bg}
++        face global StatusLineMode     ${yellow}+b
++        face global StatusLineInfo     ${purple}
++        face global StatusLineValue    ${red}
++        face global StatusCursor       ${bg},${fg}
++        face global Prompt             ${yellow}
++        face global MatchingChar       ${fg},${bg3}+b
++        face global BufferPadding      ${bg2},${bg}
++        face global Whitespace         ${bg2}+f
++    "
++}
+diff --git a/.config/kak/ui.kak b/.config/kak/ui.kak
+index 08ed0134..37872573 100644
+--- a/.config/kak/ui.kak
++++ b/.config/kak/ui.kak
+@@ -1,7 +1,5 @@
+ colorscheme gruvbox
+ 
+-face global Information rgb:ebdbb2,rgb:282828
+-
+ hook global WinCreate .* %{ try %{
+     add-highlighter buffer/numbers  number-lines -hlcursor
+     add-highlighter buffer/matching show-matching
+diff --git a/.config/kitty/kitty.conf b/.config/kitty/kitty.conf
+index ca0f9b83..6bf2317d 100644
+--- a/.config/kitty/kitty.conf
++++ b/.config/kitty/kitty.conf
+@@ -10,11 +10,11 @@ strip_trailing_spaces            always
+ 
+ cursor                           #ebdbb2
+ foreground                       #ebdbb2
+-background                       #282828
++background                       #1d2021
+ active_border_color              #928374
+ 
+ # black
+-color0                           #282828
++color0                           #1d2021
+ color8                           #928374
+ 
+ # red
+diff --git a/.config/mako/config b/.config/mako/config
+index 1d30ae81..7f8bcbbc 100644
+--- a/.config/mako/config
++++ b/.config/mako/config
+@@ -1,6 +1,6 @@
+ layer=overlay
+ anchor=bottom-right
+-background-color=#282828
++background-color=#1d2021
+ border-size=2
+ border-radius=8
+ border-color=#ebdbb2
+diff --git a/.config/qutebrowser/blank.html b/.config/qutebrowser/blank.html
+index 7cb3a655..22bf456e 100644
+--- a/.config/qutebrowser/blank.html
++++ b/.config/qutebrowser/blank.html
+@@ -1,4 +1,4 @@
+ <!DOCTYPE html>
+ <html>
+-  <body style="background: #32302f;"></body>
++  <body style="background: #1d2021"></body>
+ </html>
+diff --git a/.config/qutebrowser/config.py b/.config/qutebrowser/config.py
+index d7b6a5d6..b1db1f0e 100644
+--- a/.config/qutebrowser/config.py
++++ b/.config/qutebrowser/config.py
+@@ -70,7 +70,7 @@
+     ",M": "hint links spawn mpv {hint-url}",
+     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
+     ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
+-    ",b": "config-cycle colors.webpage.bg '#32302f' 'white'",
++    ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
+     ";I": "hint images download",
+     "<Ctrl-Shift-J>": "tab-move +",
+     "<Ctrl-Shift-K>": "tab-move -",
+diff --git a/.config/qutebrowser/gruvbox.py b/.config/qutebrowser/gruvbox.py
+index 6bbb23ad..fe272ece 100644
+--- a/.config/qutebrowser/gruvbox.py
++++ b/.config/qutebrowser/gruvbox.py
+@@ -1,4 +1,4 @@
+-base00 = "#32302f"
++base00 = "#1d2021"
+ base01 = "#3c3836"
+ base02 = "#504945"
+ base03 = "#665c54"
+diff --git a/.config/sway/config b/.config/sway/config
+index 2380fc98..5d85a540 100644
+--- a/.config/sway/config
++++ b/.config/sway/config
+@@ -15,7 +15,7 @@ input type:touchpad {
+ seat * hide_cursor 10000
+ 
+ output * {
+-    bg "#222222" solid_color
++    bg "#1a1c1c" solid_color
+ }
+ 
+ # Gaps
+@@ -61,10 +61,10 @@ for_window    [app_id="iriunwebcam"]                     floating disable
+ # Color scheme (Gruvbox dark)
+ set $color_normal_white  #a89984
+ set $color_bright_white  #ebdbb2
+-set $color_normal_gray   #222222
++set $color_normal_gray   #282828
+ set $color_bright_gray   #3c3836
+ set $color_bright_yellow #d79921
+-set $color_normal_black  #282828
++set $color_normal_black  #1d2021
+ set $color_unused        #ff0000
+ 
+ # Colors                  border                 background             text                   indicator            child_border
+diff --git a/.config/swaylock/config b/.config/swaylock/config
+index 776ea983..81239a87 100644
+--- a/.config/swaylock/config
++++ b/.config/swaylock/config
+@@ -1,2 +1,2 @@
+-color=222222
+-inside-color=282828
++color=1d2021
++inside-color=1d2021
+diff --git a/.config/vimiv/styles/gruvbox b/.config/vimiv/styles/gruvbox
+index c51aae2c..ee58089d 100644
+--- a/.config/vimiv/styles/gruvbox
++++ b/.config/vimiv/styles/gruvbox
+@@ -1,4 +1,4 @@
+-; base16-gruvbox-dark-medium
++; base16-gruvbox-dark-hard
+ ;
+ ; base16: (https://github.com/chriskempson/base16)
+ ;
+@@ -7,7 +7,7 @@
+ 
+ [STYLE]
+ ; Colors
+-base00 = #282828
++base00 = #1d2021
+ base01 = #3c3836
+ base02 = #504945
+ base03 = #665c54
+diff --git a/.config/waybar/style.css b/.config/waybar/style.css
+index 571edc28..d2f9a0b5 100644
+--- a/.config/waybar/style.css
++++ b/.config/waybar/style.css
+@@ -1,6 +1,5 @@
+-@define-color background #282828;
++@define-color background #1d2021;
+ @define-color foreground #ebdbb2;
+-@define-color black      #222222;
+ @define-color yellow     #fabd2f;
+ @define-color red        #fb4934;
+ @define-color green      #b8bb26;
+@@ -37,8 +36,8 @@ window#waybar {
+ }
+ 
+ #mode {
+-  background-color: @black;
+-  border-top: 3px solid @black;
++  background-color: @background;
++  border-top: 3px solid @background;
+   border-bottom: 3px solid @red;
+ }
+ 
+diff --git a/.config/wofi/gruvbox b/.config/wofi/gruvbox
+index 9f16f2fa..d8b197cd 100644
+--- a/.config/wofi/gruvbox
++++ b/.config/wofi/gruvbox
+@@ -1,33 +1,33 @@
+ window {
+     margin: 5px;
+-    border: 5px solid #282828;
+-    background-color: #282828;
++    border: 2px solid #282828;
++    background-color: #1d2021;
+     border-radius: 15px;
+     font-family: monospace;
+ }
+ 
+ #input {
+     margin: 5px;
+-    border: 2px solid #32302f;
+-    background-color: #32302f;
++    border: 2px solid #1d2021;
++    background-color: #1d2021;
+ }
+ 
+ #inner-box {
+     margin: 5px;
+-    border: 2px solid #32302f;
+-    background-color: #32302f;
++    border: 2px solid #1d2021;
++    background-color: #1d2021;
+ }
+ 
+ #outer-box {
+     margin: 5px;
+-    border: 2px solid #282828;
+-    background-color: #282828;
++    border: 2px solid #1d2021;
++    background-color: #1d2021;
+ }
+ 
+ #scroll {
+     margin: 5px;
+-    border: 2px solid #32302f;
+-    background-color: #32302f;
++    border: 2px solid #1d2021;
++    background-color: #1d2021;
+ }
+ 
+ #text {

@@ -55,20 +55,29 @@
     excludesfile = ~/.config/git/ignore
     untrackedCache = true
     editor = kak
-    pager = diff-so-fancy | less -RFXMx4
 
 [commit]
     template = ~/.config/git/message
 
 [diff]
-    tool = kitty
+    colorMoved = default
 
-[difftool]
-    prompt = false
-    trustExitCode = true
-
-[difftool "kitty"]
-    cmd = kitty +kitten diff $LOCAL $REMOTE
+[delta]
+	features = hyperlinks
+	width = 1
+	minus-emph-style = syntax bold "#780000"
+	minus-style = syntax "#400000"
+	plus-emph-style = syntax bold "#007800"
+	plus-style = syntax "#004000"
+	hunk-header-style = syntax italic "#303030"
+	hunk-header-decoration-style = omit
+	file-style = yellow bold
+	file-decoration-style = yellow ul
+	file-added-label = [+]
+	file-copied-label = [C]
+	file-modified-label = [M]
+	file-removed-label = [-]
+	file-renamed-label = [R]
 
 [merge]
     tool = meld
@@ -93,6 +102,15 @@
 [mergetool "meld"]
     cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
+[interactive]
+    diffFilter = delta --color-only
+
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
 [user]
     useConfigOnly = true
 
@@ -104,5 +122,11 @@
 
 [remote "origin"]
     fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
+[advice]
+    detachedHead = false
+
+[aurutils]
+    rebase = true
 
 # vim:ft=ini

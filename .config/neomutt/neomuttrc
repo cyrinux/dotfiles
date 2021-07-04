@@ -226,8 +226,8 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 
 #sync email
 macro index O noop
-macro index O "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
+macro index O "<shell-escape>flock -n /tmp/.checkmail-personal.lock ~/.local/bin/checkmail<enter><enter>" "sync all mail"
 macro index o noop
-macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
+macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock ~/.local/bin/checkmail<enter><enter>" "sync all mail"
 
 set sidebar_short_path=yes

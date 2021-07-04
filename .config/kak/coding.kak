@@ -6,9 +6,7 @@ set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'rg --hidden --follow --smart-case --with-filename --column'
 
-hook global ModuleLoaded kitty %{
-   set-option global kitty_window_type 'os'
-}
+hook global ModuleLoaded kitty %{ set-option global kitty_window_type 'os' }
 
 # Commands
 
@@ -23,18 +21,40 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
     remove-hooks buffer format
 }
 
+
+define-command detect-indentwidth -docstring 'detect indentwidth' %{
+    try %{
+        evaluate-commands -draft %{
+            expandtab
+            execute-keys 'gg' '/' '^\h+' '<ret>'
+
+            try %{
+                execute-keys '<a-k>' '\t' '<ret>'
+                noexpandtab
+            } catch %{
+                set-option buffer indentwidth %val{selection_length}
+            }
+        }
+    }
+}
+
 define-command  github-link -docstring 'return github permalink' %{
    evaluate-commands echo %sh{get-github-permalink ${kak_buffile} ${kak_cursor_line}}
 }
 
+define-command leading-spaces-to-tabs -docstring "Convert all leading spaces to tabs" %{ execute-keys -draft %{%s^\h+<ret><a-@>} }
+define-command leading-tabs-to-spaces -docstring "Convert all leading tabs to spaces" %{ execute-keys -draft %{%s^\h+<ret>@} }
 
 # Hooks
 
 hook global BufOpenFile  .* modeline-parse
-hook global BufCreate    .* %{ editorconfig-load; set buffer eolformat lf }
+hook global BufOpenFile  .* %{ editorconfig-load; set buffer eolformat lf }
+hook global BufNewFile   .* %{ editorconfig-load; set buffer eolformat lf }
 hook global BufWritePre  .* %{ nop %sh{ mkdir -p $(dirname "$kak_hook_param") }}
 hook global BufWritePost .* %{ git show-diff }
 hook global BufReload    .* %{ git show-diff }
+hook global BufOpenFile  .* detect-indentwidth
+hook global BufWritePost .* detect-indentwidth
 hook global WinDisplay   .* %{ evaluate-commands %sh{
     cd "$(dirname "$kak_buffile")"
     project_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
@@ -42,7 +62,6 @@ hook global WinDisplay   .* %{ evaluate-commands %sh{
     printf "cd %%{%s}\n" "$dir"
     [ -n "$project_dir" ] && [ "$kak_buffile" = "${kak_buffile#\*}" ] && printf "git show-diff"
 } }
-
 
 hook global WinSetOption filetype=.* %{
     disable-autoformat
@@ -101,3 +120,4 @@ hook global WinSetOption filetype=lua %{
     set-option buffer formatcmd 'stylua --config-path ~/.config/stylua/stylua.toml -- -'
     hook buffer -group format BufWritePre .* format
 }
+

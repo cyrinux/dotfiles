@@ -102,7 +102,7 @@ compdef _directories md
 tmpd() { cd "$(mktemp -d -t "${1:-tmp}.XXXXXXXXXX")" }
 
 # ping test
-p() { [ -n "$DOMAIN" ] && ping ${1}.${DOMAIN} || ping "${1:-1.1.1.1}" }
+p() { [ -n "$DOMAIN" ] && ping ${1}.${DOMAIN} || ping "${1:-8.8.8.8}" }
 
 iowaiting() { watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')" }
 

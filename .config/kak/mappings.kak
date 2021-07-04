@@ -22,8 +22,8 @@ map global normal <c-n>   ': connect-terminal<ret>'
 map global insert <c-w> '<esc>bdi'
 map global insert <c-u> '<esc>xdO'
 
-map global user -docstring 'toggle line numbers'      L      ': toggle-highlighter global/ number-lines -hlcursor<ret>'
-map global user -docstring 'toggle line wrap'         W      ': toggle-highlighter global/ wrap -word -indent<ret>'
+map global user -docstring 'toggle line numbers'      L      ': toggle-highlighter buffer/numbers number-lines -hlcursor<ret>'
+map global user -docstring 'toggle line wrap'         W      ': toggle-highlighter buffer/wrap wrap -word -indent<ret>'
 
 map global user -docstring 'clip-paste (before)'      p      'o<esc>!wl-paste --no-newline | dos2unix<ret><a-d>'
 map global user -docstring 'clip-paste (after)'       P      'O<esc><a-!>wl-paste --no-newline | dos2unix<ret><a-d>'
@@ -44,26 +44,13 @@ map global user -docstring 'surround'                 s      ': enter-user-mode 
 map global user -docstring 'select down'              V      ': vertical-selection-down<ret>'
 map global user -docstring 'select up'                <a-v>  ': vertical-selection-up<ret>'
 map global user -docstring 'select up and down'       v      ': vertical-selection-up-and-down<ret>'
-map global user -docstring 'new terminal in cwd'      n      ': kitty-terminal zsh<ret>'
 map global user -docstring 'disable autoformat'       d      ': disable-autoformat<ret>'
 map global user -docstring 'set yaml style'           Y      ': set buffer filetype yaml<ret>'
 map global user -docstring 'LSP mode'                 l      ': enter-user-mode lsp<ret>'
 map global user -docstring 'Github permalink'         g      ': github-link<ret>'
 
-define-command -hidden -params 1 extend-line-down %{ execute-keys "<a-:>%arg{1}X" }
-define-command -hidden -params 1 extend-line-up   %{
-    try %{
-        execute-keys "<a-K>\n<ret>"
-        execute-keys "<a-:><a-;>%arg{1}KJ<a-x>"
-    } catch %{
-        execute-keys "<a-:><a-;>%arg{1}K<a-x>"
-    }
+define-command cd-buffer -docstring 'Change the working directory to the current buffer directory' %{
+        evaluate-commands -buffer %val{buffile}%{
+                    change-directory %sh(dirname "$kak_buffile")
+        }
 }
-
-hook global InsertChar \t %{ try %{
-    execute-keys -draft "h<a-h><a-k>\A\h+\z<ret><a-;>;%opt{indentwidth}@"
-}}
-
-hook global InsertDelete ' ' %{ try %{
-    execute-keys -draft 'h<a-h><a-k>\A\h+\z<ret>i<space><esc><lt>'
-}}

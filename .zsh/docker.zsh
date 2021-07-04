@@ -38,6 +38,7 @@ alias java9-docker="docker container run --rm -it --cpus 2 --entrypoint bash ope
 alias java8-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
 alias javaws="docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 alias android-build="docker run --rm -v \"$(pwd):/project\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
+alias golangci="docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.41.1 golangci-lint run -v"
 
 function dockershellhere() {
     dirname=${PWD##*/}

@@ -77,9 +77,12 @@ z4h bindkey my-ctrl-z               Ctrl+Z
 
 z4h bindkey edit-command-line       Alt+E
 
+z4h bindkey z4h-eof                 Ctrl+D
+
 ###
 
 setopt GLOB_DOTS
+setopt IGNORE_EOF
 
 ###
 

@@ -1,5 +1,1 @@
-# Set the theme to "gruvbox-dark"
---theme="gruvbox-dark"
-
-# Show line numbers, Git modifications, file header and grid
---style="numbers,changes,header,grid"
+--plain
