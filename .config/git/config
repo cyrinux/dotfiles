@@ -23,6 +23,3 @@
     path = ~/.config/git/common
 
 # vim:ft=ini
-[user]
-	email = you@example.com
-	name = Your Name

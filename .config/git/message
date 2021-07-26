@@ -1,13 +1,11 @@
-# Write a title for your commit that gives a general overview of your changes.
+Please enter commit message in the conventional format. Examples:
 
-# This question tells reviewers of your pull request what to expect in the
-# commit, allowing them to more easily identify and point out unrelated changes.
-# 1. Why is this change neccesary?
-
-# OPTIONAL
-# Describe, at a high level, what was done to affect change.
-# 2. How does it address the issue?
-
-# This is the most important question to answer, as it can point out problems
-# where you are making too many changes in one commit or branch.
-# 3. What side effects does this change have?
++ 61c8ca9 fix: navbar not responsive on mobile
++ 479c48b test: prepared test cases for user authentication
++ a992020 chore: moved to semantic versioning
++ b818120 fix: button click even handler firing twice
++ c6e9a97 fix: login page css
++ dfdc715 feat(auth): added social login using twitter
++ b235677 BREAKING CHANGE: remove support for XXX
++ a234556 revert!: back to version X.Y.Z for component ZZZ
++ b123456 feat : we support space before : for French people :-)

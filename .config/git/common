@@ -1,3 +1,6 @@
+[init]
+	templatedir = ~/.config/git/templates
+
 [alias]
     alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
     lg = !tig
@@ -99,6 +102,10 @@
     preserve = true
     stat = true
 
+
+[merge]
+    tool = meld
+
 [mergetool "meld"]
     cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
@@ -128,5 +135,8 @@
 
 [aurutils]
     rebase = true
+
+[help]
+	autocorrect = 20
 
 # vim:ft=ini
