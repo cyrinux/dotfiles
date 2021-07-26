@@ -1,11 +1,11 @@
 Please enter commit message in the conventional format. Examples:
 
-+ 61c8ca9 fix: navbar not responsive on mobile
-+ 479c48b test: prepared test cases for user authentication
-+ a992020 chore: moved to semantic versioning
-+ b818120 fix: button click even handler firing twice
-+ c6e9a97 fix: login page css
-+ dfdc715 feat(auth): added social login using twitter
-+ b235677 BREAKING CHANGE: remove support for XXX
-+ a234556 revert!: back to version X.Y.Z for component ZZZ
-+ b123456 feat : we support space before : for French people :-)
+fix: navbar not responsive on mobile
+test: prepared test cases for user authentication
+chore: moved to semantic versioning
+fix: button click even handler firing twice
+fix: login page css
+feat(auth): added social login using twitter
+BREAKING CHANGE: remove support for XXX
+revert!: back to version X.Y.Z for component ZZZ
+feat : we support space before : for French people :-)
