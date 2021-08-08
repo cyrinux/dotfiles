@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.9.1
+pkgver=2.9.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -621,7 +621,6 @@ depends=(
     'taskwarrior-tui'
     'bugwarrior'
     'python-jira'
-    'gnome-shell-screenshot-dbus-emulator'
     'zoom'
     'pipewire-media-session'
     'display-switch-git'

@@ -10,6 +10,7 @@
         "sway/workspaces"
     ],
     "modules-right": [
+        "custom/spotify",
         "custom/prod-status",
         "custom/infra-status",
         "custom/progress",
@@ -37,16 +38,21 @@
         "battery",
         "clock",
         "tray",
-        "custom/yubikey"
+        "custom/yubikey",
     ],
     "sway/language": {
         "format": "<span foreground='#928374'></span> {}",
-        "min-length": 5,
+        "min-length": 5
+    },
+    "custom/spotify": {
+        "exec": "waybar-spotify",
+        "return-type": "json",
+        "interval": 5
     },
     "custom/calendar": {
         "exec": "waybar-calendar",
         "return-type": "json",
-        "interval": 3600
+        "interval": 60
     },
     "custom/netatmo": {
         "exec": "waybar-netatmo",

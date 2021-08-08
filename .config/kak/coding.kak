@@ -21,7 +21,6 @@ define-command disable-autoformat -docstring 'disable auto-format' %{
     remove-hooks buffer format
 }
 
-
 define-command detect-indentwidth -docstring 'detect indentwidth' %{
     try %{
         evaluate-commands -draft %{

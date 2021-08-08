@@ -15,6 +15,7 @@ gitio() {
     curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
+alias g='git'
 alias gcl='ghq get --look'
 alias ga='g add'
 alias gaa='ga --all'

@@ -19,16 +19,14 @@ map global normal <up>    ': git prev-hunk<ret>'
 map global normal <down>  ': git next-hunk<ret>'
 map global normal <c-n>   ': connect-terminal<ret>'
 
-map global insert <c-w> '<esc>bdi'
-map global insert <c-u> '<esc>xdO'
+map global insert <c-w>   '<esc>bdi'
+map global insert <c-u>   '<esc>xdO'
 
 map global user -docstring 'toggle line numbers'      L      ': toggle-highlighter buffer/numbers number-lines -hlcursor<ret>'
 map global user -docstring 'toggle line wrap'         W      ': toggle-highlighter buffer/wrap wrap -word -indent<ret>'
-
-map global user -docstring 'clip-paste (before)'      p      'o<esc>!wl-paste --no-newline | dos2unix<ret><a-d>'
-map global user -docstring 'clip-paste (after)'       P      'O<esc><a-!>wl-paste --no-newline | dos2unix<ret><a-d>'
+map global user -docstring 'clip-paste (before)'      p      '<a-!>wl-paste --no-newline | dos2unix<ret>'
+map global user -docstring 'clip-paste (after)'       P      '!wl-paste --no-newline | dos2unix<ret>'
 map global user -docstring 'clip-replace'             R      '|wl-paste --no-newline | dos2unix<ret>'
-
 map global user -docstring 'clip-yank'                y      '<a-|>wl-copy<ret>'
 map global user -docstring 'save buffer'              w      ': w<ret>'
 map global user -docstring 'close buffer'             c      ': db<ret>'

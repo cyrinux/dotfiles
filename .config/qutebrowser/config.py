@@ -47,6 +47,7 @@ c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
 c.qt.args += [
+    "qt.force_software_rendering=qt-quick",
     "enable-gpu-rasterization",
     "blink-settings=preferredColorScheme=1",
 ]
@@ -55,7 +56,7 @@ c.hints.chars = "qsdfgbv"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
@@ -139,3 +140,4 @@ config.set("content.media.audio_capture", True, "*://teams.microsoft.com")
 config.set("content.media.video_capture", True, "*://teams.microsoft.com")
 config.set("content.desktop_capture", True, "*://teams.microsoft.com")
 config.set("content.cookies.accept", "all", "*://teams.microsoft.com")
+config.set("content.register_protocol_handler", False, "*://outlook.office365.com")

@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Zoom X11
+Name=Xoom
 Comment=Zoom Video Conference
-Exec=env QT_QPA_PLATFORM= XDG_CURRENT_DESKTOP=GNOME /usr/bin/zoom %U
-Icon=Zoom
+Exec=env QT_QPA_PLATFORM= XDG_CURRENT_DESKTOP=GNOME ~/.local/bin/xoom %U
+Icon=Xoom
 Terminal=false
 Type=Application
 Encoding=UTF-8
@@ -10,4 +10,4 @@ Categories=Network;Application;
 StartupWMClass=zoom
 MimeType=x-scheme-handler/zoommtg;x-scheme-handler/zoomus;x-scheme-handler/tel;x-scheme-handler/callto;x-scheme-handler/zoomphonecall;application/x-zoom
 X-KDE-Protocols=zoommtg;zoomus;tel;callto;zoomphonecall;
-Name[en_US]=Zoom X11
+Name[en_US]=Xoom

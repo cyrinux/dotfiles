@@ -1,11 +1,12 @@
-Please enter commit message in the conventional format. Examples:
+# Please enter commit message in the conventional format. Examples:
 
-fix: navbar not responsive on mobile
-test: prepared test cases for user authentication
-chore: moved to semantic versioning
-fix: button click even handler firing twice
-fix: login page css
-feat(auth): added social login using twitter
-BREAKING CHANGE: remove support for XXX
-revert!: back to version X.Y.Z for component ZZZ
-feat : we support space before : for French people :-)
+# fix: navbar not responsive on mobile
+# test: prepared test cases for user authentication
+# chore: moved to semantic versioning
+# fix: button click even handler firing twice
+# fix: login page css
+# feat(auth): added social login using twitter
+# BREAKING CHANGE: remove support for XXX
+# revert!: back to version X.Y.Z for component ZZZ
+# feat : we support space before : for French people :-)
+# refactor: cleanup some code

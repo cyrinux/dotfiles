@@ -16,7 +16,7 @@ input type:touchpad {
 }
 
 output * {
-    bg "#222222" solid_color
+    bg "#1a1c1c" solid_color
 }
 
 # hide cursor if idle while 10s
@@ -69,10 +69,13 @@ for_window    [app_id="taskwarrior-tui"]                 move container to $work
 for_window    [app_id="MellowPlayer"]                    move container to $workspace10
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
-for_window    [app_id="dmenu-calc"]                      resize set width 40ppt height 30ppt
 for_window    [app_id="qalculate-gtk"]                   floating enable
 for_window    [app_id="mpv"]                             floating enable, resize set width 531 height 300, move position 1005 113
 for_window    [app_id="iriunwebcam"]                     floating disable
+for_window    [app_id="dmenu-emoji"]                     resize set height 20ppt
+
+for_window [class="^zoom$" title="^Zoom - Free Account$"] mark "sp7", move scratchpad
+for_window [class="^zoom$" title="^XoomScreenSharing$"] move output eDP-1, fullscreen disable, floating enable
 for_window    [class="Steam"]                            inhibit_idle fullscreen
 
 # Audio settings
@@ -153,22 +156,24 @@ mode $mode_workspaces_monitors {
 	}
 }
 
-
 # Color scheme (Gruvbox dark)
 set $color_normal_white  #a89984
 set $color_bright_white  #ebdbb2
-set $color_normal_gray   #222222
+set $color_normal_gray   #282828
 set $color_bright_gray   #3c3836
 set $color_bright_yellow #d79921
-set $color_normal_black  #282828
+set $color_normal_black  #1d2021
 set $color_unused        #ff0000
+
+
 
 # Colors                  border                 background             text                   indicator            child_border
 client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
 client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
 client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_normal_gray   $color_normal_black
 client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
-client.placeholder        $color_unused          $color_normal_black    $color_unused          $color_unused        $color_unused
+client.placeholder        $color_unused          $color_unused          $color_unused          $color_unused        $color_unused
+
 
 bindsym --to-code --locked {
     XF86AudioMute                 exec sway-audio output-mute
@@ -217,9 +222,6 @@ bindsym --to-code {
 	$hyper+Return exec kitty
 	$hyper+Shift+Return exec kitty --config NONE
 	$win+Return exec kitty --config NONE /bin/bash
-
-	# vault
-	Shift+F2 exec "open-vault 7200 &"
 
 	# quit app
 	$win+q kill
@@ -286,9 +288,11 @@ bindsym --to-code {
     $hyper+i focus child
 
 
+    $hyper+Backspace  fullscreen disable, exec emoji-dmenu
+
 	# move workspace to the right monitor
 	$win+BackSpace move workspace to output right
-	$hyper+BackSpace move container to output right
+	# $hyper+BackSpace move container to output right
 
 	# toggle fullscreen mode for the focused container
 	$win+f fullscreen toggle, inhibit_idle fullscreen

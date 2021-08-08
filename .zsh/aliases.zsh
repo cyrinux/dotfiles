@@ -18,11 +18,6 @@ man() (
     command man "$@" || "$1" --help || "$1" -h
 )
 
-if [[ -x ~/bin/num-cpus ]]; then
-    command -v make  &>/dev/null && alias make='make -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
-    command -v cmake &>/dev/null && alias cmake='cmake -j "${_my_num_cpus:-${_my_num_cpus::=$(~/bin/num-cpus)}}"'
-fi
-
 # Taskwarrior
 alias tt="taskwarrior-tui"
 alias t='task'
@@ -43,8 +38,6 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
-alias gob='go build'
-alias got='go test'
 alias x='cd "${$(PAGER="less -+F" xplr):-.}"'
 alias n="nmcli"
 alias hex='teehee'
@@ -171,7 +164,7 @@ alias reloadu='sysu daemon-reload'
 alias timers='sys list-timers'
 alias timersu='sysu list-timers'
 
-rga-fzf() {
+rgf() {
     RG_PREFIX="rga --files-with-matches"
     xdg-open "$(
         FZF_DEFAULT_COMMAND="$RG_PREFIX $@" \
@@ -181,4 +174,13 @@ rga-fzf() {
                 --bind "change:reload:$RG_PREFIX {q}" \
                 --preview-window="70%:wrap"
     )"
+}
+
+
+alias gob='go build'
+alias got='go test'
+alias gotv='go test -v'
+gov(){
+     go test -coverprofile=coverage.out
+     go tool cover -html=coverage.out
 }

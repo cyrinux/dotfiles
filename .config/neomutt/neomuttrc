@@ -96,7 +96,7 @@ bind index,pager + entire-thread
 bind index,pager Y modify-labels
 bind index,pager X change-vfolder
 bind attach <return> view-mailcap
-macro attach s "<save-entry><bol>~/Downloads<eol>"
+macro attach s "<save-entry><bol>~/Downloads/<eol>"
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
 auto_view application/pgp-encrypted text/calendar text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
@@ -226,8 +226,8 @@ macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "ma
 
 #sync email
 macro index O noop
-macro index O "<shell-escape>flock -n /tmp/.checkmail-personal.lock ~/.local/bin/checkmail<enter><enter>" "sync all mail"
+macro index O "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
 macro index o noop
-macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock ~/.local/bin/checkmail<enter><enter>" "sync all mail"
+macro index o "<shell-escape>flock -n /tmp/.checkmail-personal.lock checkmail<enter><enter>" "sync all mail"
 
 set sidebar_short_path=yes
