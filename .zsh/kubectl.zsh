@@ -20,6 +20,8 @@ alias kl='kubectl logs -f'
 alias khpa='kg! hpa'
 alias klogs='stern'
 alias koff='kubectl config unset current-context'
+alias kga='k get pod --all-namespaces'
+alias kgaa='kubectl get all --show-labels'
 drain_node() {
     kubectl drain "$1" --force --delete-emptydir-data --ignore-daemonsets
 }

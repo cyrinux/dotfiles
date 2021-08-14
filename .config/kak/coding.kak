@@ -120,3 +120,6 @@ hook global WinSetOption filetype=lua %{
     hook buffer -group format BufWritePre .* format
 }
 
+hook global WinSetOption filetype=(asciidoc|fountain|html|latex|markdown) %{
+    require-module pandoc
+}

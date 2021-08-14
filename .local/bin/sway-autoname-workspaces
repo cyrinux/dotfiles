@@ -16,6 +16,7 @@ import sys
 import i3ipc
 
 WINDOW_ICONS = {
+    "kitty": "",
     "burp-startburp": "",
     "songrec": "",
     "calibre": "",
@@ -32,7 +33,6 @@ WINDOW_ICONS = {
     "firefox": "",
     "fontforge": "",
     "gcr-prompter": "",
-    "kitty": "󰁆",
     "krita": "",
     "ledger live": "",
     "libreoffice-calc": "",
@@ -45,10 +45,10 @@ WINDOW_ICONS = {
     "xplr": "",
     "org.ksnip.ksnip": "",
     "org.pwmt.zathura": "",
-    "org.qutebrowser.qutebrowser": "",
     "paperwork": "",
     "pavucontrol": "",
-    "qutebrowser": "",
+    "org.qutebrowser.qutebrowser": "",
+    "bleachbit": "",
     "qutepreview": "",
     "rapid-photo-downloader": "",
     "sandboxed-tor-browser": "",
