@@ -1,0 +1,31 @@
+[frame]
+processor = "vulkan"
+capturer = "wlroots"
+# capturer = "none" # Does not capture screen contents, just uses ALS to predict ideal screen brightness
+
+# [als.iio]
+# path = "/sys/bus/iio/devices"
+# thresholds = [ 20, 80, 250, 500, 800 ]
+
+[als.time]
+hour_to_lux = { 7 = 1, 9 = 2, 11 = 3, 13 = 4, 16 = 3, 18 = 1, 20 = 0 }
+
+# [als.none]
+
+# TODO multi-monitor setup is not supported, but wanted!
+[output.backlight.eDP-1]
+path = "/sys/class/backlight/intel_backlight"
+# use_contents = true # TODO will be relevant in multi-monitor setups
+
+##############################################################################
+# TODO everything below is an idea, not supported but definitely wanted!
+#
+# [output.ddcutil.DP-1]
+# display = 1
+# use_contents = false
+#
+# [keyboard.backlight.dell]
+# path = "/sys/bus/platform/devices/dell-laptop/leds/dell::kbd_backlight"
+#
+# [keyboard.backlight.thinkpad]
+# path = "/sys/bus/platform/devices/thinkpad_acpi/leds/tpacpi::kbd_backlight"

@@ -10,7 +10,7 @@ command -v git       &> /dev/null    && alias diff='git diff --no-index'
 command -v htop      &> /dev/null    && alias top='htop'
 command -v dfrs      &> /dev/null    && alias df='dfrs'
 command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
-command -v rmtrash   &> /dev/null    && alias rm='rmtrash -rf'
+command -v trash-put   &> /dev/null    && alias rm='trash-put'
 command -v dog       &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
 command -v curlie       &> /dev/null    && alias curl='curlie'
 
@@ -38,7 +38,7 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
-alias x='cd "${$(PAGER="less -+F" xplr):-.}"'
+x() { PAGER="less -+F" xplr | IFS= read -r dir && cd -- "${dir:-.}" }
 alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'

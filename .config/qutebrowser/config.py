@@ -31,6 +31,7 @@ elif os.environ["QUTE_CONTAINER"] == "private":
 c.auto_save.session = True
 c.session.lazy_restore = True
 c.content.default_encoding = "utf-8"
+c.tabs.show = "multiple"
 c.content.javascript.can_access_clipboard = True
 c.content.notifications.enabled = True  # notifications aren't supported now anyway
 c.content.pdfjs = True
@@ -46,8 +47,8 @@ c.downloads.remove_finished = 2000
 c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
+c.qt.force_software_rendering = "qt-quick"
 c.qt.args += [
-    "qt.force_software_rendering=qt-quick",
     "enable-gpu-rasterization",
     "blink-settings=preferredColorScheme=1",
 ]
@@ -56,7 +57,7 @@ c.hints.chars = "qsdfgbv"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False

@@ -1,6 +1,8 @@
 zstyle ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
 zstyle ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
 zstyle ':z4h:ssh:*' enable 'yes'
+zstyle ':z4h:ssh:pbuilder*' enable 'no'
+zstyle ':z4h:ssh:package*' enable 'no'
 zstyle ':z4h:ssh:*' ssh-command command ssh -S none
 zstyle ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh-history/zsh_history.${(%):-%m}:$z4h_ssh_host)'

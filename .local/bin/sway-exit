@@ -25,9 +25,9 @@ radio_state() {
 
 before_lock() {
     playerctl -a pause > /dev/null 2>&1
-    bluetoothctl disconnect > /dev/null 2>&1
+    # bluetoothctl disconnect > /dev/null 2>&1
     gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
-    reset_kbd
+    # reset_kbd
     fusermount -u ~/Vault > /dev/null 2>&1
 }
 
@@ -37,12 +37,12 @@ case "$1" in
         swaymsg exit
         ;;
     lock)
+        before_lock
         exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
         flock -n 4 || {
             echo "ERROR: flock() failed." >&2
             exit 1
         }
-        before_lock
         swaylock
         waybar-eyes done
         ;;

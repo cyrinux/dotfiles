@@ -31,6 +31,7 @@
         "custom/vpn#work",
         "cpu",
         "memory",
+        "custom/movie",
         "backlight",
         "custom/dnd",
         "idle_inhibitor",
@@ -161,6 +162,13 @@
         "on-click-right": "sway-cast lq",
         "on-click": "sway-cast hq",
         "on-click-middle": "pkill -f gst-launch-1.0"
+    },
+    "custom/movie": {
+        "exec": "waybar-movie",
+        "return-type": "json",
+        "signal": 4,
+        "interval": "once",
+        "on-click": "waybar-movie toggle"
     },
     "clock": {
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",

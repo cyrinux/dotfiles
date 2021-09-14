@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 
 zstyle    ':z4h:'                                              auto-update            no
+zstyle    ':z4h:'                                              iterm2-integration     yes
+zstyle    ':z4h:'                                              propagate-cwd          yes
 zstyle    ':z4h:*'                                             channel                stable
 zstyle    ':z4h:autosuggestions'                               forward-char           accept
 zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
@@ -15,7 +17,6 @@ zstyle    ':z4h:term-title:ssh'                                preexec          
 zstyle    ':z4h:term-title:local'                              preexec                '%* | ${1//\%/%%}'
 zstyle    ':completion:*:ssh:argument-1:'                      tag-order              hosts users
 zstyle    ':completion:*:scp:argument-rest:'                   tag-order              hosts files users
-zstyle    ':z4h:'                                              start-tmux             no
 zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts'       hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 if ! (( P9K_SSH )); then
@@ -25,6 +26,7 @@ fi
 ##
 
 z4h install romkatv/archive || return
+z4h tty-wait --timeout-seconds 1.0 --lines-columns-pattern '<68-> <->'
 z4h init || return
 
 ##

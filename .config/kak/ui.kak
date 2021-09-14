@@ -1,4 +1,4 @@
-colorscheme gruvbox
+# colorscheme gruvbox
 
 hook global WinCreate .* %{ try %{
     add-highlighter buffer/numbers  number-lines -hlcursor
