@@ -291,7 +291,7 @@ bindsym --to-code {
     $hyper+Backspace  fullscreen disable, exec emoji-dmenu
 
 	# move workspace to the right monitor
-	$win+BackSpace move workspace to output right
+	$win+Backspace move workspace to output right
 	# $hyper+BackSpace move container to output right
 
 	# toggle fullscreen mode for the focused container

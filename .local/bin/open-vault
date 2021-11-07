@@ -1,3 +1,3 @@
 #!/bin/sh
-gocryptfs -noprealloc -extpass "pass personal/crypt/gocryptfs-seafile" -idle ${1:-60}m -fg -- /home/cyril/Seafile/gocryptfs ~/Vault
+gocryptfs -noprealloc -extpass "pass personal/crypt/gocryptfs-seafile" -idle ${1:-60}m -fg -- /home/cyril/nextcloud/gocryptfs ~/Vault
 notify-send 'Vault' 'Unmounted!'

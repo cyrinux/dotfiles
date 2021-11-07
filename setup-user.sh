@@ -329,11 +329,6 @@ else
     fi
 fi
 
-echo "Configuring seafile"
-if [ ! -d "$HOME/.ccnet" ]; then
-    echo >&2 "=== Seafile is not initialized, skipping..., run seafile-applet"
-fi
-
 echo "Configure repo-local git settings"
 git config user.email "cyril@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"

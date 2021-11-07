@@ -18,6 +18,8 @@ zstyle    ':z4h:term-title:local'                              preexec          
 zstyle    ':completion:*:ssh:argument-1:'                      tag-order              hosts users
 zstyle    ':completion:*:scp:argument-rest:'                   tag-order              hosts files users
 zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts'       hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+zstyle    ':z4h:direnv' enable 'yes'
+
 
 if ! (( P9K_SSH )); then
     zstyle ':z4h:sudo' term ''
@@ -97,8 +99,6 @@ export FZF_DEFAULT_OPTS='--reverse --multi --color="bg+:-1"'
 export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
 
 ###
-
-command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,completion,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh

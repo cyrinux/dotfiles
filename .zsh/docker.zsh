@@ -42,7 +42,7 @@ alias javaws="docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$
 alias android-build="docker run --rm -v \"$(pwd):/project\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
 alias golangci="docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.41.1 golangci-lint run -v"
 
-alias workspace="docker run --rm -it rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock"
+alias workspace='docker run --rm -it rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
 
 function dockershellhere() {
     dirname=${PWD##*/}

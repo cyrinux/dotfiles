@@ -8,7 +8,6 @@ checkmail.timer,user:cyril
 urlwatch.timer,user:cyril
 task-sync.timer,user:cyril
 bugwarrior-pull.timer,user:cyril
-seaf-cli@cyril.service
 fwupd-refresh.timer
 reflector.timer
 sshd.service

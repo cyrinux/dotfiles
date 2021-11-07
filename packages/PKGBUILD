@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.9.7
+pkgver=2.9.8
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -101,7 +101,6 @@ depends=(
     'calibre'
     'cantarell-fonts'
     'ccid'
-    'cfssl'
     'checkbashisms'
     'chromium'
     'chromium-widevine'
@@ -179,7 +178,7 @@ depends=(
     'git-lfs'
     'git-repair'
     'glances'
-    'glew-wayland'
+    'glew'
     'glfw-wayland'
     'gmime'
     'gnome-keyring'
@@ -309,7 +308,6 @@ depends=(
     'network-manager-applet'
     'networkmanager-dmenu-git'
     'networkmanager-openvpn'
-    'newsboat'
     'nfs-utils'
     'ngrok'
     'nmap'
@@ -463,7 +461,6 @@ depends=(
     'samba'
     'sane-frontends'
     'sd'
-    'seafile-client'
     'shellcheck'
     'shfmt'
     'signal-desktop'

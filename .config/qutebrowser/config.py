@@ -43,7 +43,7 @@ c.fileselect.multiple_files.command = ["kitty", "sh", "-c", "xplr > {}"]
 c.downloads.location.prompt = False
 c.downloads.location.directory = "~/Downloads/"
 c.downloads.position = "bottom"
-c.downloads.remove_finished = 2000
+c.downloads.remove_finished = 10000
 c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
@@ -53,11 +53,13 @@ c.qt.args += [
     "blink-settings=preferredColorScheme=1",
 ]
 c.spellcheck.languages = ["en-US", "fr-FR"]
-c.hints.chars = "qsdfgbv"
+c.hints.auto_follow = "full-match"
+c.hints.dictionary = "/usr/share/dict/mnemonic"
+c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
@@ -96,8 +98,8 @@ c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
-    ",m": "spawn --userscript view_in_mpv",
     ",M": "spawn streamlink {url} best --twitch-low-latency --player mpv",
+    ",m": "hint links spawn qutebrowser-play '{hint-url}'",
     ",a": "spawn --userscript youtube-dl-mp3",
     ",A": "hint links userscript youtube-dl-mp3",
     ",d": "spawn --userscript youtube-dl",

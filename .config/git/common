@@ -22,6 +22,7 @@
     td = log --stat --oneline --since='12 hour ago'
     ls = ls-files
     ci = "!browser $(hub ci-status -v | awk '{print $3}')"
+    lab = !glab
 
 [branch]
     autosetuprebase = always
@@ -127,8 +128,8 @@
 [absorb]
     maxStack=50
 
-[remote "origin"]
-    fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+; [remote "origin"]
+;     fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
 [advice]
     detachedHead = false

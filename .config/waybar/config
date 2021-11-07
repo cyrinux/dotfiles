@@ -27,7 +27,6 @@
         "custom/cast",
         "pulseaudio",
         "network",
-        "custom/vpn",
         "custom/vpn#work",
         "cpu",
         "memory",
@@ -111,12 +110,6 @@
     "custom/mail": {
         "exec": "waybar-mail",
         "return-type": "json"
-    },
-    "custom/vpn": {
-        "exec": "waybar-vpn",
-        "return-type": "json",
-        "on-click": "piactl connect",
-        "on-click-right": "piactl disconnect"
     },
     "custom/vpn#work": {
         "exec": "waybar-vpn-work",
