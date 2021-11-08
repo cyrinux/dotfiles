@@ -7,7 +7,7 @@ BACKUP_PATH=("/run/media/cyril/PortableSSD/backup_cyril_laptop_DONTREMOVE" "/run
 for backup_path in "${BACKUP_PATH[@]}"; do
     if [ ! -d $backup_path ]; then
         echo "Backup device '$backup_path' does not exist, aborting. Start 'open-vault 120'"
-        exit 1
+        continue
     fi
     BACKUP_DIR="${backup_path}/$(date +%Y-%m-%d)"
 

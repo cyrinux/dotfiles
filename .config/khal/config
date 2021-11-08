@@ -19,3 +19,10 @@ color = light blue
 [keybindings]
 external_edit = E
 save = w
+
+[default]
+highlight_event_days = True
+default_calendar = personal
+print_new = event
+show_all_days = True
+timedelta = 1d

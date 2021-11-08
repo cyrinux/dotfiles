@@ -50,6 +50,7 @@ alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(p
 alias battery-normal='sudo cctk --PrimaryBattChargeCfg=custom:50-86 --ValSetupPwd="$(pass personal/bios)"'
 alias bc='bc -lq'
 alias cal="khal calendar"
+alias cali="khal interactive"
 alias csysdig="sudo csysdig"
 alias diff!='kitty +kitten diff'
 alias generate_pins="pwgen -n -r=azertyuiopqsdfghjklmwxcvbn -A 3 10"

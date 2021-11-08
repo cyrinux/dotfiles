@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.9.8
+pkgver=2.10.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -361,7 +361,8 @@ depends=(
     'poetry'
     'polkit-gnome'
     'powershell-bin'
-    'powerstat-git'
+    'powerstat'
+    'words'
     'powertop'
     'pppconfig'
     'prettier'
@@ -616,7 +617,7 @@ depends=(
     'bugwarrior'
     'python-jira'
     'zoom'
-    'pipewire-media-session'
+    'wireplumber'
     'display-switch-git'
     'python-pycryptodome'
     'mkinitcpio-encrypt-detached-header'
@@ -633,5 +634,14 @@ depends=(
     'ledger-live-bin'
     'azure-cli'
     'monero-gui'
-
+    'apachedirectorystudio'
+    'btop'
+    'cardpeek'
+    'cargo-make'
+    'espanso'
+    'keybase'
+    'procmail'
+    'rust'
+    'ventoy-bin'
+    'words'
 )

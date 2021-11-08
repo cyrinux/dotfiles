@@ -54,7 +54,7 @@ c.qt.args += [
 ]
 c.spellcheck.languages = ["en-US", "fr-FR"]
 c.hints.auto_follow = "full-match"
-c.hints.dictionary = "/usr/share/dict/mnemonic"
+c.hints.dictionary = "/usr/share/dict/french"
 c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
@@ -98,6 +98,7 @@ c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
+    "<Ctrl-Shift-D>": "tab-give",
     ",M": "spawn streamlink {url} best --twitch-low-latency --player mpv",
     ",m": "hint links spawn qutebrowser-play '{hint-url}'",
     ",a": "spawn --userscript youtube-dl-mp3",
