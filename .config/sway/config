@@ -338,6 +338,9 @@ bindsym --to-code {
 	# Notification actions
     $hyper+q exec makoctl dismiss
     $hyper+o exec makoctl menu dmenu
+
+    Alt+space exec makoctl set-mode default
+    Shift+Alt+space exec makoctl set-mode dnd
 }
 
 exec_always $kanshi

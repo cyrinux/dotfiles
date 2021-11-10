@@ -3,7 +3,7 @@
 
 [alias]
     alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
-    lg = !tig
+    lg = !gitui
     lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
     bdr = !git branch --merged | egrep -v \"(master|dev)\" | xargs git branch -d
     pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
@@ -103,7 +103,6 @@
     preserve = true
     stat = true
 
-
 [merge]
     tool = meld
 
@@ -127,9 +126,6 @@
 
 [absorb]
     maxStack=50
-
-; [remote "origin"]
-;     fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
 
 [advice]
     detachedHead = false

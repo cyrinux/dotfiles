@@ -17,16 +17,15 @@ magick convert -rotate -90 $pngfile $bmpfile
 
 for a in {1,2,4,5,10}; do
     # Glitch it with sox FROM: https://maryknize.com/blog/glitch_art_with_sox_imagemagick_and_vim/
-    sox -t ul -c 1 -r 48k $bmpfile -t ul $glitchedfile trim 0 90s : echo 1 1 $((a * 2)) 0.1
+    sox -t ul -c 1 -r 48k $bmpfile -t ul $glitchedfile trim 0 90s : echo 1 1 $((a * 2)) 0.1 2> /dev/null
     # Rotate it by 90 degrees
-    magick convert -scale 25% -scale 400% -rotate 90 $glitchedfile $bmpfile
+    magick convert -scale 25% -scale 400% -rotate 90 $glitchedfile $bmpfile 2> /dev/null
     #Glitch it again and rotate it back
-    sox -t ul -c 1 -r 48k $bmpfile -t ul $glitchedfile trim 0 100s : flanger
+    sox -t ul -c 1 -r 48k $bmpfile -t ul $glitchedfile trim 0 100s : flanger 2> /dev/null
 done
 
 # Add lock icon, pixelate and convert back to png
-magick convert $bmpfile $pngfile
+magick convert $bmpfile $pngfile > /dev/null
 
 swaylock -i $pngfile
-#feh $pngfile
 rm $pngfile $bmpfile $glitchedfile

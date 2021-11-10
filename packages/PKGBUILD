@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.10.0
+pkgver=2.11.1
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -40,7 +40,6 @@ depends=(
     'logrotate'
     'man-pages'
     'posix'
-    'vi'
 
     # base-devel
     'autoconf'
@@ -125,7 +124,6 @@ depends=(
     'darktable'
     'dateutils'
     'dcraw'
-    'ddccontrol'
     'ddcutil'
     'dell-command-configure'
     'devtools'
@@ -133,7 +131,6 @@ depends=(
     'diff-so-fancy'
     'diffstat'
     'direnv'
-    'discord'
     'dmenu-term'
     'dmidecode'
     'dnsmasq'
@@ -514,9 +511,8 @@ depends=(
     'tesseract-data-fra'
     'testssl.sh'
     'the_silver_searcher'
-    'tig'
-    'tigervnc'
-    'tmux'
+    'gitui'
+    'git'
     'libpipewire02'
     'tmux-cssh'
     'torbrowser-launcher'
@@ -575,11 +571,10 @@ depends=(
     'wireshark-qt'
     'wl-clipboard'
     'wl-clipboard-manager'
-    'wlrctl-git'
+    'wlrctl'
     'wlrobs-hg'
     'wlroots'
     'wlsunset'
-    'wlsunset-git'
     'wluma-als-emulator'
     'wmctrl'
     'wofi'
@@ -616,7 +611,6 @@ depends=(
     'taskwarrior-tui'
     'bugwarrior'
     'python-jira'
-    'zoom'
     'wireplumber'
     'display-switch-git'
     'python-pycryptodome'

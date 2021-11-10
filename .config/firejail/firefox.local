@@ -5,3 +5,4 @@ dbus-user.talk org.freedesktop.portal.Desktop
 ignore noroot
 whitelist ${RUNUSER}/pipewire-0
 dbus-user.talk org.freedesktop.portal.Desktop
+whitelist /home/cyril/.password-store

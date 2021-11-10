@@ -287,7 +287,7 @@ echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video render plugdev ddc libvirt audit input wireshark; do
+for group in wheel network video render plugdev i2c libvirt audit input wireshark; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
 done
