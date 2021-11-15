@@ -6,4 +6,4 @@ Type=simple
 Nice=19
 IOSchedulingClass=2
 IOSchedulingPriority=7
-ExecStart=%h/.local/bin/restic-check
+ExecStart=/bin/bash -c "%h/.local/bin/backitup -a -p DAILY -l $HOME/.cache/restic-check.lastrun -b %h/.local/bin/restic-check"

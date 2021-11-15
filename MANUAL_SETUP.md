@@ -59,3 +59,10 @@ $ yubico-piv-tool -s 9a -a change-pin (default pin: 123456)
 - steam beta enable
 - proton experimental
 - launcher command set to `gamemoderun idle-inhibitor %command% --launcher-skip`
+
+# Thunderbolt
+
+```
+$ boltctl list
+$ boltctl authorize zdazdaz-aaa-xxx-ffff-ffffffffffff
+```

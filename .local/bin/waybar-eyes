@@ -1,8 +1,7 @@
 #!/bin/bash
 
-cache="${XDG_CACHE_HOME:-$HOME/.cache}"
-marker="${cache}/waybar-eyes"
-lock="${cache}/waybar-eyes.lock"
+marker="${XDG_CACHE_HOME}/waybar-eyes"
+lock="${XDG_CACHE_HOME}/waybar-eyes.lock"
 eyes=""
 
 run() {

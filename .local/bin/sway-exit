@@ -17,15 +17,8 @@ stop_wlan() {
     nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
 }
 
-radio_state() {
-    wifi $1
-    wwan $1
-    bluetooth $1
-}
-
 before_lock() {
     playerctl -a pause > /dev/null 2>&1
-    # bluetoothctl disconnect > /dev/null 2>&1
     gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
     # reset_kbd
     fusermount -u ~/Vault > /dev/null 2>&1

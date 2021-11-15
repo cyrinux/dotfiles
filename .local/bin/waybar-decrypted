@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+lock="${XDG_CACHE_HOME}/waybar-decrypted.lock"
 
 output() {
     if [ -f "/home/cyril/Vault/.lock" ]; then
@@ -9,6 +11,8 @@ output() {
 }
 
 check() {
+    exec 100> ${lock} || exit 1
+    flock 100 || exit 1
     output
     inotifywait -q "/home/cyril/Vault/.lock" > /dev/null 2>&1
     output

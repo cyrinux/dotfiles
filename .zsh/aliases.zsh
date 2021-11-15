@@ -47,6 +47,7 @@ alias bottom='btm'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
 alias battery-full='sudo cctk --PrimaryBattChargeCfg=standard --ValSetupPwd="$(pass personal/bios)"'
+alias battery-express='sudo cctk --PrimaryBattChargeCfg=Express --ValSetupPwd="$(pass personal/bios)"'
 alias battery-normal='sudo cctk --PrimaryBattChargeCfg=custom:50-86 --ValSetupPwd="$(pass personal/bios)"'
 alias bc='bc -lq'
 alias cal="khal calendar"

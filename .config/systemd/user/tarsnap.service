@@ -6,4 +6,4 @@ Nice=19
 IOSchedulingClass=2
 IOSchedulingPriority=7
 Type=oneshot
-ExecStart=/bin/bash -c "%h/.local/bin/backitup -l %h/.cache/tarsnap-backup -b %h/.local/bin/tarsnap-dematerialisation"
+ExecStart=/bin/bash -c "%h/.local/bin/backitup -p DAILY -l %h/.cache/tarsnap-dematerialisation.lastrun -b %h/.local/bin/tarsnap-dematerialisation"

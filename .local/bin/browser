@@ -9,7 +9,7 @@
 
 url="$1"
 
-list="$HOME/.cache/works-url-patterns"
+list="$XDG_CACHE_HOME/works-url-patterns"
 [ -s "$list" ] || pass work/works-url-patterns > $list
 
 if [ -s "$list" ]; then
@@ -35,13 +35,13 @@ case $container in
         firewarden -z 127.1.1.1 -q qutebrowser "$url" &
         ;;
     "personal")
-        qutebrowser-personal "$url" &
+        qbpm launch personal "$url" &
         ;;
     "work")
-        qutebrowser-work "$url" &
+        qbpm launch work "$url" &
         ;;
     "shopping")
-        qutebrowser-shopping "$url" &
+        qbpm launch shopping "$url" &
         ;;
     "clipboard")
         echo "$url" | wl-copy &

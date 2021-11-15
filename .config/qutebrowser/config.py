@@ -3,7 +3,7 @@ import os
 config.load_autoconfig(False)
 
 # ui
-config.source("gruvbox.py")
+config.source("/home/cyril/.config/qutebrowser/gruvbox.py")
 
 c.colors.webpage.preferred_color_scheme = "dark"
 c.completion.shrink = True
@@ -14,18 +14,8 @@ c.tabs.position = "left"
 c.tabs.title.format = "{index}: {audio}{current_title}"
 c.tabs.title.format_pinned = "{index}: {audio}{current_title}"
 
-# use a different color for work container to give visual distinction
-if "QUTE_CONTAINER" not in os.environ:
-    c.colors.tabs.selected.even.bg = "#B48EAD"
-elif os.environ["QUTE_CONTAINER"] == "personal":
-    c.colors.tabs.selected.even.bg = "#504955"
-    c.colors.tabs.selected.even.fg = "#d79921"
-elif os.environ["QUTE_CONTAINER"] == "work":
-    c.colors.tabs.selected.even.bg = "#076678"
-    c.colors.tabs.selected.even.fg = "#ebdbb2"
-elif os.environ["QUTE_CONTAINER"] == "private":
-    c.colors.tabs.selected.even.bg = "#282828"
-    c.colors.tabs.selected.even.fg = "#cc241d"
+c.colors.tabs.selected.even.bg = "#504955"
+c.colors.tabs.selected.even.fg = "#d79921"
 
 # general
 c.auto_save.session = True
@@ -61,8 +51,13 @@ c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
 c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
 
+
+# c.colors.webpage.darkmode.enabled = True
+# c.colors.webpage.darkmode.algorithm = "lightness-hsl"
+
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
+
 
 c.content.canvas_reading = False
 c.content.blocking.enabled = True
@@ -99,8 +94,8 @@ bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
     "<Ctrl-Shift-D>": "tab-give",
-    ",M": "spawn streamlink {url} best --twitch-low-latency --player mpv",
-    ",m": "hint links spawn qutebrowser-play '{hint-url}'",
+    ",M": "spawn mpv '{url}'",
+    ",m": "hint links spawn mpv '{hint-url}'",
     ",a": "spawn --userscript youtube-dl-mp3",
     ",A": "hint links userscript youtube-dl-mp3",
     ",d": "spawn --userscript youtube-dl",
@@ -109,8 +104,8 @@ bindings = {
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
     ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
     ",w": "spawn --userscript send_to_wallabag",
-    ",W": "spawn qutebrowser-work {url}",
-    ",P": "spawn qutebrowser-personal {url}",
+    ",W": "spawn qbpm launch work  {url}",
+    ",P": "spawn qbpm launch personal {url}",
     ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
     ",r": "spawn --userscript readability",
     ",C": "spawn chromium {url}",

@@ -503,7 +503,6 @@ depends=(
     'task'
     'tcpdump'
     'tealdeer'
-    'telegram-desktop'
     'terminus-font'
     'terraform'
     'tesseract'

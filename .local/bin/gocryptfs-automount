@@ -1,9 +1,11 @@
 #!/bin/sh
 
+SOURCE="~/Seafile/gocryptfs"
+
 [ ! -d ~/Vault ] && mkdir -p ~/Vault
 
 inotifywait -q -m -e access ~/Vault/ | while read -r line; do
     if [ ! -f ~/Vault/.lock ]; then
-        gocryptfs -extpass "pass personal/crypt/gocryptfs-seafile" -idle ${1:-60}m -fg -noprealloc -- ~/nextcloud/gocryptfs ~/Vault
+        gocryptfs -extpass "pass personal/crypt/gocryptfs-seafile" -idle ${1:-60}m -fg -noprealloc -- $SOURCE ~/Vault
     fi
 done

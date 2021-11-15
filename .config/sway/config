@@ -182,6 +182,7 @@ bindsym --to-code --locked {
     $win+Left                     exec sway-audio output-volume-down
     $win+Shift+Up                 exec sway-audio input-mute
     $win+Shift+Down               exec sway-audio input-mute
+    XF86AudioMicMute              exec sway-audio input-mute
     $win+Shift+Right              exec sway-audio input-volume-up
     $win+Shift+Left               exec sway-audio input-volume-down
 
@@ -205,7 +206,7 @@ bindsym --to-code {
 
     # Go to previous windows
     # $win+Tab					  [con_mark=_prev] focus
-    alt+Tab      exec sway-window-switch
+    Alt+Tab      exec sway-window-switch
 
     # Misc
 	$win+F1      exec "resolvectl flush-caches"
@@ -352,5 +353,6 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 # Load systemd integration
 include /etc/sway/config.d/*
 exec systemctl --user start sway-session.target
+
 
 # vi:ft=i3

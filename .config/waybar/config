@@ -6,11 +6,68 @@
 },
 {
     "layer": "top",
+    "output": "!eDP-1",
+    "modules-left": [
+        "sway/workspaces",
+    ],
+    "modules-center": [
+        "custom/eyes",
+        "pulseaudio",
+    ],
+    "modules-right": [
+        "custom/prod-status",
+        "custom/dnd",
+        "clock"
+    ],
+    "custom/eyes": {
+        "exec": "waybar-eyes",
+        "return-type": "json",
+        "on-click": "waybar-eyes done"
+    },
+    "custom/prod-status": {
+        "exec": "waybar-livestatus",
+        "return-type": "json",
+	    "markup": true,
+        "on-click": "pkill -SIGUSR1 -x waybar-livestat",
+    },
+    "custom/dnd": {
+        "exec": "waybar-dnd",
+        "return-type": "json",
+        "signal": 2,
+        "interval": "once",
+        "on-click": "waybar-dnd toggle"
+    },
+    "clock": {
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "on-click": "exec gsimplecal",
+        "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
+    },
+    "pulseaudio": {
+        "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+        "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+        "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
+        "format-muted": "<span foreground='#928374'></span>   {format_source}",
+        "format-source": "<span foreground='#928374'></span> {volume}%",
+        "format-source-muted": "<span foreground='#928374'></span>",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+    }
+},
+{
+    "layer": "top",
+    "output": "eDP-1",
     "modules-left": [
         "sway/workspaces"
     ],
     "modules-right": [
-        "custom/spotify",
+        "custom/mediaplayer",
         "custom/prod-status",
         "custom/infra-status",
         "custom/progress",
@@ -44,8 +101,8 @@
         "format": "<span foreground='#928374'></span> {}",
         "min-length": 5
     },
-    "custom/spotify": {
-        "exec": "waybar-spotify",
+    "custom/mediaplayer": {
+        "exec": "waybar-mediaplayer",
         "return-type": "json",
         "interval": 5
     },
@@ -167,7 +224,6 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
         "on-click": "exec gsimplecal",
         "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
-
     },
     "temperature#laptop": {
 		"hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",

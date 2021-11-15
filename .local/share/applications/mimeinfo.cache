@@ -23,6 +23,7 @@ x-scheme-handler/mailto=mutt.desktop;neomutt.desktop;
 x-scheme-handler/monero=monero-gui.desktop;
 x-scheme-handler/moneroseed=monero-gui.desktop;
 x-scheme-handler/qute=qutebrowser-facebook.desktop;qutebrowser-personal.desktop;qutebrowser-private.desktop;qutebrowser-shopping.desktop;qutebrowser-work.desktop;
+x-scheme-handler/sgnl=signal-desktop.desktop;
 x-scheme-handler/slack=slack.desktop;
 x-scheme-handler/tel=Zoom.desktop;
 x-scheme-handler/zoommtg=Zoom.desktop;
