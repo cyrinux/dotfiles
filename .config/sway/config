@@ -204,10 +204,6 @@ bindsym --to-code {
     Shift+XF86MonBrightnessUp   exec light -A 5%
     Shift+XF86MonBrightnessDown exec light -U 5%
 
-    # Go to previous windows
-    # $win+Tab					  [con_mark=_prev] focus
-    Alt+Tab      exec sway-window-switch
-
     # Misc
 	$win+F1      exec "resolvectl flush-caches"
 
@@ -342,6 +338,10 @@ bindsym --to-code {
 
     Alt+space exec makoctl set-mode default
     Shift+Alt+space exec makoctl set-mode dnd
+
+    # Switch between programs.
+    Alt+Tab exec swayfloatingswitcher-client --next
+    Alt+Shift+Tab exec swayfloatingswitcher-client --previous
 }
 
 exec_always $kanshi

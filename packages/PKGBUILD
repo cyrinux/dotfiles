@@ -637,4 +637,5 @@ depends=(
     'rust'
     'ventoy-bin'
     'words'
+    'easyeffects'
 )

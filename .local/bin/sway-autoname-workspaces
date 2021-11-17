@@ -16,6 +16,11 @@ import sys
 import i3ipc
 
 WINDOW_ICONS = {
+    "swappy": "",
+    "dmenu-pass": "",
+    "dmenu-clipboard": "",
+    "gsimplecalc": "",
+    "kak": "kak",
     "kitty": "",
     "burp-startburp": "",
     "songrec": "",

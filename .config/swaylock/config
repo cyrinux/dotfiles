@@ -5,7 +5,7 @@ inside-color=1d2021
 # transparent
 # hide-keyboard-layout
 ignore-empty-password
-indicator-caps-lock
+# indicator-caps-lock
 indicator-radius=100
 indicator-thickness=10
 inside-clear-color=222222

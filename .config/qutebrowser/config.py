@@ -49,7 +49,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
 
 
 # c.colors.webpage.darkmode.enabled = True
@@ -88,7 +88,6 @@ c.url.searchengines = {
 c.url.default_page = "~/.config/qutebrowser/blank.html"
 c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 
-
 # keys
 bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
@@ -102,10 +101,10 @@ bindings = {
     ",D": "hint links userscript youtube-dl",
     ",k": "jseval javascript:(function(){ document.querySelector('html').style.filter = 'invert(1)';})(); })",
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
-    ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
+    # ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
     ",w": "spawn --userscript send_to_wallabag",
-    ",W": "spawn qbpm launch work  {url}",
-    ",P": "spawn qbpm launch personal {url}",
+    ",W": "spawn qbpm launch work  {url}; tab-close",
+    ",P": "spawn qbpm launch personal {url}; tab-close",
     ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
     ",r": "spawn --userscript readability",
     ",C": "spawn chromium {url}",
@@ -125,6 +124,7 @@ bindings = {
     ",g": "spawn --userscript open-portal",
     ";I": "hint images download",
 }
+
 for key, bind in bindings.items():
     config.bind(key, bind)
 

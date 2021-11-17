@@ -7,4 +7,6 @@ chromium_version="$(pacman -Si chromium | grep Version | cut -d':' -f2 | cut -d'
 }
 
 sed -ri "s|Chrome/[^ ]+|Chrome/$chromium_version|g" ~/.local/share/qutebrowser/greasemonkey/fingerprint-protector.js
+sed -ri "s|Chrome/[^ ]+|Chrome/$chromium_version|g" ~/.local/share/qutebrowser-profiles/*/data/greasemonkey/fingerprint-protector.js
+sed -ri "s|Chrome/[^ ]+|Chrome/$chromium_version|g" ~/.local/share/qutebrowser-profiles/*/config/greasemonkey/fingerprint-protector.js
 sed -ri "s|Chrome/[^ ]+|Chrome/$chromium_version|g" ~/.config/qutebrowser/config.py

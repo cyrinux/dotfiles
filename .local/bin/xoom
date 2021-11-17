@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-$HOME/.local/bin/share-screen ask &
-/usr/bin/zoom "$@"
-$HOME/.local/bin/share-screen stop

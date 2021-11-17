@@ -12,19 +12,21 @@ url="$1"
 list="$XDG_CACHE_HOME/works-url-patterns"
 [ -s "$list" ] || pass work/works-url-patterns > $list
 
+# echo $url
 if [ -s "$list" ]; then
     while read line; do
-        rule=$(echo $line | cut -d':' -f1)
+        rule=$(echo $line | cut -d'@' -f1)
+        # echo $rule
         echo $url | grep -q -E "^${rule}"
         if [ $? -eq 0 ]; then
-            container=$(echo $line | cut -d':' -f2)
+            container=$(echo $line | cut -d'@' -f2)
             break
         fi
     done < $list
 fi
 
 if [ -z $container ]; then
-    container=$(echo "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nplay" | dmenu -p "browser")
+    container=$(echo "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nmpv" | dmenu -p "browser")
 fi
 
 case $container in
@@ -46,7 +48,7 @@ case $container in
     "clipboard")
         echo "$url" | wl-copy &
         ;;
-    "play")
+    "mpv")
         mpv "$url" &
         ;;
 esac
