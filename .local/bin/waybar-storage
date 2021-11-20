@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 warning=85
 critical=95
 

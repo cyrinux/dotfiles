@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 updates="$(fwupdmgr get-updates 2> /dev/null)"
 updates=$(printf "${updates}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')
 icon="<span foreground='#928374'></span>"

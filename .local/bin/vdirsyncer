@@ -1,0 +1,64 @@
+#!/bin/bash
+
+if [ "$1" == "showconfig" ]; then
+	echo -n '''
+  {
+  "storages": [
+    {
+      "type": "filesystem",
+      "path": "~/library/contacts/",
+      "fileext": ".vcf",
+      "instance_name": "my_contacts_local"
+    },
+    {
+      "type": "carddav",
+      "url.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "contacts_url"
+      ],
+      "username.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "username"
+      ],
+      "password.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "password"
+      ],
+      "instance_name": "my_contacts_remote"
+    },
+    {
+      "type": "filesystem",
+      "path": "~/library/calendars/",
+      "fileext": ".ics",
+      "instance_name": "my_calendars_local"
+    },
+    {
+      "type": "caldav",
+      "url.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "calendars_url"
+      ],
+      "username.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "username"
+      ],
+      "password.fetch": [
+        "command",
+        "vdirsyncer-get-creds",
+        "password"
+      ],
+      "instance_name": "my_calendars_remote"
+    }
+  ]
+}
+'''
+	exit 0
+
+fi
+
+/usr/bin/vdirsyncer "$@"

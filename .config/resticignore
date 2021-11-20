@@ -2,7 +2,6 @@
 .cache
 cache
 .ccache
-Coffre
 Vault
 CacheStorage
 Téléchargements
@@ -21,3 +20,4 @@ Cache
 .kube/http-cache
 Seafile
 .tox
+Nextcloud

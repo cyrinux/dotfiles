@@ -1,5 +1,4 @@
 #!/bin/bash
-
 socket="${XDG_RUNTIME_DIR:-/run/user/$UID}/yubikey-touch-detector.socket"
 
 while true; do

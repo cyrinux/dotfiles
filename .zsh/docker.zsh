@@ -1,6 +1,6 @@
 # !/usr/bin/env zsh
 
-alias docker="sudo \docker"
+# alias docker="sudo \docker"
 alias kind="sudo \kind"
 alias k3d="sudo \k3d"
 alias dockertop="ctop"

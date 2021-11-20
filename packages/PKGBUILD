@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.12.0
+pkgver=2.12.3
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -134,10 +134,9 @@ depends=(
     'dmenu-term'
     'dmidecode'
     'dnsmasq'
-    'docker'
-    'docker-compose'
-    'docker-machine-driver-kvm2'
-    'docker-slim'
+    'podman'
+    'podman-compose'
+    'podman-dnsname'
     'dog'
     'dos2unix'
     'draft-bin'
@@ -241,7 +240,7 @@ depends=(
     'kubecfg'
     'kubectl'
     'kubectl-krew'
-    'batsignal'
+    'poweralertd'
     'kubectx'
     'kubernetes-helm'
     'kubeseal'
@@ -371,7 +370,6 @@ depends=(
     'publicsuffix-list'
     'pipewire-pulse'
     'pulsemixer'
-    'acpi'
     'pv'
     'pwgen'
     'dfrs'

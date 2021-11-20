@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Shows the calendar event that's happening now, of the next on if there isn't
 # one.
 
-set -e
+set -euo pipefail
 
 render() {
   # Find events starting in two minutes.

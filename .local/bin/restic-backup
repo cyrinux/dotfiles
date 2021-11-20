@@ -20,7 +20,7 @@ backup() {
 
     restic backup --tag="$RESTIC_TAG" "$HOME" \
         --exclude-file="$XDG_CONFIG_HOME/resticignore" --exclude-caches
-    restic forget --host "$(hostname)" --path "$HOME" --tag="$RESTIC_TAG" \
+    restic forget --host "$(hostnamectl --static)" --path "$HOME" --tag="$RESTIC_TAG" \
         --keep-tag keep --keep-hourly 18 --keep-daily 14 \
         --keep-weekly 8 --keep-monthly 18 --keep-yearly 2
 }

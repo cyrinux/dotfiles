@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set -euo pipefail
 trap 'pkill -P $$' EXIT
 
 vpn() {

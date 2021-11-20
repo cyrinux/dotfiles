@@ -3,7 +3,7 @@ library-repos.timer,user:cyril
 restic-check.timer,user:cyril
 restic.timer,user:cyril
 tarsnap.timer,user:cyril
-vdirsyncer.timer,user:cyril
+autovdirsyncer.service,user:cyril
 checkmail.timer,user:cyril
 urlwatch.timer,user:cyril
 task-sync.timer,user:cyril

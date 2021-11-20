@@ -6,6 +6,7 @@ After=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/solaar --window=hide --restart-on-wake-up -b symbolic
+Slice=background.slice
 
 [Install]
 WantedBy=graphical-session.target

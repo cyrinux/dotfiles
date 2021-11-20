@@ -111,6 +111,7 @@ link ".config/git/templates"
 link ".config/gsimplecal"
 link ".config/gtk-2.0"
 link ".config/gtk-3.0"
+link ".config/gtk-4.0"
 link ".config/htop"
 link ".config/imapnotify"
 link ".config/kak"
@@ -191,6 +192,7 @@ link ".config/vdirsyncer"
 link ".config/vimiv"
 link ".config/waybar"
 link ".config/wget"
+link ".config/todoman"
 link ".config/wluma"
 link ".config/wofi"
 link ".config/xdg-desktop-portal-wlr"
@@ -235,6 +237,8 @@ fi
 if is_chroot; then
     echo >&2 "=== Running in chroot, skipping user services..."
 else
+    systemctl_enable_start "podman.socket"
+    systemctl_enable_start "apparmor-notify.service"
     systemctl_enable_start "autotiling.service"
     systemctl_enable_start "backup-packages.timer"
     systemctl_enable_start "battery-low-notify.service"
@@ -267,7 +271,7 @@ else
     systemctl_enable_start "wluma.service"
     systemctl_enable_start "work-unseal.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
-    systemctl_enable_start "batsignal.service"
+    systemctl_enable_start "poweralertd.service"
 
     if [ ! -d "$HOME/.mail" ]; then
         echo >&2 -e "

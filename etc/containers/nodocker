@@ -1,0 +1,2 @@
+# This file must exist so that podman doesn't print:
+# "Emulate Docker CLI using podman."

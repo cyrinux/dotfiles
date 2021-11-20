@@ -1,5 +1,5 @@
-#!/bin/sh
-
+#!/bin/bash
+set -euo pipefail
 marker="/tmp/waybar-movie"
 
 show() {
@@ -28,8 +28,8 @@ toggle() {
 }
 
 case "$1" in
-    on)     on ;;
-    off)    off ;;
+    on) on ;;
+    off) off ;;
     toggle) toggle ;;
-    '')     show ;;
+    *) show ;;
 esac

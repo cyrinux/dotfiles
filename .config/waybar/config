@@ -214,7 +214,7 @@
         "on-click-middle": "pkill -f gst-launch-1.0"
     },
     "custom/movie": {
-        "exec": "waybar-movie",
+        "exec": "waybar-movie show",
         "return-type": "json",
         "signal": 4,
         "interval": "once",

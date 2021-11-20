@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 marker="${XDG_CACHE_HOME}/waybar-eyes"
 lock="${XDG_CACHE_HOME}/waybar-eyes.lock"
 eyes=""

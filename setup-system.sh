@@ -105,6 +105,7 @@ copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/nftables.conf"
+copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/nmtrust/trusted_units" 644
 copy "etc/pacman.conf" 644
@@ -133,12 +134,13 @@ copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "etc/systemd/system/updatedb.timer.d/updatedb.timer.conf"
 copy "etc/systemd/system/usbguard.service.d"
 copy "etc/systemd/system/user@.service.d/delegate.conf"
+copy "etc/systemd/system.conf.d/kill-fast.conf"
 copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/udev/rules.d/45-ddcutil-i2c.rules"
 copy "etc/updatedb.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
-copy "etc/bluetooth/main.conf"
+copy "etc/bluetooth/power-on.conf"
 
 (("$reverse")) && exit 0
 
@@ -157,7 +159,6 @@ echo "Enabling and starting services..."
 echo "================================="
 
 # systemctl_disable_stop "ModemManager.service"
-systemctl_enable_start "apparmor-notify@cyril.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "backup-repo@pkgbuild.timer"
@@ -174,9 +175,6 @@ systemctl_enable_start "btrfs-scrub@var-tmp.timer"
 systemctl_enable_start "btrfs-scrub@\x2esnapshots.timer"
 if is_chroot; then
     echo >&2 "=== Running in chroot, skipping docker service setup..."
-else
-    systemctl_enable_start "docker.service"
-    systemctl_enable_start "docker.socket"
 fi
 systemctl_enable_start "earlyoom.service"
 systemctl_enable_start "fstrim.timer"

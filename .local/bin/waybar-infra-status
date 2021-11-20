@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 get_status() {
     status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
     if [ "$status" != "up" ]; then

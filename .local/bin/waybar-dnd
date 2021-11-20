@@ -1,5 +1,5 @@
 #!/bin/sh
-
+set -euo pipefail
 marker="/tmp/waybar-dnd"
 
 show() {
