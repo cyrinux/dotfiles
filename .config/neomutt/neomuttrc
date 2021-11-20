@@ -97,6 +97,7 @@ bind index,pager Y modify-labels
 bind index,pager X change-vfolder
 bind attach <return> view-mailcap
 macro attach s "<save-entry><bol>~/Downloads/<eol>"
+macro index \Ca "T<enter>.*<enter>"
 
 alternative_order multipart/mixed text/plain text/calendar application/ics text/html
 auto_view application/pgp-encrypted text/calendar text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
@@ -207,13 +208,13 @@ tag-transforms "attachment" " " \
                "signed"     "✎" \
                "flagged"  "" \
                "github-issues" " " \
-               "py3status-issues" " " \
                "friend" " " \
                "Family" " " \
                "amazon" " " \
                "frnog" " " \
                "frsag" " " \
                "archlinux" "  " \
+               "gmail" "  " \
                "newsletter" " "
 
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"

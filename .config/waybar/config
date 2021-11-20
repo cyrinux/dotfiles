@@ -238,7 +238,7 @@
 		"format": " {temperatureC}°C"
 	},
     "cpu": {
-        "format": "<span foreground='#928374'></span> {usage}% {avg_frequency}GHz",
+        "format": "<span foreground='#928374'></span> {usage}% {load}",
         "states": {
             "warning": 70,
             "critical": 90
@@ -292,6 +292,7 @@
             "car": "",
             "default": ["", "", ""]
         },
+        "on-click": "exec easyeffects-toggle toggle",
     }
 }]
 

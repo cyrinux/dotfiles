@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.11.1
+pkgver=2.12.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -239,8 +239,9 @@ depends=(
     'kitty-terminfo'
     'kops-bin'
     'kubecfg'
-    'kubectl-bin'
+    'kubectl'
     'kubectl-krew'
+    'batsignal'
     'kubectx'
     'kubernetes-helm'
     'kubeseal'
@@ -508,7 +509,6 @@ depends=(
     'tesseract'
     'tesseract-data-eng'
     'tesseract-data-fra'
-    'testssl.sh'
     'the_silver_searcher'
     'gitui'
     'git'

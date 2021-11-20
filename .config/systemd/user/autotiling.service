@@ -5,7 +5,7 @@ After=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/autotiling
+ExecStart=/usr/bin/autotiling --workspaces 8 9 0
 Restart=always
 
 [Install]

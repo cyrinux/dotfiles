@@ -30,6 +30,7 @@ hide_edge_borders --i3 none
 default_border pixel 2
 default_floating_border none
 
+set $alt Mod1
 set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
@@ -76,7 +77,7 @@ for_window    [app_id="dmenu-emoji"]                     resize set height 20ppt
 for_window    [class="Steam"]                            inhibit_idle fullscreen
 
 # Audio settings
-set $mode_audio "Audio: (h)eadphones, he(a)dset, (s)peaker, (t)oggle, (p)avucontrol"
+set $mode_audio "Audio: (h)eadphones, he(a)dset, (t)oggle, (s)peaker, (p)avucontrol, (e)qualizer"
 mode $mode_audio {
     bindsym --to-code {
         h exec sway-audio bt-connect-headphones, mode "default"
@@ -84,6 +85,7 @@ mode $mode_audio {
         s exec sway-audio bt-connect-speakers, mode "default"
         t exec sway-audio bt-toggle-profile, mode "default"
         d exec sway-audio bt-disconnect, mode "default"
+        e exec easyeffects-toggle, mode "default"
         p exec pavucontrol, mode "default"
 
         Return mode "default"
@@ -281,7 +283,7 @@ bindsym --to-code {
     # Focus the child container
     $hyper+i focus child
 
-
+    # Emoji
     $hyper+Backspace  fullscreen disable, exec emoji-dmenu
 
 	# move workspace to the right monitor
@@ -340,8 +342,8 @@ bindsym --to-code {
     Shift+Alt+space exec makoctl set-mode dnd
 
     # Switch between programs.
-    Alt+Tab exec swayfloatingswitcher-client --next
-    Alt+Shift+Tab exec swayfloatingswitcher-client --previous
+    $alt+Tab exec swayfloatingswitcher-client --next
+    $alt+Shift+Tab exec swayfloatingswitcher-client --previous
 }
 
 exec_always $kanshi
