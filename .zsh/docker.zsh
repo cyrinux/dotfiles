@@ -1,7 +1,7 @@
 # !/usr/bin/env zsh
 
 # alias docker="sudo \docker"
-alias kind="sudo \kind"
+# alias kind="sudo \kind"
 alias k3d="sudo \k3d"
 alias dockertop="ctop"
 alias dr="docker run --rm -it"
@@ -26,19 +26,20 @@ alias dcs='dc ps'
 alias dcu='dc up'
 alias dcudb='dcu -d --build'
 
-alias fedora="docker run -v $(pwd):/data --rm -it fedora:latest"
-alias ubuntu="docker run -v $(pwd):/data --rm -it ubuntu:latest"
-alias centos="docker run -v $(pwd):/data --rm -it centos:latest"
-alias trusty="docker run -v $(pwd):/data --rm -it ubuntu:trusty"
-alias xenial="docker run -v $(pwd):/data --rm -it ubuntu:xenial"
-alias bionic="docker run -v $(pwd):/data --rm -it ubuntu:bionic"
-alias focal="docker run -v $(pwd):/data --rm -it ubuntu:focal"
-alias alpine="docker run -v $(pwd):/data --rm -it alpine"
+alias fedora="pod fedora:latest"
+alias ubuntu="pod ubuntu:latest"
+alias centos="pod centos:latest"
+alias trusty="pod ubuntu:trusty"
+alias xenial="pod ubuntu:xenial"
+alias bionic="pod ubuntu:bionic"
+alias focal="pod ubuntu:focal"
+alias alpine="pod alpine sh"
 
+alias archlinux-docker="docker container run --rm -it --cpus 2 -v $(pwd):/data -w /data --entrypoint bash archlinux"
 alias java10-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
-alias javaws="docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
+alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 alias android-build="docker run --rm -v \"$(pwd):/project\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
 alias golangci="docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.41.1 golangci-lint run -v"
 

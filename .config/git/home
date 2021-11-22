@@ -2,8 +2,8 @@
   root = ~/library/src/personal/
 
 [user]
-    signingkey = 0x8538D68543979A20
+    signingkey = 0x6A11D19BDD5F8B5E
     name = "Cyril Levis"
-    email = "cyril@levis.name"
+    email = "git@levis.name"
 
 # vim:ft=ini

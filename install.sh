@@ -226,9 +226,9 @@ luks_header_size="$(stat -c '%s' /tmp/header.img)"
 rm -f /tmp/header.img
 
 if [[ "$fde" == "Yes" ]]; then
-    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size mem_sleep_default=deep loglevel=3 nowatchdog l1tf=full,force spec_store_bypass_disable=on spectre_v2=on apparmor=1 lsm=lockdown,yama,apparmor init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 slab_nomerge vsyscall=none slub_debug=F,Z,P systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
+    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size mem_sleep_default=deep loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=0 quiet" > /mnt/etc/kernel/cmdline
 else
-    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep loglevel=3 nowatchdog l1tf=full,force spec_store_bypass_disable=on spectre_v2=on apparmor=1 lsm=lockdown,yama,apparmor init_on_alloc=1 init_on_free=1 page_alloc.shuffle=1 slab_nomerge vsyscall=none slub_debug=F,Z,P systemd.unified_cgroup_hierarchy=1 quiet
+    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=0 quiet
     " > /mnt/etc/kernel/cmdline
 fi
 

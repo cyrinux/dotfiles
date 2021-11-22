@@ -6,10 +6,11 @@ tarsnap.timer,user:cyril
 autovdirsyncer.service,user:cyril
 checkmail.timer,user:cyril
 urlwatch.timer,user:cyril
-task-sync.timer,user:cyril
 bugwarrior-pull.timer,user:cyril
 fwupd-refresh.timer
 reflector.timer
 sshd.service
 parcimonie.sh@all-users
 tor.service
+seaf-cli@cyril.service
+# task-sync.timer,user:cyril

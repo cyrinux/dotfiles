@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Usage:
+#
+#   pod node
+#   pod python:3.8
+#   pod alpine sh
+#
+# Runs a new podman container exposed to the current directory.
+
+set -eu
+
+CONTAINER=$1
+shift
+COMMAND=${*:-bash}
+
+podman run --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND

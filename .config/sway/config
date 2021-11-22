@@ -17,10 +17,14 @@ input type:touchpad {
 
 output * {
     bg "#1a1c1c" solid_color
+    adaptive_sync on
 }
 
 # hide cursor if idle while 10s
 seat * hide_cursor 10000
+
+# Disable dragging of tiles with a mouse.
+tiling_drag disable
 
 # default layout in tabbed
 workspace_layout tabbed
@@ -34,7 +38,7 @@ set $alt Mod1
 set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
-set $kanshi bash -c "killall kanshi; kanshi"
+set $kanshi bash -c "killall kanshi; kanshi;"
 floating_modifier $win
 
 gaps inner 5

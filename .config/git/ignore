@@ -12,6 +12,7 @@ __pycache__
 __pycache__/
 *.py[cod]
 .pytest_cache
+.cache
 qalc.history
 readability.html
 .ssh/known_hosts

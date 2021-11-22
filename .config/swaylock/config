@@ -1,11 +1,6 @@
-# gruvbox
-color=000000
-# color=1d2021
-inside-color=1d2021
-# transparent
-# hide-keyboard-layout
 ignore-empty-password
-# indicator-caps-lock
+color=111111
+inside-color=1d2021
 indicator-radius=100
 indicator-thickness=10
 inside-clear-color=222222

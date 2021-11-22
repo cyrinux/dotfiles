@@ -5,3 +5,6 @@
 etc/NetworkManager/conf.d/wgpia.conf
 exegol
 .local/bin/backup-mailserver
+.config/cni/net.d
+etc/containers
+.config/git/templates

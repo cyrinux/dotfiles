@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.12.3
+pkgver=2.13.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -227,7 +227,6 @@ depends=(
     'iwd'
     'jq'
     'js68'
-    'kind-bin'
     'k9s'
     'kak-lsp'
     'kakoune'
@@ -308,6 +307,7 @@ depends=(
     'nfs-utils'
     'ngrok'
     'nmap'
+    'mokutil'
     'nm-connection-editor'
     'nmtrust-git'
     'xplr'
@@ -629,11 +629,11 @@ depends=(
     'btop'
     'cardpeek'
     'cargo-make'
-    'espanso'
-    'keybase'
     'procmail'
     'rust'
     'ventoy-bin'
     'words'
     'easyeffects'
+    'docker-machine-driver-kvm2'
+    'minikube'
 )

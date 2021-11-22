@@ -33,6 +33,12 @@ roots = ["*.tf"]
 command = "terraform-ls"
 args = ["serve"]
 
+[language.c_cpp]
+filetypes = ["c", "cpp"]
+roots = ["compile_commands.json", ".clangd", ".git", ".hg"]
+command = "clangd"
+offset_encoding = "utf-8"
+
 [[semantic_tokens]]
 token = "comment"
 face = "documentation"

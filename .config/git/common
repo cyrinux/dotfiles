@@ -1,6 +1,3 @@
-[init]
-	templatedir = ~/.config/git/templates
-
 [alias]
     alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
     lg = !gitui
@@ -30,6 +27,7 @@
     autosetuprebase = always
 
 [init]
+	templateDir = ~/.config/git/templates
     defaultBranch = main
 
 [color "branch"]
@@ -100,7 +98,7 @@
     default = current
 
 [rebase]
-    autostash = true
+    autoStash = true
     autosquash = true
     preserve = true
     stat = true

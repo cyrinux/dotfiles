@@ -11,4 +11,4 @@ ExecStart=/usr/bin/easyeffects --gapplication-service
 Slice=session.slice
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target

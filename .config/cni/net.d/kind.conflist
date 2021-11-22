@@ -1,0 +1,58 @@
+{
+   "cniVersion": "0.4.0",
+   "name": "kind",
+   "plugins": [
+      {
+         "type": "bridge",
+         "bridge": "cni-podman0",
+         "isGateway": true,
+         "ipMasq": true,
+         "hairpinMode": true,
+         "ipam": {
+            "type": "host-local",
+            "routes": [
+               {
+                  "dst": "::/0"
+               },
+               {
+                  "dst": "0.0.0.0/0"
+               }
+            ],
+            "ranges": [
+               [
+                  {
+                     "subnet": "fc00:8866:27d0:bd7e::/64",
+                     "gateway": "fc00:8866:27d0:bd7e::1"
+                  }
+               ],
+               [
+                  {
+                     "subnet": "10.88.2.0/24",
+                     "gateway": "10.88.2.1"
+                  }
+               ]
+            ]
+         }
+      },
+      {
+         "type": "portmap",
+         "capabilities": {
+            "portMappings": true
+         }
+      },
+      {
+         "type": "firewall",
+         "backend": ""
+      },
+      {
+         "type": "tuning"
+      },
+      {
+         "type": "dnsname",
+         "domainName": "dns.podman",
+         "capabilities": {
+            "aliases": true
+         }
+      }
+   ]
+}

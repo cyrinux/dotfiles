@@ -4,6 +4,9 @@
 [includeIf "gitdir:~/library/src/work/"]
     path = ~/.config/git/work
 
+[includeIf "gitdir:~/library/documents/git/github.com/dailymotion/"]
+    path = ~/.config/git/work
+
 [includeIf "gitdir:~/library/src/personal/"]
     path = ~/.config/git/home
 
