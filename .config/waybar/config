@@ -76,6 +76,7 @@
         "custom/usbguard",
         "custom/eyes",
         "custom/decrypted",
+        "custom/secureboot",
         "custom/systemd",
         "custom/updates",
         "custom/calendar",
@@ -250,6 +251,11 @@
             "warning": 70,
             "critical": 90
         }
+    },
+    "custom/secureboot": {
+        "exec": "waybar-secureboot",
+        "return-type": "json",
+        "interval": "once"
     },
     "backlight": {
         "format": "<span foreground='#928374'>{icon}</span> {percent}%",

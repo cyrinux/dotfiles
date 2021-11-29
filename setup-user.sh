@@ -3,7 +3,7 @@
 set -e
 exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
 
-MY_GPG_KEY_ID="0x2653E033C3C07A2C"
+MY_GPG_KEY_ID="0x6A11D19BDD5F8B5E"
 
 dotfiles_dir="$(
     cd "$(dirname "$0")"

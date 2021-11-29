@@ -114,6 +114,7 @@ window#waybar {
 #battery,
 #idle_inhibitor,
 #custom-fwupd,
+#custom-secureboot,
 #clock {
   padding: 0 6px;
   margin: 0 6px;
@@ -129,6 +130,10 @@ window#waybar {
 }
 
 #custom-updates.down {
+  border-bottom: 3px solid @red;
+}
+
+#custom-secureboot {
   border-bottom: 3px solid @red;
 }
 
