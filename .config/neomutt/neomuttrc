@@ -121,7 +121,7 @@ set mail_check_stats_interval = 5
 
 ## Addressing
 macro pager,index n "<pipe-message>khard add-email<return>" "add the sender address to khard"
-set query_command= "echo && khard email --parsable %s |fzy"
+set query_command= "echo && khard email --parsable %s | fzf"
 set query_format = "%5c %t %a %n %?e?(%e)?"
 
 # vim: filetype=neomuttrc
