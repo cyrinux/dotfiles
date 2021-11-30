@@ -14,8 +14,8 @@ window {
 
 #inner-box {
     margin: 5px;
-    border: 2px solid #32302f;
-    background-color: #32302f;
+    border: 2px solid #1d2021;
+    background-color: #1d2021;
 }
 
 #outer-box {
@@ -34,10 +34,6 @@ window {
     margin: 5px;
 }
 
-#entry:nth-child(even) {
-    background-color: #3B3837;
-}
-
 #entry:selected {
     background-color: #d79921;
 }
@@ -45,15 +41,5 @@ window {
 #entry:selected label, #entry:selected image {
     color: black;
     background-color: #d79921;
-    border: 0px;
-}
-
-#entry:selected list {
-    background-color: #d79921;
-    border: 0px;
-}
-
-#entry:selected list #entry label image {
-    color: black;
     border: 0px;
 }

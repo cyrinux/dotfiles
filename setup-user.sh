@@ -3,7 +3,7 @@
 set -e
 exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
 
-MY_GPG_KEY_ID="0x6A11D19BDD5F8B5E"
+MY_GPG_KEY_ID="0x6DB88737C11F5A48"
 
 dotfiles_dir="$(
     cd "$(dirname "$0")"
@@ -344,7 +344,7 @@ else
 fi
 
 echo "Configure repo-local git settings"
-git config user.email "cyril@levis.name"
+git config user.email "git@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"
 git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"

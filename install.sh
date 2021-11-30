@@ -187,7 +187,7 @@ mount -o noatime,nodiratime,compress=zstd,subvol=swap /dev/mapper/luks /mnt/swap
 mount -o noatime,nodiratime,compress=zstd,subvol=snapshots /dev/mapper/luks /mnt/.snapshots
 
 echo -e "\n### Importing my public PGP key"
-export MY_GPG_KEY_ID="0x6A11D19BDD5F8B5E"
+export MY_GPG_KEY_ID="0x6DB88737C11F5A48"
 curl -s https://levis.name/pgp_keys.asc | pacman-key -a -
 pacman-key --lsign-key "$MY_GPG_KEY_ID"
 

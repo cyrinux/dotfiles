@@ -1,12 +1,12 @@
 #!/bin/bash
-# generate ramdom password
-# and store them for 2min
 
 set -eu -o pipefail
 
 length=40
 symbols="-y"
+
 case $(echo -e "default\nno special chars\nshort\n" | dmenu -p "pass generator") in
+    default) ;;
     "no special chars")
         symbols=""
         ;;
@@ -14,7 +14,6 @@ case $(echo -e "default\nno special chars\nshort\n" | dmenu -p "pass generator")
         length=16
         symbols=""
         ;;
-    default) ;;
     *)
         exit 1
         ;;

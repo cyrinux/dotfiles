@@ -10,6 +10,9 @@
 [includeIf "gitdir:~/library/src/personal/"]
     path = ~/.config/git/home
 
+[includeIf "gitdir:~/.dotfiles/"]
+    path = ~/.config/git/home
+
 [includeIf "gitdir:~/library/pentest/"]
     path = ~/.config/git/home
 

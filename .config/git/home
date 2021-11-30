@@ -2,7 +2,7 @@
   root = ~/library/src/personal/
 
 [user]
-    signingkey = 0x6A11D19BDD5F8B5E
+    signingkey = 0x6DB88737C11F5A48
     name = "Cyril Levis"
     email = "git@levis.name"
 

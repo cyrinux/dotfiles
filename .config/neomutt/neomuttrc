@@ -11,7 +11,7 @@ source etc/muttcol
 source etc/aliases
 source colors
 
-set pgp_default_key = 0x6A11D19BDD5F8B5E
+set pgp_default_key = 0x6DB88737C11F5A48
 
 set crypt_use_gpgme = yes
 set crypt_use_pka = yes
