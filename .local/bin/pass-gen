@@ -1,0 +1,25 @@
+#!/bin/bash
+# generate ramdom password
+# and store them for 2min
+
+set -eu -o pipefail
+
+length=40
+symbols="-y"
+case $(echo -e "default\nno special chars\nshort\n" | dmenu -p "pass generator") in
+    "no special chars")
+        symbols=""
+        ;;
+    short)
+        length=16
+        symbols=""
+        ;;
+    default) ;;
+    *)
+        exit 1
+        ;;
+esac
+
+wl-clipboard-manager lock
+pwgen -s $length $symbols | wl-copy -n
+wl-clipboard-manager unlock

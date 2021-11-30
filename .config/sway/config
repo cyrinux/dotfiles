@@ -236,6 +236,7 @@ bindsym --to-code {
     $hyper+d           fullscreen disable, exec wofi
     $hyper+f           fullscreen disable, exec wl-clipboard-manager dmenu
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
+    $hyper+Shift+p     fullscreen disable, exec "pass-gen"
     $hyper+Shift+m     fullscreen disable, exec udiskie-dmenu
 
 	# Switch to workspace using number row
