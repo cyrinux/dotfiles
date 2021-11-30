@@ -90,7 +90,7 @@ mode $mode_audio {
         t exec sway-audio bt-toggle-profile, mode "default"
         d exec sway-audio bt-disconnect, mode "default"
         e exec easyeffects-toggle, mode "default"
-        p exec pavucontrol, mode "default"
+        p exec slaunch pavucontrol, mode "default"
 
         Return mode "default"
 	    Escape mode "default"
@@ -210,18 +210,15 @@ bindsym --to-code {
     Shift+XF86MonBrightnessUp   exec light -A 5%
     Shift+XF86MonBrightnessDown exec light -U 5%
 
-    # Misc
-	$win+F1      exec "resolvectl flush-caches"
-
 	Print        exec sway-screenshot-area
-    $hyper+Print exec sway-gif-area
-    $win+Print   exec sway-screenshare
+    $hyper+Print exec slaunch sway-gif-area
+    $win+Print   exec slaunch sway-screenshare
 
 
 	# open terminal
-	$hyper+Return exec kitty
-	$hyper+Shift+Return exec kitty --config NONE
-	$win+Return exec kitty --config NONE /bin/bash
+	$hyper+Return exec slaunch --simple kitty
+	$hyper+Shift+Return exec slaunch --simple kitty --config NONE
+	$win+Return exec slaunch --simple kitty --config NONE /bin/bash
 
 	# quit app
 	$win+q kill
@@ -231,9 +228,8 @@ bindsym --to-code {
 	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
 	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
 	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
-	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || browser"
-	twosuperior        fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || rofi-todoist"
-    $hyper+d           fullscreen disable, exec wofi
+	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || slaunch browser"
+    $hyper+d           fullscreen disable, exec slaunch wofi
     $hyper+f           fullscreen disable, exec wl-clipboard-manager dmenu
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
     $win+p             fullscreen disable, exec "pass-gen"

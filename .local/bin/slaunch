@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# A tiny helper to run applications in their own cgroups.
+#
+# - Each launched application will run in its own cgroup, so its easier to
+#   recognise groups of processes that represent a single application (e.g.:
+#   all Firefox processes will run inside the same one).
+# - When looking at the cgroup tree, it's very clear which processes belong to
+#   which terminal instance. `systemd-cgls` is quite handy here and provides
+#   and alternative view to `ps` or `top`.
+# - When killing a terminal, nothing continues running in the background
+#   (unless spawned into another cgroup).
+# - Resource management is done on a cgroup level, so the OOM can understand
+#   which group to kill. An important item here is that the compositor itself
+#   runs on its own cgroup inside `session.slice`, so should get less priority
+#   with the OOM-killer.
+# - Flatpaks already follow this model too, so the fit right in.
+
+if [ "$1" = "--simple" ]; then
+  shift
+  # When using type=simple, if the parent process in a cgroup dies, all the
+  # children are killed too. This is the desired behaviour for terminals.
+  ARGS="--"
+else
+  # In this mode, if the parent process dies the other are not killed. For
+  # example, if nemo runs mpv, but then nemo exist, mpv continues to run.
+  #
+  # A caveat here is that child applications also run in the same cgroup, but
+  # fixing that requires making the file manager use `slaunch` itself, which
+  # would be nice, but unlikely to happen soon.
+  #
+  # Another caveat here is that these processes inhering sway's environmnent,
+  # and not the service managers environment, which can potentially diverge
+  # over time. A dedicated launcher program can help here.
+  #
+  # There's also the fact that the launcher itself (sway-launcher-desktop) runs
+  # in a terminal so has all the terminal environment set.
+  #
+  # None of these are problematic though.
+  ARGS="--scope --"
+fi
+
+# shellcheck disable=SC2086 disable=SC2048
+systemd-run --user --slice app.slice --unit "slaunch-$1-$(date '+%s%N')" $ARGS $*

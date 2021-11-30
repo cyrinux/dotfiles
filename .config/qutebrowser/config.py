@@ -24,7 +24,6 @@ c.content.default_encoding = "utf-8"
 c.tabs.show = "multiple"
 c.content.javascript.can_access_clipboard = True
 c.content.notifications.enabled = True  # notifications aren't supported now anyway
-c.content.pdfjs = True
 c.editor.command = ["kitty", "kak", "-e", "exec {line}g{column0}l", "{}"]
 c.fileselect.handler = "external"
 c.fileselect.folder.command = ["kitty", "sh", "-c", "xplr > {}"]
@@ -93,23 +92,17 @@ bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
     "<Ctrl-Shift-D>": "tab-give",
-    ",M": "spawn mpv '{url}'",
     ",m": "hint links spawn mpv '{hint-url}'",
-    ",a": "spawn --userscript youtube-dl-mp3",
-    ",A": "hint links userscript youtube-dl-mp3",
-    ",d": "spawn --userscript youtube-dl",
-    ",D": "hint links userscript youtube-dl",
-    ",k": "jseval javascript:(function(){ document.querySelector('html').style.filter = 'invert(1)';})(); })",
+    ",D": "download-open",
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
-    # ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
+    ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
     ",w": "spawn --userscript send_to_wallabag",
-    ",W": "spawn qbpm launch work  {url}; tab-close",
-    ",P": "spawn qbpm launch personal {url}; tab-close",
+    ",qW": "spawn qbpm launch work  {url}; tab-close",
+    ",qP": "spawn qbpm launch personal {url}; tab-close",
     ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
-    ",r": "spawn --userscript readability",
-    ",C": "spawn chromium {url}",
+    ",C": "spawn chromium {url}; tab-close",
     "xx": "config-cycle tabs.show always switching",
-    ",b": "config-cycle colors.webpage.bg '#32302f' 'white'",
+    ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
     "xjn": "set content.javascript.enabled true",
     "xjf": "set content.javascript.enabled false",
     "M": "nop",
