@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# Shortcut to kill an entire cgroup.
+# Usually a single desktop applicaiton maps to a single cgroup, so this makes
+# killing multi-process applications simpler.
+#
+# `slaunch` runs applications with the timestamp as part of its cgroup ids, so
+# multiple instance of the same application will be listed in newest-on-top.
+
+set -e
+
+UNITS=$(systemctl --user --type=service --type scope --no-pager --no-legend list-units | awk '{ print $1 }')
+UNIT=$(echo "$UNITS" | sort --reverse | fzf)  # Hint: `-e` means we'll bail if fzf exists non-zero.
+
+systemctl --user kill "$UNIT"

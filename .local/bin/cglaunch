@@ -41,4 +41,4 @@ else
 fi
 
 # shellcheck disable=SC2086 disable=SC2048
-systemd-run --user --slice app.slice --unit "slaunch-$1-$(date '+%s%N')" $ARGS $*
+systemd-run --user --slice app.slice --unit "cglaunch-$1-$(date '+%s%N')" $ARGS $*

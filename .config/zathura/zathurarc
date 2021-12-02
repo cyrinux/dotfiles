@@ -9,6 +9,9 @@ map <C-i> zoom in
 map <C-o> zoom out
 
 
+# Invert color, dark theme
+set recolor                 true
+
 # Nord Theme
 
 set default-bg              "#2e3440"

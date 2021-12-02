@@ -1,0 +1,12 @@
+[Unit]
+Description=Swayidle idle manager in powersaving mode
+PartOf=lock.target
+
+[Service]
+ExecStart=swayidle \
+  timeout 15 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on"'
+ExecStopPost=/usr/bin/swaymsg "output * dpms on"
+
+[Install]
+WantedBy=lock.target
