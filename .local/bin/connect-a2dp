@@ -18,5 +18,5 @@ else
     name="${2:-$1}"
     echo "Connecting to $name ..."
     connect "$mac"
-    notify-send -i /usr/share/icons/ePapirus-Dark/symbolic/status/bluetooth-active-symbolic.svg "Bluetooth" "Connected to ${name}"
+    notify-send -i bluetooth-active-symbolic "Bluetooth" "Connected to ${name}"
 fi

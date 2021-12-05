@@ -20,11 +20,14 @@ output * {
     adaptive_sync on
 }
 
+xwayland disable
+
 # hide cursor if idle while 10s
 seat * hide_cursor 10000
 
 # Disable dragging of tiles with a mouse.
 tiling_drag disable
+focus_wrapping no
 
 # default layout in tabbed
 workspace_layout tabbed
@@ -216,9 +219,10 @@ bindsym --to-code {
 
 
 	# open terminal
-	$hyper+Return exec cglaunch kitty
+	$hyper+Return exec cglaunch --term kitty
 	$hyper+Shift+Return exec kitty --config NONE
 	$win+Return exec kitty --config NONE /bin/bash
+
 
 	# quit app
 	$win+q kill

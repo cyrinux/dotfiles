@@ -1,4 +1,5 @@
 layer=overlay
+anchor=bottom-right
 background-color=#1d2021
 border-size=2
 border-radius=8
@@ -10,7 +11,7 @@ width=400
 margin=16
 padding=8
 default-timeout=20000
-anchor=bottom-right
+icon-path=/usr/share/icons/Adwaita
 
 [urgency=low]
 background-color=#353535

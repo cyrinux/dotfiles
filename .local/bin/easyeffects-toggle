@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+set -euo pipefail
+
+action="${1:-'status'}"
 
 toggle() {
     state=$(easyeffects -b 3 2>&1)
@@ -26,7 +30,7 @@ status() {
     done
 }
 
-case "$1" in
+case "$action" in
     toggle)
         toggle
         ;;

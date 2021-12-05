@@ -186,3 +186,9 @@ gov(){
      go test -coverprofile=coverage.out
      go tool cover -html=coverage.out
 }
+
+
+booxupload() {
+ curl 'http://boox.lan:8085/api/storage/upload' \
+   -F file=@$1
+}

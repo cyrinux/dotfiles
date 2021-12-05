@@ -7,11 +7,10 @@
 	url = https://github.com/maximbaz/restclient.kak
 [submodule ".config/kak/state-save"]
 	path = .config/kak/state-save
-    url = https://gitlab.com/Screwtapello/kakoune-state-save.git/
+    url = https://gitlab.com/Screwtapello/kakoune-state-save
 [submodule ".config/mpv/uosc"]
 	path = .config/mpv/uosc
 	url = https://github.com/darsain/uosc/
-
 [submodule ".config/xplr/trash-cli"]
 	path = .config/xplr/trash-cli
 	url = https://github.com/sayanarijit/trash-cli.xplr.git
@@ -30,8 +29,6 @@
 [submodule ".config/kak/auto-pairs.kak"]
 	path = .config/kak/auto-pairs.kak
 	url = https://github.com/alexherbo2/auto-pairs.kak.git
-
-
 [submodule ".config/mpv/scripts/mpv-reload"]
 	path = .config/mpv/scripts/mpv-reload
 	url = https://github.com/4e6/mpv-reload

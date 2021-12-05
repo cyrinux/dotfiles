@@ -1,1 +1,0 @@
-scripts/mpv-reload/reload.lua

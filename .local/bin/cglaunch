@@ -16,7 +16,7 @@
 #   with the OOM-killer.
 # - Flatpaks already follow this model too, so the fit right in.
 
-if [ "$1" = "--simple" ]; then
+if [ "$1" = "--term" ]; then
   shift
   # When using type=simple, if the parent process in a cgroup dies, all the
   # children are killed too. This is the desired behaviour for terminals.
@@ -26,7 +26,7 @@ else
   # example, if nemo runs mpv, but then nemo exist, mpv continues to run.
   #
   # A caveat here is that child applications also run in the same cgroup, but
-  # fixing that requires making the file manager use `slaunch` itself, which
+  # fixing that requires making the file manager use `cglaunch` itself, which
   # would be nice, but unlikely to happen soon.
   #
   # Another caveat here is that these processes inhering sway's environmnent,

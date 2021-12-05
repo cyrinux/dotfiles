@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+zstyle    ':z4h:'                                              start-tmux             no
 zstyle    ':z4h:'                                              auto-update            no
 zstyle    ':z4h:'                                              iterm2-integration     yes
 zstyle    ':z4h:'                                              propagate-cwd          yes
