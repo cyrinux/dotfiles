@@ -93,6 +93,7 @@ bindings = {
     "<Ctrl-Shift-K>": "tab-move -",
     "<Ctrl-Shift-D>": "tab-give",
     ",m": "hint links spawn mpv '{hint-url}'",
+    ",M": "spawn mpv '{url}'",
     ",D": "download-open",
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
     ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",

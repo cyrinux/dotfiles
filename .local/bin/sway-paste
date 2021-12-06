@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir="$HOME/.cache/clipboard-history"
+dir="${XDG_CACHE_HOME:-$HOME/.cache}/clipboard-history"
 mkdir -p "$dir"
 
 if [ "$1" = "daemon" ]; then

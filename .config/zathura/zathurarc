@@ -1,1 +1,3 @@
 set recolor true
+set sandbox strict
+set selection-clipboard clipboard

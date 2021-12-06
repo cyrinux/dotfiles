@@ -4,8 +4,8 @@ set -euo pipefail
 nm-online -t 60 -q
 
 accountfile=~/.dotfiles-private/.config/netatmo_account.json
-tokenfile=~/.cache/netatmo_token.json
-datafile=~/.cache/netatmo_data.json
+tokenfile=${XDG_CACHE_HOME:-$HOME/.cache}/netatmo_token.json
+datafile=${XDG_CACHE_HOME:-$HOME/.cache}/netatmo_data.json
 client_id=$(jq -r ".client_id" $accountfile)
 client_secret=$(jq -r ".client_secret" $accountfile)
 username=$(jq -r ".username" $accountfile)

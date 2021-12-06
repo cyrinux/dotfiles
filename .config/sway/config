@@ -93,7 +93,7 @@ mode $mode_audio {
         t exec sway-audio bt-toggle-profile, mode "default"
         d exec sway-audio bt-disconnect, mode "default"
         e exec easyeffects-toggle, mode "default"
-        p exec cglaunch pavucontrol, mode "default"
+        p exec pavucontrol, mode "default"
 
         Return mode "default"
 	    Escape mode "default"
@@ -213,7 +213,7 @@ bindsym --to-code {
     Shift+XF86MonBrightnessUp   exec light -A 5%
     Shift+XF86MonBrightnessDown exec light -U 5%
 
-	Print        exec sway-screenshot-area
+	Print        exec cglaunch sway-screenshot-area
     $hyper+Print exec cglaunch sway-gif-area
     $win+Print   exec cglaunch sway-screenshare
 

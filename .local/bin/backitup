@@ -16,7 +16,7 @@
 
 # Define the file that will hold the timestamp of the last successful backup.
 # It is recommended that this file be *inside* the directory to be backed up.
-LASTRUN="$HOME/.cache/restic.lastrun"
+LASTRUN="${XDG_CACHE_HOME:-$HOME/.cache}/restic.lastrun"
 
 # Define the backup command.
 BACKUP="$HOME/.local/bin/restic-backup"
@@ -176,7 +176,7 @@ if [ -s "$LASTRUN" ]; then
     # between the stored timestamp and the current time is greater than the
     # defined period.
     else
-        diff=$(( $(date "$timeformat") - timestamp ))
+        diff=$(($(date "$timeformat") - timestamp))
         if [ "$diff" -gt "$PERIOD" ]; then
             backup
         else
