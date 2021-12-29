@@ -1,0 +1,47 @@
+---
+outputMode: active
+scale: 1
+background:
+  red: 0.14
+  green: 0.14
+  blue: 0.14
+  opacity: 1
+widget:
+  margin:
+    margins:
+      - 20
+      - 20
+      - 20
+      - 20
+    widget:
+      verticalLayout:
+        - horizontalLayout:
+            - margin:
+                margins:
+                  - 0
+                  - 88
+                  - 0
+                  - 32
+                widget:
+                  verticalLayout:
+                    - date:
+                        font: ~
+                        font_size: 32.0
+                    - clock:
+                        font: ~
+                        font_size: 128.0
+        - calendar:
+            font_primary: ~
+            font_secondary: ~
+            font_size: 16.0
+            sections: 3
+        - launcher:
+            font: ~
+            font_size: 32.0
+            length: 0
+            app_opener: "cglaunch"
+            term_opener: "cglaunch --term"
+            url_opener: "browser"
+fonts:
+  sans: sans
+  mono: mono

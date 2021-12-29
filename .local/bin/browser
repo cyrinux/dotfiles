@@ -31,24 +31,24 @@ fi
 
 case $container in
     "isolate")
-        firewarden -q -n qutebrowser "$url" &
+        cglaunch firewarden -q -n qutebrowser "$url" &
         ;;
     "disposable")
-        firewarden -z 127.1.1.1 -q qutebrowser "$url" &
+        cglaunch firewarden -z 127.1.1.1 -q qutebrowser "$url" &
         ;;
     "personal")
-        qbpm launch personal "$url" &
+        cglaunch qbpm launch personal "$url" &
         ;;
     "work")
-        qbpm launch work "$url" &
+        cglaunch qbpm launch work "$url" &
         ;;
     "shopping")
-        qbpm launch shopping "$url" &
+        cglaunch qbpm launch shopping "$url" &
         ;;
     "clipboard")
         echo "$url" | wl-copy &
         ;;
     "mpv")
-        mpv "$url" &
+        cglaunch mpv "$url" &
         ;;
 esac

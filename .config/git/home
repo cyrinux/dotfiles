@@ -6,4 +6,10 @@
     name = "Cyril Levis"
     email = "git@levis.name"
 
+[sendemail]
+   smtpserver = /usr/bin/msmtp
+   smtpserveroption = -a
+   smtpserveroption = personal
+   envelopeSender = auto
+
 # vim:ft=ini

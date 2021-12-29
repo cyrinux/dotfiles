@@ -2,7 +2,6 @@
 
 # alias docker="sudo \docker"
 # alias kind="sudo \kind"
-alias k3d="sudo \k3d"
 alias dockertop="ctop"
 alias dr="docker run --rm -it"
 alias di="docker images | head -n 1 && docker images | tail -n +2 | sort"
@@ -35,36 +34,20 @@ alias bionic="pod ubuntu:bionic"
 alias focal="pod ubuntu:focal"
 alias alpine="pod alpine sh"
 
-alias archlinux-docker="docker container run --rm -it --cpus 2 -v $(pwd):/data -w /data --entrypoint bash archlinux"
-alias java10-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:10-jdk"
-alias java9-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:9-jdk"
-alias java8-docker="docker container run --rm -it --cpus 2 --entrypoint bash openjdk:8-jdk"
+alias archlinux-docker="pod -it --cpus 2 -v $(pwd):/data -w /data --entrypoint bash archlinux"
+alias java10-docker="pod --cpus 2 --entrypoint bash openjdk:10-jdk"
+alias java9-docker="pod --cpus 2 --entrypoint bash openjdk:9-jdk"
+alias java8-docker="pod --cpus 2 --entrypoint bash openjdk:8-jdk"
 alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
-alias android-build="docker run --rm -v \"$(pwd):/project\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
-alias golangci="docker run --rm -v $(pwd):/app -w /app golangci/golangci-lint:v1.41.1 golangci-lint run -v"
-
+alias android-build="podman run --rm -v \"$(pwd):/project\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
 alias workspace='docker run --rm -it rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
 
 function dockershellhere() {
     dirname=${PWD##*/}
-    docker run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
+    podman run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
+
 function dockershellshhere() {
     dirname=${PWD##*/}
-    docker run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
-}
-
-alias drun='docker run --rm -it --network=host --device=/dev/kfd --device=/dev/dri --group-add=video --ipc=host --shm-size 16G --cap-add=SYS_PTRACE --security-opt seccomp=unconfined -v $HOME/dockerx:/dockerx'
-
-k8sclusterstart() {
-    cat << EOF | kind create cluster --config=-
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-# 3 control plane node and 1 workers
-nodes:
-- role: control-plane
-- role: control-plane
-- role: control-plane
-- role: worker
-EOF
+    podman run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
 }

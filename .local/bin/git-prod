@@ -1,0 +1,5 @@
+#!/bin/bash
+ts="$(date +%s)"
+git tag -f prod-${ts}
+read -n 1 -r -p "push? control-c to cancel"
+git push origin prod-${ts}

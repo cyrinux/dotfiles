@@ -2,7 +2,7 @@ source /usr/share/kak-lsp/rc/lsp.kak
 lsp-enable
 lsp-auto-hover-insert-mode-enable
 set-option global lsp_auto_highlight_references true
-# set-option global lsp_hover_anchor true
+set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'rg --hidden --follow --smart-case --with-filename --column'
 
@@ -100,12 +100,12 @@ hook global WinSetOption filetype=rust %{
         remove-hooks window rust-inlay-hints
     }
 
-    hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
-    hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
-    hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
-    hook -once -always window WinSetOption filetype=.* %{
-        remove-hooks window semantic-tokens
-    }
+    # hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+    # hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+    # hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+    # hook -once -always window WinSetOption filetype=.* %{
+    #     remove-hooks window semantic-tokens
+    # }
 
 }
 

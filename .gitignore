@@ -1,10 +1,11 @@
+.config/cni/net.d
 .config/display-switch/display-switch.ini
 .config/environment.d/60-wayland.conf
+.config/git/templates
 .config/qutebrowser/greasemonkey/requires
 .config/waybar/livestatus.toml
+etc/containers
 etc/NetworkManager/conf.d/wgpia.conf
 exegol
 .local/bin/backup-mailserver
-.config/cni/net.d
-etc/containers
-.config/git/templates
+.local/bin/checkmail

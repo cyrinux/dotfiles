@@ -4,6 +4,7 @@ StartupWMClass=Slack
 Comment=Slack Desktop
 GenericName=Slack Client for Linux
 Exec=slack --enable-features=UseOzonePlatform --ozone-platform=wayland -- %U
+Exec=slack --enable-features=UseOzonePlatform -- %U
 Icon=slack
 Type=Application
 StartupNotify=true

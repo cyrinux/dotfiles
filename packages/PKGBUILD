@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.13.1
+pkgver=2.13.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -419,7 +419,6 @@ depends=(
     'python-rofi'
     'python-simplebayes'
     'python-timeago'
-    'python-tinytag'
     'python-tldextract'
     'python-tox'
     'python-tzlocal'
@@ -605,7 +604,6 @@ depends=(
     'taskopen'
     'taskwarrior-tui'
     'bugwarrior'
-    'python-jira'
     'wireplumber'
     'display-switch-git'
     'python-pycryptodome'

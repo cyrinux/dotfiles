@@ -6,3 +6,9 @@ ignore noroot
 whitelist ${RUNUSER}/pipewire-0
 dbus-user.talk org.freedesktop.portal.Desktop
 whitelist /home/cyril/.password-store
+# Required for U2F and webcams to be detected if
+# they're plugged after starting firefox.
+ignore private-dev
+# U2F is blocked by default??
+ignore nou2f
+

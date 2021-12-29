@@ -192,3 +192,7 @@ booxupload() {
  curl 'http://boox.lan:8085/api/storage/upload' \
    -F file=@$1
 }
+
+mass-usb-creator() {
+    udevadm monitor | while read -r line ; do key=$(echo $line | sed -n -E 's/^UDEV.*add.*\/block\/(sd[a-z]+) \(block\)$/\1/p'); [ -n "$key" ] && echo "# USB /dev/$key"; { sudo /bin/cp "$1" "/dev/$key" &; sync; } ; done
+}

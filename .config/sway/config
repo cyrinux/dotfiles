@@ -3,7 +3,7 @@ font pango: Taskbar, Cantarell 9
 input type:keyboard {
     xkb_layout fr-hyper,us
     xkb_variant basic,
-    xkb_options grp:shifts_toggle,caps:hyper
+    xkb_options grp:shifts_toggle,grp:shift_caps_toggle,caps:hyper
     xkb_numlock enable
 }
 
@@ -20,14 +20,14 @@ output * {
     adaptive_sync on
 }
 
-xwayland disable
+# xwayland disable
 
 # hide cursor if idle while 10s
 seat * hide_cursor 10000
 
 # Disable dragging of tiles with a mouse.
 tiling_drag disable
-focus_wrapping no
+# focus_wrapping no
 
 # default layout in tabbed
 workspace_layout tabbed
@@ -92,7 +92,7 @@ mode $mode_audio {
         s exec sway-audio bt-connect-speakers, mode "default"
         t exec sway-audio bt-toggle-profile, mode "default"
         d exec sway-audio bt-disconnect, mode "default"
-        e exec easyeffects-toggle, mode "default"
+        e exec easyeffects-toggle toggle, mode "default"
         p exec pavucontrol, mode "default"
 
         Return mode "default"
@@ -219,7 +219,8 @@ bindsym --to-code {
 
 
 	# open terminal
-	$hyper+Return exec cglaunch --term kitty
+	$hyper+Return exec cglaunch --term
+	$hyper+XF86AudioMute exec cglaunch --term
 	$hyper+Shift+Return exec kitty --config NONE
 	$win+Return exec kitty --config NONE /bin/bash
 
@@ -228,16 +229,17 @@ bindsym --to-code {
 	$win+q kill
 
 	# launcher
-	$win+n             fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || pia_dmenu"
-	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || networkmanager_dmenu"
-	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
-	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || qalculate-gtk"
+	$win+n             fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch pia_dmenu"
+	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch networkmanager_dmenu"
+	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
+	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch browser"
-    $hyper+d           fullscreen disable, exec cglaunch wofi
-    $hyper+f           fullscreen disable, exec wl-clipboard-manager dmenu
-    $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; passmenu -p pass; wl-clipboard-manager unlock"
-    $win+p             fullscreen disable, exec "pass-gen"
-    $hyper+Shift+m     fullscreen disable, exec udiskie-dmenu
+    # $hyper+d           fullscreen disable, exec cglaunch wofi
+    $hyper+d           fullscreen disable, exec bash -c "pkill -x wldash || cglaunch wldash"
+    $hyper+f           fullscreen disable, exec cglaunch wl-clipboard-manager dmenu
+    $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; cglaunch passmenu -p pass; wl-clipboard-manager unlock"
+    $win+p             fullscreen disable, exec pass-gen
+    $hyper+Shift+m     fullscreen disable, exec cglaunch udiskie-dmenu
 
 	# Switch to workspace using number row
 	$hyper+ampersand  $workspace1
