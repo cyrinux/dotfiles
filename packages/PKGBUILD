@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.13.2
+pkgver=2.14.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -379,14 +379,14 @@ depends=(
     'python-black'
     'python-docker'
     'python-dukpy'
-    'gitlab-glab'
+    'glab'
     'python-google-api-python-client'
     'python-gphoto2'
     'python-h2'
     'python-humanfriendly'
     'python-i3ipc'
     'python-imdbpy'
-    'python-language-server'
+    'python-lsp-server'
     'python-livereload'
     'python-marshmallow'
     'python-mpv'
@@ -569,8 +569,8 @@ depends=(
     'wlrobs-hg'
     'wlroots'
     'wlsunset'
-    'wluma-als-emulator'
     'wmctrl'
+    'wluma'
     'wofi'
     'wol'
     'wrk'

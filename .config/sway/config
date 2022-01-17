@@ -17,7 +17,7 @@ input type:touchpad {
 
 output * {
     bg "#1a1c1c" solid_color
-    adaptive_sync on
+    adaptive_sync off
 }
 
 # xwayland disable

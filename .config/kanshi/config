@@ -1,7 +1,12 @@
-# profile {
-#     output eDP-1 mode 1920x1080 scale 1.0 enable
-# 	output "Dell Inc. DELL P2415Q D8VXF9CJ0EPB" mode 3840x2160 position 1920,0 scale 1.4
-# }
+profile {
+    output eDP-1 mode 1920x1080 scale 1.0 enable
+	output "Dell Inc. DELL P2415Q D8VXF9CJ0EPB" mode 3840x2160 position 1920,0 scale 1.4
+}
+
+profile {
+    output eDP-1 enable
+	output "Dell Inc. DELL P2317H HH77Y6B8AMGB" mode 1920x1080 position 1920,0 scale 1.0
+}
 
 profile {
     output eDP-1 disable
@@ -31,11 +36,7 @@ profile {
     output eDP-1   disable
 }
 
-profile {
-	output "Dell Inc. DELL P2317H HH77Y6B8AMGB" mode 1920x1080 position 0,0 scale 1.0
-    output eDP-1   disable
-}
 
 profile {
-    output eDP-1   enable   scale 1.0
+    output eDP-1   enable   scale 1.3
 }

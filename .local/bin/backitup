@@ -13,6 +13,7 @@
 # Website:  https://github.com/pigmonkey/backups
 #
 ###############################################################################
+set -e
 
 # Define the file that will hold the timestamp of the last successful backup.
 # It is recommended that this file be *inside* the directory to be backed up.

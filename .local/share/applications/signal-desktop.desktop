@@ -4,7 +4,8 @@ Name=Signal
 Comment=Signal - Private Messenger
 Comment[de]=Signal - Sicherer Messenger
 Icon=signal-desktop
-Exec=signal-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland -- %u
+; Exec=signal-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland -- %u
+Exec=signal-desktop --enable-features=UseOzonePlatform -- %u
 Terminal=false
 Categories=Network;InstantMessaging;
 StartupWMClass=Signal

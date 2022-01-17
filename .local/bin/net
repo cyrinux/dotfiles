@@ -2,40 +2,46 @@
 #
 # Show network status, at various layers.
 
-_CONNS=$(nmcli --fields type,name con show --active | grep wifi)
-WIFI=$(echo $_CONNS | cut -f 1 -d ' ' --complement | grep -Po '\S.*')
+BOLD=$(tput bold)
+GREEN=$(tput setaf 2)
+RED=$(tput setaf 1)
+RESET=$(tput sgr0)
 
-bold=$(tput bold)
-normal=$(tput sgr0)
+success() {
+  printf "$GREEN$BOLD✓ ${RESET}$*\n"
+}
+
+failure() {
+  printf "$RED$BOLD✗ ${RESET}$*\n"
+}
+
+_CONNS=$(nmcli --fields type,name con show --active | grep wifi)
+WIFI=$(echo "$_CONNS" | cut -f 1 -d ' ' --complement | grep -Po '\S.*')
 
 if [ -z "$WIFI" ]; then
-  echo "Not connected to any wifi network."
+  failure "Not connected to any network."
   exit 1
 else
-  echo "Connected to wifi ${bold}$WIFI${normal}."
+  success "Connected to wifi ${BOLD}$WIFI${RESET}."
 fi
 
-host www.google.com > /dev/null
-
-if [ $? = 0 ]; then
-  echo "DNS resolutions seems to work fine."
+if resolvectl query captive.apple.com > /dev/null; then
+  success "DNS works."
 else
-  echo "DNS resolution failing."
+  failure "DNS resolution failing."
   exit 2
 fi
 
-CAP=$(curl --silent captive.apple.com)
-
-if [ $? != 0 ]; then
-  echo "HTTP traffic is failing (or there's an odd captive portal around."
+if ! CAP=$(curl --silent captive.apple.com); then
+  failure "HTTP traffic is failing (or there's an odd captive portal around."
   exit 3
 fi
 
-if [ $CAP = "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>" ]; then
-  echo "No captive portal detected, network fine."
+if [ "$CAP" = "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>" ]; then
+  success "No captive portal detected."
 else
-  echo "Captive portal or weird firewall detected"
+  failure "Captive portal or weird firewall detected."
   exit 4
 fi
 
-echo "All good, network seems functional! ✨"
+success "All good, network seems functional! 🎉"

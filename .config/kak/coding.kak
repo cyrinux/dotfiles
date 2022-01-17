@@ -1,12 +1,12 @@
 source /usr/share/kak-lsp/rc/lsp.kak
 lsp-enable
 lsp-auto-hover-insert-mode-enable
-set-option global lsp_auto_highlight_references true
-set-option global lsp_hover_anchor true
+#set-option global lsp_auto_highlight_references true
+#set-option global lsp_hover_anchor true
 
 set-option global grepcmd 'rg --hidden --follow --smart-case --with-filename --column'
 
-hook global ModuleLoaded kitty %{ set-option global kitty_window_type 'os-window' }
+hook global ModuleLoaded kitty %{ set-option global kitty_window_type 'os' }
 
 # Commands
 
@@ -85,7 +85,7 @@ hook global WinSetOption filetype=python %{
 hook global WinSetOption filetype=go %{
     hook buffer -group format BufWritePre .* lsp-formatting-sync
 
-    set-option buffer lintcmd "run() { revive $1; go vet $1 2>&1 | sed -E 's/: /: error: /'; staticcheck $1;} && run"
+    set-option buffer lintcmd "run() { revive $1; go vet $1 2>&1 | sed -E 's/: /: error: /'; staticcheck $1; } && run"
     lint
     hook buffer -group lint BufWritePost .* lint
 }
@@ -100,13 +100,12 @@ hook global WinSetOption filetype=rust %{
         remove-hooks window rust-inlay-hints
     }
 
-    # hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
-    # hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
-    # hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
-    # hook -once -always window WinSetOption filetype=.* %{
-    #     remove-hooks window semantic-tokens
-    # }
-
+    hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+    hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+    hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+    hook -once -always window WinSetOption filetype=.* %{
+        remove-hooks window semantic-tokens
+    }
 }
 
 hook global WinSetOption filetype=markdown %{
@@ -127,7 +126,7 @@ hook global WinSetOption filetype=sh %{
 }
 
 hook global WinSetOption filetype=terraform %{
-   hook buffer -group format BufWritePre .* lsp-formatting-sync
+    hook buffer -group format BufWritePre .* lsp-formatting-sync
 }
 
 hook global WinSetOption filetype=lua %{

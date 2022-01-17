@@ -2,7 +2,7 @@
 Type=Application
 Name=shopping (qutebrowser profile)
 Icon=qutebrowser
-Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/shopping --qt-arg name shopping %u
+Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/shopping --qt-arg name shopping --desktop-file-name shopping %u
 Categories=['Network']
 Terminal=False
 StartupNotify=True

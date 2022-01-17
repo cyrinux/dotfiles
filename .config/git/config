@@ -28,4 +28,7 @@
 [include]
     path = ~/.config/git/common
 
+[sendemail]
+	annotate = yes
+
 # vim:ft=ini

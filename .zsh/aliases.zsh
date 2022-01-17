@@ -13,6 +13,7 @@ command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-c
 command -v trash-put   &> /dev/null    && alias rm='trash-put'
 command -v dog       &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
 command -v curlie       &> /dev/null    && alias curl='curlie'
+command -v plocate       &> /dev/null    && alias locate='plocate'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h

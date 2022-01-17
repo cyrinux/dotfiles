@@ -5,12 +5,10 @@ lock="${XDG_CACHE_HOME}/waybar-eyes.lock"
 eyes=""
 
 run() {
-    exec 100> ${lock} || exit 1
-    flock 100 || exit 1
     while true; do
         printf '{"text": "%s"}\n' "$(echo "$eyes" | xargs)"
         touch "$marker"
-        inotifywait -t 900 -q "$marker"
+        inotifywait -t 900 -e delete_self -q "$marker"
         [ -f "$marker" ] && eyes="$eyes " || eyes=""
     done
 }

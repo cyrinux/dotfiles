@@ -1,4 +1,5 @@
 colorscheme gruvbox
+# colorscheme solarized-light
 
 hook global WinCreate .* %{ try %{
     add-highlighter buffer/numbers  number-lines -hlcursor
@@ -7,11 +8,11 @@ hook global WinCreate .* %{ try %{
     add-highlighter buffer/todo     regex \b(TODO|FIXME|XXX|NOTE)\b 0:default+rb
 }}
 
-set-option global ui_options  terminal_assistant=off
-set-option global autoreload  yes
-set-option global tabstop     4
-set-option global indentwidth 4
-set-option global scrolloff   2,5
+set-option global ui_options   terminal_assistant=off
+set-option global autoreload   yes
+set-option global tabstop      4
+set-option global indentwidth  4
+set-option global scrolloff    2,5
 
 hook global ModuleLoaded smarttab %{
     set-option global softtabstop 4

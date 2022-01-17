@@ -2,7 +2,7 @@
 Type=Application
 Name=work (qutebrowser profile)
 Icon=qutebrowser
-Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/work --qt-arg name work %u
+Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/work --qt-arg name work --desktop-file-name work %u
 Categories=['Network']
 Terminal=False
 StartupNotify=True
