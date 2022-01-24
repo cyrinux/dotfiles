@@ -295,7 +295,7 @@ bindsym --to-code {
 
 	# move workspace to the right monitor
 	$win+Shift+Backspace move workspace to output right
-	$win+BackSpace move container to output right
+	$win+Backspace move container to output right
 
 	# toggle fullscreen mode for the focused container
 	$win+f fullscreen toggle, inhibit_idle fullscreen

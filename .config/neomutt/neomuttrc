@@ -38,7 +38,7 @@ set ts_enabled = yes
 set help = no
 
 set vfolder_format = "%6n(%6N) %f"
-set index_format = "%4C %Z%?X?&  ?%?g?%g& ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
+set index_format = "%4C %Z%?X?&  ?%?g?%-5g&     ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
 set attach_format = "%u%D%I %t%4n %T%.100f (%.100d)%> [%.15m/%.15M, %.6e%?C?, %C?, %s] "
 set pager_format = "%e/%E - %C/%m%?g? (%g)&?: %-40.40n   %s%* -- (%P)"
 set status_format = "%f: Total %?M?%M/?%m%?n?, New %n?%?d?, Del %d?%?F?, Flag %F?%?t?, Tag %t? %* -- (%P)"
@@ -198,7 +198,8 @@ virtual-mailboxes "Trash" "notmuch://?query=folder:Trash"
 virtual-mailboxes "Drafts" "notmuch://?query=folder:Drafts"
 virtual-mailboxes "Sent" "notmuch://?query=folder:Sent"
 virtual-mailboxes "Junk" "notmuch://?query=folder:Junk"
-virtual-mailboxes "Archive" "notmuch://?query=folder:Archive/2021"
+virtual-mailboxes "Archive 2021" "notmuch://?query=folder:Archive/2021"
+virtual-mailboxes "Archive" "notmuch://?query=folder:Archive/2022"
 virtual-mailboxes "GMAIL" "notmuch://?query=tag:gmail"
 
 set auto_tag = yes
@@ -220,7 +221,7 @@ tag-transforms "attachment" " " \
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"
 macro pager a "<modify-tags>!archive<enter><next-undeleted>"
 macro index A "<tag-thread><clear-flag>N<modify-tags>+archive<enter><untag-pattern>.<enter>"
-macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2021<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
+macro index P "<vfolder-from-query>folder:INBOX and tag:archive<enter><tag-pattern>.<enter><modify-tags>-inbox -unread -archive +archive-moved<enter><save-message>=Archive/2022<enter><enter><change-vfolder>INBOX<enter><enter>" "Archiving"
 
 #Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"

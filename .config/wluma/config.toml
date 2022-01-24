@@ -1,6 +1,4 @@
-[frame]
-processor = "vulkan"
-capturer = "wlroots"
+# capturer = "wlroots"
 # capturer = "none" # Does not capture screen contents, just uses ALS to predict ideal screen brightness
 
 # [als.iio]
@@ -20,21 +18,25 @@ thresholds = { 0 = "night", 15 = "dark", 30 = "dim", 45 = "normal", 60 = "bright
 [[output.backlight]]
 name = "eDP-1"
 path = "/sys/class/backlight/intel_backlight"
-# capturer = "wlroots"
-# minimum = 1
+capturer = "wlroots"
 
-##############################################################################
-# TODO everything below is an idea, not supported but definitely wanted!
-#
-[[output.ddcutil]]
-name = "D8VXF9CJ0EPB"
-# capturer = "wlroots"
-# minimum = 1
-
-# [[keyboard]]
-# path = "/sys/bus/platform/devices/dell-laptop/leds/dell::kbd_backlight"
-# capturer = "none"
-# minimum = 0
+[[keyboard]]
+name = "laptop-keyboard"
+path = "/sys/bus/platform/devices/dell-laptop/leds/dell::kbd_backlight"
 
 # [[keyboard]]
 # path = "/sys/bus/platform/devices/thinkpad_acpi/leds/tpacpi::kbd_backlight"
+
+# Home
+[[output.ddcutil]]
+name = "D8VXF9CJ0EPB"
+capturer = "wlroots"
+
+# Work
+[[output.ddcutil]]
+name = "HH77Y71IC5YS"
+capturer = "wlroots"
+
+[[output.ddcutil]]
+name = "9KFDW67326GB"
+capturer = "wlroots"

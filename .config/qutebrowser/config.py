@@ -48,7 +48,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36"
 
 
 # c.colors.webpage.darkmode.enabled = True
@@ -92,8 +92,8 @@ bindings = {
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
     "<Ctrl-Shift-D>": "tab-give",
-    ",m": "hint links spawn mpv '{hint-url}'",
-    ",M": "spawn mpv '{url}'",
+    ",m": "hint links spawn cglaunch mpv '{hint-url}'",
+    ",M": "spawn cglaunch mpv '{url}'",
     ",D": "download-open",
     ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
     ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
