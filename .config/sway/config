@@ -7,12 +7,17 @@ input type:keyboard {
     xkb_numlock enable
 }
 
+input type:mouse {
+    pointer_accel 0.3
+}
+
 input type:touchpad {
 	accel_profile adaptive
 	dwt enabled
 	drag enabled
 	tap enabled
 	natural_scroll enabled
+    pointer_accel 0.3
 }
 
 output * {
