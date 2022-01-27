@@ -61,6 +61,7 @@ WINDOW_ICONS = {
     "rapid-photo-downloader": "",
     "sandboxed-tor-browser": "",
     "signal": "",
+    "scli": "",
     "slack": "",
     "snappergui": "",
     "steam": "",

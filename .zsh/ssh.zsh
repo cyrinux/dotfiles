@@ -7,7 +7,6 @@ zstyle ':z4h:ssh:*' ssh-command command ssh -S none
 zstyle ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh-history/zsh_history.${(%):-%m}:$z4h_ssh_host)'
 
-[[ -e ~/.ssh/control-master ]] || zf_mkdir -p -m 700 ~/.ssh/control-master
 [[ -e $ZDOTDIR/.zsh-history ]] || zf_mkdir -p -m 700 $ZDOTDIR/.zsh-history
 
 () {
@@ -48,10 +47,3 @@ cssh() {
     tmux-cssh "$@"
 }
 compdef cssh=ssh
-
-kssh() {
-    kitty +kitten ssh "$@"
-}
-compdef kssh=ssh
-
-tmux-connect() { ssh "$@" "tmux attach || tmux new"; }

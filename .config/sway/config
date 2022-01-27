@@ -352,10 +352,6 @@ bindsym --to-code {
 
     Alt+space exec makoctl set-mode default
     Shift+Alt+space exec makoctl set-mode dnd
-
-    # Switch between programs.
-    $alt+Tab exec swayfloatingswitcher-client --next
-    $alt+Shift+Tab exec swayfloatingswitcher-client --previous
 }
 
 exec_always $kanshi

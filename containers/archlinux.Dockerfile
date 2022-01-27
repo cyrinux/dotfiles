@@ -54,13 +54,13 @@ RUN echo "cyril ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # gpg keys
 RUN pacman-key --init && curl -s https://levis.name/pgp_keys.asc | pacman-key -a - && \
-    pacman-key --lsign-key "0x2653E033C3C07A2C"
+    pacman-key --lsign-key "0x6DB88737C11F5A48"
 
 # install blackarch gpg keys
 RUN curl -sL https://blackarch.org/strap.sh | bash
 
 # pacman config
-COPY docker/archlinux/pacman.conf /etc/pacman.conf
+COPY archlinux/pacman.conf /etc/pacman.conf
 RUN pacman -Sy
 
 # User run
