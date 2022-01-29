@@ -244,16 +244,16 @@
 		"format": " {temperatureC}°C"
 	},
     "cpu": {
-        "format": "<span foreground='#928374'></span> {usage}% {load}",
+        "format": "<span foreground='#928374'></span> {usage}%",
         "states": {
-            "warning": 70,
-            "critical": 90
+            "warning": 90,
+            "critical": 100
         }
     },
     "memory": {
         "format": "<span foreground='#928374'></span> {}%",
         "states": {
-            "warning": 70,
+            "warning": 80,
             "critical": 90
         }
     },
@@ -279,8 +279,9 @@
     },
     "network": {
         "interval": 2,
+        "format": "{ifname}",
         "format-wifi": "<span foreground='#928374'></span> {signalStrength}%",
-        "format-ethernet": "<span foreground='#928374'></span> {ifname}",
+        "format-ethernet": "<span foreground='#928374'></span>",
         "format-linked": "<span foreground='#928374'></span> {ifname}",
         "format-disconnected": " <span foreground='#928374'></span> ",
         "tooltip-format-wifi": "{ifname}: {essid} ({signalStrength}%)\n{ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",

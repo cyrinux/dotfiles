@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.17.0
+pkgver=2.18.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -76,7 +76,6 @@ depends=(
     'atool'
     'aurpublish'
     'aurutils'
-    'autotiling'
     'awless'
     'aws-cli-v2-bin'
     'bandwhich'
@@ -202,7 +201,6 @@ depends=(
     'gvfs-nfs'
     'gvfs-smb'
     'hamlib'
-    'hardened_malloc'
     'hddtemp'
     'hey'
     'hostsctl'
@@ -348,7 +346,6 @@ depends=(
     'pdfjs'
     'perl-file-mimeinfo'
     'perl-image-exiftool'
-    'piavpn-bin'
     'pigz'
     'pipewire'
     'pixz'
@@ -639,7 +636,5 @@ depends=(
     'ventoy-bin'
     'words'
     'easyeffects'
-    'docker-machine-driver-kvm2'
-    'minikube'
     'webwormhole-git'
 )

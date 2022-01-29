@@ -1,0 +1,7 @@
+# Site-specific additions and overrides for 'usr.sbin.dnsmasq'
+@{run}/containers/cni/dnsname/*/dnsmasq.conf r,
+@{run}/containers/cni/dnsname/*/addnhosts r,
+@{run}/containers/cni/dnsname/*/pidfile rw,
+/run/user/1000/containers/cni/dnsname/kind/dnsmasq.conf r,
+/run/user/1000/containers/cni/dnsname/kind/addnhosts r,
+/run/user/1000/containers/cni/dnsname/kind/pidfile rw,
