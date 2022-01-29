@@ -6,8 +6,8 @@ get_status() {
         icon="<span foreground='#928374'></span>"
         tooltip='Infra got a problem!'
         class=down
+        printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
     fi
-    printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
 nm-online -q -t 60 && get_status

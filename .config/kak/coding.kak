@@ -2,7 +2,7 @@ source /usr/share/kak-lsp/rc/lsp.kak
 lsp-enable
 lsp-auto-hover-insert-mode-enable
 lsp-auto-signature-help-enable
-lsp-auto-hover-enable docsclient
+# lsp-auto-hover-enable docsclient
 
 set-option global lsp_auto_highlight_references true
 

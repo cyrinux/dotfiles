@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
+exec 2> >(while read -r line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 MY_GPG_KEY_ID="0x6DB88737C11F5A48"
 
@@ -141,7 +141,9 @@ link ".config/swappy"
 link ".config/davmail"
 link ".config/sway"
 link ".config/swaylock"
+link ".config/swayr"
 link ".config/systemd/user/apparmor-notify.service"
+link ".config/systemd/user/swayrd.service"
 link ".config/systemd/user/backup-packages.service"
 link ".config/systemd/user/backup-packages.timer"
 link ".config/systemd/user/bugwarrior-pull.service"
@@ -164,6 +166,7 @@ link ".config/systemd/user/restic-check.timer"
 link ".config/systemd/user/restic.service"
 link ".config/systemd/user/restic.timer"
 link ".config/systemd/user/screen-off.service"
+link ".config/systemd/user/wluma-off.service"
 link ".config/systemd/user/socksproxy.service"
 link ".config/systemd/user/solaar.service"
 link ".config/systemd/user/sway-audio-idle-inhibit.service"
@@ -183,8 +186,8 @@ link ".config/systemd/user/urlwatch.timer"
 link ".config/systemd/user/waybar-updates.service"
 link ".config/systemd/user/waybar-updates.timer"
 link ".config/systemd/user/wlsunset.service"
-link ".config/systemd/user/wluma-als-emulator.service"
 link ".config/systemd/user/work-unseal.service"
+link ".config/systemd/user/signal-desktop.service"
 link ".config/tig"
 link ".config/tmux"
 link ".config/transmission/settings.json"
@@ -269,13 +272,14 @@ else
     systemctl_enable_start "waybar-updates.timer"
     systemctl_enable_start "wl-clipboard-manager.service"
     systemctl_enable_start "wlsunset.service"
-    systemctl_enable_start "wluma-als-emulator.service"
     systemctl_enable_start "wluma.service"
     systemctl_enable_start "work-unseal.service"
     systemctl_enable_start "yubikey-touch-detector.socket"
     systemctl_enable_start "systemd-lock-handler.service"
     systemctl_enable_start "screen-off.service"
+    systemctl_enable_start "wluma-off.service"
     systemctl_enable_start "swayidle.service"
+    systemctl_enable_start "signal-desktop.service"
     systemctl_enable_start "poweralertd.service"
 
     if [ ! -d "$HOME/.mail" ]; then
@@ -302,7 +306,7 @@ echo "Configuring GPG key"
 if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
     echo "Importing my public PGP key"
     curl -s https://levis.name/pgp_keys.asc | gpg --import
-    echo "5\ny\n" | gpg --command-fd 0 --no-tty --batch --edit-key "$MY_GPG_KEY_ID" trust
+    printf "5\ny\n" | gpg --command-fd 0 --no-tty --batch --edit-key "$MY_GPG_KEY_ID" trust
 fi
 find "$HOME/.gnupg" -type f -not -path "*#*" -exec chmod 600 {} \;
 find "$HOME/.gnupg" -type d -exec chmod 700 {} \;
@@ -330,7 +334,7 @@ else
     if [[ ! -e "$HOME/.config/Yubico/u2f_keys" ]]; then
         echo "Configuring YubiKey for sudo access (touch it now)"
         mkdir -p "$HOME/.config/Yubico"
-        pamu2fcfg -u$USER > "$HOME/.config/Yubico/u2f_keys"
+        pamu2fcfg -u"$USER" > "$HOME/.config/Yubico/u2f_keys"
     fi
 fi
 

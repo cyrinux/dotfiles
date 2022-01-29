@@ -1,0 +1,13 @@
+[Unit]
+PartOf=graphical-session.target
+After=lock.target
+StartLimitIntervalSec=400
+StartLimitBurst=0
+
+[Service]
+Type=oneshot
+ExecStopPost=/usr/bin/systemctl --user start wluma.service
+ExecStart=/usr/bin/systemctl --user stop wluma.service
+
+[Install]
+WantedBy=lock.target

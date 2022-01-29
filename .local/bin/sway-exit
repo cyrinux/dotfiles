@@ -1,9 +1,6 @@
 #!/bin/sh
 
-reset_kbd() {
-    kbd="$(swaymsg -r -t get_inputs | jq '.[] | select(.name | contains("keyboard")) | .identifier')"
-    swaymsg input "$kbd" xkb_switch_layout 0
-}
+set -eu
 
 stop_vpn() {
     nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
@@ -20,7 +17,6 @@ stop_wlan() {
 before_lock() {
     playerctl -a pause > /dev/null 2>&1
     gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
-    # reset_kbd
     fusermount -u ~/Vault > /dev/null 2>&1
 }
 
@@ -31,11 +27,11 @@ case "$1" in
         ;;
     lock)
         before_lock
-        exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
-        flock -n 4 || {
-            echo "ERROR: flock() failed." >&2
-            exit 1
-        }
+        # exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
+        # flock -n 4 || {
+        #     echo "ERROR: flock() failed." >&2
+        #     exit 1
+        # }
         loginctl lock-session
         waybar-eyes done
         ;;

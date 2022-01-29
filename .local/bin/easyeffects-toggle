@@ -5,8 +5,8 @@ set -euo pipefail
 action="${1:-'status'}"
 
 toggle() {
-    state=$(easyeffects -b 3 2>&1)
-    if [ "$state" -eq "1" ]; then
+    state="$(easyeffects -b 3 2>&1)"
+    if [ "$state" == "1" ]; then
         easyeffects -b 2
     else
         easyeffects -b 1
@@ -15,8 +15,8 @@ toggle() {
 
 status() {
     while true; do
-        state=$(easyeffects -b 3 2>&1)
-        if [ "$state" -eq "1" ]; then
+        state="$(easyeffects -b 3 2>&1)"
+        if [ "$state" == "1" ]; then
             icon="🔉"
             class=""
             tooltip="enabled"

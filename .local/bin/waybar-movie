@@ -12,12 +12,14 @@ show() {
 
 on() {
     touch "$marker"
+    systemctl --user stop screen-off
     systemctl --user stop wluma
     light -S 100
     pkill -RTMIN+4 -x waybar
 }
 
 off() {
+    systemctl --user start screen-off
     systemctl --user start wluma
     rm -f "$marker"
     pkill -RTMIN+4 -x waybar

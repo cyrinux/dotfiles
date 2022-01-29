@@ -5,7 +5,7 @@ set -e
 KEY="$XDG_CACHE_HOME/tarsnap.key"
 while true; do
     [ -f ~/Vault/.lock ] && break
-    echo "waiting for Vault"
+    # echo "waiting for Vault"
     sleep 1
 done
 

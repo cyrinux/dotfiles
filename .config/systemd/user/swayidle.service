@@ -7,8 +7,8 @@ After=graphical-session.target
 
 [Service]
 ExecStart=/usr/bin/swayidle \
-  timeout 1800 'systemctl --user stop wluma; swaymsg "output * dpms off"' \
-  resume 'swaymsg "output * dpms on; systemctl --user start wluma"'
+  timeout 1800 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on"'
 
 # Note: Because swayidle runs as a service, systemd won't identify it as part
 # of the user session. It's unconfirmed if lock/unlock are triggered correctly.

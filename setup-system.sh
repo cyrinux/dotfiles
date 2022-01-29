@@ -55,18 +55,18 @@ copy() {
 
 systemctl_enable() {
     if in_ci; then
-        echo "systemctl enable "$1" (noop)"
+        echo "systemctl enable $1 (noop)"
     else
-        echo "systemctl enable "$1""
+        echo "systemctl enable $1"
         systemctl enable "$1"
     fi
 }
 
 systemctl_enable_start() {
     if in_ci; then
-        echo "systemctl enable --now "$1" (noop)"
+        echo "systemctl enable --now $1 (noop)"
     else
-        echo "systemctl enable --now "$1""
+        echo "systemctl enable --now $1"
         systemctl daemon-reload
         systemctl enable "$1"
         systemctl start "$1"
@@ -75,9 +75,9 @@ systemctl_enable_start() {
 
 systemctl_disable_stop() {
     if in_ci; then
-        echo "systemctl disable --now "$1" (noop)"
+        echo "systemctl disable --now $1 (noop)"
     else
-        echo "systemctl disable --now "$1""
+        echo "systemctl disable --now $1"
         systemctl disable "$1"
         systemctl stop "$1"
     fi
@@ -213,8 +213,8 @@ in_ci || timedatectl set-ntp true
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
-echo "Fixing NetworkManager trust (nmtrust), config conflict with PIA"
-rm -f /etc/NetworkManager/conf.d/wgpia.conf
+# echo "Fixing NetworkManager trust (nmtrust), config conflict with PIA"
+# rm -f /etc/NetworkManager/conf.d/wgpia.conf
 
 echo "Fixing local AUR repository"
 install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp

@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.18.0
+pkgver=2.19.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -12,12 +12,12 @@ source=('30-font-aliases.conf'
     'InputMonoNarrow-BoldItalic.ttf'
     'InputMonoNarrow-Italic.ttf'
     'InputMonoNarrow-Regular.ttf')
-sha256sums=('ef60468018a9791442a15394723c0436477ee64064c21f8ee9dc0d078eed4834'
-    '4bdf58ee96641954c9cf65dd5f5f3202134a672b80a0d1380de682d7c09db9f2'
-    'dda57db7007f47185cf9be4e39184f73fecf052c4e49179cabab6ab5169cc501'
-    'c0ad5882ff0b90e2d319ba98c96b95dac2fde03b86e92c92277c4ea424e86fa9'
-    'f18d42ecce8d549c3ff4022fed2cc96ab9311fea39f00675fb67442d47a774df'
-    'a910ba1e7a1489edd7f89e49af0237aae5a918e0afd7de34bb7f115a7f9ce2e6')
+sha256sums=('ef60468018a9791442a15394723c0436477ee64064c21f8ee9dc0d078eed4834' # pragma: allowlist secret
+    '4bdf58ee96641954c9cf65dd5f5f3202134a672b80a0d1380de682d7c09db9f2'         # pragma: allowlist secret
+    'dda57db7007f47185cf9be4e39184f73fecf052c4e49179cabab6ab5169cc501'         # pragma: allowlist secret
+    'c0ad5882ff0b90e2d319ba98c96b95dac2fde03b86e92c92277c4ea424e86fa9'         # pragma: allowlist secret
+    'f18d42ecce8d549c3ff4022fed2cc96ab9311fea39f00675fb67442d47a774df'         # pragma: allowlist secret
+    'a910ba1e7a1489edd7f89e49af0237aae5a918e0afd7de34bb7f115a7f9ce2e6')        # pragma: allowlist secret
 
 package() {
     # https://input.fontbureau.com/download/?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Regular&italic=InputMonoNarrow-Italic&bold=InputMonoNarrow-Bold&boldItalic=InputMonoNarrow-BoldItalic&a=0&g=0&i=serifs_round&l=serifs_round&zero=slash&asterisk=height&braces=0&preset=default&line-height=1.1&email=
@@ -77,6 +77,7 @@ depends=(
     'aurpublish'
     'aurutils'
     'awless'
+    'swayr'
     'aws-cli-v2-bin'
     'bandwhich'
     'bash-completion'

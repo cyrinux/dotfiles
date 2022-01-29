@@ -1,312 +1,307 @@
-[{
+[
+  {
     "layer": "top",
-    "modules-left": [
-        "sway/mode"
-    ]
-},
-{
+    "modules-left": ["sway/mode"]
+  },
+  {
     "layer": "top",
     "output": "!eDP-1",
-    "modules-left": [
-        "sway/workspaces",
-    ],
-    "modules-center": [
-        "custom/eyes",
-        "pulseaudio",
-    ],
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["custom/eyes", "pulseaudio"],
     "modules-right": [
-        "custom/yubikey",
-        "custom/prod-status",
-        "custom/dnd",
-        "clock"
+      "custom/yubikey",
+      "custom/prod-status",
+      "custom/dnd",
+      "clock"
     ],
     "custom/eyes": {
-        "exec": "waybar-eyes",
-        "return-type": "json",
-        "on-click": "waybar-eyes done"
+      "exec": "waybar-eyes",
+      "return-type": "json",
+      "on-click": "waybar-eyes done"
     },
     "custom/prod-status": {
-        "exec": "waybar-livestatus",
-        "return-type": "json",
-	    "markup": true,
-        "on-click": "pkill -SIGUSR1 -x waybar-livestat",
+      "exec": "waybar-livestatus",
+      "return-type": "json",
+      "markup": true,
+      "on-click": "pkill -SIGUSR1 -x waybar-livestat"
     },
     "custom/dnd": {
-        "exec": "waybar-dnd",
-        "return-type": "json",
-        "signal": 2,
-        "interval": "once",
-        "on-click": "waybar-dnd toggle"
+      "exec": "waybar-dnd",
+      "return-type": "json",
+      "signal": 2,
+      "interval": "once",
+      "on-click": "waybar-dnd toggle"
     },
     "clock": {
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "exec gsimplecal",
-        "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
+      "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+      "on-click": "exec gsimplecal",
+      "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
     "pulseaudio": {
-        "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
-        "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
-        "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
-        "format-muted": "<span foreground='#928374'></span>   {format_source}",
-        "format-source": "<span foreground='#928374'></span> {volume}%",
-        "format-source-muted": "<span foreground='#928374'></span>",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
+      "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+      "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+      "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
+      "format-muted": "<span foreground='#928374'></span>   {format_source}",
+      "format-source": "<span foreground='#928374'></span> {volume}%",
+      "format-source-muted": "<span foreground='#928374'></span>",
+      "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", "", ""]
+      }
     },
     "custom/yubikey": {
-        "exec": "waybar-yubikey",
-        "return-type": "json"
-    },
-},
-{
+      "exec": "waybar-yubikey",
+      "return-type": "json"
+    }
+  },
+  {
     "layer": "top",
     "output": "eDP-1",
-    "modules-left": [
-        "sway/workspaces"
-    ],
+    "modules-left": ["sway/workspaces"],
     "modules-right": [
-        "custom/mediaplayer",
-        "custom/prod-status",
-        "custom/infra-status",
-        "custom/progress",
-        "custom/fwupd",
-        "custom/netatmo",
-        "custom/usbguard",
-        "custom/eyes",
-        "custom/decrypted",
-        "custom/secureboot",
-        "custom/systemd",
-        "custom/updates",
-        "custom/calendar",
-        "custom/mail",
-        "custom/recording",
-        "custom/cast",
-        "pulseaudio",
-        "network",
-        "custom/vpn#work",
-        "cpu",
-        "memory",
-        "custom/movie",
-        "backlight",
-        "custom/dnd",
-        "idle_inhibitor",
-        "sway/language",
-        "battery",
-        "clock",
-        "tray",
-        "custom/yubikey",
+      "custom/mediaplayer",
+      "custom/prod-status",
+      "custom/infra-status",
+      "custom/progress",
+      "custom/fwupd",
+      "custom/netatmo",
+      "custom/usbguard",
+      "custom/eyes",
+      "custom/decrypted",
+      "custom/secureboot",
+      "custom/systemd",
+      "custom/updates",
+      "custom/calendar",
+      "custom/mail",
+      "custom/recording",
+      "custom/cast",
+      "pulseaudio",
+      "network",
+      "custom/vpn#work",
+      "cpu",
+      "memory",
+      "custom/movie",
+      "backlight",
+      "custom/dnd",
+      "idle_inhibitor",
+      "sway/language",
+      "battery",
+      "clock",
+      "tray",
+      "custom/yubikey"
     ],
     "sway/language": {
-        "format": "<span foreground='#928374'></span> {}",
-        "min-length": 10
+      "format": "<span foreground='#928374'></span> {}",
+      "min-length": 10
     },
     "custom/mediaplayer": {
-        "exec": "waybar-mediaplayer",
-        "return-type": "json",
-        "interval": 5
+      "exec": "waybar-mediaplayer",
+      "return-type": "json",
+      "interval": 5
     },
     "custom/calendar": {
-        "exec": "waybar-calendar",
-        "return-type": "json",
-        "interval": 60
+      "exec": "waybar-calendar",
+      "return-type": "json",
+      "interval": 60
     },
     "custom/netatmo": {
-        "exec": "waybar-netatmo",
-        "return-type": "json",
-        "interval": 60
+      "exec": "waybar-netatmo",
+      "return-type": "json",
+      "interval": 60
     },
     "custom/fwupd": {
-        "exec": "waybar-fwupd",
-        "return-type": "json",
-        "interval": 3600
+      "exec": "waybar-fwupd",
+      "return-type": "json",
+      "interval": 3600
     },
     "custom/progress": {
-        "exec": "waybar-progress",
-        "return-type": "json",
-        "interval": 2
+      "exec": "waybar-progress",
+      "return-type": "json",
+      "interval": 2
     },
     "custom/usbguard": {
-        "exec": "waybar-usbguard",
-        "return-type": "json",
-        "on-click": "waybar-usbguard allow",
-        "on-click-right": "waybar-usbguard reject"
+      "exec": "waybar-usbguard",
+      "return-type": "json",
+      "on-click": "waybar-usbguard allow",
+      "on-click-right": "waybar-usbguard reject"
     },
     "custom/eyes": {
-        "exec": "waybar-eyes",
-        "return-type": "json",
-        "on-click": "waybar-eyes done"
+      "exec": "waybar-eyes",
+      "return-type": "json",
+      "on-click": "waybar-eyes done"
     },
     "idle_inhibitor": {
-		"format": "{icon}",
-		"format-icons": {
-			"activated": "\uf06e",
-			"deactivated": "\uf070"
-		}
-	},
+      "format": "{icon}",
+      "format-icons": {
+        "activated": "\uf06e",
+        "deactivated": "\uf070"
+      }
+    },
     "custom/yubikey": {
-        "exec": "waybar-yubikey",
-        "return-type": "json"
+      "exec": "waybar-yubikey",
+      "return-type": "json"
     },
     "custom/decrypted": {
-        "exec": "waybar-decrypted",
-        "return-type": "json"
+      "exec": "waybar-decrypted",
+      "return-type": "json"
     },
     "custom/systemd": {
-        "exec": "waybar-systemd",
-        "return-type": "json",
-        "interval": 10
+      "exec": "waybar-systemd",
+      "return-type": "json",
+      "interval": 10
     },
     "custom/updates": {
-        "exec": "waybar-updates show",
-        "return-type": "json",
-        "signal": 1,
-        "on-click-right": "waybar-updates refresh",
-        "interval": "once"
+      "exec": "waybar-updates show",
+      "return-type": "json",
+      "signal": 1,
+      "on-click-right": "waybar-updates refresh",
+      "interval": "once"
     },
     "custom/mail": {
-        "exec": "waybar-mail",
-        "return-type": "json"
+      "exec": "waybar-mail",
+      "return-type": "json"
     },
     "custom/vpn#work": {
-        "exec": "waybar-vpn-work",
-        "return-type": "json",
-        "on-click": "nmcli con up VPN-Prod",
-        "on-click-right": "nmcli con down VPN-Prod"
+      "exec": "waybar-vpn-work",
+      "return-type": "json",
+      "on-click": "nmcli con up VPN-Prod",
+      "on-click-right": "nmcli con down VPN-Prod"
     },
     "custom/dnd": {
-        "exec": "waybar-dnd",
-        "return-type": "json",
-        "signal": 2,
-        "interval": "once",
-        "on-click": "waybar-dnd toggle"
+      "exec": "waybar-dnd",
+      "return-type": "json",
+      "signal": 2,
+      "interval": "once",
+      "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
-        "exec": "waybar-livestatus",
-        "return-type": "json",
-	    "markup": true,
-        "on-click": "pkill -SIGUSR1 -x waybar-livestat",
+      "exec": "waybar-livestatus",
+      "return-type": "json",
+      "markup": true,
+      "on-click": "pkill -SIGUSR1 -x waybar-livestat"
     },
     "custom/infra-status": {
-        "exec": "waybar-infra-status",
-        "interval": 60,
-        "return-type": "json",
-        "signal": 9,
-        "on-click-right": "pkill -RTMIN+9 -x waybar",
-        "on-click": "browser https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json"
+      "exec": "waybar-infra-status",
+      "interval": 60,
+      "return-type": "json",
+      "signal": 9,
+      "on-click-right": "pkill -RTMIN+9 -x waybar",
+      "on-click": "browser https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json"
     },
     "custom/recording": {
-        "exec": "waybar-recording",
-        "return-type": "json",
-        "signal": 3,
-        "interval": "once",
-        "on-click-right": "sway-cast lq",
-        "on-click": "sway-cast hq",
-        "on-click-middle": "pkill -f wf-recorder"
+      "exec": "waybar-recording",
+      "return-type": "json",
+      "signal": 3,
+      "interval": "once",
+      "on-click-right": "sway-cast lq",
+      "on-click": "sway-cast hq",
+      "on-click-middle": "pkill -f wf-recorder"
     },
     "custom/cast": {
-        "exec": "waybar-cast",
-        "return-type": "json",
-        "signal": 3,
-        "interval": "once",
-        "on-click-right": "sway-cast lq",
-        "on-click": "sway-cast hq",
-        "on-click-middle": "pkill -f gst-launch-1.0"
+      "exec": "waybar-cast",
+      "return-type": "json",
+      "signal": 3,
+      "interval": "once",
+      "on-click-right": "sway-cast lq",
+      "on-click": "sway-cast hq",
+      "on-click-middle": "pkill -f gst-launch-1.0"
     },
     "custom/movie": {
-        "exec": "waybar-movie show",
-        "return-type": "json",
-        "signal": 4,
-        "interval": "once",
-        "on-click": "waybar-movie toggle"
+      "exec": "waybar-movie show",
+      "return-type": "json",
+      "signal": 4,
+      "interval": "once",
+      "on-click": "waybar-movie toggle"
     },
     "clock": {
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "on-click": "exec gsimplecal",
-        "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
+      "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+      "on-click": "exec gsimplecal",
+      "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
     "temperature#laptop": {
-		"hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
-		"critical-threshold": 80,
-		"format-critical": " {temperatureC}°C",
-		"format": " {temperatureC}°C"
-	},
+      "hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
+      "critical-threshold": 80,
+      "format-critical": " {temperatureC}°C",
+      "format": " {temperatureC}°C"
+    },
     "temperature#pc": {
-		"thermal-zone": 2,
-		"critical-threshold": 80,
-		"format-critical": " {temperatureC}°C",
-		"format": " {temperatureC}°C"
-	},
+      "thermal-zone": 2,
+      "critical-threshold": 80,
+      "format-critical": " {temperatureC}°C",
+      "format": " {temperatureC}°C"
+    },
     "cpu": {
-        "format": "<span foreground='#928374'></span> {usage}%",
-        "states": {
-            "warning": 90,
-            "critical": 100
-        }
+      "format": "<span foreground='#928374'></span> {usage}%",
+      "states": {
+        "warning": 90,
+        "critical": 100
+      }
     },
     "memory": {
-        "format": "<span foreground='#928374'></span> {}%",
-        "states": {
-            "warning": 80,
-            "critical": 90
-        }
+      "format": "<span foreground='#928374'></span> {}%",
+      "states": {
+        "warning": 80,
+        "critical": 90
+      }
     },
     "custom/secureboot": {
-        "exec": "waybar-secureboot",
-        "return-type": "json",
-        "interval": "once"
+      "exec": "waybar-secureboot",
+      "return-type": "json",
+      "interval": "once"
     },
     "backlight": {
-        "format": "<span foreground='#928374'>{icon}</span> {percent}%",
-        "format-icons": [""]
+      "format": "<span foreground='#928374'>{icon}</span> {percent}%",
+      "format-icons": ["",""]
     },
     "battery": {
-        "bat": "BAT0",
-        "design-capacity": false,
-        "states": {
-            "warning": 30,
-            "critical": 15
-        },
-        "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
-        "format-charging": "<span foreground='#928374'></span>{capacity}%",
-        "format-icons": ["", "", "", "", ""]
+      "bat": "BAT0",
+      "design-capacity": false,
+      "states": {
+        "full": 86,
+        "good": 80,
+        "warning": 30,
+        "critical": 15
+      },
+      "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
+      "format-charging": "<span foreground='#928374'></span>{capacity}%",
+      "format-full": "", // An empty format will hide the module
+      "format-icons": ["", "", "", "", ""]
     },
     "network": {
-        "interval": 2,
-        "format": "{ifname}",
-        "format-wifi": "<span foreground='#928374'></span> {signalStrength}%",
-        "format-ethernet": "<span foreground='#928374'></span>",
-        "format-linked": "<span foreground='#928374'></span> {ifname}",
-        "format-disconnected": " <span foreground='#928374'></span> ",
-        "tooltip-format-wifi": "{ifname}: {essid} ({signalStrength}%)\n{ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
-        "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
-        "tooltip-format-disconnect": "",
+      "interval": 2,
+      "format": "{ifname}",
+      "format-wifi": "<span foreground='#928374'></span> {signalStrength}%",
+      "format-ethernet": "<span foreground='#928374'></span>",
+      "format-linked": "<span foreground='#928374'></span> {ifname}",
+      "format-disconnected": " <span foreground='#928374'></span> ",
+      "tooltip-format-wifi": "{ifname}: {essid} ({signalStrength}%)\n{ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
+      "tooltip-format": "{ifname}: {ipaddr}/{cidr}\n {bandwidthDownBits}\n {bandwidthUpBits}",
+      "tooltip-format-disconnect": ""
     },
     "pulseaudio": {
-        "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
-        "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
-        "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
-        "format-muted": "<span foreground='#928374'></span>   {format_source}",
-        "format-source": "<span foreground='#928374'></span> {volume}%",
-        "format-source-muted": "<span foreground='#928374'></span>",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "exec easyeffects-toggle toggle",
+      "format": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+      "format-bluetooth": "<span foreground='#928374'>{icon}</span> {volume}%   {format_source}",
+      "format-bluetooth-muted": "<span foreground='#928374'> {icon}</span>   {format_source}",
+      "format-muted": "<span foreground='#928374'></span>   {format_source}",
+      "format-source": "<span foreground='#928374'></span> {volume}%",
+      "format-source-muted": "<span foreground='#928374'></span>",
+      "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", "", ""]
+      },
+      "on-click": "exec easyeffects-toggle toggle"
     }
-}]
-
+  }
+]
 
 // vi: ft=json

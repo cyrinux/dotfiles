@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
-class=$(playerctl metadata --player=MellowPlayer --format '{{lc(status)}}')
+class=$(playerctl metadata --player=MellowPlayer --format '{{lc(status)}}' 2> /dev/null)
 icon=""
 
 if [[ $class == "playing" ]] || [[ $class == "paused" ]]; then
-  info=$(playerctl metadata --player=MellowPlayer --format '{{artist}} - {{title}}')
+  info=$(playerctl metadata --player=MellowPlayer --format '{{artist}} - {{title}}' 2> /dev/null)
 
   # If the title is too long, cut it and add ellipsis
   if [[ ${#info} -ge 40 ]]; then
