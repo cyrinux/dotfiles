@@ -1,9 +1,7 @@
 #!/bin/bash
 set -e
 
-exec 2> >(while read line; do echo -e "\e[01;31m$line\e[0m"; done)
-
-MY_GPG_KEY_ID="0x6DB88737C11F5A48"
+exec 2> >(while read -r line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 script_name="$(basename "$0")"
 dotfiles_dir="$(
@@ -161,6 +159,7 @@ echo "================================="
 # systemctl_disable_stop "ModemManager.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
+systemctl_enable_start "nfs-server.service"
 systemctl_enable_start "backup-repo@pkgbuild.timer"
 systemctl_enable_start "bluetooth.service"
 systemctl_enable_start "btrfs-scrub@home.timer"

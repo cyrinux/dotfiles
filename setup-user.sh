@@ -267,6 +267,7 @@ else
     systemctl_enable_start "sway-inactive-window-transparency.service"
     systemctl_enable_start "systembus-notify.service"
     systemctl_enable_start "systemd-tmpfiles-setup.service"
+    systemctl_enable_start "swayrd.service"
     systemctl_enable_start "udiskie.service"
     systemctl_enable_start "waybar.service"
     systemctl_enable_start "waybar-updates.timer"

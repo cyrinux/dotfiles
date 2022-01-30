@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.20.3
+pkgver=2.20.7
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -67,7 +67,6 @@ depends=(
     'ansible'
     'ansible-lint'
     'apparmor'
-    'arch-audit'
     'archivemount'
     'archlinux-repro'
     'arch-secure-boot'
@@ -301,8 +300,8 @@ depends=(
     'mupdf-gl'
     'mupdf-tools'
     'mutt-ics'
-    'ncdu'
     'neomutt'
+    'gdu'
     'net-tools'
     'networkmanager'
     'network-manager-applet'
@@ -658,4 +657,8 @@ depends=(
     'yt-dlp'
     'minikube'
     'zk'
+    'goland'
+    'browserpass-firefox'
+    'cidrmerge'
+    'java-runtime'
 )

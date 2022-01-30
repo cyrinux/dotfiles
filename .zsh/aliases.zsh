@@ -1,19 +1,20 @@
 #!/usr/bin/env zsh
 
-command -v bat       &> /dev/null    && alias c='bat'                                        || alias c='cat'
-command -v lsd       &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
-command -v lsd       &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
-command -v lsd       &> /dev/null    && alias lm='ll --timesort'                                  || alias lm='ll -r --sort=time'
-command -v lsd       &> /dev/null    && alias ls='lsd'     || alias ls='ls --color=auto --group-directories-first -h'
-command -v fd        &> /dev/null    && alias fd='fd --hidden --no-ignore --follow'                || alias fd='find . -name'
-command -v git       &> /dev/null    && alias diff='git diff --no-index'
-command -v htop      &> /dev/null    && alias top='htop'
-command -v dfrs      &> /dev/null    && alias df='dfrs'
-command -v rg        &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
-command -v trash-put   &> /dev/null    && alias rm='trash-put'
-command -v dog       &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
-command -v curlie       &> /dev/null    && alias curl='curlie'
+command -v bat           &> /dev/null    && alias c='bat'                                              || alias c='cat'
+command -v lsd           &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
+command -v lsd           &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
+command -v lsd           &> /dev/null    && alias lm='ll --timesort'                                   || alias lm='ll -r --sort=time'
+command -v lsd           &> /dev/null    && alias ls='lsd'                                             || alias ls='ls --color=auto --group-directories-first -h'
+command -v fd            &> /dev/null    && alias fd='fd --hidden --no-ignore --follow'                || alias fd='find . -name'
+command -v git           &> /dev/null    && alias diff='git diff --no-index'
+command -v htop          &> /dev/null    && alias top='htop'
+command -v dfrs          &> /dev/null    && alias df='dfrs'
+command -v rg            &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
+command -v trash-put     &> /dev/null    && alias rm='trash-put'
+command -v dog           &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
+command -v curlie        &> /dev/null    && alias curl='curlie'
 command -v plocate       &> /dev/null    && alias locate='plocate'
+command -v gdu           &> /dev/null    && alias ncdu='gdu'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h

@@ -29,9 +29,6 @@
 [submodule ".config/kak/auto-pairs.kak"]
 	path = .config/kak/auto-pairs.kak
 	url = https://github.com/alexherbo2/auto-pairs.kak.git
-[submodule ".config/mpv/scripts/mpv-reload"]
-	path = .config/mpv/scripts/mpv-reload
-	url = https://github.com/4e6/mpv-reload
 [submodule ".config/easyeffects/output"]
 	path = .config/easyeffects/output
 	url = https://github.com/Digitalone1/EasyEffects-Presets.git

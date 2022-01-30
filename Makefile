@@ -75,9 +75,9 @@ install-metapackage:
 	sudo pacman -Rs --noconfirm -dd iptables
 	yes Y | sudo pacman -Sy --noconfirm cyrinux
 
-.PHONY: build-docker
-build-docker:
-	docker build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
+.PHONY: build-podman
+build-podman:
+	podman build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
 
 .PHONY: ci
 # ci: install-metapackage setup-system setup-user
@@ -85,8 +85,8 @@ ci: install-metapackage
 
 
 .PHONY: test
-test: build-docker
-	docker run --rm \
+test: build-podman
+	podman run --rm \
 	    --tmpfs /tmp \
 	    --tmpfs /run \
 	    -v "/sys/fs/cgroup:/sys/fs/cgroup:ro" \
