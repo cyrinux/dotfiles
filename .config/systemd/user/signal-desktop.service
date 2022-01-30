@@ -4,7 +4,7 @@ PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/signal-destkop --start-in-tray
+ExecStart=/usr/local/bin/signal-desktop --start-in-tray
 
 [Install]
 WantedBy=graphical-session.target

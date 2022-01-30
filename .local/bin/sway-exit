@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -u
 
 stop_vpn() {
     nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
@@ -27,11 +27,11 @@ case "$1" in
         ;;
     lock)
         before_lock
-        # exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
-        # flock -n 4 || {
-        #     echo "ERROR: flock() failed." >&2
-        #     exit 1
-        # }
+        exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
+        flock -n 4 || {
+            echo "ERROR: flock() failed." >&2
+            exit 1
+        }
         loginctl lock-session
         waybar-eyes done
         ;;

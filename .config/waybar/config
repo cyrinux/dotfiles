@@ -88,7 +88,7 @@
       "custom/movie",
       "backlight",
       "custom/dnd",
-      "idle_inhibitor",
+//      "idle_inhibitor",
       "sway/language",
       "battery",
       "clock",
