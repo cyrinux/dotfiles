@@ -10,8 +10,13 @@ syslog LOG_USER
 port 465
 timeout 10
 
-account personal
+account levis
 host mail.vpn.levis.name
 user cyril@levis.name
-passwordeval "vdirsyncer-get-creds password"
+passwordeval "vdirsyncer-get-creds personal-password"
 
+account work
+host localhost
+port 1025
+user cyril.levis@dailymotion.com
+passwordeval "vdirsyncer-get-creds work-password"

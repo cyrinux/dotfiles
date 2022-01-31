@@ -4,6 +4,7 @@
 .config/git/templates
 .config/qutebrowser/greasemonkey/requires
 .config/waybar/livestatus.toml
+.config/imapnotify
 etc/containers
 etc/NetworkManager/conf.d/wgpia.conf
 exegol

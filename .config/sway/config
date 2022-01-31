@@ -334,7 +334,6 @@ bindsym --to-code {
 	$hyper+twosuperior scratchpad show
 
 	# switch to workspace with urgent window automatically
-	$win+x exec swayr switch-to-urgent-or-lru-window
     $win+Tab exec swayr switch-to-urgent-or-lru-window
 
 	# reload the configuration file

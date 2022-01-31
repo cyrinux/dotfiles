@@ -1,11 +1,11 @@
 goimapnotify@personal.service,user:cyril
+goimapnotify@work.service,user:cyril
 library-repos.timer,user:cyril
 restic-check.timer,user:cyril
 restic.timer,user:cyril
 tarsnap.timer,user:cyril
 autovdirsyncer.service,user:cyril
 checkmail.timer,user:cyril
-# urlwatch.timer,user:cyril
 bugwarrior-pull.timer,user:cyril
 fwupd-refresh.timer
 reflector.timer

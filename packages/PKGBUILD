@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.20.7
+pkgver=2.20.9
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -464,7 +464,6 @@ depends=(
     'sd'
     'shellcheck'
     'binfmt-qemu'
-    'davmail'
     'firefox'
     'shfmt'
     'scli-git'
@@ -496,7 +495,7 @@ depends=(
     'stern-bin'
     'strace'
     'streamlink'
-    'streamlink-twitch-gui'
+    'streamlink-twitch-gui-bin'
     's-tui'
     'subnetcalc'
     'swappy'

@@ -5,7 +5,7 @@ lock="${XDG_CACHE_HOME}/waybar-mail.lock"
 check() {
     exec 100> ${lock} || exit 1
     flock 100 || exit 1
-    count="$(notmuch count 'tag:unread')"
+    count="$(notmuch count 'tag:unread AND tag:personal')"
     tooltip="There are $count new emails"
     if [ "$count" = "0" ]; then
         printf '{"text": ""}\n'
