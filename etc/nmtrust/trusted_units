@@ -5,7 +5,7 @@ restic.timer,user:cyril
 tarsnap.timer,user:cyril
 autovdirsyncer.service,user:cyril
 checkmail.timer,user:cyril
-urlwatch.timer,user:cyril
+# urlwatch.timer,user:cyril
 bugwarrior-pull.timer,user:cyril
 fwupd-refresh.timer
 reflector.timer
@@ -14,3 +14,4 @@ parcimonie.sh@all-users
 tor.service
 seaf-cli@cyril.service
 # task-sync.timer,user:cyril
+# urlwatch.timer,user:cyril
