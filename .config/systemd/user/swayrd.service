@@ -4,8 +4,9 @@ PartOf=graphical-session.target
 After=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/swayrd >/dev/null 2>&1
+ExecStart=/usr/bin/swayrd
 Restart=always
+StandardOutput=null
 
 [Install]
 WantedBy=graphical-session.target

@@ -70,6 +70,7 @@ map global user -docstring 'disable autoformat'       d      ': disable-autoform
 map global user -docstring 'LSP mode'                 l      ': enter-user-mode lsp<ret>'
 map global user -docstring 'toggle line numbers'      L      ': toggle-highlighter buffer/numbers number-lines -hlcursor<ret>'
 map global user -docstring 'toggle line wrap'         W      ': toggle-highlighter buffer/wrap wrap -word -indent<ret>'
+map global user -docstring 'Github permalink'         g      ': github-link<ret>'
 
 set-option global windowing_modules ''
 require-module kitty
@@ -114,6 +115,10 @@ define-command detect-indentwidth -docstring 'Detect indentwidth' %{
             }
         }
     }
+}
+
+define-command  github-link -docstring 'return github permalink' %{
+   evaluate-commands echo %sh{get-github-permalink ${kak_buffile} ${kak_cursor_line}}
 }
 
 define-command leading-spaces-to-tabs -docstring 'Convert all leading spaces to tabs' %{ execute-keys -draft %{%s^\h+<ret><a-@>} }

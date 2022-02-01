@@ -1,9 +1,17 @@
+set nm_db_limit = 0
+set nm_exclude_tags = ""
+set nm_open_timeout = 5
+set nm_record = yes
+set nm_unread_tag = unread
+set nm_query_window_duration=3
+set nm_query_window_timebase="month"
+bind index < vfolder-window-backward
+bind index > vfolder-window-forward
+
 set charset = "utf-8"
 set send_charset = "utf-8"
 set assumed_charset = "utf-8"
 set history_remove_dups = yes
-
-source colors
 
 set pgp_default_key = 0x6DB88737C11F5A48
 
@@ -16,10 +24,9 @@ set sleep_time = 0
 set date_format="%d/%m/%y %I:%M"
 set markers = no
 set mark_old = yes
-set mime_forward = yes
+set mime_forward = ask-no
 set wait_key = no
 set menu_context = 5
-set menu_move_off = no
 set menu_scroll = yes
 set pager_context = 5
 set pager_index_lines = 10
@@ -27,7 +34,10 @@ set pager_index_lines = 10
 set ts_enabled = yes
 set help = no
 
-set index_format = "%4C %Z%?X? &  ?%?g?%-5g&     ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
+source colors
+
+set vfolder_format = "%6n(%6N) %f"
+set index_format = "%4C %Z%?X?&  ?%?g?%-5g&     ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
 set attach_format = "%u%D%I %t%4n %T%.100f (%.100d)%> [%.15m/%.15M, %.6e%?C?, %C?, %s] "
 set pager_stop = yes
 set pager_index_lines = 10
@@ -118,16 +128,15 @@ virtual-mailboxes "Drafts" "notmuch://?query=folder:/Drafts/"
 virtual-mailboxes "Junk" "notmuch://?query=folder:/Junk/"
 
 set auto_tag = yes
-
-set hidden_tags = draft,passed,replied,tofilter,sent,unread,attachment,signed
+set hidden_tags = draft,passed,replied,tofilter,sent,unread,signed
 set hidden_tags += inbox
 set hidden_tags += personal
 set hidden_tags += work
 
+tag-transforms "attachment" ""
 tag-transforms "archive" ""
 tag-transforms "spam" ""
 tag-transforms "ham" ""
-
 tag-transforms "encrypted"  ""
 tag-transforms "flagged"  ""
 
@@ -158,7 +167,7 @@ macro index,pager <tab> "\
 <vfolder-from-query>tag:work AND tag:spam<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -spam<enter><save-message>=work/Junk<enter><enter><end-cond>\
 <vfolder-from-query>tag:work AND tag:ham<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>+inbox -unread -ham<enter><save-message>=work/INBOX<enter><enter><end-cond>\
 <change-vfolder>INBOX<enter>\
-<sync-mailbox>y<check-stats>"
+<sync-mailbox>y2<enter><enter><check-stats>"
 
 source neomuttrc-private
 
