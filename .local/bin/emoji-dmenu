@@ -2,12 +2,17 @@
 
 data="${XDG_CACHE_HOME:-$HOME/.cache}/emoji.data"
 [ -f "$data" ] || {
-    echo >&2 "No emoji data, run 'import-joypixels.sh' script to generate it"
-    exit 1
+    notify-send "Emoji launcher" "Bootstrapping, please wait ..."
+    import-joypixels.sh
 }
 
-wl-clipboard-manager lock
+line="$(cat "$data" | dmenu -p emoji)"
 
-cat "$data" | dmenu -p emoji | cut -d' ' -f1 | tr -d '\n' | wl-copy
+if [ -n "$line" ]; then
+    sed -i "/$line/d" "$data"
+    sed -i "1s;^;$line\n;;" "$data"
 
-wl-clipboard-manager unlock
+    wl-clipboard-manager lock
+    printf '%s' "$line" | cut -d' ' -f1 | tr -d '\n' | wl-copy
+    wl-clipboard-manager unlock
+fi

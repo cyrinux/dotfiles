@@ -1,7 +1,5 @@
 [Unit]
-Description=Sway window management tool
-Documentation=man:swayr(1)
-Requires=graphical-session.target
+Description=Swayr daemon
 PartOf=graphical-session.target
 After=graphical-session.target
 

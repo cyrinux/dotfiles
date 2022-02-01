@@ -21,7 +21,6 @@ zstyle    ':completion:*:scp:argument-rest:'                   tag-order        
 zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts'       hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 zstyle    ':z4h:direnv' enable 'yes'
 
-
 if ! (( P9K_SSH )); then
     zstyle ':z4h:sudo' term ''
 fi
@@ -29,7 +28,7 @@ fi
 ##
 
 z4h install romkatv/archive || return
-z4h tty-wait --timeout-seconds 1.0 --lines-columns-pattern '<68-> <->'
+# z4h tty-wait --timeout-seconds 1.0 --lines-columns-pattern '<68-> <->'
 z4h init || return
 
 ##

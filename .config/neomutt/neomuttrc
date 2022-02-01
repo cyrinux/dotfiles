@@ -27,7 +27,6 @@ set pager_index_lines = 10
 set ts_enabled = yes
 set help = no
 
-
 set index_format = "%4C %Z%?X? &  ?%?g?%-5g&     ? %<[y?%<[m?%<[d?%[   %H:%M]&%[  %a %d]>&%[  %b %d]>&%[%b %Y]> %-35.35F %s"
 set attach_format = "%u%D%I %t%4n %T%.100f (%.100d)%> [%.15m/%.15M, %.6e%?C?, %C?, %s] "
 set pager_stop = yes
@@ -37,10 +36,14 @@ set status_format = "%f: Total %?M?%M/?%m%?n?, New %n?%?d?, Del %d?%?F?, Flag %F
 set to_chars = "     LR"
 set flag_chars = "*!Dd     - "
 
+bind index,pager R group-reply
+bind index,pager @ compose-to-sender
+macro attach s "<save-entry><bol>~/Downloads/<eol>"
+
 set beep_new = yes
 
 set sidebar_visible = yes
-set sidebar_width = 23
+set sidebar_width = 25
 set sidebar_short_path=yes
 set mail_check_stats
 set mail_check_stats_interval = 5
@@ -61,8 +64,9 @@ bind index,pager <PageDown> half-down
 macro index,pager B "<enter-command>set sidebar_visible=yes<enter><enter-command>set wrap=120<enter>"
 macro index,pager H "<enter-command>set sidebar_visible=no<enter><enter-command>set wrap=0<enter>"
 
-alternative_order multipart/mixed text/plain text/calendar application/ics text/html
-auto_view application/pgp-encrypted text/calendar text/html application/pdf text/calendar application/ics image/jpeg text/html application/vnd.openxmlformats-officedocument.wordprocessingml.document
+alternative_order text/plain text/enriched text/html
+auto_view text/html text/calendar application/ics application/pdf
+
 set mailcap_path = ~/.config/neomutt/mailcap
 
 macro pager,index n "<pipe-message>khard add-email<return>" "add the sender address to khard"
@@ -91,11 +95,6 @@ set spoolfile = "INBOX"
 set record = "+local/Sent"
 set postponed = "+local/Drafts"
 set trash = "+local/Trash"
-
-bind index,pager gg noop
-bind index,pager g noop
-bind index,pager @ compose-to-sender
-
 
 macro index,pager gi "<change-vfolder>INBOX<enter>" "Go to INBOX"
 macro index,pager gp "<change-vfolder>Personal<enter>" "Go to personal"
@@ -132,6 +131,7 @@ tag-transforms "ham" ""
 tag-transforms "encrypted"  ""
 tag-transforms "flagged"  ""
 
+bind index,pager @ compose-to-sender
 macro index a "<tag-entry><clear-flag>N<modify-tags>!archive<enter><untag-pattern>.<enter>"
 macro pager a "<modify-tags>!archive<enter><next-undeleted>"
 macro index A "<tag-thread><clear-flag>N<modify-tags>+archive<enter><untag-pattern>.<enter>"
@@ -151,8 +151,6 @@ macro index o "<shell-escape>flock -n /tmp/.checkmail.lock checkmail<enter><ente
 
 macro index,pager <tab> "\
 <enter-command>push P<enter>\
-<vfolder-from-query>folder:local/Sent AND from:@levis.name<enter><tag-pattern>.<enter><tag-prefix-cond><save-message>=personal/Sent<enter><enter><end-cond>\
-<vfolder-from-query>folder:local/Sent AND from:@dailymotion.com<enter><tag-pattern>.<enter><tag-prefix-cond><save-message>=work/Sent<enter><enter><end-cond>\
 <vfolder-from-query>tag:personal AND tag:archive<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -archive<enter><save-message>=personal/Archive<enter><enter><end-cond>\
 <vfolder-from-query>tag:personal AND tag:spam<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -spam   <enter><save-message>=personal/Junk<enter><enter><end-cond>\
 <vfolder-from-query>tag:personal AND tag:ham<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>+inbox -unread -ham    <enter><save-message>=personal/INBOX<enter><enter><end-cond>\
