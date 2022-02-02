@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.20.12
+pkgver=2.21.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -48,6 +48,8 @@ depends=(
     'bison'
     'fakeroot'
     'gcc'
+    'python-setproctitle'
+    'pipectl'
     'gettext'
     'groff'
     'gzip'
@@ -93,6 +95,7 @@ depends=(
     'bluetooth-headset-battery-level'
     'bluez-firmware'
     'bluez-utils'
+    'bluez'
     'bolt'
     'bottom-bin'
     'broot'
@@ -487,10 +490,11 @@ depends=(
     'squashfs-tools'
     'sshfs'
     'sshpass'
-    'sshuttle'
     'sslscan'
-    'startup-notification'
     'staticcheck'
+    'radvd'
+    'qt5-wayland'
+    'qt5-websockets'
     'stern-bin'
     'strace'
     'streamlink'
@@ -654,7 +658,9 @@ depends=(
     'minikube'
     'zk'
     'goland'
+    'goland-jre'
     'browserpass-firefox'
     'cidrmerge'
     'java-runtime'
+    'anydesk-bin'
 )
