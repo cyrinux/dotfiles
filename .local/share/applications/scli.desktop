@@ -1,11 +1,9 @@
 [Desktop Entry]
-Categories=Network;InstantMessaging;
-Keywords=sgnl;chat;im;messaging;messenger;sms;security;privat;
-Exec=/usr/bin/scli --color -s -f --show-names --one-sided --partition-contacts --contacts-autohide -n
-Icon=signal-desktop
-Name=Signal-Cli
-GenericName=Signal-Cli
+Categories=Network;
+Exec=/usr/bin/scli %u
+GenericName=Signal CLI
+Icon=/usr/share/icons/hicolor/128x128/apps/signal-desktop.png
+Name=scli
 StartupNotify=true
 Type=Application
-StartupWMClass=Signal
 Terminal=true

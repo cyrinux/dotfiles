@@ -3,9 +3,9 @@ Description=Mailbox synchronization timer
 
 [Timer]
 # Time to wait after booting before offlineimap.service is run for the first time
-OnBootSec=1min
+OnBootSec=2min
 # Time between running each consecutive time
-OnUnitActiveSec=30s
+OnUnitActiveSec=10min
 Unit=checkmail.service
 
 [Install]

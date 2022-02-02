@@ -1,10 +1,11 @@
 pkgname='cyrinux'
-pkgver=2.20.9
+pkgver=2.20.12
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
 url='https://github.com/cyrinux/dotfiles'
 license=('MIT')
+provides=('dmenu')
 
 source=('30-font-aliases.conf'
     '75-joypixels.conf'
@@ -131,7 +132,6 @@ depends=(
     'diff-so-fancy'
     'diffstat'
     'direnv'
-    'dmenu-term'
     'dmidecode'
     'dnsmasq'
     'podman'
@@ -289,7 +289,6 @@ depends=(
     'meson'
     'microsocks'
     'minder'
-    'mlocate'
     'modemmanager'
     'mpv'
     'mpv-mpris'
@@ -574,14 +573,12 @@ depends=(
     'wireguard-tools'
     'wireshark-qt'
     'wl-clipboard'
-    'wl-clipboard-manager'
     'wlrctl'
     'wlrobs-hg'
     'wlroots'
     'wlsunset'
     'wmctrl'
     'wluma'
-    'wofi'
     'wol'
     'wrk'
     'xdg-desktop-portal-wlr'

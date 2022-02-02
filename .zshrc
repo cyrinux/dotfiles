@@ -5,7 +5,8 @@ zstyle    ':z4h:'                                              start-tmux       
 zstyle    ':z4h:'                                              term-shell-integration yes
 zstyle    ':z4h:'                                              propagate-cwd          yes
 zstyle    ':z4h:*'                                             channel                stable
-zstyle    ':z4h:autosuggestions'                               forward-char           accept
+zstyle    ':z4h:autosuggestions'                               end-of-line            partial-accept
+zstyle    ':z4h:autosuggestions'                               forward-char           partial-accept
 zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
 zstyle    ':z4h:(fzf-complete|fzf-dir-history|fzf-history)'    fzf-flags              --no-exact --color=hl:14,hl+:14
 zstyle    ':z4h:(fzf-complete|fzf-dir-history)'                fzf-bindings           'tab:repeat'
@@ -28,8 +29,10 @@ fi
 ##
 
 z4h install romkatv/archive || return
-# z4h tty-wait --timeout-seconds 1.0 --lines-columns-pattern '<68-> <->'
+z4h tty-wait --timeout-seconds 0.5 --lines-columns-pattern '<68-> <->'
 z4h init || return
+
+ulimit -c $(((4 << 30) / 512))  # 4GB
 
 ##
 
@@ -87,8 +90,19 @@ z4h bindkey z4h-eof                 Ctrl+D
 
 setopt GLOB_DOTS
 setopt IGNORE_EOF
+setopt glob_dots magic_equal_subst no_multi_os no_local_loops
+setopt rm_star_silent rc_quotes glob_star_short
 
 ###
+
+if (( $+commands[wl-copy] && $#DISPLAY )); then
+  alias v='wl-paste'
+  function copy-buffer-to-clipboard() {
+    print -rn -- "$PREBUFFER$BUFFER" | wl-copy
+  }
+  zle -N copy-buffer-to-clipboard
+  bindkey '^Y' copy-buffer-to-clipboard
+fi
 
 [ -z "$EDITOR" ] && export EDITOR='vim'
 [ -z "$VISUAL" ] && export VISUAL='vim'

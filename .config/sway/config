@@ -8,7 +8,7 @@ input type:keyboard {
 }
 
 input type:mouse {
-    pointer_accel 0.3
+    pointer_accel 0.2
 }
 
 input type:touchpad {
@@ -17,13 +17,16 @@ input type:touchpad {
 	drag enabled
 	tap enabled
 	natural_scroll enabled
-    pointer_accel 0.3
+    pointer_accel 0.2
 }
 
 output * {
     bg "#1a1c1c" solid_color
     adaptive_sync off
 }
+
+bindswitch --locked lid:off output eDP-1 enable, exec systemctl --user start wluma
+bindswitch --locked lid:on  exec systemctl --user stop wluma, output eDP-1 disable
 
 # xwayland disable
 
@@ -67,26 +70,27 @@ set $workspace8 workspace number 8
 set $workspace9 workspace number 9
 set $workspace0 workspace number 10
 
-
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
 
 # Specific window configuration
 for_window    [app_id=".*"]                              sticky enable
+for_window    [app_id="qalculate-gtk"]                   floating enable
 for_window    [window_role="pop-up"]                     floating enable
 for_window    [app_id="udiskie"]                         floating enable
 for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace2
+for_window    [app_id="scli"]                            move container to $workspace3
 for_window    [app_id="Signal"]                          move container to $workspace3
+for_window    [app_id="discord"]                         move container to $workspace3
 for_window    [app_id="neomutt"]                         move container to $workspace4, title_format "NeoMutt"
-for_window    [app_id="taskwarrior-tui"]                 move container to $workspace4, title_format "Taskwarrior"
+for_window    [app_id="taskwarrior-tui"]                 move container to $workspace4, title_format "TaskWarrior"
 for_window    [app_id="MellowPlayer"]                    move container to $workspace10
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
-for_window    [app_id="qalculate-gtk"]                   floating enable
-for_window    [app_id="mpv"]                             floating enable, resize set width 531 height 300, move position 1005 113
-for_window    [app_id="iriunwebcam"]                     floating disable
 for_window    [app_id="dmenu-emoji"]                     resize set height 20ppt
-for_window    [class="Steam"]                            inhibit_idle fullscreen
+for_window    [app_id="iriunwebcam"]                     floating disable
+for_window    [app_id="mpv"]                             floating enable, resize set width 531 height 300, move position 1005 113
+
 
 # Audio settings
 set $mode_audio "Audio: (h)eadphones, he(a)dset, (t)oggle, (s)peaker, (p)avucontrol, (e)qualizer"
@@ -365,6 +369,5 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 # Load systemd integration
 include /etc/sway/config.d/*
 exec systemctl --user start sway-session.target
-
 
 # vi:ft=i3

@@ -13,7 +13,6 @@ command -v rg            &> /dev/null    && alias rg='rg --hidden --follow --sma
 command -v trash-put     &> /dev/null    && alias rm='trash-put'
 command -v dog           &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
 command -v curlie        &> /dev/null    && alias curl='curlie'
-command -v plocate       &> /dev/null    && alias locate='plocate'
 command -v gdu           &> /dev/null    && alias ncdu='gdu'
 
 man() (
@@ -40,6 +39,7 @@ alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 
 # Misc
+alias rsync='rsync -rz --info=FLIST,COPY,DEL,REMOVE,SKIP,SYMSAFE,MISC,NAME,PROGRESS,STATS'
 x() { PAGER="less -+F" xplr | IFS= read -r dir && cd -- "${dir:-.}" }
 alias n="nmcli"
 alias hex='teehee'
@@ -67,7 +67,6 @@ alias http-serve='python3 -m http.server'
 alias ip='ip -color -brief'
 alias ll='ls -l'
 alias la='ls -la'
-alias locate='locate -i'
 alias logviewer="lnav -q"
 alias mkdir='mkdir -p'
 alias mtr-report='mtr --report --report-cycles 10'

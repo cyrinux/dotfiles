@@ -1,13 +1,17 @@
+set hidden_tags += archlinux
+set hidden_tags += github
+
 tag-transforms "newsletter" " " \
                "calendar" "" \
                "github-issues" " " \
                "friend" " " \
-               "Family" " " \
+               "Family" "" \
                "amazon" " " \
                "frnog" " " \
                "frsag" " " \
-               "archlinux" "" \
-               "gmail" " "
+               "gmail" " " \
+               "work" "" \
+               "archlinux" ""
 
 virtual-mailboxes "GMAIL" "notmuch://?query=tag:gmail"
 virtual-mailboxes "Archlinux" "notmuch://?query=tag:archlinux"
