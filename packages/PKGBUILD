@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.21.2
+pkgver=2.21.3
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -164,7 +164,7 @@ depends=(
     'fdupes'
     'ffmpeg'
     'firejail'
-    'flashfocus-git'
+    'flashfocus'
     'fontforge'
     'fping'
     'freerdp'
