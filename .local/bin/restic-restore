@@ -1,5 +1,9 @@
 #!/bin/sh
-set -u
+
+lsrepos() {
+    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
+        sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+}
 
 main() {
     for repo in $(lsrepos); do
@@ -20,11 +24,6 @@ restore() {
     echo "Enter the snapshot id to restore:"
     read -r snapshot
     restic restore "$snapshot" --tag="$RESTIC_TAG" --host="$(hostnamectl --static)" --target /tmp/restore-restic $args
-}
-
-lsrepos() {
-    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
-        sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 
 main "$@"

@@ -16,7 +16,7 @@ backup() {
     echo "Backing up to $RESTIC_REPOSITORY..."
     echo
 
-    last_snapshot="/$(sudo btrfs subvolume list / | grep home | sort | tail -1 | awk '{print $9}')"
+    last_snapshot="/$(btrfs subvolume list / | grep home | sort | tail -1 | awk '{print $9}')"
 
     restic backup --tag="$RESTIC_TAG" "$HOME" \
         --exclude-file="$XDG_CONFIG_HOME/resticignore" --exclude-caches

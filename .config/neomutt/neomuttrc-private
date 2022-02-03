@@ -1,5 +1,6 @@
 set hidden_tags += archlinux
 set hidden_tags += github
+set hidden_tags += monitoring
 
 tag-transforms "newsletter" " " \
                "calendar" "" \
@@ -19,6 +20,7 @@ virtual-mailboxes "Mailing" "notmuch://?query=tag:github-issues"
 virtual-mailboxes "Family" "notmuch://?query=tag:family"
 virtual-mailboxes "Friends" "notmuch://?query=tag:friends or tag:friend"
 virtual-mailboxes "Newsletters" "notmuch://?query=tag:newsletter"
+virtual-mailboxes "Shinken" "notmuch://?query=tag:monitoring"
 
 macro index,pager gn "<change-vfolder>Newsletters<enter>" "Go to newsletter"
 macro index,pager gf "<change-vfolder>Family<enter>" "Go to family"
