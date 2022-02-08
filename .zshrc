@@ -33,8 +33,6 @@ z4h install romkatv/archive || return
 # z4h tty-wait --timeout-seconds 1.0 --lines-columns-pattern '<68-> <->'
 z4h init || return
 
-ulimit -c $(((4 << 30) / 512))  # 4GB
-
 ##
 
 zstyle ':completion:*' matcher-list "m:{a-z}={A-Z}" "l:|=* r:|=*"

@@ -1,5 +1,9 @@
 import os
 
+import setproctitle
+
+setproctitle.setproctitle("qutebrowser")
+
 config.load_autoconfig(False)
 
 # ui
@@ -87,36 +91,38 @@ c.url.searchengines = {
 c.url.default_page = "~/.config/qutebrowser/blank.html"
 c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 
+c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
+
 # keys
 bindings = {
+    ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
+    "co": "nop",
+    ",C": "spawn chromium {url}; tab-close",
+    ",c": "spawn --userscript stream",
+    "<Ctrl-Shift-D>": "tab-give",
     "<Ctrl-Shift-J>": "tab-move +",
     "<Ctrl-Shift-K>": "tab-move -",
-    "<Ctrl-Shift-D>": "tab-give",
-    ",m": "hint links spawn cglaunch mpv '{hint-url}'",
-    ",M": "spawn cglaunch mpv '{url}'",
     ",D": "download-open",
-    ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
-    ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
-    ",w": "spawn --userscript send_to_wallabag",
-    ",qW": "spawn qbpm launch work  {url}; tab-close",
-    ",qP": "spawn qbpm launch personal {url}; tab-close",
-    ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
-    ",C": "spawn chromium {url}; tab-close",
-    "xx": "config-cycle tabs.show always switching",
-    ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
-    "xjn": "set content.javascript.enabled true",
-    "xjf": "set content.javascript.enabled false",
-    "M": "nop",
-    "co": "nop",
-    "<Shift-Escape>": "fake-key <Escape>",
-    "wo": "set-cmd-text -s :open -w -s",
-    "o": "set-cmd-text -s :open -s",
-    "O": "set-cmd-text -s :open -t -s",
-    "z": "spawn --userscript dmenu_qutebrowser",
-    ",s": "open https://rss.levis.name/bookmarklet?uri={url}",
-    ",c": "spawn --userscript stream",
     ",g": "spawn --userscript open-portal",
     ";I": "hint images download",
+    ",m": "hint links spawn cglaunch mpv --force-window=immediate '{hint-url}'",
+    "M": "nop",
+    ",M": "spawn cglaunch mpv --force-window=immediate '{url}'",
+    "o": "set-cmd-text -s :open -s",
+    "O": "set-cmd-text -s :open -t -s",
+    ",p": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p credentials'",
+    ",P": "spawn --userscript qute-pass --username-target secret --username-pattern 'user: (.+)' --dmenu-invocation 'dmenu -p password' --password-only",
+    ",qP": "spawn qbpm launch personal {url}; tab-close",
+    ",qW": "spawn qbpm launch work  {url}; tab-close",
+    "<Shift-Escape>": "fake-key <Escape>",
+    ",s": "open https://rss.levis.name/bookmarklet?uri={url}",
+    ",W": "hint links spawn --userscript send_to_wallabag {hint-url}",
+    "wo": "set-cmd-text -s :open -w -s",
+    ",w": "spawn --userscript send_to_wallabag",
+    "xjf": "set content.javascript.enabled false",
+    "xjn": "set content.javascript.enabled true",
+    "xx": "config-cycle tabs.show always switching",
+    "z": "spawn --userscript dmenu_qutebrowser",
 }
 
 for key, bind in bindings.items():

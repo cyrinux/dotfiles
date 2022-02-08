@@ -1,0 +1,4 @@
+#!/bin/sh
+
+notify-send "Kali" "Starting in about 1 minute...\n*kali ssh* to get shell"
+HACKENV_CORES=4 HACKENV_MEMORY=4194304 hackenv --type=kali up && hackenv --type=kali gui --fullscreen

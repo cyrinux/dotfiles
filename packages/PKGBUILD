@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.21.3
+pkgver=2.21.9
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -331,7 +331,6 @@ depends=(
     'opensc'
     'openssh'
     'openvpn'
-    'otf-font-awesome'
     'overdue'
     'p11-kit'
     'p7zip'
@@ -342,7 +341,6 @@ depends=(
     'paperwork'
     'par2cmdline'
     'parallel'
-    'parcimonie-sh-git'
     'pass-git'
     'pass-import'
     'pavucontrol'
@@ -534,10 +532,8 @@ depends=(
     'ttf-joypixels'
     'ttf-lato'
     'ttf-liberation'
-    'ttf-nerd-fonts-symbols-mono'
     'ttf-opensans'
     'ttf-weather-icons'
-    'turbostat'
     'udiskie'
     'udiskie-dmenu-git'
     'unpaper'
@@ -587,7 +583,6 @@ depends=(
     'wrk'
     'xdg-desktop-portal-wlr'
     'xdg-user-dirs'
-    'xorg-fonts-misc'
     'xorg-server'
     'xorg-server-xwayland'
     'xorg-xhost'
@@ -663,4 +658,5 @@ depends=(
     'cidrmerge'
     'java-runtime'
     'anydesk-bin'
+    'ttf-font-awesome'
 )

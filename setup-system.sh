@@ -110,7 +110,6 @@ copy "etc/pacman.conf" 644
 copy "etc/pacman.d/hooks"
 copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"
-copy "etc/parcimonie.sh.d/cyril.conf"
 copy "etc/snap-pac.conf"
 copy "etc/snapper/configs/root"
 copy "etc/ssh/ssh_config"

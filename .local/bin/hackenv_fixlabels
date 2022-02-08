@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o errtrace
+
+datahome="${XDG_DATA_HOME:-$HOME/.local/share}"
+datahome="$datahome/hackenv"
+
+shared="$(realpath "$datahome/shared")"
+
+printf "Setting permissions for shared directory...\n" >&2
+
+mkdir -p "$shared"
+chmod 770 "$shared"
+chown :kvm "$shared"

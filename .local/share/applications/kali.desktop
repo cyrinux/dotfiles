@@ -1,8 +1,8 @@
 [Desktop Entry]
 Categories=Network;
-Exec=/home/cyril/.local/bin/parrotos
-GenericName=ParrotOS
-Name=ParrotOS
+Exec=/home/cyril/.local/bin/kali
+GenericName=Kali
+Name=Kali
 StartupNotify=true
 Type=Application
 Terminal=false

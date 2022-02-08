@@ -1,4 +1,5 @@
 ignore-empty-password
+show-failed-attempts
 color=111111
 inside-color=1d2021
 indicator-radius=100

@@ -47,3 +47,7 @@ cssh() {
     tmux-cssh "$@"
 }
 compdef cssh=ssh
+
+
+# Do not check authenticity when using SSH.
+alias unsafessh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'

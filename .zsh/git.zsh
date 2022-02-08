@@ -79,6 +79,12 @@ alias gss='gst -sb'
 alias gsa='g submodule add'
 alias gsu='g submodule update --remote'
 alias gsr='g submodule-remove'
+alias gx='git annex'
+alias gxa='git annex add'
+alias gxs='git annex sync'
+alias gxg='git annex get'
+alias gxd='git annex drop'
+alias gxc='git annex copy'
 
 grf() {
     upstream="$(git remote get-url upstream 2> /dev/null || git remote get-url origin)"

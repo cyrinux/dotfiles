@@ -1,20 +1,23 @@
-#!/bin/bash
+#!/bin/sh
 
-trap 'pkill -P $$' EXIT
+# trap 'pkill -P $$' EXIT
 
-wol 88:b1:11:e2:46:90
-wol a4:4c:c8:13:75:57
+# wol 88:b1:11:e2:46:90
+# wol a4:4c:c8:13:75:57
 
-echo "Please wait..."
-sleep 10
-ping -c 5 parrotos.lan
+# echo "Please wait..."
+# sleep 10
+# ping -c 5 parrotos.lan
 
-ssh parrotos sudo /usr/local/bin/wake
-ssh -f -N -q -L5901:localhost:5900 parrotos &
+# ssh parrotos sudo /usr/local/bin/wake
+# ssh -f -N -q -L5901:localhost:5900 parrotos &
 
-sleep 4
-vncviewer localhost:5901
+# sleep 4
+# vncviewer localhost:5901
 
-ssh parrotos sudo /usr/local/bin/suspend
+# ssh parrotos sudo /usr/local/bin/suspend
 
-ping -c 10 parrotos.lan
+# ping -c 10 parrotos.lan
+
+notify-send "ParrotOS" "Starting in about 1 minute...\n*parrot ssh* to get shell"
+HACKENV_CORES=4 HACKENV_MEMORY=4194304 hackenv --type=parrot up && hackenv --type=parrot gui --fullscreen

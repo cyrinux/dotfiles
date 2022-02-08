@@ -113,14 +113,14 @@ mode $mode_audio {
 
 
 
-set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (h)alt, (t)rusted, (u)ntrusted, unm(o)unt, (e)xit"
+set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (H)alt, (t)rusted, (u)ntrusted, unm(o)unt, (e)xit"
 mode $mode_system {
 	bindsym --to-code {
      l exec sway-exit lock, mode "default"
      e exec sway-exit exit, mode "default"
      s exec sway-exit suspend, mode "default"
      r exec sway-exit reboot, mode "default"
-     h exec sway-exit shutdown, mode "default"
+     Shift+h exec sway-exit shutdown, mode "default"
      t exec ttoggle -t, mode "default"
      u exec ttoggle -x, mode "default"
      o exec udiskie-umount -a, mode "default"
