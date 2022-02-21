@@ -10,7 +10,7 @@
 * {
   border: none;
   border-radius: 0;
-  font-family: Input, Taskbar, "Font Awesome 5 Free";
+  font-family: Input, "Font Awesome 6 Free Solid";
   font-size: 13px;
   min-height: 0;
 }
@@ -71,10 +71,12 @@ window#waybar {
 #cpu.warning,
 #custom-movie.on,
 #custom-dnd.on {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @yellow;
 }
 
 #battery.charging {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @green;
 }
 
@@ -90,6 +92,7 @@ window#waybar {
 #custom-fwupd,
 #temperature-pc.critical,
 #temperature-laptop.critical {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }
 
@@ -102,6 +105,7 @@ window#waybar {
 #custom-yubikey,
 #custom-decrypted,
 #custom-updates,
+#custom-notification,
 #custom-mail,
 #network,
 #custom-infra-status,
@@ -130,34 +134,42 @@ window#waybar {
 }
 
 #custom-updates.down {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }
 
 #custom-secureboot {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }
 
 #custom-progress {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @purple;
 }
 
 #custom-infra-status.up {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @green;
 }
 #custom-infra-status.down {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }
 
 #custom-prod-status.warning {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @yellow;
 }
 #custom-prod-status.error {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }
 #custom-prod-status.ok {
   border-bottom: 3px solid @green;
 }
 #custom-prod-status.pause {
+  border-top: 3px solid @background;
   border-bottom: 3px solid @purple;
 }
 #custom-prod-status.okcritical {

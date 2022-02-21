@@ -7,13 +7,36 @@
     "layer": "top",
     "output": "!eDP-1",
     "modules-left": ["sway/workspaces"],
-    "modules-center": ["custom/eyes", "pulseaudio"],
+    "modules-center": ["custom/eyes", "pulseaudio", "idle_inhibitor"],
     "modules-right": [
       "custom/yubikey",
       "custom/prod-status",
-      "custom/dnd",
-      "clock"
+      "clock",
+      "custom/notification"
     ],
+    "idle_inhibitor": {
+      "format": "{icon}",
+      "format-icons": {
+        "activated": "\uf06e",
+        "deactivated": "\uf070"
+      }
+    },
+    "custom/notification": {
+      "tooltip": false,
+      "format": "{icon}",
+      "format-icons": {
+        "notification": "<span foreground='red'> </span>",
+        "none": "",
+        "dnd-notification": "<span foreground='red'> </span>",
+        "dnd-none": ""
+      },
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
+    },
     "custom/eyes": {
       "exec": "waybar-eyes",
       "return-type": "json",
@@ -24,13 +47,6 @@
       "return-type": "json",
       "markup": true,
       "on-click": "pkill -SIGUSR1 -x waybar-livestat"
-    },
-    "custom/dnd": {
-      "exec": "waybar-dnd",
-      "return-type": "json",
-      "signal": 2,
-      "interval": "once",
-      "on-click": "waybar-dnd toggle"
     },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -64,6 +80,7 @@
     "output": "eDP-1",
     "modules-left": ["sway/workspaces"],
     "modules-right": [
+      "idle_inhibitor",
       "custom/mediaplayer",
       "custom/prod-status",
       "custom/infra-status",
@@ -87,16 +104,32 @@
       "memory",
       "custom/movie",
       "backlight",
-      "custom/dnd",
       "sway/language",
       "battery",
       "clock",
       "tray",
-      "custom/yubikey"
+      "custom/yubikey",
+      "custom/notification"
     ],
     "sway/language": {
       "format": "<span foreground='#928374'></span> {}",
       "min-length": 10
+    },
+  "custom/notification": {
+      "tooltip": false,
+      "format": "{icon}",
+      "format-icons": {
+        "notification": "<span foreground='red'> </span>",
+        "none": "",
+        "dnd-notification": "<span foreground='red'> </span>",
+        "dnd-none": ""
+      },
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
     },
     "custom/mediaplayer": {
       "exec": "waybar-mediaplayer",
@@ -170,13 +203,6 @@
       "return-type": "json",
       "on-click": "nmcli con up VPN-Prod",
       "on-click-right": "nmcli con down VPN-Prod"
-    },
-    "custom/dnd": {
-      "exec": "waybar-dnd",
-      "return-type": "json",
-      "signal": 2,
-      "interval": "once",
-      "on-click": "waybar-dnd toggle"
     },
     "custom/prod-status": {
       "exec": "waybar-livestatus",
