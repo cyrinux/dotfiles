@@ -183,6 +183,7 @@ rgf() {
 alias gob='go build'
 alias got='go test'
 alias gotv='go test -v'
+alias goi='go install'
 gov(){
      go test -coverprofile=coverage.out
      go tool cover -html=coverage.out

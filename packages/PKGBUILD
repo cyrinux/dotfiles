@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.21.9
+pkgver=2.22.2
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -242,7 +242,6 @@ depends=(
     'kubecfg'
     'kubectl'
     'kubectl-krew'
-    'poweralertd'
     'kubectx'
     'kubernetes-helm'
     'kubeseal'
@@ -635,8 +634,8 @@ depends=(
     'words'
     'easyeffects'
     'webwormhole-git'
-    'tlp'
     'wshowkeys-git'
+    'throttled-git'
     'sway-audio-idle-inhibit-git'
     'tig'
     'signal-desktop'
@@ -652,8 +651,6 @@ depends=(
     'yt-dlp'
     'minikube'
     'zk'
-    'goland'
-    'goland-jre'
     'browserpass-firefox'
     'cidrmerge'
     'java-runtime'

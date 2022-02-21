@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Network;
-Exec=/home/cyril/.local/bin/kali
+Exec=kalios
 GenericName=Kali
 Name=Kali
 StartupNotify=true

@@ -39,8 +39,11 @@ case "$1" in
         before_lock
         stop_vpn
         stop_wwan
-        pkill kanshi
+        pkill -9 -f kanshi
+        kanshi &
+        sleep 2
         systemctl suspend
+        pkill -9 -f kanshi
         kanshi &
         systemctl --user restart wlsunset
         waybar-eyes done

@@ -40,7 +40,6 @@ c.downloads.remove_finished = 10000
 c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
-c.qt.force_software_rendering = "qt-quick"
 c.qt.args += [
     "enable-gpu-rasterization",
     "blink-settings=preferredColorScheme=1",
@@ -52,7 +51,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
 
 
 # c.colors.webpage.darkmode.enabled = True

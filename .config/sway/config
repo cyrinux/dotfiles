@@ -1,4 +1,4 @@
-font pango: Taskbar, Cantarell 9
+# font pango: Cantarell 9
 
 input type:keyboard {
     xkb_layout fr-hyper,us
@@ -290,6 +290,7 @@ bindsym --to-code {
 
 	# toggle menu bar
 	$win+Shift+m exec "killall -SIGUSR1 waybar"
+    $win+Shift+n exec swaync-client -t -sw
 
 	# Split
 	$hyper+s split toggle
@@ -354,11 +355,8 @@ bindsym --to-code {
 	$hyper+r      mode $mode_resize
 
 	# Notification actions
-    $hyper+q exec makoctl dismiss
-    $hyper+o exec makoctl menu dmenu
-
-    Alt+space exec makoctl set-mode default
-    Shift+Alt+space exec makoctl set-mode dnd
+    $hyper+q exec swaync-client --close-all
+    Alt+space exec swaync-client --toggle-dnd
 }
 
 exec_always $kanshi

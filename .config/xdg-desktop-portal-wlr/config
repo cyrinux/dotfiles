@@ -1,4 +1,4 @@
 [screencast]
 max_fps=10
-chooser_type=none
-exec_before=waybar-dnd on
+chooser_cmd=slurp -f %o -or
+exec_before=swaync-client --toggle-dnd

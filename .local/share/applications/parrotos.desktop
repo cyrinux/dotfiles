@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Network;
-Exec=/home/cyril/.local/bin/parrotos
+Exec=parrotos
 GenericName=ParrotOS
 Name=ParrotOS
 StartupNotify=true

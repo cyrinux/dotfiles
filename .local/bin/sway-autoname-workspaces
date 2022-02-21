@@ -48,7 +48,7 @@ WINDOW_ICONS = {
     "libreoffice-startcenter": "",
     "libreoffice-writer": "",
     "mpv": "",
-    "neomutt": "󰀚",
+    "neomutt": "",
     "nm-connection-editor": "",
     "xplr": "",
     "org.ksnip.ksnip": "",
@@ -63,8 +63,8 @@ WINDOW_ICONS = {
     "qutepreview": "",
     "rapid-photo-downloader": "",
     "sandboxed-tor-browser": "",
-    "signal": "",
-    "scli": "",
+    "scli": "",
+    "signal": "",
     "slack": "",
     "snappergui": "",
     "steam": "",
@@ -88,7 +88,7 @@ WINDOW_ICONS = {
     "zoom": "",
 }
 
-DEFAULT_ICON = "󰀏"
+DEFAULT_ICON = ""
 
 
 def icon_for_window(window):
