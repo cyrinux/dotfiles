@@ -16,8 +16,9 @@ stop_wlan() {
 
 before_lock() {
     playerctl -a pause > /dev/null 2>&1
-    gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
+    sway-cast stop
     fusermount -u ~/Vault > /dev/null 2>&1
+    # gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
 }
 
 case "$1" in
@@ -27,11 +28,6 @@ case "$1" in
         ;;
     lock)
         before_lock
-        exec 4<> $XDG_RUNTIME_DIR/sway-locker.lock || exit 1
-        flock -n 4 || {
-            echo "ERROR: flock() failed." >&2
-            exit 1
-        }
         loginctl lock-session
         waybar-eyes done
         ;;
@@ -47,6 +43,7 @@ case "$1" in
         kanshi &
         systemctl --user restart wlsunset
         waybar-eyes done
+        gpgconf --kill scdaemon
         ;;
     reboot)
         stop_vpn

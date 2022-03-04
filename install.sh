@@ -226,9 +226,9 @@ luks_header_size="$(stat -c '%s' /tmp/header.img)"
 rm -f /tmp/header.img
 
 if [[ "$fde" == "Yes" ]]; then
-    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size mem_sleep_default=deep loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
+    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
 else
-    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet mem_sleep_default=deep loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
+    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
     " > /mnt/etc/kernel/cmdline
 fi
 

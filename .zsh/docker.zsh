@@ -26,6 +26,7 @@ alias dcudb='dcu -d --build'
 alias fedora="pod fedora:latest"
 alias ubuntu="pod ubuntu:latest"
 alias centos="pod centos:latest"
+alias centos7="pod centos:7"
 alias trusty="pod ubuntu:trusty"
 alias xenial="pod ubuntu:xenial"
 alias bionic="pod ubuntu:bionic"

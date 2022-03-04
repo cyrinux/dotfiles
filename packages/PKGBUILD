@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.22.2
+pkgver=2.22.7
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -145,7 +145,6 @@ depends=(
     'discord'
     'dos2unix'
     'draft-bin'
-    'drawio-desktop'
     'earlyoom'
     'editorconfig-core-c'
     'edk2-ovmf'
@@ -187,7 +186,6 @@ depends=(
     'go-chromecast-git'
     'gocryptfs'
     'goimapnotify'
-    'google-cloud-sdk'
     'gopls'
     'go-tools'
     'gphoto2'
@@ -614,7 +612,6 @@ depends=(
     'mkinitcpio-encrypt-detached-header'
     'python-notify2'
     'gotify-dunst-git'
-    'localtime-git'
     'wtype'
     'lib32-gcc-libs'
     'swaync'
@@ -656,4 +653,8 @@ depends=(
     'java-runtime'
     'anydesk-bin'
     'ttf-font-awesome'
+    'power-profiles-daemon'
+    'systemd-autoreload'
+    'dbus-broker'
+    'firejail-pacman-hook'
 )

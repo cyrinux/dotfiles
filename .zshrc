@@ -114,3 +114,6 @@ z4h source -- /usr/share/LS_COLORS/dircolors.sh
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
 z4h compile -- $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zlogin,.zlogout}
+
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"

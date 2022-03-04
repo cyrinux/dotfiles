@@ -49,8 +49,8 @@ set $alt Mod1
 set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
-set $kanshi bash -c "killall kanshi; kanshi;"
 floating_modifier $win
+set $kanshi bash -c "killall kanshi; kanshi;"
 
 gaps inner 5
 smart_gaps on
@@ -129,6 +129,7 @@ mode $mode_system {
      Escape mode "default"
 	}
 }
+bindsym XF86PowerOff exec sway-exit lock
 
 set $mode_cpu "CPU: (c)ool, (n)ormal"
 mode $mode_cpu {
@@ -239,7 +240,6 @@ bindsym --to-code {
 	$win+q kill
 
 	# launcher
-	$win+n             fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch pia_dmenu"
 	$hyper+n           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch networkmanager_dmenu"
 	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
@@ -290,7 +290,7 @@ bindsym --to-code {
 
 	# toggle menu bar
 	$win+Shift+m exec "killall -SIGUSR1 waybar"
-    $win+Shift+n exec swaync-client -t -sw
+    $win++n exec swaync-client -t -sw
 
 	# Split
 	$hyper+s split toggle

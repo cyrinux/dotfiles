@@ -11,7 +11,6 @@ include /etc/firejail/disable-common.inc
 include /etc/firejail/disable-devel.inc
 include /etc/firejail/disable-interpreters.inc
 include /etc/firejail/disable-programs.inc
-include /etc/firejail/disable-passwdmgr.inc
 
 mkdir ${HOME}/.config/whats-app-nativefier-7bbd2c/
 whitelist ${DOWNLOADS}

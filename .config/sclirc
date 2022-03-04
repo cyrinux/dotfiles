@@ -2,7 +2,6 @@ clipboard-get-command = wl-paste -n
 clipboard-put-command = wl-copy "%s"
 color = true
 enable-notifications = true
-notify-on-reactions = false
 notification-command = notify-send -i '%a' scli '%s - %m'
 one-sided = true
 save-history = true

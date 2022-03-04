@@ -137,6 +137,7 @@ copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/throttled.conf"
 copy "etc/bluetooth/power-on.conf"
+copy "usr/lib/tmpfiles.d/suspend-to-ram.conf"
 
 (("$reverse")) && exit 0
 
@@ -155,7 +156,9 @@ echo "Enabling and starting services..."
 echo "================================="
 
 systemctl_disable_stop "ModemManager.service"
+systemctl_enable_start "power-profiles-daemon.service"
 systemctl_enable_start "throttled.service"
+systemctl_enable_start "systemd-oomd.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "nfs-server.service"
@@ -190,9 +193,9 @@ systemctl_enable_start "snapper-cleanup.timer"
 systemctl_enable_start "system-dotfiles-sync.timer"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
-systemctl_enable_start "localtime.service"
 systemctl_enable_start "smartd.service"
-# systemctl_enable_start "snapper-timeline.timer"
+systemctl_disable_stop "dbus.service"
+systemctl_enable_start "dbus-broker.service"
 # systemctl_enable_start "usbguard-dbus.service"
 # systemctl_enable_start "usbguard.service"
 

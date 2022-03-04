@@ -42,6 +42,10 @@ window#waybar {
   border-bottom: 3px solid transparent;
 }
 
+#workspaces button.visible {
+  border-bottom: 3px solid @blue;
+}
+
 #workspaces button.focused {
   border-bottom: 3px solid @green;
 }
@@ -70,7 +74,8 @@ window#waybar {
 #memory.warning,
 #cpu.warning,
 #custom-movie.on,
-#custom-dnd.on {
+#custom-dnd.dnd-notification,
+#custom-dnd.dnd-none {
   border-top: 3px solid @background;
   border-bottom: 3px solid @yellow;
 }
@@ -80,6 +85,7 @@ window#waybar {
   border-bottom: 3px solid @green;
 }
 
+#custom-whistle.in-use-open,
 #custom-eyes,
 #custom-yubikey,
 #custom-recording,
@@ -119,6 +125,7 @@ window#waybar {
 #idle_inhibitor,
 #custom-fwupd,
 #custom-secureboot,
+#custom-dnd,
 #clock {
   padding: 0 6px;
   margin: 0 6px;
@@ -128,11 +135,6 @@ window#waybar {
 #custom-vpn-work,
 #custom-recording,
 #custom-cast,
-#custom-dnd {
-  padding: 0;
-  margin: 0 6px;
-}
-
 #custom-updates.down {
   border-top: 3px solid @background;
   border-bottom: 3px solid @red;

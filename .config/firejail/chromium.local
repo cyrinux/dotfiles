@@ -1,7 +1,8 @@
+# I tend to send a lot of files from here:
+whitelist /tmp/screenshots/
 include whitelist-runuser-common.inc
-dbus-user.talk org.freedesktop.Notifications
-dbus-user.talk org.freedesktop.portal.Desktop
-# Uncomment (or add to your firefox.local) the following line if you want to use screen sharing under wayland.
 ignore noroot
 whitelist ${RUNUSER}/pipewire-0
-dbus-user.talk org.freedesktop.portal.Desktop
+dbus-user.talk org.freedesktop.Notifications
+dbus-user.talk org.freedesktop.portal.*
+ignore nou2f

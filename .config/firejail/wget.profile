@@ -14,7 +14,6 @@ noblacklist ${HOME}/.wgetrc
 noblacklist ${HOME}/.netrc
 
 include disable-common.inc
-include disable-passwdmgr.inc
 include disable-programs.inc
 
 include whitelist-var-common.inc

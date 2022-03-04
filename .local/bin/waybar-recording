@@ -2,7 +2,7 @@
 
 trap 'pkill -P $$' EXIT
 
-if pgrep -x wf-recorder > /dev/null; then
+if obs-cli recording status | grep -q "Recording: true"; then
     printf "{\"text\": \" <span foreground='#928374'></span> \"}\n"
 else
     printf '{"text": ""}\n'

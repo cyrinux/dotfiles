@@ -13,12 +13,12 @@ install: ## Install the meta-package
 
 .PHONY: refresh
 refresh: ## Refresh the backup lists
-	@echo 🧹
-	backup-packages
-	if [ -s unknown.list ]; then \
+	@echo 🧹 Backup packages
+	@backup-packages
+	@if [ -s unknown.list ]; then \
 		xargs -a unknown.list sudo -E pacman -D --asdeps; \
 	fi
-	backup-packages
+	@backup-packages
 
 .PHONY: publish
 publish: ## Publish the meta-package in local the repo

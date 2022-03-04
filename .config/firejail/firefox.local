@@ -1,14 +1,21 @@
-include whitelist-runuser-common.inc
-dbus-user.talk org.freedesktop.Notifications
-dbus-user.talk org.freedesktop.portal.Desktop
-# Uncomment (or add to your firefox.local) the following line if you want to use screen sharing under wayland.
-ignore noroot
-whitelist ${RUNUSER}/pipewire-0
-dbus-user.talk org.freedesktop.portal.Desktop
-whitelist /home/cyril/.password-store
-# Required for U2F and webcams to be detected if
-# they're plugged after starting firefox.
-ignore private-dev
+# I tend to send a lot of files from here:
+whitelist /tmp/screenshots/
+
 # U2F is blocked by default??
 ignore nou2f
 
+# Required for U2F and webcams to be detected if
+# they're plugged after starting firefox.
+ignore private-dev
+
+# +----------------------------------------------------------------------------
+# These lines are copy-pasted (and uncommented) from firefox.profile.
+
+# Add the next line to your firefox.local to enable native notifications.
+dbus-user.talk org.freedesktop.Notifications
+
+# Add the next three lines to your firefox.local to allow screen sharing under wayland.
+whitelist ${RUNUSER}/pipewire-0
+whitelist /usr/share/pipewire/client.conf
+dbus-user.talk org.freedesktop.portal.*
+#------------------------------------------------------------------------------
