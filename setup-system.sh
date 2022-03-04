@@ -137,7 +137,7 @@ copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/throttled.conf"
 copy "etc/bluetooth/power-on.conf"
-copy "usr/lib/tmpfiles.d/suspend-to-ram.conf"
+copy "etc/tmpfiles.d/suspend-to-ram.conf"
 
 (("$reverse")) && exit 0
 
