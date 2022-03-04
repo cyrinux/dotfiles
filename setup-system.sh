@@ -214,8 +214,14 @@ in_ci || timedatectl set-ntp true
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
-# echo "Fixing NetworkManager trust (nmtrust), config conflict with PIA"
-# rm -f /etc/NetworkManager/conf.d/wgpia.conf
+echo "Install xdg-open firejail wrapper"
+sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
+sudo chown root:root /usr/local/bin/xdg-open
+sudo chmod 0755 /usr/local/bin/xdg-open
+
+echo "Firejail some app"
+sudo systemctl enable --now apparmor.service
+sudo apparmor_parser -r /etc/apparmor.d/firejail-default
 
 echo "Fixing local AUR repository"
 install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp

@@ -1,0 +1,6 @@
+ignore dbus-user
+dbus-user filter
+dbus-user.own org.mpris.MediaPlayer2.Player
+dbus-user.own org.mpris.MediaPlayer2.mpv
+dbus-user.talk org.gnome.SettingsDaemon.MediaKeys
+dbus-system none

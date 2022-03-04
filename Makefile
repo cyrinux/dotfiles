@@ -51,15 +51,10 @@ $(output)/%-wkhtmltopdf.pdf: $(source)/%.md
 .PHONY: setup-system
 setup-system:
 	@./setup-system.sh
-	@./setup-firejail.sh
 
 .PHONY: setup-user
 setup-user:
 	@./setup-user.sh
-
-.PHONY: setup-firejail
-setup-firejail:
-	@./setup-firejail.sh
 
 .PHONY: install
 install: build-metapackage setup-system setup-user
