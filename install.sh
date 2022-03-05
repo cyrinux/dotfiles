@@ -294,7 +294,7 @@ echo "$user:$password" | arch-chroot /mnt chpasswd
 arch-chroot /mnt passwd -dl root
 
 echo -e "\n### Settings permissions on the custom repo"
-arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/${user}-local/
+arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local{,-temp}
 
 echo "\n### Setup docker rootless"
 echo $user:231072:65536 > /etc/subuid
