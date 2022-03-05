@@ -181,7 +181,6 @@ mount -o noatime,nodiratime,compress=zstd,subvol=aurbuild /dev/mapper/luks /mnt/
 mount -o noatime,nodiratime,compress=zstd,subvol=archbuild /dev/mapper/luks /mnt/var/lib/archbuild
 mkdir -vp /mnt/home/${user}/.local/share/docker
 mount -o noatime,nodiratime,compress=zstd,subvol=docker /dev/mapper/luks /mnt/home/${user}/.local/share/docker
-chown -R $user /mnt/home/$user
 mount -o noatime,nodiratime,compress=zstd,subvol=logs /dev/mapper/luks /mnt/var/log
 mount -o noatime,nodiratime,compress=zstd,subvol=temp /dev/mapper/luks /mnt/var/tmp
 mount -o noatime,nodiratime,compress=zstd,subvol=swap /dev/mapper/luks /mnt/swap
@@ -288,6 +287,7 @@ echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
+chown -R $user /mnt/home/$user
 for group in wheel network video render plugdev i2c libvirt audit input wireshark rfkill; do
     arch-chroot /mnt groupadd -rf "$group"
     arch-chroot /mnt gpasswd -a "$user" "$group"
