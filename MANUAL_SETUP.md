@@ -66,3 +66,10 @@ $ yubico-piv-tool -s 9a -a change-pin (default pin: 123456)
 $ boltctl list
 $ boltctl authorize zdazdaz-aaa-xxx-ffff-ffffffffffff
 ```
+
+# Podman
+
+```
+podman login docker.io
+podman login quay.io
+```

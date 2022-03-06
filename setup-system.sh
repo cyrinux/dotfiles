@@ -46,7 +46,7 @@ copy() {
     if [ -z "$reverse" ]; then
         [ -n "$2" ] && chmod "$2" "$dest_file"
     else
-        chown -R cyril "$dest_file"
+        chown -R $USER "$dest_file"
     fi
     echo "$dest_file <= $orig_file"
 }
@@ -102,6 +102,8 @@ copy "etc/iwd/main.conf"
 copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
+# copy "etc/firejail/firecfg.config"
+copy "etc/qemu/bridge.conf"
 copy "etc/nftables.conf"
 copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
@@ -131,13 +133,13 @@ copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "etc/systemd/system/usbguard.service.d"
 copy "etc/systemd/system/user@.service.d/delegate.conf"
 copy "etc/systemd/system.conf.d/kill-fast.conf"
+copy "etc/systemd/user.conf.d/kill-fast.conf"
 copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/udev/rules.d/45-ddcutil-i2c.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/throttled.conf"
-copy "etc/bluetooth/power-on.conf"
-copy "etc/tmpfiles.d/suspend-to-ram.conf"
+copy "etc/bluetooth/main.conf"
 
 (("$reverse")) && exit 0
 
@@ -186,6 +188,7 @@ systemctl_enable_start "linux-modules-cleanup.service"
 systemctl_enable_start "NetworkManager-dispatcher.service"
 systemctl_enable_start "NetworkManager.service"
 systemctl_enable_start "nftables.service"
+systemctl_disable_stop "pcscd.service"
 systemctl_enable_start "pcscd.socket"
 systemctl_enable_start "privoxy.service"
 systemctl_enable_start "snapper-boot.timer"
@@ -194,8 +197,8 @@ systemctl_enable_start "system-dotfiles-sync.timer"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
-systemctl_disable_stop "dbus.service"
-systemctl_enable_start "dbus-broker.service"
+# systemctl_disable_stop "dbus.service"
+# systemctl_enable_start "dbus-broker.service"
 # systemctl_enable_start "usbguard-dbus.service"
 # systemctl_enable_start "usbguard.service"
 
@@ -214,17 +217,8 @@ in_ci || timedatectl set-ntp true
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
-echo "Install xdg-open firejail wrapper"
-sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
-sudo chown root:root /usr/local/bin/xdg-open
-sudo chmod 0755 /usr/local/bin/xdg-open
-
-echo "Firejail some app"
-sudo systemctl enable --now apparmor.service
-sudo apparmor_parser -r /etc/apparmor.d/firejail-default
-
 echo "Fixing local AUR repository"
-install -o cyril -d /var/cache/pacman/cyrinux-aur-local-temp
+install -o $USER -d /var/cache/pacman/cyrinux-aur-local-temp
 
 echo "Regenerating fonts cache"
 fc-cache -r
@@ -245,3 +239,17 @@ else
     echo "Force dns config"
     ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
+
+echo "Install xdg-open firejail wrapper"
+sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
+sudo chown root:root /usr/local/bin/xdg-open
+sudo chmod 0755 /usr/local/bin/xdg-open
+
+echo "Firejail some app"
+sudo systemctl enable --now apparmor.service || true
+# sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
+# sudo firecfg --add-users $user
+
+echo "\n### Setup docker rootless"
+sudo touch /etc/{subgid,subuid}
+sudo usermod --add-subuids 31072-65536 --add-subgids 31072-65536 $user

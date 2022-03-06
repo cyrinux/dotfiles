@@ -1,13 +1,10 @@
 [Unit]
 Description=Screen locker for Wayland
-# If swaylock exits cleanly, unlock the session:
 OnSuccess=unlock.target
-# TODO: Also run /usr/bin/loginctl unlock-session
 PartOf=lock.target
 
 [Service]
-ExecStart=/usr/bin/swaylock
-# Otherwise, keep restarting it:
+ExecStart=%h/.local/bin/sway-exit lock
 Restart=on-failure
 RestartSec=0
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+TYPE=$1
+
+export HACKENV_CORES=4
+export HACKENV_MEMORY=4194304
+notify-send.sh "$TYPE" "Starting in about 1min..." -i "security-high" -o "GUI:hackenv --type=$TYPE gui --fullscreen" -o "Shutdown:hackenv --type=$TYPE down" -o "SSH:kitty hackenv --type=$TYPE ssh"
+hackenv --type=$TYPE up && hackenv --type=$TYPE gui --fullscreen

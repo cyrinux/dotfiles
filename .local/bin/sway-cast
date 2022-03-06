@@ -16,12 +16,12 @@ case $1 in
         obs-cli recording toggle
         ;;
     preview)
-        nohup mpv rtmp://live.levis.name:1935/stream/cyrinux
+        mpv rtmp://live.levis.name:1935/live/cyrinux
         ;;
     stop)
-        obs-cli stream stop
-        obs-cli recording stop
-        killall obs
+        obs-cli stream stop > /dev/null 2>&1
+        obs-cli recording stop > /dev/null 2>&1
+        killall obs 2> /dev/null
         ;;
     *)
         echo "Help: $0 toggle-stream|toggle-recording|preview|stop"

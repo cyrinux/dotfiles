@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Network;
-Exec=kalios
+Exec=hackenv_start kali
 GenericName=Kali
 Name=Kali
 StartupNotify=true

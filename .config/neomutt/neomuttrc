@@ -152,9 +152,6 @@ bind index + entire-thread
 
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
-macro index o noop
-macro index o "<shell-escape>flock -n /tmp/.checkmail.lock checkmail<enter><enter>" "sync all mail"
-
 macro index,pager <tab> "\
 <enter-command>push P<enter>\
 <vfolder-from-query>tag:personal AND tag:archive<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -archive<enter><save-message>=personal/Archive<enter><enter><end-cond>\

@@ -214,7 +214,7 @@ EOF
 fi
 
 echo -e "\n### Installing packages"
-pacstrap -i /mnt cyrinux
+pacstrap /mnt cyrinux
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
@@ -272,6 +272,7 @@ echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
 
 arch-chroot /mnt mkinitcpio -p linux
 arch-chroot /mnt arch-secure-boot initial-setup || true
+arch-chroot /mnt arch-secure-boot generate-efi || true
 
 echo -e "\n### Configuring swap file"
 truncate -s 0 /mnt/swap/swapfile
@@ -296,11 +297,6 @@ arch-chroot /mnt passwd -dl root
 echo -e "\n### Settings permissions on the custom repo"
 arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local
 
-echo "\n### Setup docker rootless"
-echo $user:231072:65536 > /etc/subuid
-arch-chroot /mnt echo "$user:231072:65536" > /etc/subgid
-arch-chroot /mnt echo "$user:231072:65536" > /etc/subuid
-
 echo -e "\n### Cloning dotfiles"
 if [ "${user}" = "cyril" ]; then
     arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
@@ -315,7 +311,7 @@ else
 fi
 
 umount -R /mnt
-cryptsetup luksClose /dev/mapper/luks
+cryptsetup luksClose luks
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 echo -e "\n### Reboot now, and after power off remember to unplug the installation USB"

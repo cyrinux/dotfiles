@@ -129,7 +129,10 @@ mode $mode_system {
      Escape mode "default"
 	}
 }
-bindsym XF86PowerOff exec sway-exit lock
+
+bindsym XF86PowerOff       exec sway-exit lock
+bindsym XF86Eject          exec sway-exit lock
+bindsym Pause              exec sway-exit lock
 
 set $mode_cpu "CPU: (c)ool, (n)ormal"
 mode $mode_cpu {

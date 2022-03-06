@@ -28,7 +28,8 @@ case "$1" in
         ;;
     lock)
         before_lock
-        loginctl lock-session
+        # loginctl lock-session
+        swaylock
         waybar-eyes done
         ;;
     suspend)

@@ -1,1 +1,1 @@
-noblacklist ${HOME}/.config/wget/wgetrc
+noblacklist ${HOME}/.config/wget

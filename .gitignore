@@ -10,3 +10,5 @@ etc/NetworkManager/conf.d/wgpia.conf
 exegol
 .local/bin/backup-mailserver
 .local/bin/checkmail
+*.cache
+.local/share/applications/*Telegram*

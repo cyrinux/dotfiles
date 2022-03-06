@@ -1,0 +1,4 @@
+ignore noroot
+whitelist ${RUNUSER}/pipewire-0
+whitelist /usr/share/pipewire/client.conf
+dbus-user.talk org.freedesktop.portal.*

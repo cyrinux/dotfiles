@@ -66,10 +66,8 @@ build-metapackage:
 
 .PHONY: install-metapackage
 install-metapackage:
-	sudo pacman -Sy
 	sudo pacman -Rs --noconfirm -dd iptables
-	sudo pacman -Sy --noconfirm cyrinux
-	# yes Y | sudo pacman -Sy --noconfirm cyrinux
+	yes n | sudo pacman -Sy cyrinux
 
 .PHONY: build-podman
 build-podman:
@@ -79,9 +77,8 @@ build-podman:
 # ci: install-metapackage setup-system setup-user
 ci: install-metapackage
 
-
 .PHONY: test
-test: build-podman
+test: build-podman build-metapackage
 	podman run -it --rm \
 	    --tmpfs /tmp \
 	    --tmpfs /run \

@@ -1,0 +1,2 @@
+# Disallow running SUID processes.
+nonewprivs

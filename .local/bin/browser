@@ -30,12 +30,6 @@ if [ -z $container ]; then
 fi
 
 case $container in
-    "isolate")
-        cglaunch firewarden -q -n qutebrowser "$url" &
-        ;;
-    "disposable")
-        cglaunch firewarden -z 127.1.1.1 -q qutebrowser "$url" &
-        ;;
     "personal")
         cglaunch qbpm launch personal "$url" &
         ;;

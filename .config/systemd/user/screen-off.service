@@ -4,7 +4,7 @@ PartOf=lock.target
 
 [Service]
 ExecStart=/usr/bin/swayidle \
-  timeout 15 '/usr/bin/systemctl --user stop wluma.service; /usr/bin/swaymsg "output * dpms off"' \
+  timeout 120 '/usr/bin/systemctl --user stop wluma.service; /usr/bin/swaymsg "output * dpms off"' \
   resume '/usr/bin/swaymsg "output * dpms on"; /usr/bin/systemctl --user start wluma.service'
 ExecStopPost=/bin/bash -c '/usr/bin/swaymsg "output * dpms on"; /usr/bin/systemctl --user start wluma.service'
 

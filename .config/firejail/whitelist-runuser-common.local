@@ -1,0 +1,2 @@
+whitelist ${RUNUSER}/pipewire-?
+whitelist ${RUNUSER}/wayland-?

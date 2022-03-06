@@ -1,6 +1,6 @@
 [Desktop Entry]
 Categories=Network;
-Exec=parrotos
+Exec=hackenv_start parrot
 GenericName=ParrotOS
 Name=ParrotOS
 StartupNotify=true

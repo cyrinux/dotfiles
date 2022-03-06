@@ -8,6 +8,7 @@
     "output": "!eDP-1",
     "modules-left": ["sway/workspaces"],
     "modules-center": [
+      "custom/fwupd",
       "custom/recording",
       "custom/cast",
       "custom/whistle",
@@ -28,6 +29,11 @@
         "activated": "\uf06e",
         "deactivated": "\uf070"
       }
+    },
+    "custom/fwupd": {
+      "exec": "waybar-fwupd",
+      "return-type": "json",
+      "interval": 3600
     },
     "custom/whistle": {
       "exec": "whistle",
