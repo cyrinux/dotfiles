@@ -24,7 +24,7 @@ ENV LANG="en_US.UTF-8"
 # gpg keys
 RUN pacman-key --init && curl -s https://levis.name/pgp_keys.asc | pacman-key -a - && \
     pacman-key --lsign-key "0x6DB88737C11F5A48"
-RUN pacman -Sy
+RUN pacman -Syu --noconfirm
 
 # Archlinux Deps
 RUN yes y | pacman -Sy --noconfirm \
