@@ -68,7 +68,8 @@ build-metapackage:
 install-metapackage:
 	sudo pacman -Sy
 	sudo pacman -Rs --noconfirm -dd iptables
-	yes Y | sudo pacman -Sy --noconfirm cyrinux
+	sudo pacman -Sy --noconfirm cyrinux
+	# yes Y | sudo pacman -Sy --noconfirm cyrinux
 
 .PHONY: build-podman
 build-podman:
@@ -81,10 +82,11 @@ ci: install-metapackage
 
 .PHONY: test
 test: build-podman
-	podman run --rm \
+	podman run -it --rm \
 	    --tmpfs /tmp \
 	    --tmpfs /run \
 	    -v "/sys/fs/cgroup:/sys/fs/cgroup:ro" \
+	    -v "/var/cache/pacman/cyrinux-aur-local:/var/cache/pacman/cyrinux-aur-local:ro" \
 	    archlinux/dotfiles \
 	    make ci
 
