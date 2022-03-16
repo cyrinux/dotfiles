@@ -1,32 +1,30 @@
-#!/bin/sh
+#!/bin/bash
 # pass edit work/works-url-patterns
 # then edit rules
 # with format:
-# *.example.com:work
-# *.work.org:work
+# *.example.com@work
+# *.work.org/.*@work
 #
 # first match win
-
 url="$1"
 
 list="$XDG_CACHE_HOME/works-url-patterns"
 [ -s "$list" ] || pass work/works-url-patterns > $list
 
 # echo $url
-if [ -s "$list" ]; then
+if [ -s "${list}" ]; then
     while read line; do
-        rule=$(echo $line | cut -d'@' -f1)
-        # echo $rule
-        echo $url | grep -q -E "^${rule}"
+        rule=$(echo ${line} | cut -d'@' -f1)
+        echo ${url} | grep -q -E "^${rule}"
         if [ $? -eq 0 ]; then
-            container=$(echo $line | cut -d'@' -f2)
+            container=$(echo ${line} | cut -d'@' -f2)
             break
         fi
     done < $list
 fi
 
 if [ -z $container ]; then
-    container=$(echo "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nmpv" | dmenu -p "browser")
+    container=$(echo -e "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nmpv" | dmenu -p "browser")
 fi
 
 case $container in
