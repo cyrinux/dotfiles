@@ -50,6 +50,7 @@ ENV PATH="${PATH}:/usr/bin/core_perl"
 RUN chmod 1777 /tmp
 # Create test user
 RUN useradd -m cyril \
+ && mkdir -p /home/cyril/.dotfiles \
  && chown -R cyril:cyril /home/cyril \
  && echo -e "cyril\ncyril" | passwd cyril
 RUN echo "cyril ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
