@@ -8,40 +8,40 @@ RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 
 success() {
-  printf "$GREEN$BOLD✓ ${RESET}$*\n"
+	printf "$GREEN$BOLD✓ ${RESET}$*\n"
 }
 
 failure() {
-  printf "$RED$BOLD✗ ${RESET}$*\n"
+	printf "$RED$BOLD✗ ${RESET}$*\n"
 }
 
 _CONNS=$(nmcli --fields type,name con show --active | grep wifi)
 WIFI=$(echo "$_CONNS" | cut -f 1 -d ' ' --complement | grep -Po '\S.*')
 
 if [ -z "$WIFI" ]; then
-  failure "Not connected to any network."
-  exit 1
+	failure "Not connected to any network."
+	exit 1
 else
-  success "Connected to wifi ${BOLD}$WIFI${RESET}."
+	success "Connected to wifi ${BOLD}$WIFI${RESET}."
 fi
 
-if resolvectl query captive.apple.com > /dev/null; then
-  success "DNS works."
+if resolvectl query captive.apple.com >/dev/null; then
+	success "DNS works."
 else
-  failure "DNS resolution failing."
-  exit 2
+	failure "DNS resolution failing."
+	exit 2
 fi
 
 if ! CAP=$(curl --silent captive.apple.com); then
-  failure "HTTP traffic is failing (or there's an odd captive portal around."
-  exit 3
+	failure "HTTP traffic is failing (or there's an odd captive portal around."
+	exit 3
 fi
 
 if [ "$CAP" = "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>" ]; then
-  success "No captive portal detected."
+	success "No captive portal detected."
 else
-  failure "Captive portal or weird firewall detected."
-  exit 4
+	failure "Captive portal or weird firewall detected."
+	exit 4
 fi
 
 success "All good, network seems functional! 🎉"

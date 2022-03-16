@@ -3,7 +3,7 @@
 trap 'pkill -P $$' EXIT
 
 if obs-cli recording status | grep -q "Recording: true"; then
-    printf "{\"text\": \" <span foreground='#928374'></span> \"}\n"
+	printf "{\"text\": \" <span foreground='#928374'></span> \"}\n"
 else
-    printf '{"text": ""}\n'
+	printf '{"text": ""}\n'
 fi

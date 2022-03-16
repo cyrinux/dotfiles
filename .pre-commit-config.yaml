@@ -16,8 +16,14 @@ repos:
         args: [--allow-missing-credentials]
       - id: detect-private-key
       - id: mixed-line-ending
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 2.1.6
+    hooks:
+      - id: shellcheck
+      - id: script-must-not-have-extension
+      - id: shfmt
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.1.0
+    rev: v1.2.0
     hooks:
       - id: detect-secrets
         args: ["'--baseline'", "'.secrets.baseline'"]
@@ -27,10 +33,3 @@ repos:
     hooks:
       - id: prettier
         exclude: ^home/.mozilla/firefox/default/user.js$
-  - repo: local
-    hooks:
-      - id: shellcheck
-        name: Check shell scripts with shellcheck
-        entry: shellcheck -x
-        language: system
-        files: \.sh$

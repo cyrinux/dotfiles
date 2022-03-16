@@ -50,7 +50,7 @@ VERBOSITY=1
 ###############################################################################
 
 usage() {
-    echo "Usage: backitup.sh [OPTION...]
+	echo "Usage: backitup.sh [OPTION...]
 Note that any command line arguments overwrite variables defined in the source.
 
 Options:
@@ -65,130 +65,130 @@ Options:
 }
 
 log() {
-    if [ "$1" -le "$VERBOSITY" ]; then
-        echo "$2"
-    fi
+	if [ "$1" -le "$VERBOSITY" ]; then
+		echo "$2"
+	fi
 }
 
 backup() {
-    # Execute the backup.
-    log 1 "Executing program: $BACKUP"
-    $BACKUP
-    # If the backup was succesful, store the current time.
-    if [ $? -eq 0 ]; then
-        log 2 'Program completed.'
-        date "$timeformat" > "$LASTRUN"
-    else
-        log 2 'Program failed.'
-    fi
-    exit
+	# Execute the backup.
+	log 1 "Executing program: $BACKUP"
+	$BACKUP
+	# If the backup was succesful, store the current time.
+	if [ $? -eq 0 ]; then
+		log 2 'Program completed.'
+		date "$timeformat" >"$LASTRUN"
+	else
+		log 2 'Program failed.'
+	fi
+	exit
 }
 
 on_battery() {
-    ac_status="/sys/class/power_supply/AC/online"
-    local result=false # Assume negative unless proven otherwise
-    if [ -e "$ac_status" ]; then
-        if [ "$(cat $ac_status)" = "0" ]; then
-            result=true
-        fi
-    fi
-    echo "$result"
+	ac_status="/sys/class/power_supply/AC/online"
+	local result=false # Assume negative unless proven otherwise
+	if [ -e "$ac_status" ]; then
+		if [ "$(cat $ac_status)" = "0" ]; then
+			result=true
+		fi
+	fi
+	echo "$result"
 }
 
 # Get any arguments.
 while getopts ":p:b:l:n:h:avq" opt; do
-    case $opt in
-        p)
-            PERIOD=$OPTARG
-            ;;
-        b)
-            BACKUP=$OPTARG
-            ;;
-        l)
-            LASTRUN=$OPTARG
-            ;;
-        n)
-            NOFILE=$OPTARG
-            ;;
-        v)
-            VERBOSITY=2
-            ;;
-        q)
-            VERBOSITY=0
-            ;;
-        a)
-            ACONLY=true
-            ;;
-        h)
-            usage
-            exit
-            ;;
-        :)
-            echo "Option -$OPTARG requires an argument.
+	case $opt in
+	p)
+		PERIOD=$OPTARG
+		;;
+	b)
+		BACKUP=$OPTARG
+		;;
+	l)
+		LASTRUN=$OPTARG
+		;;
+	n)
+		NOFILE=$OPTARG
+		;;
+	v)
+		VERBOSITY=2
+		;;
+	q)
+		VERBOSITY=0
+		;;
+	a)
+		ACONLY=true
+		;;
+	h)
+		usage
+		exit
+		;;
+	:)
+		echo "Option -$OPTARG requires an argument.
             "
-            usage
-            exit
-            ;;
-    esac
+		usage
+		exit
+		;;
+	esac
 done
 
 # Bail out if on battery power and we only want to run on AC.
 if [ "$(on_battery)" = true ] && [ "$ACONLY" = true ]; then
-    log 2 "On battery power. Bailing out."
-    exit
+	log 2 "On battery power. Bailing out."
+	exit
 fi
 
 # Set the format of the time string to store.
 if [ "$PERIOD" == "DAILY" ]; then
-    timeformat='+%Y%m%d'
+	timeformat='+%Y%m%d'
 elif [ "$PERIOD" == "WEEKLY" ]; then
-    timeformat='+%G-W%W'
+	timeformat='+%G-W%W'
 elif [ "$PERIOD" == "MONTHLY" ]; then
-    timeformat='+%Y%m'
+	timeformat='+%Y%m'
 else
-    timeformat='+%s'
+	timeformat='+%s'
 fi
 
 # If the file does not exist, perform the user requested action. If no action
 # was specified, exit.
 if [ ! -e "$LASTRUN" ]; then
-    if [ -n "$NOFILE" ]; then
-        eval $NOFILE
-    else
-        exit
-    fi
+	if [ -n "$NOFILE" ]; then
+		eval $NOFILE
+	else
+		exit
+	fi
 fi
 
 # If the file exists and is not empty, get the timestamp contained within it.
 if [ -s "$LASTRUN" ]; then
-    timestamp=$(eval cat \$LASTRUN)
+	timestamp=$(eval cat \$LASTRUN)
 
-    # If the backup period is daily, weekly or monthly, perform the backup if
-    # the stored timestamp is not equal to the current date in the same format.
-    if [ "$PERIOD" == "DAILY" ] || [ "$PERIOD" == "WEEKLY" ] || [ "$PERIOD" == "MONTHLY" ]; then
-        if [ "$timestamp" != $(date "$timeformat") ]; then
-            backup
-        else
-            log 2 "Already executed once for period $PERIOD. Exiting."
-            exit
-        fi
+	# If the backup period is daily, weekly or monthly, perform the backup if
+	# the stored timestamp is not equal to the current date in the same format.
+	if [ "$PERIOD" == "DAILY" ] || [ "$PERIOD" == "WEEKLY" ] || [ "$PERIOD" == "MONTHLY" ]; then
+		if [ "$timestamp" != $(date "$timeformat") ]; then
+			backup
+		else
+			log 2 "Already executed once for period $PERIOD. Exiting."
+			exit
+		fi
 
-    # If the backup period is not daily, perform the backup if the difference
-    # between the stored timestamp and the current time is greater than the
-    # defined period.
-    else
-        diff=$(($(date "$timeformat") - timestamp))
-        if [ "$diff" -gt "$PERIOD" ]; then
-            backup
-        else
-            log 2 "Executed less than $PERIOD seconds ago. Exiting."
-            exit
-        fi
-    fi
+	# If the backup period is not daily, perform the backup if the difference
+	# between the stored timestamp and the current time is greater than the
+	# defined period.
+	else
+		diff=$(($(date "$timeformat") - timestamp))
+		if [ "$diff" -gt "$PERIOD" ]; then
+			backup
+		else
+			log 2 "Executed less than $PERIOD seconds ago. Exiting."
+			exit
+		fi
+	fi
 fi
 
 # If the file exists but is empty, the script has never been run before.
 # Execute the backup.
 if [ -e "$LASTRUN" ]; then
-    backup
+	backup
 fi

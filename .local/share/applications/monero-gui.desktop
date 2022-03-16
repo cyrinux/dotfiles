@@ -14,4 +14,3 @@ StartupNotify=true
 X-GNOME-Bugzilla-Bugzilla=GNOME
 X-GNOME-UsesNotifications=true
 StartupWMClass=monero-wallet-gui
-

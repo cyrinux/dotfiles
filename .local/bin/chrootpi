@@ -37,7 +37,7 @@
 mkdir -p /mnt/raspbian
 
 # mount partition
-mount -o rw ${1}p2  /mnt/raspbian
+mount -o rw ${1}p2 /mnt/raspbian
 mount -o rw ${1}p1 /mnt/raspbian/boot
 
 # mount binds

@@ -5,25 +5,25 @@ trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 { sleep 5 && pkill -RTMIN+3 -x waybar; } &
 
 case $1 in
-    toggle-stream)
-        pgrep -x obs || cglaunch obs &
-        sleep 1
-        obs-cli stream toggle
-        ;;
-    toggle-recording)
-        pgrep -x obs || cglaunch obs &
-        sleep 1
-        obs-cli recording toggle
-        ;;
-    preview)
-        mpv rtmp://live.levis.name:1935/live/cyrinux
-        ;;
-    stop)
-        obs-cli stream stop > /dev/null 2>&1
-        obs-cli recording stop > /dev/null 2>&1
-        killall obs 2> /dev/null
-        ;;
-    *)
-        echo "Help: $0 toggle-stream|toggle-recording|preview|stop"
-        ;;
+toggle-stream)
+	pgrep -x obs || cglaunch obs &
+	sleep 1
+	obs-cli stream toggle
+	;;
+toggle-recording)
+	pgrep -x obs || cglaunch obs &
+	sleep 1
+	obs-cli recording toggle
+	;;
+preview)
+	mpv rtmp://live.levis.name:1935/live/cyrinux
+	;;
+stop)
+	obs-cli stream stop >/dev/null 2>&1
+	obs-cli recording stop >/dev/null 2>&1
+	killall obs 2>/dev/null
+	;;
+*)
+	echo "Help: $0 toggle-stream|toggle-recording|preview|stop"
+	;;
 esac

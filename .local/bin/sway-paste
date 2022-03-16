@@ -4,42 +4,42 @@ dir="${XDG_CACHE_HOME:-$HOME/.cache}/clipboard-history"
 mkdir -p "$dir"
 
 if [ "$1" = "daemon" ]; then
-    wl-paste -w sway-paste on-copy
+	wl-paste -w sway-paste on-copy
 elif [ "$1" = "lock" ]; then
-    touch "$dir/.lock"
+	touch "$dir/.lock"
 elif [ "$1" = "unlock" ]; then
-    rm -f "$dir/.lock"
+	rm -f "$dir/.lock"
 elif [ "$1" = "on-copy" ]; then
-    [ -f "$dir/.lock" ] && exit
-    timestamp="$(date +%s)"
-    file="$dir/$timestamp"
-    cat > "$file"
-    ext="$(file --mime-type "$file" | cut -d' ' -f2 | cut -d'/' -f2)"
-    mv "$file" "$file.$ext"
-    [ "$ext" = "png" ] && [ -x "$(which tesseract)" ] && { tesseract "$file.$ext" "/tmp/$timestamp" -l eng -l fra --oem 1 &&
-        mv "/tmp/$timestamp.txt" "$dir/$timestamp.plain"; }
-    fdupes -idN "$dir"
-    find "$dir" -type f -size 0 -delete
-    find "$dir" -type f -size +10000000c -delete
-    find "$dir" -type f -print0 | sort -zn | head -z -n -1000 | xargs -r -0 rm
+	[ -f "$dir/.lock" ] && exit
+	timestamp="$(date +%s)"
+	file="$dir/$timestamp"
+	cat >"$file"
+	ext="$(file --mime-type "$file" | cut -d' ' -f2 | cut -d'/' -f2)"
+	mv "$file" "$file.$ext"
+	[ "$ext" = "png" ] && [ -x "$(which tesseract)" ] && { tesseract "$file.$ext" "/tmp/$timestamp" -l eng -l fra --oem 1 &&
+		mv "/tmp/$timestamp.txt" "$dir/$timestamp.plain"; }
+	fdupes -idN "$dir"
+	find "$dir" -type f -size 0 -delete
+	find "$dir" -type f -size +10000000c -delete
+	find "$dir" -type f -print0 | sort -zn | head -z -n -1000 | xargs -r -0 rm
 elif [ "$1" = "dmenu" ]; then
-    fzf_preview="--preview-window=down:70%:wrap --preview='[ -f {} ] && viu -h 27 {} 2>/dev/null || echo {} | bat -l bash --color always -pp'"
-    find "$dir" -type f -print0 | sort -znr | while IFS= read -r -d '' file; do
-        if [[ "$file" =~ \.(plain|x-python)$ ]]; then
-            cat "$file"
-        else
-            printf '%s' "$file"
-        fi
-        printf '\0'
-    done | dmenu -0 -p clipboard -f "$fzf_preview" | {
-        read -r -d '' result
-        if [ -f "$result" ]; then
-            wl-copy < "$result"
-        else
-            printf '%s' "$result" | sed -e 's/[[:space:]]*$//' | sed -Ez 's/\s+$//' | wl-copy
-        fi
-    }
+	fzf_preview="--preview-window=down:70%:wrap --preview='[ -f {} ] && viu -h 27 {} 2>/dev/null || echo {} | bat -l bash --color always -pp'"
+	find "$dir" -type f -print0 | sort -znr | while IFS= read -r -d '' file; do
+		if [[ "$file" =~ \.(plain|x-python)$ ]]; then
+			cat "$file"
+		else
+			printf '%s' "$file"
+		fi
+		printf '\0'
+	done | dmenu -0 -p clipboard -f "$fzf_preview" | {
+		read -r -d '' result
+		if [ -f "$result" ]; then
+			wl-copy <"$result"
+		else
+			printf '%s' "$result" | sed -e 's/[[:space:]]*$//' | sed -Ez 's/\s+$//' | wl-copy
+		fi
+	}
 else
-    echo >&2 "Usage: sway-paste <daemon|lock|unlock|on-copy|dmenu>"
-    exit 1
+	echo >&2 "Usage: sway-paste <daemon|lock|unlock|on-copy|dmenu>"
+	exit 1
 fi

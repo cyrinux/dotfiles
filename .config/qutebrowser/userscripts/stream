@@ -3,24 +3,24 @@
 set -e
 
 msg() {
-    local cmd="$1"
-    shift
-    local msg="$*"
-    if [ -z "$QUTE_FIFO" ]; then
-        echo "$cmd: $msg" >&2
-    else
-        echo "message-$cmd '${msg//\'/\\\'}'" >> "$QUTE_FIFO"
-    fi
+	local cmd="$1"
+	shift
+	local msg="$*"
+	if [ -z "$QUTE_FIFO" ]; then
+		echo "$cmd: $msg" >&2
+	else
+		echo "message-$cmd '${msg//\'/\\\'}'" >>"$QUTE_FIFO"
+	fi
 }
 
 if pgrep vlc; then
-    msg info "Killed chromecast stream"
-    pkill vlc
-    exit 0
+	msg info "Killed chromecast stream"
+	pkill vlc
+	exit 0
 fi
 
 js() {
-    cat << EOF
+	cat <<EOF
     function descendantOfTagName(child, ancestorTagName) {
         // tells whether child has some (proper) ancestor
         // with the tag name ancestorTagName
@@ -96,9 +96,9 @@ EOF
 }
 
 printjs() {
-    js | sed 's,//.*$,,' | tr '\n' ' '
+	js | sed 's,//.*$,,' | tr '\n' ' '
 }
-echo "jseval -q $(printjs)" >> "$QUTE_FIFO"
+echo "jseval -q $(printjs)" >>"$QUTE_FIFO"
 
 IP=$(mdns | jq -r '.Addr')
 

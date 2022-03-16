@@ -2,21 +2,21 @@
 set -ef -o pipefail
 
 usage() {
-    echo "$(basename $0) bluetooth_mac 00:11:22:33:44:55 [name]"
-    exit 1
+	echo "$(basename $0) bluetooth_mac 00:11:22:33:44:55 [name]"
+	exit 1
 }
 
 connect() {
-    bluetooth on
-    bluetoothctl connect $1
+	bluetooth on
+	bluetoothctl connect $1
 }
 
 if [ -z "$1" ]; then
-    usage
+	usage
 else
-    mac="${1::17}"
-    name="${2:-$1}"
-    echo "Connecting to $name ..."
-    connect "$mac"
-    notify-send -i bluetooth-active-symbolic "Bluetooth" "Connected to ${name}"
+	mac="${1::17}"
+	name="${2:-$1}"
+	echo "Connecting to $name ..."
+	connect "$mac"
+	notify-send -i bluetooth-active-symbolic "Bluetooth" "Connected to ${name}"
 fi

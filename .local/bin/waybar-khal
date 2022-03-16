@@ -6,38 +6,38 @@
 set -euo pipefail
 
 render() {
-  # Find events starting in two minutes.
-  # So if my current event ends in two minutes and another one starts, the
-  # widget is already updated with what's upcoming.
-  SINCE="$(date -d 'now +2 min' '+%Y-%m-%d %H:%M')"
-  UNTIL="$(date -d 'now +1 day' '+%Y-%m-%d %H:%M')"
+	# Find events starting in two minutes.
+	# So if my current event ends in two minutes and another one starts, the
+	# widget is already updated with what's upcoming.
+	SINCE="$(date -d 'now +2 min' '+%Y-%m-%d %H:%M')"
+	UNTIL="$(date -d 'now +1 day' '+%Y-%m-%d %H:%M')"
 
-  # TODO: On overlap, try to prefer the event where I've confirmed attendance.
+	# TODO: On overlap, try to prefer the event where I've confirmed attendance.
 
-  EVENT="$(
-    khal list "$SINCE" "$UNTIL" \
-      --day-format 'SKIPME' \
-      --format "{start-end-time-style} {title:.31}{repeat-symbol}" |
-      grep -v SKIPME |      # filter out headers
-      grep -v -P '↦|↔ |⇥' | # filter out continuing all day events
-      grep -v '\[Lunch\]' | # filter out lunch
-      grep -v '^ ' |        # exclude full-day events
-      head -n 1             # show just the first
-  )"
+	EVENT="$(
+		khal list "$SINCE" "$UNTIL" \
+			--day-format 'SKIPME' \
+			--format "{start-end-time-style} {title:.31}{repeat-symbol}" |
+			grep -v SKIPME |      # filter out headers
+			grep -v -P '↦|↔ |⇥' | # filter out continuing all day events
+			grep -v '\[Lunch\]' | # filter out lunch
+			grep -v '^ ' |        # exclude full-day events
+			head -n 1             # show just the first
+	)"
 
-  if [ -z "$EVENT" ]; then
-    TEXT="(nothing upcoming)"
-    CLASS="no-event"
-  else
-    TEXT=" $EVENT"
-    CLASS="event"
-  fi
+	if [ -z "$EVENT" ]; then
+		TEXT="(nothing upcoming)"
+		CLASS="no-event"
+	else
+		TEXT=" $EVENT"
+		CLASS="event"
+	fi
 
-  jq --compact-output \
-    --null-input \
-    --arg text "$TEXT" \
-    --arg class "$CLASS" \
-    '{"text": $text, "class": $class}'
+	jq --compact-output \
+		--null-input \
+		--arg text "$TEXT" \
+		--arg class "$CLASS" \
+		'{"text": $text, "class": $class}'
 }
 
 # TODO: try to debounce this, so as to avoid too many executions. This is
@@ -53,23 +53,23 @@ render() {
 # It would be ideal to determine _when_ the current event ends, and set the
 # timeout accordinly. That would require parsing khal's output a bit more.
 while true; do
-  # Render one for initial state and then between timeouts.
-  render
+	# Render one for initial state and then between timeouts.
+	render
 
-  # Re-render any time there's changes.
-  inotifywait \
-    --event modify \
-    --event create \
-    --event delete \
-    --event close_write \
-    --event moved_to \
-    --event move \
-    --monitor \
-    --timeout 120 \
-    --recursive \
-    "$HOME/.local/share/khal" 2> /dev/null |
-    while read -r _; do
-      sleep 1
-      render
-    done
+	# Re-render any time there's changes.
+	inotifywait \
+		--event modify \
+		--event create \
+		--event delete \
+		--event close_write \
+		--event moved_to \
+		--event move \
+		--monitor \
+		--timeout 120 \
+		--recursive \
+		"$HOME/.local/share/khal" 2>/dev/null |
+		while read -r _; do
+			sleep 1
+			render
+		done
 done

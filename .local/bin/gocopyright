@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 addcopyright() {
-  file=$(tempfile)
-  cat <(echo "// Copyright 2022 Cyril Levis
+	file=$(tempfile)
+	cat <(echo "// Copyright 2022 Cyril Levis
 // SPDX-License-Identifier: Apache-2.0
-  ") "$1" >> "$file"
-  mv "$file" "$1"
+  ") "$1" >>"$file"
+	mv "$file" "$1"
 }
 
 for f in "$@"; do addcopyright "$f"; done

@@ -4,14 +4,14 @@ home='D8VXF9CJ0EPB'
 work='9KFDW65A10FL'
 
 test_monitor() {
-    swaymsg -t get_outputs | grep -q "$1"
-    return $?
+	swaymsg -t get_outputs | grep -q "$1"
+	return $?
 }
 
 if [[ $(test_monitor $home) -eq 0 ]]; then
-    echo "home"
+	echo "home"
 elif [[ $(test_monitor $work) -eq 0 ]]; then
-    echo "work"
+	echo "work"
 else
-    echo "default"
+	echo "default"
 fi

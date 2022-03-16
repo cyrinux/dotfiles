@@ -3,5 +3,5 @@
 mkdir -p ~/.local/share/qutebrowser-containers/$1/data
 ln -fs ~/.local/share/qutebrowser/greasemonkey ~/.local/share/qutebrowser-containers/$1/data/greasemonkeys
 ln -fs ~/.local/share/qutebrowser/qtwebengine_dictionaries ~/.local/share/qutebrowser-containers/$1/data/qtwebengine_dictionaries
-sed "s/CONTAINER/$1/g" ~/.config/qutebrowser/qutebrowser-template.desktop > ~/.local/share/applications/qutebrowser-$1.desktop
+sed "s/CONTAINER/$1/g" ~/.config/qutebrowser/qutebrowser-template.desktop >~/.local/share/applications/qutebrowser-$1.desktop
 ln -fs ~/.local/bin/qutebrowser-container ~/.local/bin/qutebrowser-$1

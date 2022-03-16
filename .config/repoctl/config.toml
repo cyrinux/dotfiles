@@ -101,4 +101,3 @@ default_profile = "default"
 
   # post_action is a command that should be executed before exiting.
   post_action = ""
-

@@ -1,13 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 get_status() {
-    status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
-    if [ "$status" != "up" ]; then
-        icon="<span foreground='#928374'></span>"
-        tooltip='Infra got a problem!'
-        class=down
-        printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
-    fi
+	status=$(curl -s https://healthchecks.io/badge/953a414b-22f6-4e43-8365-0fa32c/0LKKBXkE.json | jq -r '.status')
+	if [ "$status" != "up" ]; then
+		icon="<span foreground='#928374'></span>"
+		tooltip='Infra got a problem!'
+		class=down
+		printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+	fi
 }
 
 nm-online -q -t 60 && get_status

@@ -1,18 +1,18 @@
 g() {
-    if [[ $# > 0 ]]; then
-        git $@
-    else
-        git status
-    fi
+	if [[ $# > 0 ]]; then
+		git $@
+	else
+		git status
+	fi
 }
 
 # Create a git.io short URL
 gitio() {
-    if [ -z "${1}" ] || [ -z "${2}" ]; then
-        echo "Usage: \`gitio slug url\`"
-        return 1
-    fi
-    curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
+	if [ -z "${1}" ] || [ -z "${2}" ]; then
+		echo "Usage: \`gitio slug url\`"
+		return 1
+	fi
+	curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
 alias g='git'
@@ -87,30 +87,30 @@ alias gxd='git annex drop'
 alias gxc='git annex copy'
 
 grf() {
-    upstream="$(git remote get-url upstream 2> /dev/null || git remote get-url origin)"
-    if [[ $# == 1 ]]; then
-        fork=$(echo "$upstream" | awk -v name="$1" -F/ '{print $1"/"$2"/"$3"/"name"/"$5}')
-        if [[ "$upstream" == https* ]]; then
-            fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print $1 "/" $2 "/" name "/" $5 }')
-        else
-            fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print "https://github.com/" name "/" $2 }')
-        fi
+	upstream="$(git remote get-url upstream 2>/dev/null || git remote get-url origin)"
+	if [[ $# == 1 ]]; then
+		fork=$(echo "$upstream" | awk -v name="$1" -F/ '{print $1"/"$2"/"$3"/"name"/"$5}')
+		if [[ "$upstream" == https* ]]; then
+			fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print $1 "/" $2 "/" name "/" $5 }')
+		else
+			fork=$(echo "$upstream" | awk -v name="$1" -F/ '{ print "https://github.com/" name "/" $2 }')
+		fi
 
-        git remote remove "$1" 2> /dev/null
-        git remote add "$1" "$fork"
-        git fetch "$1"
-    else
-        myfork=$(echo "$upstream" | awk -v name="$USER_GITHUB" -F/ '{ print "git@github.com:" name "/" $5 }')
+		git remote remove "$1" 2>/dev/null
+		git remote add "$1" "$fork"
+		git fetch "$1"
+	else
+		myfork=$(echo "$upstream" | awk -v name="$USER_GITHUB" -F/ '{ print "git@github.com:" name "/" $5 }')
 
-        git remote remove upstream 2> /dev/null
-        git remote remove origin 2> /dev/null
+		git remote remove upstream 2>/dev/null
+		git remote remove origin 2>/dev/null
 
-        git remote add upstream "$upstream"
-        git remote add origin "$myfork"
+		git remote add upstream "$upstream"
+		git remote add origin "$myfork"
 
-        git fetch upstream
-        git fetch origin
+		git fetch upstream
+		git fetch origin
 
-        git branch --set-upstream-to=upstream/master master
-    fi
+		git branch --set-upstream-to=upstream/master master
+	fi
 }

@@ -1,19 +1,19 @@
 #!/bin/sh
 
 if [ $(id -u) != 0 ]; then
-    echo "###  Run me as root!\t\t\t###"
-    exit 1
+	echo "###  Run me as root!\t\t\t###"
+	exit 1
 fi
 
 compress_boot() {
-    btrfs filesystem defragment -r -clzo /boot
-    btrfs filesystem defragment -r -clzo /crypto_keyfile.bin
-    echo "### End, You can reboot quietly !"
+	btrfs filesystem defragment -r -clzo /boot
+	btrfs filesystem defragment -r -clzo /crypto_keyfile.bin
+	echo "### End, You can reboot quietly !"
 }
 
 trap_controlc() {
-    echo "### Trap control-C, recompressing /boot..."
-    compress_boot
+	echo "### Trap control-C, recompressing /boot..."
+	compress_boot
 }
 
 trap compress_boot INT

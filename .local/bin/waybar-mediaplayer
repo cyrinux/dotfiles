@@ -1,20 +1,20 @@
 #!/bin/bash
 set -euo pipefail
-class=$(playerctl metadata --player=MellowPlayer --format '{{lc(status)}}' 2> /dev/null)
+class=$(playerctl metadata --player=MellowPlayer --format '{{lc(status)}}' 2>/dev/null)
 icon=""
 
 if [[ $class == "playing" ]] || [[ $class == "paused" ]]; then
-  info=$(playerctl metadata --player=MellowPlayer --format '{{artist}} - {{title}}' 2> /dev/null)
+	info=$(playerctl metadata --player=MellowPlayer --format '{{artist}} - {{title}}' 2>/dev/null)
 
-  # If the title is too long, cut it and add ellipsis
-  if [[ ${#info} -ge 40 ]]; then
-    info=$(echo -e $info | colrm 40)"..."
-  fi
+	# If the title is too long, cut it and add ellipsis
+	if [[ ${#info} -ge 40 ]]; then
+		info=$(echo -e $info | colrm 40)"..."
+	fi
 
-  # If we don't escape HTML, Waybar has problems showing the string even though the script technically work
-  text=$icon" "$(echo -e $info | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g')
+	# If we don't escape HTML, Waybar has problems showing the string even though the script technically work
+	text=$icon" "$(echo -e $info | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&#39;/g')
 elif [[ $class == "stopped" ]]; then
-  text="$icon"
+	text="$icon"
 fi
 
 echo -e "{\"text\":\""$text"\", \"class\":\""$class"\"}"

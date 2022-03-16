@@ -4,12 +4,12 @@ marker="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-eyes"
 eyes=""
 
 run() {
-    while true; do
-        printf '{"text": "%s"}\n' "$(echo "$eyes" | xargs)"
-        touch "$marker"
-        inotifywait -t 900 -q -e delete_self "$marker" || true
-        [ -f "$marker" ] && eyes="$eyes " || eyes=""
-    done
+	while true; do
+		printf '{"text": "%s"}\n' "$(echo "$eyes" | xargs)"
+		touch "$marker"
+		inotifywait -t 900 -q -e delete_self "$marker" || true
+		[ -f "$marker" ] && eyes="$eyes " || eyes=""
+	done
 }
 
 [ "$1" = "done" ] && rm "$marker" || run

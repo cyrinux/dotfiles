@@ -7,4 +7,3 @@ Type=oneshot
 
 [Install]
 WantedBy=default.target
-

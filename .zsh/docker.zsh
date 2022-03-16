@@ -11,7 +11,7 @@ alias drmvd='docker volume rm $(docker volume ls -q -f dangling=true)'
 alias drmid='drmi $(docker images -q -f dangling=true)'
 alias dpurge="drmcd ; drmvd ; drmid ;docker network prune -f"
 
-command -v podman-compose &> /dev/null && alias docker-compose='podman-compose'
+command -v podman-compose &>/dev/null && alias docker-compose='podman-compose'
 alias dc="docker-compose"
 alias dcd='dc down'
 alias dcl='dc logs -t -f --tail=1000'
@@ -42,30 +42,30 @@ alias android-build="podman run --rm -v \"$(pwd):/project\" mingc/android-build-
 alias workspace='docker run --rm -it rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
 
 function dockershellhere() {
-    dirname=${PWD##*/}
-    podman run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
+	dirname=${PWD##*/}
+	podman run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
 function dockershellshhere() {
-    dirname=${PWD##*/}
-    podman run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
+	dirname=${PWD##*/}
+	podman run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
 function vagrant() {
-    podman run -it --rm \
-        -e LIBVIRT_DEFAULT_URI \
-        -v /var/run/libvirt/:/var/run/libvirt/ \
-        -v ~/.vagrant.d/boxes:/vagrant/boxes \
-        -v ~/.vagrant.d/data:/vagrant/data \
-        -v ~/.vagrant.d/tmp:/vagrant/tmp \
-        -v $(realpath "${PWD}"):${PWD} \
-        -v /etc/hosts:/etc/hosts \
-        -w $(realpath "${PWD}") \
-        --network host \
-        --entrypoint /bin/bash \
-        --security-opt label=disable \
-        docker.io/vagrantlibvirt/vagrant-libvirt:latest \
-        vagrant $@
+	podman run -it --rm \
+		-e LIBVIRT_DEFAULT_URI \
+		-v /var/run/libvirt/:/var/run/libvirt/ \
+		-v ~/.vagrant.d/boxes:/vagrant/boxes \
+		-v ~/.vagrant.d/data:/vagrant/data \
+		-v ~/.vagrant.d/tmp:/vagrant/tmp \
+		-v $(realpath "${PWD}"):${PWD} \
+		-v /etc/hosts:/etc/hosts \
+		-w $(realpath "${PWD}") \
+		--network host \
+		--entrypoint /bin/bash \
+		--security-opt label=disable \
+		docker.io/vagrantlibvirt/vagrant-libvirt:latest \
+		vagrant $@
 }
 
 alias mk='minikube'

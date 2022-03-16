@@ -9,8 +9,8 @@ class=off
 text=""
 
 if [ "$counter" -gt 0 ]; then
-    icon=''
-    class=on
-    text="$icon $counter"
+	icon=''
+	class=on
+	text="$icon $counter"
 fi
 printf '{"text": "%s", "tooltip": "%s", "class": "%s"}\n' "$text" "$tooltip" "$class"

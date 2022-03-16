@@ -1,29 +1,29 @@
 #!/bin/sh
 
 lsrepos() {
-    find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
-        sed -e 's/^.*restic\///' -e 's/\.gpg$//'
+	find "${PASSWORD_STORE_DIR:-$HOME/.password-store}/personal/backup/restic" -type f |
+		sed -e 's/^.*restic\///' -e 's/\.gpg$//'
 }
 
 main() {
-    for repo in $(lsrepos); do
-        restore "$repo" "$@"
-    done
+	for repo in $(lsrepos); do
+		restore "$repo" "$@"
+	done
 }
 
 restore() {
-    repo=shift
-    args=shift
-    eval "$(pass "personal/backup/restic/$repo" 2> /dev/null)"
+	repo=shift
+	args=shift
+	eval "$(pass "personal/backup/restic/$repo" 2>/dev/null)"
 
-    echo
-    echo "Restore from $RESTIC_REPOSITORY..."
-    echo
+	echo
+	echo "Restore from $RESTIC_REPOSITORY..."
+	echo
 
-    restic snapshots --tag="$RESTIC_TAG" --host="$(hostnamectl --static)"
-    echo "Enter the snapshot id to restore:"
-    read -r snapshot
-    restic restore "$snapshot" --tag="$RESTIC_TAG" --host="$(hostnamectl --static)" --target /tmp/restore-restic $args
+	restic snapshots --tag="$RESTIC_TAG" --host="$(hostnamectl --static)"
+	echo "Enter the snapshot id to restore:"
+	read -r snapshot
+	restic restore "$snapshot" --tag="$RESTIC_TAG" --host="$(hostnamectl --static)" --target /tmp/restore-restic $args
 }
 
 main "$@"

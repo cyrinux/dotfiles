@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 """
-A handy script for extracting all events from a particular year 
+A handy script for extracting all events from a particular year
 from an ICS file into another ICS file.
 
 @author Derek Ruths (druths@networkdynamics.org)

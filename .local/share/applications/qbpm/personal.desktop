@@ -6,4 +6,3 @@ Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/personal --qt-
 Categories=['Network']
 Terminal=False
 StartupNotify=True
-

@@ -8,10 +8,10 @@ cert=$rootpath/user.crt
 key=$rootpath/user.key
 
 inotifywait -q -m -e access $rootpath | while read -r line; do
-    if [ ! -s $cert ]; then
-        pass work/certificat/user.crt > $cert
-    fi
-    if [ ! -s $key ]; then
-        pass work/certificat/user.key > $key
-    fi
+	if [ ! -s $cert ]; then
+		pass work/certificat/user.crt >$cert
+	fi
+	if [ ! -s $key ]; then
+		pass work/certificat/user.key >$key
+	fi
 done

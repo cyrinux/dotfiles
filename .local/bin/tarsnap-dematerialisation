@@ -4,11 +4,11 @@ set -e
 
 KEY="$XDG_CACHE_HOME/tarsnap.key"
 while true; do
-    [ -f ~/Vault/.lock ] && break
-    # echo "waiting for Vault"
-    sleep 1
+	[ -f ~/Vault/.lock ] && break
+	# echo "waiting for Vault"
+	sleep 1
 done
 
-[ ! -f $KEY ] && pass personal/backup/tarsnap-key > $KEY && chmod 400 $KEY
+[ ! -f $KEY ] && pass personal/backup/tarsnap-key >$KEY && chmod 400 $KEY
 tarsnap --keyfile $KEY --cachedir /tmp/tarsnap-cache --fsck
 tarsnap --keyfile $KEY -c --cachedir /tmp/tarsnap-cache -f "$(hostname)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/.dotfiles-private ~/library/contacts ~/library/calendars ~/.password-store

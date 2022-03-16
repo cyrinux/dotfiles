@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.23.33
+pkgver=2.24.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -46,7 +46,6 @@ depends=(
     'mkinitcpio-encrypt-detached-header'
     'arch-secure-boot'
     'man-db'
-    'jre11-openjdk'
     'ttf-liberation'
     'htop'
     'kernel-modules-hook'
@@ -108,7 +107,6 @@ depends=(
     'browserpass-chromium'
     'browserpass-firefox'
     'brscan4'
-    'burpsuite'
     'calibre'
     'cantarell-fonts'
     'cardpeek'
@@ -257,7 +255,6 @@ depends=(
     'isync'
     'iucode-tool'
     'iwd'
-    'java-runtime'
     'jq'
     'k0s-bin'
     'k9s'

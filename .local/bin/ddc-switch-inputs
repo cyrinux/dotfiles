@@ -1,18 +1,18 @@
 #!/bin/bash
 # Usage: ddc-switch-inputs 1
 case $1 in
-    1)
-        # Config 1: Laptop
-        OUT="0x0f"
-        ;;
-    2)
-        # Config 2: Workstation
-        OUT="0x10"
-        ;;
-    *)
-        echo "Unknown input '$1'"
-        exit 1
-        ;;
+1)
+	# Config 1: Laptop
+	OUT="0x0f"
+	;;
+2)
+	# Config 2: Workstation
+	OUT="0x10"
+	;;
+*)
+	echo "Unknown input '$1'"
+	exit 1
+	;;
 esac
 
 ddcutil --sn=D8VXF9CJ0EPB setvcp 60 ${OUT} &

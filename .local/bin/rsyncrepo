@@ -1,3 +1,3 @@
 #!/bin/sh
 systemctl start backup-repo@pkgbuild &
-journalctl -f --unit  backup-repo@pkgbuild.service
+journalctl -f --unit backup-repo@pkgbuild.service

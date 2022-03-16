@@ -95,10 +95,10 @@ function checkForUserAvatarButton() {
   if (isMobile) {
     return;
   }
-  if (document.querySelector('#avatar-btn')) {
-    return true
+  if (document.querySelector("#avatar-btn")) {
+    return true;
   } else {
-    return false
+    return false;
   }
 }
 
@@ -240,17 +240,17 @@ function likeClicked() {
       likesvalue--;
       createRateBar(likesvalue, dislikesvalue);
       setDislikes(numberFormat(dislikesvalue));
-      previousState = 3
+      previousState = 3;
     } else if (previousState == 2) {
       likesvalue++;
       dislikesvalue--;
-      setDislikes(numberFormat(dislikesvalue))
+      setDislikes(numberFormat(dislikesvalue));
       createRateBar(likesvalue, dislikesvalue);
-      previousState = 1
+      previousState = 1;
     } else if (previousState == 3) {
       likesvalue++;
-      createRateBar(likesvalue, dislikesvalue)
-      previousState = 1
+      createRateBar(likesvalue, dislikesvalue);
+      previousState = 1;
     }
   }
 }
@@ -261,18 +261,18 @@ function dislikeClicked() {
       dislikesvalue++;
       setDislikes(numberFormat(dislikesvalue));
       createRateBar(likesvalue, dislikesvalue);
-      previousState = 2
+      previousState = 2;
     } else if (previousState == 2) {
       dislikesvalue--;
       setDislikes(numberFormat(dislikesvalue));
       createRateBar(likesvalue, dislikesvalue);
-      previousState = 3
+      previousState = 3;
     } else if (previousState == 1) {
       likesvalue--;
       dislikesvalue++;
       setDislikes(numberFormat(dislikesvalue));
       createRateBar(likesvalue, dislikesvalue);
-      previousState = 2
+      previousState = 2;
     }
   }
 }
@@ -311,11 +311,15 @@ function roundDown(num) {
 }
 
 function numberFormat(numberState) {
-  let localeURL = Array.from(document.querySelectorAll("head > link[rel='search']"))
+  let localeURL = Array.from(
+    document.querySelectorAll("head > link[rel='search']")
+  )
     ?.find((n) => n?.getAttribute("href")?.includes("?locale="))
     ?.getAttribute("href");
 
-  const userLocales = localeURL ? new URL(localeURL)?.searchParams?.get("locale") : document.body.lang;
+  const userLocales = localeURL
+    ? new URL(localeURL)?.searchParams?.get("locale")
+    : document.body.lang;
 
   const formatter = Intl.NumberFormat(
     document.documentElement.lang || userLocales || navigator.language,

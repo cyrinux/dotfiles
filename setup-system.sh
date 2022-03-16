@@ -5,80 +5,80 @@ exec 2> >(while read -r line; do echo -e "\e[01;31m$line\e[0m"; done)
 
 script_name="$(basename "$0")"
 dotfiles_dir="$(
-    cd "$(dirname "$0")"
-    pwd
+	cd "$(dirname "$0")"
+	pwd
 )"
 cd "$dotfiles_dir"
 
 if (("$EUID")); then
-    sudo -E "$dotfiles_dir/$script_name" "$@"
-    exit 0
+	sudo -E "$dotfiles_dir/$script_name" "$@"
+	exit 0
 fi
 
 if [ "$1" = "-r" ]; then
-    echo >&2 "Running in reverse mode!"
-    reverse=1
+	echo >&2 "Running in reverse mode!"
+	reverse=1
 fi
 
 in_ci() {
-    [ "$ESP" = "/tmp" ]
+	[ "$ESP" = "/tmp" ]
 }
 
 is_chroot() {
-    ! cmp -s /proc/1/mountinfo /proc/self/mountinfo
+	! cmp -s /proc/1/mountinfo /proc/self/mountinfo
 }
 
 copy() {
-    if [ -z "$reverse" ]; then
-        orig_file="$dotfiles_dir/$1"
-        dest_file="/$1"
-    else
-        orig_file="/$1"
-        dest_file="$dotfiles_dir/$1"
-    fi
+	if [ -z "$reverse" ]; then
+		orig_file="$dotfiles_dir/$1"
+		dest_file="/$1"
+	else
+		orig_file="/$1"
+		dest_file="$dotfiles_dir/$1"
+	fi
 
-    mkdir -p "$(dirname "$orig_file")"
-    mkdir -p "$(dirname "$dest_file")"
+	mkdir -p "$(dirname "$orig_file")"
+	mkdir -p "$(dirname "$dest_file")"
 
-    rm -rf "$dest_file"
+	rm -rf "$dest_file"
 
-    cp -R "$orig_file" "$dest_file"
-    if [ -z "$reverse" ]; then
-        [ -n "$2" ] && chmod "$2" "$dest_file"
-    else
-        chown -R $USER "$dest_file"
-    fi
-    echo "$dest_file <= $orig_file"
+	cp -R "$orig_file" "$dest_file"
+	if [ -z "$reverse" ]; then
+		[ -n "$2" ] && chmod "$2" "$dest_file"
+	else
+		chown -R $USER "$dest_file"
+	fi
+	echo "$dest_file <= $orig_file"
 }
 
 systemctl_enable() {
-    if in_ci; then
-        echo "systemctl enable $1 (noop)"
-    else
-        echo "systemctl enable $1"
-        systemctl enable "$1"
-    fi
+	if in_ci; then
+		echo "systemctl enable $1 (noop)"
+	else
+		echo "systemctl enable $1"
+		systemctl enable "$1"
+	fi
 }
 
 systemctl_enable_start() {
-    if in_ci; then
-        echo "systemctl enable --now $1 (noop)"
-    else
-        echo "systemctl enable --now $1"
-        systemctl daemon-reload
-        systemctl enable "$1"
-        systemctl start "$1"
-    fi
+	if in_ci; then
+		echo "systemctl enable --now $1 (noop)"
+	else
+		echo "systemctl enable --now $1"
+		systemctl daemon-reload
+		systemctl enable "$1"
+		systemctl start "$1"
+	fi
 }
 
 systemctl_disable_stop() {
-    if in_ci; then
-        echo "systemctl disable --now $1 (noop)"
-    else
-        echo "systemctl disable --now $1"
-        systemctl disable "$1"
-        systemctl stop "$1"
-    fi
+	if in_ci; then
+		echo "systemctl disable --now $1 (noop)"
+	else
+		echo "systemctl disable --now $1"
+		systemctl disable "$1"
+		systemctl stop "$1"
+	fi
 }
 
 in_ci && echo "!!! Running in CI !!!"
@@ -177,7 +177,7 @@ systemctl_enable_start "btrfs-scrub@var-log.timer"
 systemctl_enable_start "btrfs-scrub@var-tmp.timer"
 systemctl_enable_start "btrfs-scrub@\x2esnapshots.timer"
 if is_chroot; then
-    echo >&2 "=== Running in chroot, skipping docker service setup..."
+	echo >&2 "=== Running in chroot, skipping docker service setup..."
 fi
 systemctl_enable_start "earlyoom.service"
 systemctl_enable_start "fstrim.timer"
@@ -208,7 +208,7 @@ echo "Finishing various user configuration..."
 echo "======================================="
 
 if [ ! -s "/etc/usbguard/rules.conf" ]; then
-    echo >&2 "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
+	echo >&2 "=== Remember to set usbguard rules: usbguard generate-policy >! /etc/usbguard/rules.conf"
 fi
 
 echo "Configuring NTP"
@@ -224,20 +224,20 @@ echo "Regenerating fonts cache"
 fc-cache -r
 
 if is_chroot || in_ci; then
-    echo >&2 "=== Running in chroot or CI, skipping firewall, resolv.conf and udev setup..."
+	echo >&2 "=== Running in chroot or CI, skipping firewall, resolv.conf and udev setup..."
 else
-    echo "Sudo config"
-    copy "etc/sudoers.d/override"
+	echo "Sudo config"
+	copy "etc/sudoers.d/override"
 
-    echo "Applying kernel tuning"
-    sysctl --system > /dev/null
+	echo "Applying kernel tuning"
+	sysctl --system >/dev/null
 
-    echo "Reload udev rules"
-    udevadm control --reload
-    udevadm trigger
+	echo "Reload udev rules"
+	udevadm control --reload
+	udevadm trigger
 
-    echo "Force dns config"
-    ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+	echo "Force dns config"
+	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
 
 echo "Install xdg-open firejail wrapper"

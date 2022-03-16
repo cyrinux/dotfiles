@@ -5,36 +5,36 @@ set -euo pipefail
 action="${1:-'status'}"
 
 toggle() {
-    state="$(easyeffects -b 3 2>&1)"
-    if [ "$state" == "1" ]; then
-        easyeffects -b 2
-    else
-        easyeffects -b 1
-    fi
+	state="$(easyeffects -b 3 2>&1)"
+	if [ "$state" == "1" ]; then
+		easyeffects -b 2
+	else
+		easyeffects -b 1
+	fi
 }
 
 status() {
-    while true; do
-        state="$(easyeffects -b 3 2>&1)"
-        if [ "$state" == "1" ]; then
-            icon="🔉"
-            class=""
-            tooltip="enabled"
-        else
-            icon="🔊"
-            class=""
-            tooltip="disabled"
-        fi
-        printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
-        sleep 1
-    done
+	while true; do
+		state="$(easyeffects -b 3 2>&1)"
+		if [ "$state" == "1" ]; then
+			icon="🔉"
+			class=""
+			tooltip="enabled"
+		else
+			icon="🔊"
+			class=""
+			tooltip="disabled"
+		fi
+		printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+		sleep 1
+	done
 }
 
 case "$action" in
-    toggle)
-        toggle
-        ;;
-    *)
-        status
-        ;;
+toggle)
+	toggle
+	;;
+*)
+	status
+	;;
 esac

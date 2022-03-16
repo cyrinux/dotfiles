@@ -3,22 +3,22 @@
 trap 'pkill -P $$' EXIT
 
 tooltip() {
-    piactl get region
-    echo
-    piactl get pubip
+	piactl get region
+	echo
+	piactl get pubip
 }
 
 vpn() {
-    state=$1
-    if [[ "x${state}x" == "xConnectedx" ]]; then
-        icon="<span foreground='#928374'></span>"
-        class=on
-    else
-        icon="<span foreground='#928374'></span>"
-        class=off
-    fi
-    tooltip=tooltip
-    printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
+	state=$1
+	if [[ "x${state}x" == "xConnectedx" ]]; then
+		icon="<span foreground='#928374'></span>"
+		class=on
+	else
+		icon="<span foreground='#928374'></span>"
+		class=off
+	fi
+	tooltip=tooltip
+	printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon" "$tooltip" "$class"
 }
 
 vpn

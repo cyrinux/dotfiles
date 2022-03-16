@@ -11,9 +11,9 @@ vimiv -f -s statusbar.show false screen.png &
 
 geometry="$(slurp -b '#AFAFAFAF' -c '#FF3F3FAF' -s '#00000000' -w 3 -d -o)"
 if [ -n "$geometry" ]; then
-    grim -g "$geometry" -t png area.png
+	grim -g "$geometry" -t png area.png
 else
-    grim -t png area.png
+	grim -t png area.png
 fi
 
 kill $!
@@ -23,10 +23,10 @@ systemctl --user start sway-inactive-window-transparency.service
 [ -f area.png ] && swappy -f area.png
 WITDH=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .current_mode.width')
 if [[ $WITDH > 1920 ]]; then
-    convert area.png -resize 50% reduced.png
-    wl-copy < reduced.png
+	convert area.png -resize 50% reduced.png
+	wl-copy <reduced.png
 else
-    wl-copy < area.png
+	wl-copy <area.png
 fi
 
 rm -f screen.png area.png

@@ -1,4 +1,4 @@
 #!/bin/sh
 for modem in $(seq 0 30); do
-    for i in $(seq 0 100); do mmcli -m $modem --messaging-delete-sms=$i 2> /dev/null; done
+	for i in $(seq 0 100); do mmcli -m $modem --messaging-delete-sms=$i 2>/dev/null; done
 done

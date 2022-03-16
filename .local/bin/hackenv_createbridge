@@ -9,25 +9,25 @@ readonly datahome="$datahome/hackenv"
 readonly networkname='default'
 readonly interfacename='virbr0'
 
-if_network_exists () {
+if_network_exists() {
 	sudo virsh net-list --all --name | grep "^$networkname\$" >/dev/null
 }
 
 # https://stackoverflow.com/a/52814732
-create_network () {
+create_network() {
 	printf "Creating XML network description...\n" >&2
 
-	cat <<-EOF > "$datahome/network.xml"
-<network>
-    <name>$networkname</name>
-    <bridge name="$interfacename"/>
-    <forward/>
-    <ip address="192.168.122.1" netmask="255.255.255.0">
-        <dhcp>
-            <range start="192.168.122.2" end="192.168.122.254"/>
-        </dhcp>
-    </ip>
-</network>
+	cat <<-EOF >"$datahome/network.xml"
+		<network>
+		    <name>$networkname</name>
+		    <bridge name="$interfacename"/>
+		    <forward/>
+		    <ip address="192.168.122.1" netmask="255.255.255.0">
+		        <dhcp>
+		            <range start="192.168.122.2" end="192.168.122.254"/>
+		        </dhcp>
+		    </ip>
+		</network>
 	EOF
 
 	printf "Define the network...\n" >&2
@@ -43,14 +43,14 @@ create_network () {
 printf "Requesting elevated permissions...\n" >&2
 sudo true
 
-if_network_exists \
-	&& printf "Network already exists; exiting...\n" >&2 \
-	&& exit 0
+if_network_exists &&
+	printf "Network already exists; exiting...\n" >&2 &&
+	exit 0
 
 create_network
 
 printf "Verify that the network was created... " >&2
-if_network_exists \
-    && printf "success" >&2 \
-    || printf "failure" >&2
+if_network_exists &&
+	printf "success" >&2 ||
+	printf "failure" >&2
 printf "!\n" >&2

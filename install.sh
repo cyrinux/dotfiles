@@ -37,41 +37,41 @@ export SNAP_PAC_SKIP=y
 BACKTITLE="Arch Linux installation"
 
 get_input() {
-    title="$1"
-    description="$2"
+	title="$1"
+	description="$2"
 
-    input=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --inputbox "$description" 0 0)
-    echo "$input"
+	input=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --inputbox "$description" 0 0)
+	echo "$input"
 }
 
 get_password() {
-    title="$1"
-    description="$2"
+	title="$1"
+	description="$2"
 
-    init_pass=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --passwordbox "$description" 0 0)
-    : ${init_pass:?"password cannot be empty"}
+	init_pass=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --passwordbox "$description" 0 0)
+	: ${init_pass:?"password cannot be empty"}
 
-    test_pass=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --passwordbox "$description again" 0 0)
+	test_pass=$(dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --passwordbox "$description again" 0 0)
 
-    if [[ "$init_pass" != "$test_pass" ]]; then
-        echo "Passwords did not match" >&2
-        exit 1
-    fi
-    echo $init_pass
+	if [[ "$init_pass" != "$test_pass" ]]; then
+		echo "Passwords did not match" >&2
+		exit 1
+	fi
+	echo $init_pass
 }
 
 get_choice() {
-    title="$1"
-    description="$2"
-    shift 2
-    options=("$@")
-    dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --menu "$description" 0 0 0 "${options[@]}"
+	title="$1"
+	description="$2"
+	shift 2
+	options=("$@")
+	dialog --clear --stdout --backtitle "$BACKTITLE" --title "$title" --menu "$description" 0 0 0 "${options[@]}"
 }
 
 echo -e "\n### Testing if UEFI is supported"
 if [ ! -f /sys/firmware/efi/fw_platform_size ]; then
-    echo "Sorry your computer doesn't support EFI"
-    exit 2
+	echo "Sorry your computer doesn't support EFI"
+	exit 2
 fi
 
 echo -e "\n### Setting up clock"
@@ -101,9 +101,9 @@ fde=$(get_choice "Luks Encryption" "Use Yubikey FDE project?" "${noyes[@]}") || 
 clear
 
 [[ "$fde" == "No" ]] && {
-    lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
-    clear
-    : ${lukspw:?"password cannot be empty"}
+	lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
+	clear
+	: ${lukspw:?"password cannot be empty"}
 }
 
 user=$(get_input "User" "Enter username") || exit 1
@@ -115,7 +115,7 @@ clear
 : ${password:?"password cannot be empty"}
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac | tr '\n' ' ')
-read -r -a devicelist <<< "$devicelist"
+read -r -a devicelist <<<"$devicelist"
 device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
 clear
 
@@ -127,8 +127,8 @@ echo -e "\n### Setting up fastest mirrors"
 reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\n### Setting up partitions"
-umount -R /mnt 2> /dev/null || true
-cryptsetup luksClose luks 2> /dev/null || true
+umount -R /mnt 2>/dev/null || true
+cryptsetup luksClose luks 2>/dev/null || true
 
 sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
 sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
@@ -137,21 +137,21 @@ part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
 
 if [ "$device" != "$luks_header_device" ]; then
-    cryptargs="--header $luks_header_device"
+	cryptargs="--header $luks_header_device"
 else
-    cryptargs=""
-    luks_header_device="$part_root"
+	cryptargs=""
+	luks_header_device="$part_root"
 fi
 
 echo -e "\n### Formatting partitions"
 mkfs.vfat -n "EFI" -F 32 "${part_boot}"
 
 if [[ "$fde" == "Yes" ]]; then
-    ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
-    ykfde-open -d "${part_root}" -n luks
+	ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
+	ykfde-open -d "${part_root}" -n luks
 else
-    echo -n ${lukspw} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
-    echo -n ${lukspw} | cryptsetup luksOpen $cryptargs "${part_root}" luks
+	echo -n ${lukspw} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
+	echo -n ${lukspw} | cryptsetup luksOpen $cryptargs "${part_root}" luks
 fi
 
 mkfs.btrfs -L btrfs /dev/mapper/luks
@@ -193,14 +193,14 @@ echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 
 if [[ "${hostname}" == "work-"* ]]; then
-    wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
-    rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
+	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
+	rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 else
-    repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+	repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 fi
 
-if ! grep cyrinux /etc/pacman.conf > /dev/null; then
-    cat >> /etc/pacman.conf << EOF
+if ! grep cyrinux /etc/pacman.conf >/dev/null; then
+	cat >>/etc/pacman.conf <<EOF
 [cyrinux-aur-local]
 Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
@@ -224,29 +224,29 @@ luks_header_size="$(stat -c '%s' /tmp/header.img)"
 rm -f /tmp/header.img
 
 if [[ "$fde" == "Yes" ]]; then
-    echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
+	echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" >/mnt/etc/kernel/cmdline
 else
-    echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
-    " > /mnt/etc/kernel/cmdline
+	echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
+    " >/mnt/etc/kernel/cmdline
 fi
 
-echo "FONT=$font" > /mnt/etc/vconsole.conf
-echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
-genfstab -L /mnt >> /mnt/etc/fstab
-echo "${hostname}" > /mnt/etc/hostname
-echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
-echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+echo "FONT=$font" >/mnt/etc/vconsole.conf
+echo "KEYMAP=fr" >>/mnt/etc/vconsole.conf
+genfstab -L /mnt >>/mnt/etc/fstab
+echo "${hostname}" >/mnt/etc/hostname
+echo "en_US.UTF-8 UTF-8" >>/mnt/etc/locale.gen
+echo "fr_FR.UTF-8 UTF-8" >>/mnt/etc/locale.gen
 ln -sf /usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 arch-chroot /mnt locale-gen
 if [[ "$fde" == "Yes" ]]; then
-    cat << EOF > /mnt/etc/mkinitcpio.conf
+	cat <<EOF >/mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
 HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
 EOF
 else
-    cat << EOF > /mnt/etc/mkinitcpio.conf
+	cat <<EOF >/mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
@@ -254,7 +254,7 @@ HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems key
 EOF
 fi
 
-cat << EOF > /mnt/etc/sudoers
+cat <<EOF >/mnt/etc/sudoers
 root ALL=(ALL) ALL
 %wheel ALL=(ALL) ALL
 @includedir /etc/sudoers.d
@@ -262,13 +262,13 @@ EOF
 
 echo -e "\n### Setting up Secure Boot with custom keys"
 [[ "$fde" == "Yes" ]] && {
-    sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
-    echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
-    if [ "$device" != "$luks_header_device" ]; then
-        echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
-    fi
+	sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
+	echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >>/mnt/etc/ykfde.conf
+	if [ "$device" != "$luks_header_device" ]; then
+		echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >>/mnt/etc/ykfde.conf
+	fi
 }
-echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
+echo KERNEL=linux >/mnt/etc/arch-secure-boot/config
 
 arch-chroot /mnt mkinitcpio -p linux
 arch-chroot /mnt arch-secure-boot initial-setup || true
@@ -281,13 +281,13 @@ btrfs property set /mnt/swap/swapfile compression none
 dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=4096
 chmod 600 /mnt/swap/swapfile
 mkswap /mnt/swap/swapfile
-echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
+echo "/swap/swapfile none swap defaults 0 0" >>/mnt/etc/fstab
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
 for group in wheel network video render plugdev i2c libvirt audit input wireshark rfkill; do
-    arch-chroot /mnt groupadd -rf "$group"
-    arch-chroot /mnt gpasswd -a "$user" "$group"
+	arch-chroot /mnt groupadd -rf "$group"
+	arch-chroot /mnt gpasswd -a "$user" "$group"
 done
 
 arch-chroot /mnt chsh -s /usr/bin/zsh
@@ -299,15 +299,15 @@ arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local
 
 echo -e "\n### Cloning dotfiles"
 if [ "${user}" = "cyril" ]; then
-    arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
-    echo -e "\n### Running initial setup"
-    arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
-    arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
-    arch-chroot /mnt sudo -u $user zsh -ic true
+	arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
+	echo -e "\n### Running initial setup"
+	arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
+	arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
+	arch-chroot /mnt sudo -u $user zsh -ic true
 
-    echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
+	echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 else
-    echo -e "\n### DONE - read POST_INSTALL.md for tips on configuring your setup"
+	echo -e "\n### DONE - read POST_INSTALL.md for tips on configuring your setup"
 fi
 
 umount -R /mnt

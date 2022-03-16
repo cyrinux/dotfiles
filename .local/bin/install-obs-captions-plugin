@@ -13,8 +13,8 @@ patch=${BASH_REMATCH[3]}
 
 url="https://api.github.com/repos/ratwithacompiler/OBS-captions-plugin/releases/latest"
 
-if (( major < 27 )); then
-  url="https://api.github.com/repos/ratwithacompiler/OBS-captions-plugin/releases/tags/v0.18b"
+if ((major < 27)); then
+	url="https://api.github.com/repos/ratwithacompiler/OBS-captions-plugin/releases/tags/v0.18b"
 fi
 
 dir=$(mktemp -d)

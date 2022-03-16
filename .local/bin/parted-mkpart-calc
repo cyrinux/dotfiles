@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# vim: softtabstop=4 shiftwidth=4 expandtab 
+# vim: softtabstop=4 shiftwidth=4 expandtab
 
 # Copyright (c) 2015-2019 Jari Turkia (jatu@hqcodeshop.fi)
 
@@ -205,8 +205,7 @@ if [ $CURRENT_USER_ID == 0 ]; then
 else
     echo If you would be root, you could create partition with:
 fi
-echo "# parted /dev/$BLOCK_DEVICE $mkpart" 
+echo "# parted /dev/$BLOCK_DEVICE $mkpart"
 echo "Verify partition alignment with:"
 echo "# parted /dev/$BLOCK_DEVICE align-check optimal $last_partition"
 echo "Should return: $last_partition aligned"
-

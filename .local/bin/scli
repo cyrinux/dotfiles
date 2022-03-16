@@ -1,2 +1,2 @@
 #!/bin/sh
-pgrep -f /usr/bin/scli 1> /dev/null || /usr/bin/scli
+pgrep -f /usr/bin/scli 1>/dev/null || /usr/bin/scli

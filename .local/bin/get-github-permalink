@@ -2,8 +2,8 @@
 set -e
 
 usage() {
-    echo "$0 file [line_number]"
-    exit 1
+	echo "$0 file [line_number]"
+	exit 1
 }
 
 [ -z $1 ] && usage
@@ -20,11 +20,11 @@ remote="$(echo $(git -C $root remote get-url origin) | sed 's#git@##' | sed 's#s
 file="$(git -C $root ls-files $1)"
 
 if [ -z $2 ]; then
-    echo echo "https://$remote/blob/$commitid/$file#"
-    echo "https://$remote/blob/$commitid/$file" | wl-copy > /dev/null 2>&1
+	echo echo "https://$remote/blob/$commitid/$file#"
+	echo "https://$remote/blob/$commitid/$file" | wl-copy >/dev/null 2>&1
 else
-    echo echo "https://$remote/blob/$commitid/$file#L$2"
-    echo "https://$remote/blob/$commitid/$file#L$2" | wl-copy > /dev/null 2>&1
+	echo echo "https://$remote/blob/$commitid/$file#L$2"
+	echo "https://$remote/blob/$commitid/$file#L$2" | wl-copy >/dev/null 2>&1
 fi
 
 exit 0
