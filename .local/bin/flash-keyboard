@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# shellcheck disable=2012
+
+if lsusb | grep "03a8:a649 Drop Preonic" > /dev/null; then
+  qmk flash "$(ls -tra1 ~/downloads/preonic_rev3_drop_layout_ortho_5x12_mine\(*\).json | tail -n 1)"
+elif lsusb | grep "3297:1969 ZSA Technology Labs Moonlander Mark I" > /dev/null; then
+  qmk flash "$(ls -tra1 ~/downloads/moonlander_layout_moonlander_mine\(*\).json | tail -n 1)"
+else
+  echo No supported keyboard connected
+  exit 1
+fi

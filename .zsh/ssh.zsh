@@ -1,11 +1,10 @@
 zstyle ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
-zstyle ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
-zstyle ':z4h:ssh:*' enable 'yes'
-zstyle ':z4h:ssh:pbuilder*' enable 'no'
-zstyle ':z4h:ssh:package*' enable 'no'
-zstyle ':z4h:ssh:*' ssh-command command ssh -S none
-zstyle ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
+zstyle ':z4h:ssh:*' ssh-command      command ssh
+zstyle ':z4h:ssh:*' term             'xterm-256color'
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh-history/zsh_history.${(%):-%m}:$z4h_ssh_host)'
+zstyle ':z4h:ssh:*' enable no
+zstyle ':z4h:ssh:onlinux' enable yes
+zstyle ':z4h:ssh:maximbaz' enable yes
 
 [[ -e $ZDOTDIR/.zsh-history ]] || zf_mkdir -p -m 700 $ZDOTDIR/.zsh-history
 
@@ -43,11 +42,11 @@ sshproxy() {
 }
 compdef sshproxy=ssh
 
-cssh() {
+sshcluster() {
     tmux-cssh "$@"
 }
-compdef cssh=ssh
+compdef sshcluster=ssh
 
 
 # Do not check authenticity when using SSH.
-alias unsafessh='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+alias sshunsafe='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'

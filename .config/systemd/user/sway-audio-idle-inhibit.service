@@ -6,6 +6,7 @@ After=graphical-session.target
 [Service]
 ExecStart=/usr/bin/sway-audio-idle-inhibit
 Restart=on-failure
+RestartSec=10s
 
 [Install]
 WantedBy=graphical-session.target

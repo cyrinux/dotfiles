@@ -1,6 +1,7 @@
 #!/bin/sh
 
-chromium_version="$(pacman -Si chromium | grep Version | cut -d':' -f2 | cut -d'-' -f1 | tr -d '[:space:]')"
+chromium_version="$(curl -s 'https://www.whatismybrowser.com/guides/the-latest-version/chrome' | grep -A1 'Chrome on <strong>Windows</strong>' | grep -Eo '[0-9.]+')"
+# chromium_version="$(pacman -Si chromium | grep Version | cut -d':' -f2 | cut -d'-' -f1 | tr -d '[:space:]')"
 [ -n "$chromium_version" ] || {
 	echo >&2 "error retrieving chromium version"
 	exit 1

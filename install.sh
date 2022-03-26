@@ -115,7 +115,7 @@ clear
 : ${password:?"password cannot be empty"}
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac | tr '\n' ' ')
-read -r -a devicelist <<<"$devicelist"
+read -r -a devicelist <<< "$devicelist"
 device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
 clear
 
@@ -127,8 +127,8 @@ echo -e "\n### Setting up fastest mirrors"
 reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
 
 echo -e "\n### Setting up partitions"
-umount -R /mnt 2>/dev/null || true
-cryptsetup luksClose luks 2>/dev/null || true
+umount -R /mnt 2> /dev/null || true
+cryptsetup luksClose luks 2> /dev/null || true
 
 sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
 sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
@@ -199,8 +199,8 @@ else
 	repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 fi
 
-if ! grep cyrinux /etc/pacman.conf >/dev/null; then
-	cat >>/etc/pacman.conf <<EOF
+if ! grep cyrinux /etc/pacman.conf > /dev/null; then
+	cat >> /etc/pacman.conf << EOF
 [cyrinux-aur-local]
 Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
@@ -224,29 +224,29 @@ luks_header_size="$(stat -c '%s' /tmp/header.img)"
 rm -f /tmp/header.img
 
 if [[ "$fde" == "Yes" ]]; then
-	echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" >/mnt/etc/kernel/cmdline
+	echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
 else
 	echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
-    " >/mnt/etc/kernel/cmdline
+    " > /mnt/etc/kernel/cmdline
 fi
 
-echo "FONT=$font" >/mnt/etc/vconsole.conf
-echo "KEYMAP=fr" >>/mnt/etc/vconsole.conf
-genfstab -L /mnt >>/mnt/etc/fstab
-echo "${hostname}" >/mnt/etc/hostname
-echo "en_US.UTF-8 UTF-8" >>/mnt/etc/locale.gen
-echo "fr_FR.UTF-8 UTF-8" >>/mnt/etc/locale.gen
+echo "FONT=$font" > /mnt/etc/vconsole.conf
+echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
+genfstab -L /mnt >> /mnt/etc/fstab
+echo "${hostname}" > /mnt/etc/hostname
+echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
+echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 ln -sf /usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 arch-chroot /mnt locale-gen
 if [[ "$fde" == "Yes" ]]; then
-	cat <<EOF >/mnt/etc/mkinitcpio.conf
+	cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
 HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
 EOF
 else
-	cat <<EOF >/mnt/etc/mkinitcpio.conf
+	cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
@@ -254,7 +254,7 @@ HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems key
 EOF
 fi
 
-cat <<EOF >/mnt/etc/sudoers
+cat << EOF > /mnt/etc/sudoers
 root ALL=(ALL) ALL
 %wheel ALL=(ALL) ALL
 @includedir /etc/sudoers.d
@@ -263,12 +263,12 @@ EOF
 echo -e "\n### Setting up Secure Boot with custom keys"
 [[ "$fde" == "Yes" ]] && {
 	sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
-	echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >>/mnt/etc/ykfde.conf
+	echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
 	if [ "$device" != "$luks_header_device" ]; then
-		echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >>/mnt/etc/ykfde.conf
+		echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
 	fi
 }
-echo KERNEL=linux >/mnt/etc/arch-secure-boot/config
+echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
 
 arch-chroot /mnt mkinitcpio -p linux
 arch-chroot /mnt arch-secure-boot initial-setup || true
@@ -281,11 +281,11 @@ btrfs property set /mnt/swap/swapfile compression none
 dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=4096
 chmod 600 /mnt/swap/swapfile
 mkswap /mnt/swap/swapfile
-echo "/swap/swapfile none swap defaults 0 0" >>/mnt/etc/fstab
+echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 echo -e "\n### Creating user"
 arch-chroot /mnt useradd -m -s /usr/bin/zsh "$user"
-for group in wheel network video render plugdev i2c libvirt audit input wireshark rfkill; do
+for group in wheel network video render plugdev i2c libvirt kvm audit input wireshark rfkill; do
 	arch-chroot /mnt groupadd -rf "$group"
 	arch-chroot /mnt gpasswd -a "$user" "$group"
 done

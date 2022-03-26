@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+xargs -a <(aur vercmp-devel | cut -d' ' -f1) powerprofilesctl launch aur sync -Scu --rebuild "$@"
+sudo pacman -Syu --noconfirm

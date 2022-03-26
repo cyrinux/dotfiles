@@ -28,15 +28,29 @@ path = "/sys/bus/platform/devices/dell-laptop/leds/dell::kbd_backlight"
 # path = "/sys/bus/platform/devices/thinkpad_acpi/leds/tpacpi::kbd_backlight"
 
 # Home
-[[output.ddcutil]]
-name = "D8VXF9CJ0EPB"
+# [[output.ddcutil]]
+# name = "D8VXF9CJ0EPB"
+# capturer = "wlroots"
+[[output.backlight]]
+name = "DP-5"
+path = "/sys/class/backlight/ddcci15"
 capturer = "wlroots"
 
 # Work
-[[output.ddcutil]]
-name = "HH77Y71IC5YS"
+# [[output.ddcutil]]
+# name = "HH77Y71IC5YS"
+# capturer = "wlroots"
+
+# [[output.ddcutil]]
+# name = "9KFDW67326GB"
+# capturer = "wlroots"
+[[output.backlight]]
+name = "DP-3"
+path = "/sys/class/backlight/ddcci15"
 capturer = "wlroots"
 
-[[output.ddcutil]]
-name = "9KFDW67326GB"
+[[output.backlight]]
+name = "DP-4"
+path = "/sys/class/backlight/ddcci16"
 capturer = "wlroots"
+

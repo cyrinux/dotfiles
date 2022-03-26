@@ -87,6 +87,12 @@ test: build-podman build-metapackage
 	    archlinux/dotfiles \
 	    make ci
 
+
+.PHONY: update
+update:
+	flatpak update
+	pacu
+
 .PHONY: clean
 clean:
 	rm -f $(output)/*.pdf

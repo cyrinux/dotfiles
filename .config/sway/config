@@ -1,5 +1,3 @@
-# font pango: Cantarell 9
-
 input type:keyboard {
     xkb_layout fr-hyper,us
     xkb_variant basic,
@@ -25,9 +23,6 @@ output * {
     adaptive_sync off
 }
 
-bindswitch --locked lid:off output eDP-1 enable, exec systemctl --user start wluma
-bindswitch --locked lid:on  exec systemctl --user stop wluma, output eDP-1 disable
-
 # xwayland disable
 
 # hide cursor if idle while 10s
@@ -44,7 +39,9 @@ workspace_layout tabbed
 hide_edge_borders --i3 none
 default_border pixel 2
 default_floating_border none
+popup_during_fullscreen smart
 
+set $default_gap 5
 set $alt Mod1
 set $numlock Mod2
 set $hyper Mod4
@@ -52,7 +49,7 @@ set $win Mod3
 floating_modifier $win
 set $kanshi bash -c "killall kanshi; kanshi;"
 
-gaps inner 5
+gaps inner $default_gap
 smart_gaps on
 
 # Disable cursor jumping
@@ -83,7 +80,6 @@ for_window    [app_id="scli"]                            move container to $work
 for_window    [app_id="Signal"]                          move container to $workspace3
 for_window    [app_id="discord"]                         move container to $workspace3
 for_window    [app_id="neomutt"]                         move container to $workspace4, title_format "NeoMutt"
-for_window    [app_id="taskwarrior-tui"]                 move container to $workspace4, title_format "TaskWarrior"
 for_window    [app_id="MellowPlayer"]                    move container to $workspace10
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
@@ -247,7 +243,6 @@ bindsym --to-code {
 	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch browser"
-    # $hyper+d           fullscreen disable, exec cglaunch wofi
     $hyper+d           fullscreen disable, exec bash -c "pkill -x wldash || cglaunch wldash"
     $hyper+f           fullscreen disable, exec cglaunch wl-clipboard-manager dmenu
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; cglaunch passmenu -p pass; wl-clipboard-manager unlock"
@@ -366,6 +361,7 @@ exec_always $kanshi
 exec_always import-gsettings
 
 # Load host-specific configs
+include "~/.config/sway/default.conf"
 include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 
 # Load systemd integration

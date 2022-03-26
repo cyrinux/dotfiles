@@ -29,5 +29,6 @@ kcout() {
 	while IFS= read -rd: config; do
 		[ -f "$config" ] || continue
 		sed -i -E '/^\s*(access-token|expires-in|expires-on|refresh-token)/d' "$config"
-	done <<<"${KUBECONFIG:-$HOME/.kube/config}:"
+	done <<< "${KUBECONFIG:-$HOME/.kube/config}:"
+	echo "disconnected"
 }

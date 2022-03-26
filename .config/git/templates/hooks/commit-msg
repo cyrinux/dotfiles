@@ -20,7 +20,7 @@ examples = """+ 61c8ca9 fix: navbar not responsive on mobile
 
 
 def main():
-    pattern = r"(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test|BREAKING CHANGE)(\([\w\-\s]+\))?!?\s?:\s.*"
+    pattern = r"(build|chore|ci|docs|feat|fix|fixup!|perf|refactor|revert|style|test|BREAKING CHANGE)(\([\w\-\s]+\))?!?\s?:\s.*"
     filename = sys.argv[1]
     ss = open(filename, "r").read()
     m = re.match(pattern, ss)

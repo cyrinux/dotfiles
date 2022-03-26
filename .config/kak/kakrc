@@ -231,6 +231,17 @@ hook global WinSetOption filetype=.* %{
     }
 }
 
+hook global BufCreate .*\.(sls|jinja) %{
+    set-option buffer filetype salt
+}
+
+hook global WinSetOption filetype=salt %{
+    set-option buffer filetype yaml
+    set-option buffer lintcmd 'salt-lint --nocolour'
+    lint
+    hook buffer -group lint BufWritePost .* lint
+}
+
 hook global WinSetOption filetype=python %{
     set-option buffer formatcmd 'isort -q - | black -q -'
     hook buffer -group format BufWritePre .* format
@@ -273,7 +284,6 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
     set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
     hook buffer -group format BufWritePre .* format
 }
-
 hook global WinSetOption filetype=sh %{
     set-option buffer formatcmd "shfmt -i %opt{indentwidth} -ci -sr"
     hook buffer -group format BufWritePre .* format

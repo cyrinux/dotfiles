@@ -11,7 +11,7 @@ alias drmvd='docker volume rm $(docker volume ls -q -f dangling=true)'
 alias drmid='drmi $(docker images -q -f dangling=true)'
 alias dpurge="drmcd ; drmvd ; drmid ;docker network prune -f"
 
-command -v podman-compose &>/dev/null && alias docker-compose='podman-compose'
+# command -v podman-compose &> /dev/null && alias docker-compose='podman-compose'
 alias dc="docker-compose"
 alias dcd='dc down'
 alias dcl='dc logs -t -f --tail=1000'
@@ -69,3 +69,8 @@ function vagrant() {
 }
 
 alias mk='minikube'
+complete -C podman-compose dc
+complete -C podman-compose podman-compose
+
+# alias dock-on='sudo nft -f /etc/nftables-docker.conf && sudo systemctl start docker'
+# alias dock-off='sudo systemctl stop docker containerd && sudo nft -f /etc/nftables.conf && sudo ip l d docker0'

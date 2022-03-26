@@ -20,7 +20,7 @@ pac() {
 	rehash
 	refresh-waybar-updates
 }
-command -v pacman &>/dev/null && compdef pac=pacman
+command -v pacman &> /dev/null && compdef pac=pacman
 
 alias paci='SNAP_PAC_SKIP=true pac -Sy'
 alias paci!='pac -Sy -dd'
@@ -50,8 +50,8 @@ pacs() {
 			read -r desc
 			name="${pkg%% *}"
 			mkdir -p "$tmp/${name%/*}"
-			echo "$pkg" >>$tmp/pkgs
-			echo "$desc" >$tmp/$name
+			echo "$pkg" >> $tmp/pkgs
+			echo "$desc" > $tmp/$name
 		done
 	[ -s $tmp/pkgs ] || {
 		echo >&2 "No packages found"
@@ -111,8 +111,8 @@ aurb() {
 }
 
 post_aur() {
-	find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; >/dev/null
-	find /var/cache/pacman/cyrinux-aur-local -group root -delete >/dev/null
+	find ~/.cache/aurutils/sync -name .git -execdir git clean -fx \; > /dev/null
+	find /var/cache/pacman/cyrinux-aur-local -group root -delete > /dev/null
 }
 
 refresh-waybar-updates() {

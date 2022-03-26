@@ -12,3 +12,4 @@ exegol
 .local/bin/checkmail
 *.cache
 .local/share/applications/*Telegram*
+.config/gh/hosts.yml

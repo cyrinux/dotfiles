@@ -46,7 +46,8 @@ copy() {
 	if [ -z "$reverse" ]; then
 		[ -n "$2" ] && chmod "$2" "$dest_file"
 	else
-		chown -R $USER "$dest_file"
+		# TODO: Remove hardcoded user here
+		chown -R cyril "$dest_file"
 	fi
 	echo "$dest_file <= $orig_file"
 }
@@ -93,12 +94,12 @@ copy "etc/apparmor/parser.conf"
 copy "etc/apparmor.d/local"
 copy "etc/geoclue/geoclue.conf"
 copy "etc/audit/auditd.conf"
-copy "etc/audit/audit.rules" 640
 copy "etc/conf.d/snapper"
 copy "etc/default/earlyoom"
 copy "etc/docker/daemon.json"
 copy "etc/fwupd/uefi_capsule.conf"
 copy "etc/iwd/main.conf"
+copy "etc/modules-load.d/ddcci.conf"
 copy "etc/modules-load.d/i2c-dev.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
@@ -123,7 +124,6 @@ copy "etc/systemd/resolved.conf.d/dnssec.conf"
 copy "etc/systemd/system/backup-repo@pkgbuild"
 copy "etc/systemd/system/backup-repo@.service"
 copy "etc/systemd/system/backup-repo@.timer"
-copy "etc/systemd/system/disable-turbo-boost.service"
 copy "etc/systemd/system/getty@tty1.service.d/override.conf"
 copy "etc/systemd/system/man-db.timer.d/man-db.timer.conf"
 copy "etc/systemd/system/reflector.service.d"
@@ -135,7 +135,6 @@ copy "etc/systemd/system/user@.service.d/delegate.conf"
 copy "etc/systemd/system.conf.d/kill-fast.conf"
 copy "etc/systemd/user.conf.d/kill-fast.conf"
 copy "etc/systemd/system/privoxy.service.d/override.conf"
-copy "etc/udev/rules.d/45-ddcutil-i2c.rules"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/throttled.conf"
@@ -157,7 +156,6 @@ echo "================================="
 echo "Enabling and starting services..."
 echo "================================="
 
-systemctl_disable_stop "ModemManager.service"
 systemctl_enable_start "power-profiles-daemon.service"
 systemctl_enable_start "throttled.service"
 systemctl_enable_start "systemd-oomd.service"
@@ -176,15 +174,12 @@ systemctl_enable_start "btrfs-scrub@var-lib-docker-docker.timer"
 systemctl_enable_start "btrfs-scrub@var-log.timer"
 systemctl_enable_start "btrfs-scrub@var-tmp.timer"
 systemctl_enable_start "btrfs-scrub@\x2esnapshots.timer"
-if is_chroot; then
-	echo >&2 "=== Running in chroot, skipping docker service setup..."
-fi
 systemctl_enable_start "earlyoom.service"
 systemctl_enable_start "fstrim.timer"
 systemctl_enable_start "iwd.service"
 systemctl_enable_start "libvirtd.socket"
 systemctl_enable_start "linux-modules-cleanup.service"
-# systemctl_enable_start "ModemManager.service"
+systemctl_enable_start "ModemManager.service"
 systemctl_enable_start "NetworkManager-dispatcher.service"
 systemctl_enable_start "NetworkManager.service"
 systemctl_enable_start "nftables.service"
@@ -197,8 +192,10 @@ systemctl_enable_start "system-dotfiles-sync.timer"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
-# systemctl_disable_stop "dbus.service"
-# systemctl_enable_start "dbus-broker.service"
+systemctl_enable "apparmor.service"
+# if is_chroot; then
+# 	echo >&2 "=== Running in chroot, skipping docker service setup..."
+# fi
 # systemctl_enable_start "usbguard-dbus.service"
 # systemctl_enable_start "usbguard.service"
 
@@ -218,7 +215,7 @@ echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
 echo "Fixing local AUR repository"
-install -o $USER -d /var/cache/pacman/cyrinux-aur-local-temp
+install -o "$USER" -d /var/cache/pacman/cyrinux-aur-local-temp
 
 echo "Regenerating fonts cache"
 fc-cache -r
@@ -230,7 +227,7 @@ else
 	copy "etc/sudoers.d/override"
 
 	echo "Applying kernel tuning"
-	sysctl --system >/dev/null
+	sysctl --system > /dev/null
 
 	echo "Reload udev rules"
 	udevadm control --reload
@@ -240,16 +237,16 @@ else
 	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
 
-echo "Install xdg-open firejail wrapper"
-sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
-sudo chown root:root /usr/local/bin/xdg-open
-sudo chmod 0755 /usr/local/bin/xdg-open
+# echo "Install xdg-open firejail wrapper"
+# sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
+# sudo chown root:root /usr/local/bin/xdg-open
+# sudo chmod 0755 /usr/local/bin/xdg-open
 
-echo "Firejail some app"
-sudo systemctl enable --now apparmor.service || true
+# echo "Firejail some app"
+# sudo systemctl enable --now apparmor.service || true
 # sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
 # sudo firecfg --add-users $user
 
-echo "\n### Setup docker rootless"
+echo "Setup docker rootless"
 sudo touch /etc/{subgid,subuid}
-sudo usermod --add-subuids 31072-65536 --add-subgids 31072-65536 $user
+sudo usermod --add-subuids 31072-65536 --add-subgids 31072-65536 "$USER"

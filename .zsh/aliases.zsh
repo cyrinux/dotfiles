@@ -5,7 +5,7 @@ command -v lsd           &> /dev/null    && alias la='ll -a'                    
 command -v lsd           &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
 command -v lsd           &> /dev/null    && alias lm='ll --timesort'                                   || alias lm='ll -r --sort=time'
 command -v lsd           &> /dev/null    && alias ls='lsd --icon=never'                                || alias ls='ls --color=auto --group-directories-first -h'
-command -v fd            &> /dev/null    && alias fd='fd --hidden --no-ignore --follow'                || alias fd='find . -name'
+command -v fd            &> /dev/null    && alias fd='fd --hidden --follow'                || alias fd='find . -name'
 command -v git           &> /dev/null    && alias diff='git diff --no-index'
 command -v htop          &> /dev/null    && alias top='htop'
 command -v dfrs          &> /dev/null    && alias df='dfrs'
@@ -18,20 +18,6 @@ command -v gdu           &> /dev/null    && alias ncdu='gdu'
 man() (
     command man "$@" || "$1" --help || "$1" -h
 )
-
-# Taskwarrior
-alias tt="taskwarrior-tui"
-alias t='task'
-alias ta='task add'
-alias tm='task modify'
-alias to='taskopen'
-alias ti='task add due:tomorrow tag:inbox'
-tn() {
-    if ! taskopen -a $1; then
-        task annotate notes $1
-        taskopen -a $1
-    fi
-}
 
 # Udiskie
 alias um='udiskie-mount -r'
@@ -84,6 +70,7 @@ alias utc='env TZ="UTC" date'
 alias yubikey-fix='sudo systemctl stop pcscd.service'
 alias zshupdate='z4h update'
 alias shareterm='gotty --permit-write tmux new -A -s gotty sudo docker run -it --rm busybox'
+alias '?'='google'
 
 e64() { [[ $# == 1 ]] && base64 <<<"$1" || base64 }
 d64() { [[ $# == 1 ]] && base64 --decode <<<"$1" || base64 --decode }
@@ -203,3 +190,8 @@ mass-usb-creator() {
 # Disable ASLR in a new shell.
 # See https://askubuntu.com/a/507954.
 alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
+
+
+etcdctl(){
+        docker exec -ti docker-etcd.service etcdctl --cacert /usr/local/share/ca-certificates/Dailymotion.crt --cert /etc/ssl/etcd/server.pem --key /etc/ssl/etcd/server-key.pem --endpoints https://$(hostname -f):2379 ${@}
+}

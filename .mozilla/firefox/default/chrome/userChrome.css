@@ -1,0 +1,82 @@
+/* Workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1704404 */
+.tab-label {
+  line-height: 1.3;
+}
+
+/**
+   * Favicon - Don't hide on hover
+   *
+   * Firefox 89+ hides tab icones when you hover the tab. That's stupid, and
+   * this undoes that.
+   */
+.tabbrowser-tab:hover
+  .tab-icon-stack:not([pinned], [sharing], [crashed], [soundplaying]):is([soundplaying], [muted], [activemedia-blocked])
+  > :not(.tab-icon-overlay) {
+  opacity: 1 !important;
+}
+
+.tab-icon-overlay:not([pinned], [sharing], [crashed], [soundplaying]):is([soundplaying], [muted], [activemedia-blocked]) {
+  opacity: 0;
+}
+
+/** Hide the container indicator bar. It doesn't fit the style. */
+.tab-context-line {
+  display: none;
+}
+
+/** Add a thin container indicator bar under tab titles. */
+.tab-label-container {
+  border-bottom: 1px solid var(--identity-icon-color);
+}
+
+/** Sound Tab - Hide "muted" label unless something is playing. */
+.tab-secondary-label:is([muted]) .tab-icon-sound-muted-label {
+  display: none;
+}
+
+/** Make "muted" etc labels lowercase. */
+.tab-secondary-label {
+  text-transform: lowercase;
+}
+
+/* Hide "new tab" from the tab context menu.
+   *
+   * This new item provides absoutely no value, and makes "reload" far more
+   * unreachable when using a mouse
+   */
+#tabContextMenu #context_openANewTab {
+  display: none;
+}
+
+#tabContextMenu #context_openANewTab + menuseparator {
+  display: none;
+}
+
+/* Make arrow paler when this is disabled. */
+#scrollbutton-up[disabled] .toolbarbutton-icon {
+  opacity: 0.4;
+}
+
+/* Hide icon for for templorary containers. */
+#userContext-label[value^="t"] + #userContext-indicator {
+  display: none;
+}
+
+/* Hide the "tracking protection" icon. */
+#tracking-protection-icon-container {
+  display: none;
+}
+
+/* Hide the icons in the URL bar unless its focused or hovered */
+#navigator-toolbox:not(:hover)
+  #urlbar:not([focused="true"])
+  #page-action-buttons {
+  display: none;
+}
+
+/* Disable fullscreen animation
+ * Source: https://www.reddit.com/r/firefox/comments/j9agb3/comment/ga9xbet/?context=3
+ */
+#navigator-toolbox[fullscreenShouldAnimate] {
+  transition: none !important;
+}

@@ -14,16 +14,18 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: default
-  currentCluster: default
+  currentContext: dev-orinfra-01-dm-paris
+  currentCluster: dev-orinfra-01-dm-paris-push@levis.name
   clusters:
-    default:
+    dev-orinfra-01-dm-paris-push@levis.name:
       namespace:
         active: all
         favorites:
-          - default
+        - all
+        - thruk
+        - default
       view:
-        active: ctx
+        active: po
       featureGates:
         nodeShell: false
       shellPod:

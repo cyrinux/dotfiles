@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ -z "$1" ]; then
+    git tag
+else
+	git tag $1
+    git push --tags
+fi

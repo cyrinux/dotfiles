@@ -40,10 +40,6 @@ c.downloads.remove_finished = 10000
 c.input.insert_mode.auto_load = True
 c.tabs.last_close = "close"
 c.tabs.mousewheel_switching = False
-c.qt.args += [
-    "enable-gpu-rasterization",
-    "blink-settings=preferredColorScheme=1",
-]
 c.spellcheck.languages = ["en-US", "fr-FR"]
 c.hints.auto_follow = "full-match"
 c.hints.dictionary = "/usr/share/dict/french"
@@ -51,7 +47,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36"
 
 
 # c.colors.webpage.darkmode.enabled = True
@@ -85,6 +81,7 @@ c.url.searchengines = {
     "http": "https://httpstatuses.com/{}",
     "dict": "https://www.dict.cc/?s={}",
     "s": "https://search.levis.ws/?q={}",
+    "c": "https://artifacthub.io/packages/search?ts_query_web={}",
 }
 
 c.url.default_page = "~/.config/qutebrowser/blank.html"
@@ -96,7 +93,7 @@ c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
 bindings = {
     ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
     "co": "nop",
-    ",C": "spawn chromium {url}; tab-close",
+    ",C": "spawn cglaunch chromium '{url}'; tab-close",
     ",c": "spawn --userscript stream",
     "<Ctrl-Shift-D>": "tab-give",
     "<Ctrl-Shift-J>": "tab-move +",

@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.24.0
+pkgver=2.24.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -129,7 +129,6 @@ depends=(
     'cpupower'
     'cracklib'
     'crda'
-    'croc'
     'crun'
     'ctags'
     'ctop'
@@ -146,7 +145,6 @@ depends=(
     'diff-so-fancy'
     'diffstat'
     'direnv'
-    'discord'
     'display-switch-git'
     'dmidecode'
     'dnsmasq'
@@ -284,7 +282,6 @@ depends=(
     'libcryptui'
     'libdvdcss'
     'libfprint'
-    'libinput-gestures'
     'libisofs'
     'libldac'
     'libmfx'
@@ -450,7 +447,6 @@ depends=(
     'python-pipenv'
     'python-pre-commit'
     'python-pudb'
-    'python-pushover'
     'python-pycryptodome'
     'python-pydbus'
     'python-pyenchant'
@@ -563,9 +559,6 @@ depends=(
     'systemd-resolvconf'
     'tarsnap'
     'tarsnapper'
-    'task'
-    'taskopen'
-    'taskwarrior-tui'
     'tcpdump'
     'tealdeer'
     'teehee'
@@ -578,7 +571,6 @@ depends=(
     'throttled-git'
     'tig'
     'tmux-cssh'
-    'torbrowser-launcher'
     'traceroute'
     'transmission-gtk'
     'trash-cli'
@@ -677,7 +669,6 @@ depends=(
     'zathura-ps'
     'zip'
     'zk'
-    'zoom'
     'zps'
     'python-tzdata'
 
@@ -686,5 +677,6 @@ depends=(
     'android-udev'
     'ansible'
     'ansible-lint'
-    # 'bugwarrior'
+    'reuse'
+    'torbrowser-launcher'
 )

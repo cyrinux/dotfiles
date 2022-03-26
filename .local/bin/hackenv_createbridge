@@ -10,14 +10,14 @@ readonly networkname='default'
 readonly interfacename='virbr0'
 
 if_network_exists() {
-	sudo virsh net-list --all --name | grep "^$networkname\$" >/dev/null
+	sudo virsh net-list --all --name | grep "^$networkname\$" > /dev/null
 }
 
 # https://stackoverflow.com/a/52814732
 create_network() {
 	printf "Creating XML network description...\n" >&2
 
-	cat <<-EOF >"$datahome/network.xml"
+	cat <<- EOF > "$datahome/network.xml"
 		<network>
 		    <name>$networkname</name>
 		    <bridge name="$interfacename"/>
@@ -38,6 +38,13 @@ create_network() {
 
 	printf "Flag the network to automatically start on boot...\n" >&2
 	sudo virsh net-autostart "$networkname"
+
+	if ! grep -q "allow $interfacename"; then
+		sudo mkdir /etc/qemu
+		echo "allow $interfacename" | sudo tee -a /etc/qemu/bridge.conf
+		sudo chown -R :kvm /etc/qemu
+		sudo chmod 640 /etc/qemu/bridge.conf
+	fi
 }
 
 printf "Requesting elevated permissions...\n" >&2

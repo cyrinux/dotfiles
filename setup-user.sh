@@ -12,7 +12,7 @@ dotfiles_dir="$(
 cd "$dotfiles_dir"
 
 in_docker() {
-	grep -q docker /proc/1/cgroup >/dev/null
+	grep -q docker /proc/1/cgroup > /dev/null
 }
 
 in_ci() {
@@ -121,7 +121,6 @@ link ".config/kanshi"
 link ".config/khal"
 link ".config/khard"
 link ".config/kitty"
-link ".config/libinput-gestures.conf"
 link ".config/mimeapps.list"
 link ".config/mpv"
 link ".config/msmtp"
@@ -208,6 +207,7 @@ link ".config/xkb"
 link ".config/xplr"
 link ".config/youtube-dl"
 link ".config/zathura"
+link ".config/gh"
 link ".ignore"
 link ".local/bin"
 link ".local/share/applications"
@@ -215,6 +215,7 @@ link ".local/share/bsod.png"
 link ".gnupg/gpg-agent.conf"
 link ".gnupg/gpg.conf"
 link ".local/share/qutebrowser/greasemonkey"
+link ".local/share/flatpak/overrides"
 link ".magic"
 link ".p10k.zsh"
 link ".p10k.zsh" ".p10k-ascii-8color.zsh"
@@ -249,7 +250,6 @@ if is_chroot; then
 else
 	systemctl_enable "git-annex.service"
 	systemctl_enable "swaylock.service"
-	# systemctl_enable_start "dbus-broker.service"
 	systemctl_enable_start "podman.socket"
 	systemctl_enable_start "apparmor-notify.service"
 	systemctl_enable_start "backup-packages.timer"
@@ -309,7 +309,7 @@ echo "Configuring MIME types"
 file --compile --magic-file ~/.magic || true
 
 echo "Configuring GPG key"
-if ! gpg -k | grep "$MY_GPG_KEY_ID" >/dev/null; then
+if ! gpg -k | grep "$MY_GPG_KEY_ID" > /dev/null; then
 	echo "Importing my public PGP key"
 	curl -s https://levis.name/pgp_keys.asc | gpg --import
 	printf "5\ny\n" | gpg --command-fd 0 --no-tty --batch --edit-key "$MY_GPG_KEY_ID" trust
@@ -320,7 +320,7 @@ find "$HOME/.gnupg" -type d -exec chmod 700 {} \;
 echo "Configuring password-store"
 if [[ -e "$HOME/.password-store" ]]; then
 	echo "Configuring automatic git push for pass"
-	echo -e "#!/usr/bin/zsh\n\npass git push" >"$HOME/.password-store/.git/hooks/post-commit"
+	echo -e "#!/usr/bin/zsh\n\npass git push" > "$HOME/.password-store/.git/hooks/post-commit"
 	chmod +x "$HOME/.password-store/.git/hooks/post-commit"
 fi
 
@@ -340,7 +340,7 @@ else
 	if [[ ! -e "$HOME/.config/Yubico/u2f_keys" ]]; then
 		echo "Configuring YubiKey for sudo access (touch it now)"
 		mkdir -p "$HOME/.config/Yubico"
-		pamu2fcfg -u"$USER" >"$HOME/.config/Yubico/u2f_keys"
+		pamu2fcfg -u"$USER" > "$HOME/.config/Yubico/u2f_keys"
 	fi
 fi
 
@@ -359,6 +359,10 @@ git config user.email "git@levis.name"
 git config user.signingkey "$MY_GPG_KEY_ID"
 git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
+pre-commit install-hooks
 
 # vagrant
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
+
+# flatpak
+flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare us.zoom.Zoom

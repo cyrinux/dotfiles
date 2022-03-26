@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-SOURCE=".dotfiles .cache/mail* .cache/tarsnap.key library/contacts library/calendars .dotfiles .dotfiles-private .ssh .gnupg library/documents"
+SOURCE=".dotfiles .cache/mail* .cache/tarsnap.key library/contacts library/calendars .dotfiles .dotfiles-private .ssh .gnupg library/documents .zsh*"
 # BACKUP_PATH=("/home/cyril/Vault/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/PortableSSD/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/SURVIVOR/backup_cyril_laptop_DONTREMOVE")
 BACKUP_PATH=("/run/media/cyril/PortableSSD/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/SURVIVOR/backup_cyril_laptop_DONTREMOVE")
 
