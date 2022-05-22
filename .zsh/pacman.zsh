@@ -43,13 +43,13 @@ pacs() {
 	tmp=$(mktemp -d)
 
 	{
-		NO_COLOR=true aur search -n -k NumVotes $(basename -a "$@" | xargs)
+		aur search --table -n -k NumVotes $(basename -a "$@" | xargs) | awk -F"\t" '{print "aur/" $1 "\n" $4}'
 		pacman -Ss $(basename -a "$@" | xargs)
 	} |
 		while read -r pkg; do
 			read -r desc
 			name="${pkg%% *}"
-			mkdir -p "$tmp/${name%/*}"
+			command mkdir -p "$tmp/${name%/*}"
 			echo "$pkg" >> $tmp/pkgs
 			echo "$desc" > $tmp/$name
 		done
