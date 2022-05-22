@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.24.4
+pkgver=2.24.5
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -396,6 +396,7 @@ depends=(
     'podman-compose'
     'podman-dnsname'
     'poetry'
+    'polkit'
     'polkit-gnome'
     'power-profiles-daemon'
     'powershell-bin'

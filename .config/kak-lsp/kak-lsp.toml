@@ -40,6 +40,14 @@ roots = ["compile_commands.json", ".clangd", ".git", ".hg"]
 command = "clangd"
 offset_encoding = "utf-8"
 
+[language.yaml]
+filetypes = ["yaml"]
+roots = [".git", ".hg"]
+command = "yaml-language-server"
+args = ["--stdio"]
+[language.yaml.settings]
+yaml.format.enable = true
+
 [language.tsx]
 filetypes = ["typescript"]
 roots = ["package.json", "tsconfig.json", ".git", ".hg"]

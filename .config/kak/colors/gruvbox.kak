@@ -73,5 +73,19 @@ evaluate-commands %sh{
         face global MatchingChar       ${fg},${bg3}+b
         face global BufferPadding      ${bg2},${bg}
         face global Whitespace         ${bg2}+f
-    "
+
+        face global InfoDefault               Information
+        face global InfoBlock                 Information
+        face global InfoBlockQuote            Information
+        face global InfoBullet                Information
+        face global InfoHeader                Information
+        face global InfoLink                  Information
+        face global InfoLinkMono              Information
+        face global InfoMono                  Information
+        face global InfoRule                  Information
+        face global InfoDiagnosticError       Information
+        face global InfoDiagnosticHint        Information
+        face global InfoDiagnosticInformation Information
+        face global InfoDiagnosticWarning     Information
+        "
 }

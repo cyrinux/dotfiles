@@ -1,0 +1,15 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Outlook (PWA)
+MimeType=x-scheme-handler/mailto
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=faolnafnngnfdaknnbpnkhgohbobgegn %U
+Icon=chrome-faolnafnngnfdaknnbpnkhgohbobgegn-Default
+StartupWMClass=crx_faolnafnngnfdaknnbpnkhgohbobgegn
+Actions=undefined
+
+[Desktop Action undefined]
+Name=undefined
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=faolnafnngnfdaknnbpnkhgohbobgegn --app-launch-url-for-shortcuts-menu-item=https://outlook.office.com/mail/deeplink/compose

@@ -47,11 +47,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36"
-
-
-# c.colors.webpage.darkmode.enabled = True
-# c.colors.webpage.darkmode.algorithm = "lightness-hsl"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
@@ -93,7 +89,7 @@ c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
 bindings = {
     ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
     "co": "nop",
-    ",C": "spawn cglaunch chromium '{url}'; tab-close",
+    ",C": "spawn cglaunch chromium '{url}'",
     ",c": "spawn --userscript stream",
     "<Ctrl-Shift-D>": "tab-give",
     "<Ctrl-Shift-J>": "tab-move +",
