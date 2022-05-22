@@ -152,7 +152,7 @@
       "interval": 5
     },
     "custom/whistle": {
-      "exec": "whistle | grep -v filter-chain",
+      "exec": "whistle | egrep -v '(filter-chain|ee_sie_spectrum)'",
       "return-type": "json"
     },
     "custom/calendar": {

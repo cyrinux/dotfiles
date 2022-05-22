@@ -1,0 +1,14 @@
+#!/bin/bash
+
+saveIFS=$IFS
+IFS='=&'
+parm=($1)
+IFS=$saveIFS
+
+if [[ -n $1 ]]; then
+    URL="https://zoom.us/wc/${parm[3]}/join"
+else
+    URL="https://zoom.us/join/"
+fi
+
+/usr/bin/chromium ${URL}
