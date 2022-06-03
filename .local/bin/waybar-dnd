@@ -1,0 +1,31 @@
+#!/bin/sh
+
+show() {
+    if [ "$(swaync-client --get-dnd)" = "true" ]; then
+        printf "{\"text\": \" <span foreground='#928374'></span> \", \"class\": \"on\"}\n"
+    else
+        printf "{\"text\": \" <span foreground='#928374'></span> \", \"class\": \"off\"}\n"
+    fi
+}
+
+on() {
+    [ "$(swaync-client --get-dnd)" = "true" ] || swaync-client --toggle-dnd
+    pkill -RTMIN+2 -x waybar
+}
+
+off() {
+    [ "$(swaync-client --get-dnd)" = "false" ] || swaync-client --toggle-dnd
+    pkill -RTMIN+2 -x waybar
+}
+
+toggle() {
+    swaync-client --toggle-dnd
+    pkill -RTMIN+2 -x waybar
+}
+
+case "$1" in
+    on) on ;;
+    off) off ;;
+    toggle) toggle ;;
+    '') show ;;
+esac

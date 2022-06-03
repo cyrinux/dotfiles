@@ -243,14 +243,14 @@ if [[ "$fde" == "Yes" ]]; then
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
-HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard shutdown)
+HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard)
 EOF
 else
 	cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
-HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems keyboard shutdown)
+HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems keyboard)
 EOF
 fi
 
@@ -315,3 +315,6 @@ cryptsetup luksClose luks
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 echo -e "\n### Reboot now, and after power off remember to unplug the installation USB"
+
+# To remove luksHeader from the drive
+# dd bs=1 count=2097152 conv=notrunc if=/dev/urandom of=/dev/nvme0n1p2

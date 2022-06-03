@@ -5,18 +5,13 @@ zstyle    ':z4h:'                                              propagate-cwd    
 zstyle    ':z4h:*'                                             channel                stable
 zstyle    ':z4h:autosuggestions'                               end-of-line            partial-accept
 zstyle    ':z4h:autosuggestions'                               forward-char           partial-accept
-# zstyle    ':z4h:autosuggestions'                               forward-char           accept
 zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
 zstyle    ':z4h:(fzf-complete|fzf-dir-history|fzf-history)'    fzf-flags              --no-exact --color=hl:14,hl+:14
 zstyle    ':z4h:(fzf-complete|fzf-dir-history)'                fzf-bindings           'tab:repeat'
 zstyle    ':z4h:fzf-complete'                                  find-flags             -name '.git' -prune -print -o -print
 zstyle    ':zle:(up|down)-line-or-beginning-search'            leave-cursor           yes
-zstyle    ':z4h:term-title:ssh'                                preexec                '%* | %n@%m: ${1//\%/%%}'
 zstyle    ':z4h:term-title:local'                              preexec                '%* | ${1//\%/%%}'
 zstyle    ':z4h:direnv'                                        enable                 yes
-zstyle    ':completion:*:ssh:argument-1:'                      tag-order              hosts users
-zstyle    ':completion:*:scp:argument-rest:'                   tag-order              hosts files users
-zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts'       hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 if ! (( P9K_SSH )); then
     zstyle ':z4h:sudo' term ''

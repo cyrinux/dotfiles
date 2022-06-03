@@ -258,7 +258,6 @@ else
 	systemctl_enable_start "gamemoded.service"
 	systemctl_enable_start "gocryptfs-automount.service"
 	systemctl_enable_start "gotify-dunst.service"
-	systemctl_enable_start "libinput-gestures.service"
 	systemctl_enable_start "nm-applet.service"
 	systemctl_enable_start "polkit-gnome.service"
 	systemctl_enable_start "qutebrowser-update-useragent.timer"
@@ -365,4 +364,4 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare us.zoom.Zoom
+flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare

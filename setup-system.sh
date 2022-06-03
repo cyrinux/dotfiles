@@ -82,6 +82,13 @@ systemctl_disable_stop() {
 	fi
 }
 
+echo ""
+echo "============================"
+echo "Setting up /usr/local/bin..."
+echo "============================"
+
+copy "usr/local/bin/checkluksheader" 750
+
 in_ci && echo "!!! Running in CI !!!"
 
 echo ""
@@ -237,15 +244,15 @@ else
 	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
 
-# echo "Install xdg-open firejail wrapper"
-# sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
-# sudo chown root:root /usr/local/bin/xdg-open
-# sudo chmod 0755 /usr/local/bin/xdg-open
+echo "Install xdg-open firejail wrapper"
+sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
+sudo chown root:root /usr/local/bin/xdg-open
+sudo chmod 0755 /usr/local/bin/xdg-open
 
-# echo "Firejail some app"
-# sudo systemctl enable --now apparmor.service || true
-# sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
-# sudo firecfg --add-users $user
+# echo "Firejail some apps"
+sudo systemctl enable --now apparmor.service || true
+sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
+sudo firecfg --add-users $user
 
 echo "Setup docker rootless"
 sudo touch /etc/{subgid,subuid}

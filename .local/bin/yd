@@ -1,0 +1,2 @@
+#!/bin/sh
+yt-dlp --external-downloader aria2c "$@"

@@ -1,10 +1,15 @@
-zstyle ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
-zstyle ':z4h:ssh:*' ssh-command      command ssh
-zstyle ':z4h:ssh:*' term             'xterm-256color'
+zstyle    ':z4h:ssh:*' ssh-command command ssh
+zstyle    ':z4h:ssh:*' term 'xterm-256color'
+zstyle    ':z4h:ssh:*' send-extra-files '~/.zsh/aliases.zsh' '~/.zsh/git.zsh' '~/.zsh/docker.zsh'
 zstyle -e ':z4h:ssh:*' retrieve-history 'reply=($ZDOTDIR/.zsh-history/zsh_history.${(%):-%m}:$z4h_ssh_host)'
-zstyle ':z4h:ssh:*' enable no
-zstyle ':z4h:ssh:onlinux' enable yes
-zstyle ':z4h:ssh:maximbaz' enable yes
+zstyle    ':z4h:ssh:*' enable no
+zstyle    ':z4h:ssh:onlinux' enable yes
+zstyle    ':z4h:ssh:maximbaz' enable yes
+zstyle    ':z4h:term-title:ssh' preexec '%* | %n@%m: ${1//\%/%%}'
+zstyle    ':completion:*:ssh:argument-1:' tag-order hosts users
+zstyle    ':completion:*:scp:argument-rest:' tag-order hosts files users
+zstyle    ':completion:*:(ssh|scp|sftp|rsh|rsync):hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
+
 
 [[ -e $ZDOTDIR/.zsh-history ]] || zf_mkdir -p -m 700 $ZDOTDIR/.zsh-history
 

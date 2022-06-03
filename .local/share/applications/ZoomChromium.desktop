@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Zoom (to Chromium)
 Comment=Zoom Video Conference
-Exec=/usr/bin/zoom-chromium %U
+Exec=/home/cyril/.local/bin/zoom-chromium %U
 Icon=Zoom.png
 Terminal=false
 Type=Application

@@ -123,7 +123,7 @@
       "custom/usbguard",
       "custom/eyes",
       "custom/decrypted",
-      "custom/secureboot",
+      "custom/security",
       "custom/systemd",
       "custom/updates",
       "custom/calendar",
@@ -289,8 +289,8 @@
         "critical": 90
       }
     },
-    "custom/secureboot": {
-      "exec": "waybar-secureboot",
+    "custom/security": {
+      "exec": "waybar-security",
       "return-type": "json",
       "interval": "once"
     },
@@ -342,18 +342,18 @@
       "on-click": "exec easyeffects-toggle toggle"
     },
     "custom/dnd": {
-      "tooltip": false,
-      "format": "{icon}",
-      "format-icons": {
-        "notification": "<span foreground='#928374'></span>",
-        "none": "<span foreground='#928374'></span>",
-        "dnd-notification": "<span foreground='#928374'></span>",
-        "dnd-none": "<span foreground='#928374'></span>"
-      },
-      "return-type": "json",
-      "exec": "swaync-client --subscribe-waybar",
-      "on-click": "swaync-client --toggle-dnd --skip-wait",
-      "escape": true
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='#928374'></span>",
+            "none": "<span foreground='#928374'></span>",
+            "dnd-notification": "<span foreground='#928374'></span>",
+            "dnd-none": "<span foreground='#928374'></span>"
+        },
+        "return-type": "json",
+        "exec": "swaync-client --subscribe-waybar",
+        "on-click": "swaync-client --toggle-dnd --skip-wait",
+        "escape": true
     },
   }
 ]

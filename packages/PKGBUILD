@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.24.5
+pkgver=2.25.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -680,4 +680,21 @@ depends=(
     'ansible-lint'
     'reuse'
     'torbrowser-launcher'
+    'howdy'
+    'yaml-language-server'
+    'gyrolock'
+    'mkcert'
+    'noisetorch'
+    'jless'
+    'jo'
+    'google-cloud-sdk'
+    'sops'
+    'wlr-randr'
+    'python-gitpython'
+    'ddcci-driver-linux-dkms'
+    'docker-compose'
+    'flux-bin'
+    'dsh'
+    'git-number-git'
+    'flatpak-xdg-utils'
 )

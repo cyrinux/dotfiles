@@ -13,3 +13,4 @@ exegol
 *.cache
 .local/share/applications/*Telegram*
 .config/gh/hosts.yml
+*.db
