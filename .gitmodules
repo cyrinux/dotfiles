@@ -11,6 +11,9 @@
 [submodule ".config/mpv/uosc"]
 	path = .config/mpv/uosc
 	url = https://github.com/darsain/uosc/
+[submodule ".config/mpv/quality-menu"]
+	path = .config/mpv/quality-menu
+	url = https://github.com/christoph-heinrich/mpv-quality-menu
 [submodule ".config/xplr/trash-cli"]
 	path = .config/xplr/trash-cli
 	url = https://github.com/sayanarijit/trash-cli.xplr.git
@@ -32,6 +35,3 @@
 [submodule ".config/easyeffects/output"]
 	path = .config/easyeffects/output
 	url = https://github.com/Digitalone1/EasyEffects-Presets.git
-[submodule ".config/mpv/youtube-quality"]
-	path = .config/mpv/youtube-quality
-	url = https://github.com/christoph-heinrich/mpv-youtube-quality.git

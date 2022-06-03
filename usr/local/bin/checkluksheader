@@ -3,9 +3,10 @@
 set -eo pipefail
 
 real="SHA512 (-) = c195f378e02c45e888656aea00f081b7deae068bc349491122831154345e99a8685ec11c3ab66cdcccc7a34ea05bbf7c87cabaa60c60e968b08578326334f5f0"
-hash="$(dd bs=1 count=2097152 conv=notrunc status=none if=/dev/nvme0n1p2 of=/dev/stdout | cksum -a sha512 -)"
+hash1="$(dd bs=1 count=2097152 conv=notrunc status=none if=/dev/nvme0n1p1 of=/dev/stdout | cksum -a sha512 -)"
+hash2="$(dd bs=1 count=2097152 conv=notrunc status=none if=/dev/nvme0n1p2 of=/dev/stdout | cksum -a sha512 -)"
 
-[ "$hash" = "$real" ] && echo "integrated" || echo "detached"
+([ "$hash1" = "$real" ] || [ "$hash2" = "$real" ]) && echo "integrated" || echo "detached"
 
 # In order to wipe:
-# dd bs=1 count=2097152 conv=notrunc if=/dev/urandom of=/dev/nvme0n1p2
+# dd bs=1 count=2097152 conv=notrunc if=/dev/urandom of=/dev/nvme0n1p1
