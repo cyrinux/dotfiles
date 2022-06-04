@@ -147,6 +147,9 @@ macro pager s "<modify-tags>!spam<enter>"
 macro index,pager D "<purge-message>"
 macro index I "<tag-entry><clear-flag>N<modify-tags>!ham<enter><untag-pattern>.<enter>"
 macro pager I "<modify-tags>!ham<enter><untag-pattern>.<enter>"
+macro index o noop
+macro index o "<shell-escape>flock -n /tmp/.checkmail.lock ~/.dotfiles-private/.local/bin/checkmail<enter><enter>" "sync all mail"
+
 bind index \\ vfolder-from-query
 bind index + entire-thread
 

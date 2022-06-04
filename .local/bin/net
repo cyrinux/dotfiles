@@ -8,16 +8,23 @@ RED=$(tput setaf 1)
 RESET=$(tput sgr0)
 
 success() {
-	printf "$GREEN$BOLD✓ ${RESET}$*\n"
+	echo "$GREEN$BOLD✓ ${RESET}$*"
 }
 
 failure() {
-	printf "$RED$BOLD✗ ${RESET}$*\n"
+	echo "$RED$BOLD✗ ${RESET}$*"
 }
 
-_CONNS=$(nmcli --fields type,name con show --active | grep wifi)
-WIFI=$(echo "$_CONNS" | cut -f 1 -d ' ' --complement | grep -Po '\S.*')
+DEVICE=$(iwctl station list | grep connected | awk '{ print $1 }')
+if [ -z "$DEVICE" ]; then
+	failure "Not connected to any network."
+	exit 1
+else
+	success "Device ${BOLD}$DEVICE${RESET} is connected."
+fi
 
+# FIXME: Only shows first work of networks with spaces:
+WIFI=$(iwctl station wlan0 show | grep "Connected network" | awk '{ print $3 }')
 if [ -z "$WIFI" ]; then
 	failure "Not connected to any network."
 	exit 1
@@ -25,7 +32,7 @@ else
 	success "Connected to wifi ${BOLD}$WIFI${RESET}."
 fi
 
-if resolvectl query captive.apple.com >/dev/null; then
+if resolvectl query captive.apple.com > /dev/null; then
 	success "DNS works."
 else
 	failure "DNS resolution failing."
@@ -45,3 +52,6 @@ else
 fi
 
 success "All good, network seems functional! 🎉"
+
+# TODO: try DDG for really weird network filters.
+# TODO: try TPB to check censoring.

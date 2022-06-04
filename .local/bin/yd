@@ -1,2 +1,2 @@
 #!/bin/sh
-yt-dlp --external-downloader aria2c "$@"
+yt-dlp --external-downloader aria2c --sponsorblock-mark all "$@"
