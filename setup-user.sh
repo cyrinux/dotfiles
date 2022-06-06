@@ -111,6 +111,7 @@ link ".config/git/message"
 link ".config/k9s"
 link ".config/git/templates"
 link ".config/gsimplecal"
+link ".config/modprobed.db"
 link ".config/gtk-3.0"
 link ".config/gtk-4.0"
 link ".config/htop"
@@ -283,6 +284,7 @@ else
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "systemd-autoreload.service"
 	systemctl_enable_start "signal-desktop.service"
+	systemctl_enable_start "modprobed-db.timer"
 
 	if [ ! -d "$HOME/.mail" ]; then
 		echo >&2 -e "

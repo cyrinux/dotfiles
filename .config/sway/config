@@ -72,6 +72,7 @@ workspace_auto_back_and_forth yes
 
 # Specific window configuration
 for_window    [app_id=".*"]                              sticky enable
+for_window    [app_id="dmenu-Networks"]                  floating enable
 for_window    [app_id="qalculate-gtk"]                   floating enable
 for_window    [window_role="pop-up"]                     floating enable
 for_window    [app_id="udiskie"]                         floating enable
@@ -93,7 +94,7 @@ for_window    [app_id="iriunwebcam"]                     floating disable
 # for_window    [app_id="mpv"] floating enable, sticky enable
 # for_window    [app_id="mpv"] floating enable, resize set width 531 height 300, move position 1005 113
 # for_window    [app_id="mpv"] floating enable, sticky enable, floating_maximum_size 531px x 300px, resize set width 531px height 300px, move position 1352 113
-for_window    [app_id="mpv"] floating enable, sticky enable, resize set width 531px height 300px, move position 1352 113
+for_window    [app_id="mpv"] floating enable, sticky enable, resize set width 600px height 400px, move position 1052 100
 
 
 # Audio settings
