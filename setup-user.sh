@@ -98,6 +98,7 @@ link ".config/chromium-flags.conf"
 link ".config/electron-flags.conf"
 link ".config/electron-flags.conf" ".config/electron13-flags.conf"
 link ".config/firejail"
+link ".config/pipewire"
 link ".config/stylua"
 link ".config/swaync"
 link ".config/easyeffects/output"
@@ -141,6 +142,7 @@ link ".config/sway"
 link ".config/swaylock"
 link ".config/swayr"
 link ".config/systemd/user/apparmor-notify.service"
+link ".config/systemd/user/noise-reduction.service"
 link ".config/systemd/user/swayrd.service"
 link ".config/systemd/user/backup-packages.service"
 link ".config/systemd/user/backup-packages.timer"
@@ -254,6 +256,7 @@ else
 	systemctl_enable_start "display-switch.service"
 	systemctl_enable_start "flashfocus.service"
 	systemctl_enable_start "gamemoded.service"
+	systemctl_enable_start "noise-reduction.service"
 	systemctl_enable_start "gocryptfs-automount.service"
 	systemctl_enable_start "gotify-dunst.service"
 	systemctl_enable_start "nm-applet.service"
@@ -284,7 +287,7 @@ else
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "systemd-autoreload.service"
 	systemctl_enable_start "signal-desktop.service"
-	systemctl_enable_start "modprobed-db.timer"
+	# systemctl_enable_start "modprobed-db.timer"
 
 	if [ ! -d "$HOME/.mail" ]; then
 		echo >&2 -e "
@@ -363,4 +366,4 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare
+flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare com.plexamp.Plexamp

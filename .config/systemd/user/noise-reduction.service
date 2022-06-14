@@ -1,0 +1,10 @@
+[Unit]
+Description=PipeWire noise reduction
+After=pipewire.service
+BindsTo=pipewire.service
+
+[Service]
+ExecStart=/usr/bin/pipewire -c %h/.config/pipewire/rnoise.conf
+
+[Install]
+WantedBy=graphical-session.target

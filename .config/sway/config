@@ -76,6 +76,7 @@ for_window    [app_id="dmenu-Networks"]                  floating enable
 for_window    [app_id="qalculate-gtk"]                   floating enable
 for_window    [window_role="pop-up"]                     floating enable
 for_window    [app_id="udiskie"]                         floating enable
+for_window    [app_id="com.plexamp.Plexamp"]             floating enable
 for_window    [app_id="personal"]                        move container to $workspace1
 for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
 for_window    [app_id="work"]                            move container to $workspace2
@@ -98,7 +99,7 @@ for_window    [app_id="mpv"] floating enable, sticky enable, resize set width 60
 
 
 # Audio settings
-set $mode_audio "Audio: (h)eadphones, he(a)dset, (t)oggle, (s)peaker, (p)avucontrol, (e)qualizer"
+set $mode_audio "Audio:  (h)eadphones,  he(a)dset, (t)oggle, (s)peaker, (p)avucontrol, (e)qualizer"
 mode $mode_audio {
     bindsym --to-code {
         h exec sway-audio bt-connect-headphones, mode "default"

@@ -5,6 +5,7 @@ Description=Backup pacman repository to %I
 Type=oneshot
 User=cyril
 EnvironmentFile=/etc/systemd/system/backup-repo@%i
+# ExecStart=/usr/bin/chown -R cyril: ${REMOTE_TEMP_PATH}/*
 ExecStart=/usr/bin/rsync --archive --partial --delete --verbose ${LOCAL_PATH} ${REMOTE_TEMP_PATH}
 ExecStart=/bin/bash -c "/usr/bin/rename -- '-local' '' ${REMOTE_TEMP_PATH}/* || true"
 ExecStart=/bin/bash -c "/usr/bin/rename -s -- '-local' '' ${REMOTE_TEMP_PATH}/* || true"

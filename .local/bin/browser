@@ -9,7 +9,7 @@
 url="$1"
 
 list="$XDG_CACHE_HOME/works-url-patterns"
-[ -s "$list" ] || pass work/works-url-patterns >$list
+[ -s "$list" ] || pass work/works-url-patterns > $list
 
 # echo $url
 if [ -s "${list}" ]; then
@@ -20,27 +20,30 @@ if [ -s "${list}" ]; then
 			container=$(echo ${line} | cut -d'@' -f2)
 			break
 		fi
-	done <$list
+	done < $list
 fi
 
 if [ -z $container ]; then
-	container=$(echo -e "personal\nwork\nshopping\ndisposable\nisolate\nclipboard\nmpv" | dmenu -p "browser")
+	container=$(echo -e "personal\nwork\nshopping\ndisposable\nchromium\nclipboard\nmpv" | dmenu -p "browser")
 fi
 
 case $container in
-"personal")
-	cglaunch qbpm launch personal "$url" &
-	;;
-"work")
-	cglaunch qbpm launch work "$url" &
-	;;
-"shopping")
-	cglaunch qbpm launch shopping "$url" &
-	;;
-"clipboard")
-	echo "$url" | wl-copy &
-	;;
-"mpv")
-	cglaunch mpv "$url" &
-	;;
+	"personal")
+		cglaunch qbpm launch personal "$url" &
+		;;
+	"work")
+		cglaunch qbpm launch work "$url" &
+		;;
+	"shopping")
+		cglaunch qbpm launch shopping "$url" &
+		;;
+	"clipboard")
+		echo "$url" | wl-copy &
+		;;
+	"chromium")
+		chromium "$url" &
+		;;
+	"mpv")
+		cglaunch mpv "$url" &
+		;;
 esac

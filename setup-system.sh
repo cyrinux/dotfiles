@@ -137,6 +137,8 @@ copy "etc/systemd/system/reflector.service.d"
 copy "etc/systemd/system/reflector.timer"
 copy "etc/systemd/system/system-dotfiles-sync.service"
 copy "etc/systemd/system/system-dotfiles-sync.timer"
+copy "etc/systemd/system/rebind-suspend-failing-device.service"
+copy "etc/systemd/system/unbind-suspend-failing-device.service"
 copy "etc/systemd/system/usbguard.service.d"
 copy "etc/systemd/system/user@.service.d/delegate.conf"
 copy "etc/systemd/system.conf.d/kill-fast.conf"
@@ -144,7 +146,7 @@ copy "etc/systemd/user.conf.d/kill-fast.conf"
 copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
-copy "etc/throttled.conf"
+# copy "etc/throttled.conf"
 copy "etc/bluetooth/main.conf"
 
 (("$reverse")) && exit 0
@@ -163,10 +165,9 @@ echo "================================="
 echo "Enabling and starting services..."
 echo "================================="
 
+systemctl_enable_start "systemd-oomd.socket"
 systemctl_enable_start "power-profiles-daemon.service"
-# systemctl_enable_start "throttled.service"
 systemctl_enable_start "thermald.service"
-systemctl_enable_start "systemd-oomd.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "nfs-server.service"
@@ -192,6 +193,8 @@ systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
 systemctl_enable "pcscd.socket"
 systemctl_enable "apparmor.service"
+systemctl_enable "unbind-suspend-failing-device.service"
+systemctl_enable "rebind-suspend-failing-device.service"
 # if is_chroot; then
 # 	echo >&2 "=== Running in chroot, skipping docker service setup..."
 # fi
@@ -215,6 +218,7 @@ ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 
 echo "Fixing local AUR repository"
 install -o "$USER" -d /var/cache/pacman/cyrinux-aur-local-temp
+chmod g+s /var/cache/pacman/cyrinux-aur-local-temp
 
 echo "Regenerating fonts cache"
 fc-cache -r
@@ -241,10 +245,10 @@ sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
 sudo chown root:root /usr/local/bin/xdg-open
 sudo chmod 0755 /usr/local/bin/xdg-open
 
-# echo "Firejail some apps"
+echo "Firejail some apps"
 sudo systemctl enable --now apparmor.service || true
-sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
-sudo firecfg --add-users $user
+# sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
+# sudo firecfg --add-users $user
 
 echo "Setup docker rootless"
 sudo touch /etc/{subgid,subuid}

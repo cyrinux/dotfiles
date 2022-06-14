@@ -1,0 +1,10 @@
+[Unit]
+Description=Rebind device which causes suspend to fail
+After=suspend.target
+
+[Service]
+Type=simple
+ExecStart=-/bin/sh -c '/bin/echo -n "0000:00:14.0" > /sys/bus/pci/drivers/xhci_hcd/bind'
+
+[Install]
+WantedBy=suspend.target

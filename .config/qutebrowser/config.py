@@ -80,8 +80,8 @@ c.url.searchengines = {
     "c": "https://artifacthub.io/packages/search?ts_query_web={}",
 }
 
-c.url.default_page = "~/.config/qutebrowser/blank.html"
-c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
+c.url.default_page = "chrome://network-error/-106"
+c.url.start_pages = ["chrome://network-error/-106"]
 
 c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
 
