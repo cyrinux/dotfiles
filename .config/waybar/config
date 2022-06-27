@@ -36,7 +36,7 @@
       "interval": 3600
     },
     "custom/whistle": {
-      "exec": "whistle | grep -v filter-chain",
+      "exec": "whistle | egrep -v '(filter-chain|rnnoise)'",
       "return-type": "json"
     },
     "custom/dnd": {
@@ -152,7 +152,7 @@
       "interval": 5
     },
     "custom/whistle": {
-      "exec": "whistle | egrep -v '(filter-chain|ee_sie_spectrum)'",
+      "exec": "whistle | egrep -v '(filter-chain|ee_sie_spectrum|rnnoise)'",
       "return-type": "json"
     },
     "custom/calendar": {

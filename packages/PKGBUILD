@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.26.3
+pkgver=2.26.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -636,7 +636,7 @@ depends=(
     'wlrctl'
     'wlroots'
     'wlsunset-git'
-    'wluma-git'
+    'wluma'
     'wmctrl'
     'wol'
     'words'

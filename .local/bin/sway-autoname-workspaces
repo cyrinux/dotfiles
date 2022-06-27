@@ -19,6 +19,7 @@ import setproctitle
 setproctitle.setproctitle("sway-autoname-workspaces")
 
 WINDOW_ICONS = {
+    "jetbrains-studio": "",
     "swappy": "",
     "dmenu-pass": "",
     "dmenu-clipboard": "",
