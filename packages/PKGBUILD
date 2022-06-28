@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.26.4
+pkgver=2.26.7
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -95,7 +95,6 @@ depends=(
     'binfmt-qemu'
     'bison'
     'bleachbit-cli'
-    'bluetooth-headset-battery-level-git'
     'bluez'
     'bluez-firmware'
     'bluez-utils'
@@ -516,7 +515,6 @@ depends=(
     'simple-scan'
     'sipcalc'
     'skaffold'
-    'slack-desktop'
     'slurp'
     'smartmontools'
     'smbnetfs'
@@ -622,7 +620,6 @@ depends=(
     'wf-recorder'
     'wgcf'
     'wget'
-    'whatsapp-nativefier-dark'
     'which'
     'whois'
     'wireguard-tools'
@@ -711,4 +708,12 @@ depends=(
     'vault-kv-search'
     'webp-thumbnailer'
     'buildah'
+    'android-studio'
+    'lib32-alsa-lib'
+    'lib32-sdl12-compat'
+    'libxcrypt-compat'
+    'lsb-release'
+    'ocl-icd'
+    'tcptraceroute'
+    'asdf-vm'
 )

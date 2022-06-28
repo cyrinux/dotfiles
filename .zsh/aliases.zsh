@@ -166,6 +166,7 @@ rgf() {
     )"
 }
 
+alias localversion="asdf direnv local"
 
 alias gob='go build'
 alias got='go test'

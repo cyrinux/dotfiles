@@ -366,4 +366,10 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.discordapp.Discord org.onionshare.OnionShare com.plexamp.Plexamp
+flatpak install -y --noninteractive com.discordapp.Discord com.plexamp.Plexamp com.rtosta.zapzap org.telegram.desktop com.slack.Slack
+
+# asdf
+for s in direnv kubectl kind; do
+	asdf plugin-add $s
+	asdf install $s latest
+done

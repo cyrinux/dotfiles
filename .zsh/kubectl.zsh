@@ -1,8 +1,8 @@
 export PATH="${PATH}:${HOME}/.krew/bin"
 
 alias k='kubectl'
-alias kc='kubectx "$(kubectx | fzf --height=10%)"'
-alias kn='kubens "$(kubens | fzf --height=10%)"'
+alias kc='kubectx "$(kubectx | fzf +m --height=10%)"'
+alias kn='kubens "$(kubens | fzf +m --height=10%)"'
 alias kd='k describe'
 alias kd!='kd --all-namespaces'
 alias kdp='kd pod'
@@ -22,9 +22,13 @@ alias klogs='stern'
 alias koff='kubectl config unset current-context'
 alias kga='k get pod --all-namespaces'
 alias kgaa='kubectl get all --show-labels'
+
 drain_node() {
-	kubectl drain "$1" --force --delete-emptydir-data --ignore-daemonsets
+	kubectl drain --force --delete-emptydir-data --ignore-daemonsets $(kubectl get nodes -o name | fzf +m -1 -q "$1")
 }
+_drain_node() { compadd $(kubectl get nodes -o name | fzf +m -1 -q "$1") }
+compdef _drain_node drain_node
+
 kcout() {
 	while IFS= read -rd: config; do
 		[ -f "$config" ] || continue

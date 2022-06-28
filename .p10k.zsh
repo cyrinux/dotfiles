@@ -24,6 +24,7 @@
         kubecontext
         azure
         gcloud
+        asdf
         command_execution_time
 
         newline
@@ -240,10 +241,9 @@
     typeset -g POWERLEVEL9K_VCS_BACKENDS=(git)
 
     #############[ kubecontext: current kubernetes context (https://kubernetes.io/) ]#############
-    typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|kubens|kubectx|helm|alfred|k9s|oc|istioctl|kogito|drain_node|kustomize|kubespy|alfred|hubble|flux|sops|stern'
+    typeset -g POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='alfred|drain_node|flux|fluxctl|helm|helmfile|hubble|istioctl|k9s|kogito|kubectl|kubectx|kubens|kubeseal|kubespy|kustomize|oc|skaffold|sops|stern|virtctl'
     typeset -g POWERLEVEL9K_KUBECONTEXT_PREFIX='%fat '
     typeset -g POWERLEVEL9K_KUBECONTEXT_VISUAL_IDENTIFIER_EXPANSION='☸️'
-
     typeset -g POWERLEVEL9K_KUBECONTEXT_CLASSES=(
         'prod-*'  PROD
         'dev-*'   DEV
@@ -263,7 +263,7 @@
     typeset -g POWERLEVEL9K_GCLOUD_PREFIX='%fusing '
     typeset -g POWERLEVEL9K_GCLOUD_VISUAL_IDENTIFIER_EXPANSION="☁️"
     typeset -g POWERLEVEL9K_GCLOUD_CONTENT_EXPANSION='%B${P9K_CONTENT}'
-    typeset -g POWERLEVEL9K_GCLOUD_SHOW_ON_COMMAND='gcloud|gcs|terraform'
+    typeset -g POWERLEVEL9K_GCLOUD_SHOW_ON_COMMAND='gcloud|gcs|terraform|sops'
 
     ##########[ azure: azure account name (https://docs.microsoft.com/en-us/cli/azure) ]##########
     typeset -g POWERLEVEL9K_AZURE_SHOW_ON_COMMAND='az|terraform'
@@ -285,9 +285,17 @@
     typeset -g POWERLEVEL9K_PROMPT_CHAR_ERROR_{VIINS,VICMD,VIVIS,VIOWR}_FOREGROUND=red
     typeset -g POWERLEVEL9K_PROMPT_CHAR_CONTENT_EXPANSION='%(#.#.$)'
 
-    ################################[ xpkr: prompt symbol ]#######################################
+    ################################[ xplr: prompt symbol ]#######################################
     typeset -g POWERLEVEL9K_XPLR_FOREGROUND=43
     typeset -g POWERLEVEL9K_XPLR_VISUAL_IDENTIFIER_EXPANSION=""
+
+
+    ################################[ asdf: prompt symbol ]#######################################
+    typeset -g POWERLEVEL9K_ASDF_HIDE_IF_SOURCE_NOT_ONE_OF_THESE=(shell local global)
+    typeset -g POWERLEVEL9K_ASDF_FOREGROUND=yellow
+    typeset -g POWERLEVEL9K_ASDF_HIDE_IF_VERSION_THE_SAME_AS_GLOBAL=true
+    typeset -g POWERLEVEL9K_ASDF_HIDE_IF_VERSION_EQUALS_TO_SYSTEM=true
+    typeset -g POWERLEVEL9K_ASDF_SHOW_ON_COMMAND='kubectl|kind'
 
     (( ! $+functions[p10k] )) || p10k reload
 }
