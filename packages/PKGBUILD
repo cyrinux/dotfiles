@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.26.7
+pkgver=2.26.8
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -697,10 +697,6 @@ depends=(
     'gofumpt'
     'kompose'
     'libnma-gtk4'
-    'linux-xanmod-edge'
-    'linux-xanmod-edge-headers'
-    'linux-xanmod-edge'
-    'linux-xanmod-edge-headers'
     'modprobed-db'
     'pandoc'
     'thermald'

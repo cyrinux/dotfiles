@@ -32,7 +32,7 @@ clean: ## Cleanup
 	rm -rf pkg src *.pkg.tar* *.log
 
 .PHONY: sync
-push: ## Push online the local repo
+sync: ## Push online the local repo
 	@echo 📦 Sync repository
 	sudo systemctl start backup-repo@pkgbuild
 	sudo systemctl status backup-repo@pkgbuild

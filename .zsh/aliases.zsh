@@ -198,3 +198,5 @@ etcdctl(){
 }
 
 alias meteo='curl -s wttr.in/paris'
+
+alias tf=terraform && complete -C /usr/bin/terraform tf

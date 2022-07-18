@@ -369,7 +369,7 @@ mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 flatpak install -y --noninteractive com.discordapp.Discord com.plexamp.Plexamp com.rtosta.zapzap org.telegram.desktop com.slack.Slack
 
 # asdf
-for s in direnv kubectl kind; do
+for s in direnv kubectl kind terraform kustomize helmfile helm; do
 	asdf plugin-add $s
 	asdf install $s latest
 done
