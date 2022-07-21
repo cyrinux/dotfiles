@@ -25,7 +25,7 @@
 #
 # bash <(curl -sL https://git.io/cyrinux-install)
 
-set -uo pipefail
+set -euf -o pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 
 exec 1> >(tee "stdout.log")
@@ -93,7 +93,7 @@ setfont "$font"
 
 hostname=$(get_input "Hostname" "Enter hostname") || exit 1
 clear
-: ${hostname:?"hostname cannot be empty"}
+: "${hostname:?"hostname cannot be empty"}"
 
 echo -e "\n### Luks screens"
 noyes=("Yes" "Use luks Yubikey full disk encryption" "No" "Use standard luks full disk encryption")
@@ -103,16 +103,16 @@ clear
 [[ "$fde" == "No" ]] && {
 	lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
 	clear
-	: ${lukspw:?"password cannot be empty"}
+	: "${lukspw:?"password cannot be empty"}"
 }
 
 user=$(get_input "User" "Enter username") || exit 1
 clear
-: ${user:?"user cannot be empty"}
+: "${user:?"user cannot be empty"}"
 
 password=$(get_password "User" "Enter password") || exit 1
 clear
-: ${password:?"password cannot be empty"}
+: "${password:?"password cannot be empty"}"
 
 devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac | tr '\n' ' ')
 read -r -a devicelist <<< "$devicelist"
@@ -150,8 +150,8 @@ if [[ "$fde" == "Yes" ]]; then
 	ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
 	ykfde-open -d "${part_root}" -n luks
 else
-	echo -n ${lukspw} | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
-	echo -n ${lukspw} | cryptsetup luksOpen $cryptargs "${part_root}" luks
+	echo -n "${lukspw}" | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
+	echo -n "${lukspw}" | cryptsetup luksOpen $cryptargs "${part_root}" luks
 fi
 
 mkfs.btrfs -L btrfs /dev/mapper/luks
@@ -299,11 +299,11 @@ arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local
 
 echo -e "\n### Cloning dotfiles"
 if [ "${user}" = "cyril" ]; then
-	arch-chroot /mnt sudo -u $user bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
+	arch-chroot /mnt sudo -u "$user" bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
 	echo -e "\n### Running initial setup"
-	arch-chroot /mnt /home/$user/.dotfiles/setup-system.sh
-	arch-chroot /mnt sudo -u $user /home/$user/.dotfiles/setup-user.sh
-	arch-chroot /mnt sudo -u $user zsh -ic true
+	arch-chroot /mnt "/home/$user/.dotfiles/setup-system.sh"
+	arch-chroot /mnt sudo -u "$user" "/home/$user/.dotfiles/setup-user.sh"
+	arch-chroot /mnt sudo -u "$user" zsh -ic true
 
 	echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 else

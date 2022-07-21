@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.26.8
+pkgver=2.26.11
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -45,12 +45,11 @@ depends=(
     'mkinitcpio'
     'mkinitcpio-encrypt-detached-header'
     'arch-secure-boot'
-    'man-db'
+    'mandoc'
     'ttf-liberation'
     'htop'
     'kernel-modules-hook'
     'logrotate'
-    'man-db'
     'man-pages'
     'posix'
     'acpi'
@@ -629,8 +628,8 @@ depends=(
     'wl-clipboard'
     'wl-color-picker'
     'wldash'
-    'wl-mirror'
     'wlrctl'
+    'pgformatter'
     'wlroots'
     'wlsunset-git'
     'wluma'
