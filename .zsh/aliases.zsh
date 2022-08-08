@@ -192,11 +192,6 @@ mass-usb-creator() {
 # See https://askubuntu.com/a/507954.
 alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
 
-
-etcdctl(){
-        docker exec -ti docker-etcd.service etcdctl --cacert /usr/local/share/ca-certificates/Dailymotion.crt --cert /etc/ssl/etcd/server.pem --key /etc/ssl/etcd/server-key.pem --endpoints https://$(hostname -f):2379 ${@}
-}
-
 alias meteo='curl -s wttr.in/paris'
 
 alias tf=terraform && complete -C /usr/bin/terraform tf

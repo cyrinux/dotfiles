@@ -14,15 +14,16 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: dev-orinfra-01-dm-paris
-  currentCluster: dev-orinfra-01-dm-paris-push@levis.name
+  currentContext: dev-orinfra-01-dm-dc3
+  currentCluster: dev-orinfra-01-dm-dc3-push@levis.name
   clusters:
-    dev-orinfra-01-dm-paris-push@levis.name:
+    dev-orinfra-01-dm-dc3-push@levis.name:
       namespace:
         active: all
+        lockFavorites: false
         favorites:
         - all
-        - thruk
+        - kibana
         - default
       view:
         active: po

@@ -31,6 +31,7 @@ alias trusty="pod ubuntu:trusty"
 alias xenial="pod ubuntu:xenial"
 alias bionic="pod ubuntu:bionic"
 alias focal="pod ubuntu:focal"
+alias buster="pod debian:buster"
 alias alpine="pod alpine sh"
 
 alias archlinux-docker="pod -it --cpus 2 -v $(pwd):/data -w /data --entrypoint bash archlinux"
@@ -69,8 +70,8 @@ function vagrant() {
 }
 
 alias mk='minikube'
-complete -C podman-compose dc
-complete -C podman-compose podman-compose
+# complete -C podman-compose dc
+# complete -C podman-compose podman-compose
 
 # alias dock-on='sudo nft -f /etc/nftables-docker.conf && sudo systemctl start docker'
 # alias dock-off='sudo systemctl stop docker containerd && sudo nft -f /etc/nftables.conf && sudo ip l d docker0'

@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.26.11
+pkgver=2.27.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -45,7 +45,7 @@ depends=(
     'mkinitcpio'
     'mkinitcpio-encrypt-detached-header'
     'arch-secure-boot'
-    'mandoc'
+    'man-db'
     'ttf-liberation'
     'htop'
     'kernel-modules-hook'
@@ -91,7 +91,6 @@ depends=(
     'benchmark'
     'bfs'
     'bind'
-    'binfmt-qemu'
     'bison'
     'bleachbit-cli'
     'bluez'
@@ -154,7 +153,6 @@ depends=(
     'edk2-ovmf'
     'efitools'
     'egl-wayland'
-    'element-desktop'
     'enscript'
     'epson-inkjet-printer-escpr'
     'eslint'
@@ -168,8 +166,6 @@ depends=(
     'fdupes'
     'ffmpeg'
     'firefox'
-    # 'firejail'
-    # 'firejail-pacman-hook'
     'flashfocus'
     'flatpak-builder'
     'fontforge'
@@ -711,4 +707,10 @@ depends=(
     'ocl-icd'
     'tcptraceroute'
     'asdf-vm'
+    'packer'
+    'qemu-arm-static-bin'
+    'kind-bin'
+    'kubeconform'
+    'nextcloud-client'
+    'qflipper-git'
 )

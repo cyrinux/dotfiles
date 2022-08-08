@@ -109,8 +109,10 @@
 [mergetool "meld"]
     cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
-; [interactive]
-;     diffFilter = delta --color-only
+[interactive]
+    diffFilter = delta --color-only
+[add.interactive]
+    useBuiltin = false
 
 [pager]
     diff = delta

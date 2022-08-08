@@ -140,6 +140,7 @@
 .control-center-dnd:checked {
   background: @red-gruvbox;
 }
+
 .control-center-dnd slider {
   background: @bg-hover;
 }
