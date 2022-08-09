@@ -44,13 +44,14 @@ capturer = "wlroots"
 # [[output.ddcutil]]
 # name = "9KFDW67326GB"
 # capturer = "wlroots"
+
 [[output.backlight]]
 name = "DP-3"
-path = "/sys/class/backlight/ddcci15"
+path = "/sys/class/backlight/ddcci12"
 capturer = "wlroots"
 
 [[output.backlight]]
 name = "DP-4"
-path = "/sys/class/backlight/ddcci16"
+path = "/sys/class/backlight/ddcci13"
 capturer = "wlroots"
 

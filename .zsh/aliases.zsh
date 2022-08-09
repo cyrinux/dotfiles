@@ -177,16 +177,9 @@ gov(){
      go tool cover -html=coverage.out
 }
 
-
-booxupload() {
- curl 'http://boox.lan:8085/api/storage/upload' \
-   -F file=@$1
-}
-
 mass-usb-creator() {
     udevadm monitor | while read -r line ; do key=$(echo $line | sed -n -E 's/^UDEV.*add.*\/block\/(sd[a-z]+) \(block\)$/\1/p'); [ -n "$key" ] && echo "# USB /dev/$key"; { sudo /bin/cp "$1" "/dev/$key" &; sync; } ; done
 }
-
 
 # Disable ASLR in a new shell.
 # See https://askubuntu.com/a/507954.
@@ -194,4 +187,5 @@ alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
 
 alias meteo='curl -s wttr.in/paris'
 
-alias tf=terraform && complete -C /usr/bin/terraform tf
+alias tf=terraform
+compdef tf=terraform

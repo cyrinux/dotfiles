@@ -70,8 +70,5 @@ function vagrant() {
 }
 
 alias mk='minikube'
-# complete -C podman-compose dc
-# complete -C podman-compose podman-compose
-
-# alias dock-on='sudo nft -f /etc/nftables-docker.conf && sudo systemctl start docker'
-# alias dock-off='sudo systemctl stop docker containerd && sudo nft -f /etc/nftables.conf && sudo ip l d docker0'
+alias dock-on='sudo nft -f /etc/nftables-docker.conf && sudo systemctl start docker'
+alias dock-off='sudo systemctl stop docker containerd && sudo nft -f /etc/nftables.conf && sudo ip l d docker0'

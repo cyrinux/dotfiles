@@ -64,7 +64,6 @@ depends=(
     'aspell-fr'
     'wireplumber'
     'pipewire'
-    'libpipewire02'
     'pipewire-pulse'
     'pipewire-jack'
     'pipewire-v4l2'
