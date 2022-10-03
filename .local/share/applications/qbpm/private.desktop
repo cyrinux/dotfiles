@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=private (qutebrowser profile)
+Icon=qutebrowser
+Exec=qutebrowser -B /home/cyril/.local/share/qutebrowser-profiles/private --qt-arg name private --desktop-file-name private %u
+Categories=['Network']
+Terminal=False
+StartupNotify=True
+

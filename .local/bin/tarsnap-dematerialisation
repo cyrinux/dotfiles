@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -eu
 
 KEY="$XDG_CACHE_HOME/tarsnap.key"
 while true; do
@@ -9,6 +9,6 @@ while true; do
 	sleep 1
 done
 
-[ ! -f $KEY ] && pass personal/backup/tarsnap-key >$KEY && chmod 400 $KEY
+[ ! -f $KEY ] && pass personal/backup/tarsnap-key > $KEY && chmod 400 $KEY
 tarsnap --keyfile $KEY --cachedir /tmp/tarsnap-cache --fsck
-tarsnap --keyfile $KEY -c --cachedir /tmp/tarsnap-cache -f "$(hostname)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/.dotfiles-private ~/library/contacts ~/library/calendars ~/.password-store
+tarsnap --keyfile $KEY -c --cachedir /tmp/tarsnap-cache -f "$(hostnamectl hostname)-dematerialisation-$(date +%Y-%m-%d_%H-%M-%S)" -v --print-stats ~/Vault/Dematerialisation ~/.dotfiles ~/.dotfiles-private ~/library/contacts ~/library/calendars ~/.password-store

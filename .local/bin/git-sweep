@@ -6,8 +6,14 @@ set -e
 
 git fetch -p
 
+# Delete branches that have been deleted upstream.
 branches=$(git branch -vv | grep ': gone]' | awk '{print $1}')
+for branch in $branches; do
+	git branch -d "$branch"
+done
 
+# Delete branches that are merged into the current branch
+branches=$(git branch --merged | grep -Pv "^\*")
 for branch in $branches; do
 	git branch -d "$branch"
 done

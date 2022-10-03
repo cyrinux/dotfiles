@@ -77,7 +77,7 @@ backup() {
 	# If the backup was succesful, store the current time.
 	if [ $? -eq 0 ]; then
 		log 2 'Program completed.'
-		date "$timeformat" >"$LASTRUN"
+		date "$timeformat" > "$LASTRUN"
 	else
 		log 2 'Program failed.'
 	fi
@@ -98,37 +98,37 @@ on_battery() {
 # Get any arguments.
 while getopts ":p:b:l:n:h:avq" opt; do
 	case $opt in
-	p)
-		PERIOD=$OPTARG
-		;;
-	b)
-		BACKUP=$OPTARG
-		;;
-	l)
-		LASTRUN=$OPTARG
-		;;
-	n)
-		NOFILE=$OPTARG
-		;;
-	v)
-		VERBOSITY=2
-		;;
-	q)
-		VERBOSITY=0
-		;;
-	a)
-		ACONLY=true
-		;;
-	h)
-		usage
-		exit
-		;;
-	:)
-		echo "Option -$OPTARG requires an argument.
+		p)
+			PERIOD=$OPTARG
+			;;
+		b)
+			BACKUP=$OPTARG
+			;;
+		l)
+			LASTRUN=$OPTARG
+			;;
+		n)
+			NOFILE=$OPTARG
+			;;
+		v)
+			VERBOSITY=2
+			;;
+		q)
+			VERBOSITY=0
+			;;
+		a)
+			ACONLY=true
+			;;
+		h)
+			usage
+			exit
+			;;
+		:)
+			echo "Option -$OPTARG requires an argument.
             "
-		usage
-		exit
-		;;
+			usage
+			exit
+			;;
 	esac
 done
 

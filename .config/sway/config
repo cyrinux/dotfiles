@@ -236,12 +236,14 @@ bindsym --to-code {
 	Print        exec cglaunch sway-screenshot-area
     $hyper+Print exec cglaunch sway-gif-area
     $win+Print   exec cglaunch sway-screenshare
+    $win+i       exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+
 
 
 	# open terminal
 	$hyper+Return exec cglaunch --term
 	$hyper+XF86AudioMute exec cglaunch --term
-	$hyper+Shift+Return exec kitty --config NONE
+	$hyper+Shift+Return exec kitty --config ~/.config/kitty/gruvbox-light.conf
 	$win+Return exec kitty --config NONE /bin/bash
 
 
@@ -312,7 +314,6 @@ bindsym --to-code {
     # Emoji
     $hyper+Backspace  fullscreen disable, exec cglaunch emoji-dmenu
     $hyper+XF86AudioLowerVolume  fullscreen disable, exec cglaunch emoji-dmenu
-
 
 	# move workspace to the right monitor
 	$win+Shift+Backspace move workspace to output right

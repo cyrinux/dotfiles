@@ -22,6 +22,7 @@ alias klogs='stern'
 alias koff='kubectl config unset current-context'
 alias kga='k get pod --all-namespaces'
 alias kgaa='kubectl get all --show-labels'
+alias kgn='kubectl get nodes'
 
 drain_node() {
 	kubectl drain --force --delete-emptydir-data --ignore-daemonsets $(kubectl get nodes -o name | fzf +m -1 -q "$1")

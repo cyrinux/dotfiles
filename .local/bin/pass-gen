@@ -6,19 +6,19 @@ length=40
 symbols="-y"
 
 case $(echo -e "default\nno special chars\nshort\n" | dmenu -p "pass generator") in
-default) ;;
-"no special chars")
-	symbols=""
-	;;
-short)
-	length=16
-	symbols=""
-	;;
-*)
-	exit 1
-	;;
+	default) ;;
+	"no special chars")
+		symbols=""
+		;;
+	short)
+		length=16
+		symbols=""
+		;;
+	*)
+		exit 1
+		;;
 esac
 
 wl-clipboard-manager lock
-pwgen -s $length $symbols | wl-copy -n
+pwgen -s "$length" "$symbols" | wl-copy -n
 wl-clipboard-manager unlock

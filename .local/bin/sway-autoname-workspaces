@@ -75,6 +75,7 @@ WINDOW_ICONS = {
     "streamlink-twitch-gui": "",
     "sun-awt-x11-xframepeer": "",
     "taskwarrior-tui": "",
+    "org.telegram.desktop": "",
     "telegramdesktop": "",
     "tor browser": "",
     "transmission-gtk": "",

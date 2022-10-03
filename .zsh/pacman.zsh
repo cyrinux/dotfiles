@@ -80,7 +80,7 @@ pacs() {
 }
 
 pacu() {
-	xargs -a <(aur vercmp-devel | cut -d' ' -f1) powerprofilesctl launch aur sync -Scu --rebuild "$@"
+	xargs -a <(aur vercmp-devel | cut -d' ' -f1) aur sync -Scu --rebuild "$@"
 	post_aur
 	pac -Syu
 }

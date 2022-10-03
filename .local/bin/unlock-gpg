@@ -1,0 +1,5 @@
+#!/usr/bin/env dash
+
+serial="$(gpg-connect-agent 'scd serialno' /bye | head -n 1 | awk '{ print $3 }')"
+gpg-connect-agent "scd checkpin $serial" /bye >/dev/null 2>&1
+printf "%s\\n" "unlocked!\n" | gpg --recipient pgp@levis.name --encrypt | gpg --decrypt

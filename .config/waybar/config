@@ -69,9 +69,10 @@
       "on-click": "sway-cast toggle-stream",
     },
     "custom/eyes": {
-      "exec": "waybar-eyes",
+      "exec": "cat ~/.cache/waybar-eyes.json",
+      "interval": 5,
       "return-type": "json",
-      "on-click": "waybar-eyes done"
+      "on-click": "pkill -f -SIGUSR1 waybar-eyes",
     },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -139,12 +140,19 @@
       "clock",
       "tray",
       "custom/yubikey",
+      "custom/power_profile",
       "idle_inhibitor",
       "custom/dnd"
     ],
     "sway/language": {
       "format": "{flag}",
       "min-length": 2
+    },
+    "custom/power_profile": {
+        "exec": "sleep 0.3 && power-profile-cycle -m",
+        "interval": 120,
+        "on-click": "power-profile-cycle",
+        "exec-on-event": true
     },
     "custom/mediaplayer": {
       "exec": "waybar-mediaplayer",
@@ -178,9 +186,10 @@
       "on-click-right": "waybar-usbguard reject"
     },
     "custom/eyes": {
-      "exec": "waybar-eyes",
+      "exec": "cat ~/.cache/waybar-eyes.json",
+      "interval": 5,
       "return-type": "json",
-      "on-click": "waybar-eyes done"
+      "on-click": "pkill -f -SIGUSR1 waybar-eyes",
     },
     "idle_inhibitor": {
       "format": "{icon}",
@@ -295,8 +304,6 @@
       "format-icons": ["",""]
     },
     "battery": {
-      "bat": "BAT0",
-      "design-capacity": false,
       "states": {
         "full": 86,
         "good": 80,
@@ -305,7 +312,7 @@
       },
       "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
       "format-charging": "<span foreground='#928374'></span>{capacity}%",
-      "format-full": "", // An empty format will hide the module
+      "format-full": "",
       "format-icons": ["", "", "", "", ""]
     },
     "network": {

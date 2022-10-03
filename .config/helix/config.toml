@@ -1,0 +1,33 @@
+theme = "gruvbox"
+
+[editor]
+color-modes = true
+
+[editor.cursor-shape]
+insert = "bar"
+
+[keys.normal]
+A-d = "delete_selection"
+d = "delete_selection_noyank"
+H = "extend_char_left"
+L = "extend_char_right"
+J = "extend_line_down"
+K = "extend_line_up"
+W = "extend_next_word_start"
+B = "extend_prev_word_start"
+E = "extend_next_word_end"
+A-j = "join_selections"
+A-k = "keep_selections"
+M = ["select_mode", "match_brackets", "normal_mode" ]
+"#" = "toggle_comments"
+A-h = "extend_to_line_start"
+A-l = "extend_to_line_end"
+
+[keys.normal.g]
+j = "goto_last_line"
+k = "goto_file_start"
+
+[keys.normal.space]
+c = ":bc"
+w = ":w"
+q = ":wqa"

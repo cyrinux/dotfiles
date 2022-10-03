@@ -32,6 +32,6 @@
 [submodule ".config/easyeffects/output"]
 	path = .config/easyeffects/output
 	url = https://github.com/Digitalone1/EasyEffects-Presets.git
-[submodule ".config/mpv/sponsorblock"]
-	path = .config/mpv/sponsorblock
-	url = https://github.com/po5/mpv_sponsorblock
+[submodule ".config/mpv/scripts/sponsorblock"]
+	path = .config/mpv/scripts/sponsorblock
+	url = https://github.com/maximbaz/mpv_sponsorblock.git

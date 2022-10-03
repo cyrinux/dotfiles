@@ -96,7 +96,6 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
-copy "etc/aurutils/pacman-x86_64.conf"
 copy "etc/apparmor/parser.conf"
 copy "etc/apparmor.d/local"
 copy "etc/geoclue/geoclue.conf"
@@ -121,7 +120,6 @@ copy "etc/pam.d/sudo"
 copy "etc/snap-pac.conf"
 copy "etc/snapper/configs/root"
 copy "etc/modprobe.d/kvm.conf"
-copy "etc/modprobe.d/v4l2loopback.conf"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/51-tcp-ip-stack.conf"
 copy "etc/sysctl.d/99-sysrq.conf"
@@ -145,7 +143,6 @@ copy "etc/systemd/user.conf.d/kill-fast.conf"
 copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
-# copy "etc/throttled.conf"
 copy "etc/bluetooth/main.conf"
 
 (("$reverse")) && exit 0
@@ -165,7 +162,7 @@ echo "Enabling and starting services..."
 echo "================================="
 
 systemctl_enable_start "systemd-oomd.socket"
-systemctl_enable_start "power-profiles-daemon.service"
+# systemctl_enable_start "power-profiles-daemon.service"
 systemctl_enable_start "thermald.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
@@ -214,6 +211,7 @@ in_ci || timedatectl set-ntp true
 
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
+ln -sf /etc/pacman.conf /etc/aurutils/pacman-"$(uname -m)".conf
 
 echo "Fixing local AUR repository"
 install -o "$USER" -d /var/cache/pacman/cyrinux-aur-local-temp

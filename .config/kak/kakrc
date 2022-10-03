@@ -46,6 +46,7 @@ map global normal '*'     ': select-or-add-cursor<ret>'
 
 map global insert <c-w>   '<esc>bdi'
 map global insert <c-u>   '<esc>xdO'
+map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
 
 map global user -docstring 'clip-paste (before)'      p      '<a-!>wl-paste --no-newline | dos2unix<ret>'
 map global user -docstring 'clip-paste (after)'       P      '!wl-paste --no-newline | dos2unix<ret>'
@@ -278,6 +279,16 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
     set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
     hook buffer -group format BufWritePre .* format
 }
+
+# hook global WinSetOption filetype=json %{
+#     set-option window formatcmd "jq --monochrome-output '.'"
+# }
+
+# https://github.com/kak-lsp/kak-lsp/issues/592
+define-command tsserver-organize-imports -docstring "Ask the typescript language server to organize imports in the buffer" %{
+    lsp-execute-command _typescript.organizeImports """[\""%val{buffile}\""]"""
+}
+
 hook global WinSetOption filetype=sh %{
     set-option buffer formatcmd "shfmt -i %opt{indentwidth} -ci -sr"
     hook buffer -group format BufWritePre .* format
@@ -305,3 +316,47 @@ source "~/.config/kak/surround.kak/rc/surround.kak"
 source "~/.config/kak/vertical-selection/vertical-selection.kak"
 source "~/.config/kak/restclient.kak/restclient.kak"
 source "~/.config/kak/pandoc/rc/pandoc.kak"
+
+
+## start git##
+map global user g ': enter-user-mode git<ret>' -docstring 'git mode'
+
+declare-user-mode git
+
+declare-option -hidden bool git_blame_enabled false
+
+define-command -hidden toggle-git-blame %{
+    if %opt{git_blame_enabled} %{
+        git hide-blame
+        set-option window git_blame_enabled false
+    } %{
+        git blame
+        set-option window git_blame_enabled true
+    }
+}
+
+map global git b ': toggle-git-blame<ret>'         -docstring '[b]lame (toggle)'
+map global git d ': git diff @ %val{buffile}<ret>' -docstring '[d]iff (current file)'
+map global git D ': git diff @<ret>'               -docstring '[D]iff (all)'
+map global git l ': enter-user-mode git-log<ret>'  -docstring '[l]og mode'
+map global git s ': enter-user-mode git-show<ret>' -docstring '[s]how mode'
+map global git a ': git add %val{buffile}<ret>'    -docstring '[a]dd (current file)'
+map global git r ': git reset %val{buffile}<ret>'  -docstring '[r]eset (current file)'
+
+declare-user-mode git-log
+
+map global git-log c ': git log -- %val{bufname}<ret>'        -docstring '[c]urrent file'
+map global git-log C ': git log -10 -p -- %val{bufname}<ret>' -docstring '[C]urrent file (diff)'
+map global git-log p ': git log<ret>'                         -docstring '[p]roject'
+map global git-log p ': git log -10 -p<ret>'                  -docstring '[P]roject (diff)'
+
+declare-user-mode git-show
+
+define-command git-show-line-commit %{ evaluate-commands %sh{
+        line_commit=$(git blame -l -L "${kak_cursor_line},${kak_cursor_line}" -p -- "${kak_buffile}" | head -n 1 | awk '{print $1}')
+        printf %s "git show ${line_commit}"
+} }
+
+map global git-show s ': git show %val{selection}<ret>' -docstring '[s]election'
+map global git-show l ': git-show-line-commit<ret>'        -docstring '[l]ine'
+## end git ##

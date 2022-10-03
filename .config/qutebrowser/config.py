@@ -47,7 +47,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.5195.125 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
@@ -64,7 +64,7 @@ with config.pattern("*://*.dm.gg/") as p:
     )
 
 c.url.searchengines = {
-    "DEFAULT": "https://google.com/search?q={}",
+    "DEFAULT": "https://www.startpage.com/sp/search?q={}",
     "?": "https://encrypted.google.com/search?hl=fr&q={}",
     "g": "https://encrypted.google.com/search?hl=fr&q={}",
     "gt": "https://translate.google.com/{}",
@@ -87,6 +87,8 @@ c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
 
 # keys
 bindings = {
+    "<": "back",
+    ">": "forward",
     ",b": "config-cycle colors.webpage.bg '#1d2021' 'white'",
     "co": "nop",
     ",C": "spawn cglaunch chromium '{url}'",

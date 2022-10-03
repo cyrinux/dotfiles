@@ -16,7 +16,7 @@ stop_wlan() {
 
 before_lock() {
 	playerctl -a pause > /dev/null 2>&1
-	sway-cast stop
+	# sway-cast stop
 	fusermount -u ~/Vault > /dev/null 2>&1
 	# gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
 }
@@ -29,22 +29,19 @@ case "$1" in
 	lock)
 		before_lock
 		swaylock
-		waybar-eyes done
 		;;
 	suspend)
 		before_lock
 		stop_vpn
 		stop_wwan
-		pkill -9 -f kanshi
-		kanshi &
 		sleep 2
-		systemctl --user stop wluma
+		# systemctl --user stop wluma
+		# systemctl --user stop waybar-eyes
 		systemctl suspend
-		pkill -9 -f kanshi
-		kanshi &
+		kanshictl reload
 		systemctl --user restart wlsunset
-		systemctl --user start wluma
-		waybar-eyes done
+		# systemctl --user start wluma
+		# systemctl --user start waybar-eyes
 		gpgconf --kill scdaemon
 		;;
 	reboot)

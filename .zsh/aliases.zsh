@@ -31,6 +31,7 @@ alias n="nmcli"
 alias hex='teehee'
 alias btm='\btm --color gruvbox'
 alias e="$EDITOR"
+alias h="helix"
 alias bottom='btm'
 alias cp='cp -r --reflink=auto'
 alias cpucooling="sudo cpupower frequency-set -u 600Mhz"
@@ -154,18 +155,6 @@ alias reloadu='sysu daemon-reload'
 alias timers='sys list-timers'
 alias timersu='sysu list-timers'
 
-rgf() {
-    RG_PREFIX="rga --files-with-matches"
-    xdg-open "$(
-        FZF_DEFAULT_COMMAND="$RG_PREFIX $@" \
-            fzf --sort --preview="[[ ! -z {} ]] && rga --pretty --context 5 {q} {}" \
-                --bind=tab:down,btab:up \
-                --phony -q "$1" \
-                --bind "change:reload:$RG_PREFIX {q}" \
-                --preview-window="70%:wrap"
-    )"
-}
-
 alias localversion="asdf direnv local"
 
 alias gob='go build'
@@ -188,4 +177,3 @@ alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
 alias meteo='curl -s wttr.in/paris'
 
 alias tf=terraform
-compdef tf=terraform

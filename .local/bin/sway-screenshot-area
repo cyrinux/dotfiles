@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 mkdir -p /tmp/screenshots
-cd /tmp/screenshots
+cd /tmp/screenshots || exit 1
 
 systemctl --user stop sway-inactive-window-transparency.service
 
 OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
-grim -o $OUTPUT -t png screen.png
+grim -o "$OUTPUT" -t png screen.png
 vimiv -f -s statusbar.show false screen.png &
 
 geometry="$(slurp -b '#AFAFAFAF' -c '#FF3F3FAF' -s '#00000000' -w 3 -d -o)"
@@ -22,11 +22,11 @@ systemctl --user start sway-inactive-window-transparency.service
 
 [ -f area.png ] && swappy -f area.png
 WITDH=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .current_mode.width')
-if [[ $WITDH > 1920 ]]; then
+if ((WITDH > 1920)); then
 	convert area.png -resize 50% reduced.png
-	wl-copy <reduced.png
+	wl-copy < reduced.png
 else
-	wl-copy <area.png
+	wl-copy < area.png
 fi
 
 rm -f screen.png area.png
