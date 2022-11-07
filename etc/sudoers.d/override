@@ -10,10 +10,5 @@ Defaults passwd_timeout=0
     /usr/bin/pacman -Syu, \
     /usr/bin/arch-nspawn, \
     /usr/bin/makechrootpkg, \
-    /usr/bin/mkarchroot, \
-    /usr/bin/extra-x86_64-build, \
     /usr/bin/paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local, \
-    /usr/bin/paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local, \
-    /usr/bin/tlp, \
-    /usr/bin/firejail --list, \
-    /usr/bin/firemon --list
+    /usr/bin/paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local

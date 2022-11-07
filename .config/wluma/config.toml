@@ -1,13 +1,3 @@
-# capturer = "wlroots"
-# capturer = "none" # Does not capture screen contents, just uses ALS to predict ideal screen brightness
-
-# [als.iio]
-# path = "/sys/bus/iio/devices"
-# thresholds = { 0 = "night", 15 = "dark", 30 = "dim", 45 = "normal", 60 = "bright", 75 = "outdoors" }
-
-# [als.time]
-# thresholds = { 0 = "night", 7 = "dark", 9 = "dim", 11 = "normal", 13 = "bright", 16 = "normal", 18 = "dark", 20 = "night" }
-
 [als.webcam]
 video = 0
 thresholds = { 0 = "night", 15 = "dark", 30 = "dim", 45 = "normal", 60 = "bright", 75 = "outdoors" }

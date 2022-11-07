@@ -11,10 +11,10 @@ tooltip() {
 vpn() {
 	state=$1
 	if [[ "x${state}x" == "xConnectedx" ]]; then
-		icon="<span foreground='#928374'></span>"
+		icon=""
 		class=on
 	else
-		icon="<span foreground='#928374'></span>"
+		icon=""
 		class=off
 	fi
 	tooltip=tooltip

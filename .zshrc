@@ -8,7 +8,7 @@ zstyle    ':z4h:autosuggestions'                               forward-char     
 zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
 zstyle    ':z4h:(fzf-complete|fzf-dir-history|fzf-history)'    fzf-flags              --no-exact --color=hl:14,hl+:14
 zstyle    ':z4h:(fzf-complete|fzf-dir-history)'                fzf-bindings           'tab:repeat'
-zstyle    ':z4h:fzf-complete'                                  find-flags             -name '.git' -prune -print -o -print
+zstyle    ':z4h:fzf-complete'                                  find-flags             '(' -name '.git' -o -name node_modules ')' -prune -print -o -print
 zstyle    ':zle:(up|down)-line-or-beginning-search'            leave-cursor           yes
 zstyle    ':z4h:term-title:local'                              preexec                '%* | ${1//\%/%%}'
 zstyle    ':z4h:direnv'                                        enable                 yes

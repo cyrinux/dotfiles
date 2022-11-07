@@ -3,16 +3,16 @@ set -euo pipefail
 lock="${XDG_CACHE_HOME}/waybar-mail.lock"
 
 check() {
-	exec 100>${lock} || exit 1
+	exec 100> ${lock} || exit 1
 	flock 100 || exit 1
 	count="$(notmuch count 'tag:unread AND tag:personal')"
 	tooltip="There are $count new emails"
 	if [ "$count" = "0" ]; then
 		printf '{"text": ""}\n'
 	else
-		printf "{\"text\": \"<span foreground='#928374'></span> %s\", \"tooltip\": \"%s\"}\n" "$count" "$tooltip"
+		printf '{"text": "%s", "tooltip": "%s", "alt": "icon"}\n' "$count" "$tooltip"
 	fi
-	inotifywait -q -e move -e create -e delete ~/.mail/personal/INBOX/cur >/dev/null
+	inotifywait -q -e move -e create -e delete ~/.mail/personal/INBOX/cur > /dev/null
 	check
 }
 

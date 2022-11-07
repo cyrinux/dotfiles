@@ -101,7 +101,7 @@ link ".config/firejail"
 link ".config/pipewire"
 link ".config/stylua"
 link ".config/swaync"
-# link ".config/easyeffects/output"
+link ".config/easyeffects/output"
 link ".config/swayimg"
 link ".config/firewarden"
 link ".config/flashfocus"
@@ -152,7 +152,7 @@ link ".config/systemd/user/git-annex.service"
 link ".config/systemd/user/checkmail.service"
 link ".config/systemd/user/checkmail.timer"
 link ".config/systemd/user/display-switch.service"
-# link ".config/systemd/user/easyeffects.service"
+link ".config/systemd/user/easyeffects.service"
 link ".config/systemd/user/gocryptfs-automount.service"
 link ".config/systemd/user/library-repos.service"
 link ".config/systemd/user/library-repos.timer"
@@ -266,7 +266,7 @@ else
 	systemctl_enable_start "qutebrowser-update-useragent.timer"
 	systemctl_enable_start "socksproxy.service"
 	systemctl_enable_start "solaar.service"
-	# systemctl_enable_start "easyeffects.service"
+	systemctl_enable_start "easyeffects.service"
 	systemctl_enable_start "sway-audio-idle-inhibit.service"
 	systemctl_enable_start "sway-autoname-workspaces.service"
 	systemctl_enable_start "swayidle.service"
@@ -293,6 +293,7 @@ else
 	# systemctl_enable_start "modprobed-db.timer"
 
 	if [ ! -d "$HOME/.mail" ]; then
+		mkdir -p "$HOME/.mail/"{personal,work}
 		echo >&2 -e "
         === Mail is not configured, skipping...
         === Consult ~/.config/mbsync/config for initial setup, and then sync everything using:

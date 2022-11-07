@@ -4,19 +4,19 @@ lock="${XDG_CACHE_HOME}/waybar-decrypted.lock"
 
 output() {
 	if [ -f "/home/cyril/Vault/.lock" ]; then
-		printf "{\"text\": \"<span foreground='#928374'></span>\"}\n"
+		printf '{"text": ""}\n'
 	else
 		printf '{"text": ""}\n'
 	fi
 }
 
 check() {
-	exec 100>${lock} || exit 1
+	exec 100> ${lock} || exit 1
 	flock 100 || exit 1
 	output
-	inotifywait -q "/home/cyril/Vault/.lock" >/dev/null 2>&1
+	inotifywait -q "/home/cyril/Vault/.lock" > /dev/null 2>&1
 	output
-	inotifywait -q "/home/cyril/Vault" >/dev/null
+	inotifywait -q "/home/cyril/Vault" > /dev/null
 	check
 }
 

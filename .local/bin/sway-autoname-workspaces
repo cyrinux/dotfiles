@@ -85,12 +85,15 @@ WINDOW_ICONS = {
     "vlc": "",
     "vncviewer": "",
     "wayvnc": "󰀄",
+    "com.rtosta.zapzap": "",
     "whatsapp-desktop": "",
     "whatsapp-nativefier-d52542": "",
     "wire": "󰁀",
     "wireshark-gtk": "",
     "wlfreerdp": "󰀄",
     "zoom": "",
+    "kicad": "",
+    "remote-viewer": "",
 }
 
 DEFAULT_ICON = ""

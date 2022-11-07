@@ -1,5 +1,5 @@
 input type:keyboard {
-    xkb_layout fr-hyper,us
+    xkb_layout fr-hyper,us,ua
     xkb_variant basic,
     xkb_options grp:shifts_toggle,grp:shift_caps_toggle,caps:hyper
     xkb_numlock enable
@@ -16,6 +16,7 @@ input type:touchpad {
 	tap enabled
 	natural_scroll enabled
     pointer_accel 0.2
+    click_method button_areas
 }
 
 output * {
@@ -233,9 +234,15 @@ bindsym --to-code {
     Shift+XF86MonBrightnessUp   exec light -A 5%
     Shift+XF86MonBrightnessDown exec light -U 5%
 
-	Print        exec cglaunch sway-screenshot-area
-    $hyper+Print exec cglaunch sway-gif-area
-    $win+Print   exec cglaunch sway-screenshare
+
+
+	Print exec cglaunch sway-screenshot-area
+    # Print       exec cglaunch shotman region
+    # $hyper+Print exec cglaunch shotman window
+    # $win+Print   exec cglaunch shotman output
+
+    $hyper+Shift+Print exec cglaunch sway-gif-area
+    $win+Shift+Print   exec cglaunch sway-screenshare
     $win+i       exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
 

@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.28.3
+pkgver=2.28.5
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -38,7 +38,8 @@ package() {
 depends=(
     # base
     'base'
-    'iptables-nft'
+    'iptables'
+    'firewalld'
     'btrfs-progs'
     'dash'
     'zsh'
@@ -101,7 +102,6 @@ depends=(
     'brscan4'
     'calibre'
     'cantarell-fonts'
-    'cardpeek'
     'cargo-make'
     'ccache'
     'ccid'
@@ -130,7 +130,7 @@ depends=(
     'dcraw'
     'python-ldap'
     'ddcutil'
-    'dell-command-configure'
+    # 'dell-command-configure'
     'devtools'
     'dfrs'
     'dictd'
@@ -385,7 +385,6 @@ depends=(
     'poetry'
     'polkit'
     'polkit-gnome'
-    'tlp'
     'powershell-bin'
     'powerstat'
     'powertop'

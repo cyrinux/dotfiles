@@ -109,7 +109,7 @@ copy "etc/modules-load.d/ddcci.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/qemu/bridge.conf"
-copy "etc/nftables.conf"
+# copy "etc/nftables.conf"
 copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/nmtrust/trusted_units" 644
@@ -163,6 +163,7 @@ echo "================================="
 
 systemctl_enable_start "systemd-oomd.socket"
 # systemctl_enable_start "power-profiles-daemon.service"
+systemctl_enable_start "firewalld.service"
 systemctl_enable_start "thermald.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"

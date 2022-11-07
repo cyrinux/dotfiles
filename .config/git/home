@@ -9,7 +9,7 @@
 [sendemail]
    smtpserver = /usr/bin/msmtp
    smtpserveroption = -a
-   smtpserveroption = personal
+   smtpserveroption = levis
    envelopeSender = auto
 
 # vim:ft=ini

@@ -8,6 +8,7 @@
     "output": "!eDP-1",
     "modules-left": ["sway/workspaces"],
     "modules-center": [
+      "custom/yubikey",
       "custom/fwupd",
       "custom/recording",
       "custom/cast",
@@ -18,7 +19,6 @@
       "idle_inhibitor",
     ],
     "modules-right": [
-      "custom/yubikey",
       "custom/prod-status",
       "clock",
       "custom/dnd",
@@ -81,6 +81,10 @@
     },
     "custom/usbguard": {
       "exec": "waybar-usbguard",
+      "format-icons": {
+          "icon": "<span foreground='#928374'> </span>"
+      },
+      "format": "{icon}{}",
       "return-type": "json",
       "on-click": "waybar-usbguard allow",
       "on-click-right": "waybar-usbguard reject"
@@ -138,14 +142,13 @@
       "sway/language",
       "battery",
       "clock",
-      "tray",
+      // "tray",
       "custom/yubikey",
       "custom/power_profile",
       "idle_inhibitor",
       "custom/dnd"
     ],
     "sway/language": {
-      "format": "{flag}",
       "min-length": 2
     },
     "custom/power_profile": {
@@ -215,11 +218,19 @@
       "exec": "waybar-updates show",
       "return-type": "json",
       "signal": 1,
+      "format-icons": {
+          "icon": "<span foreground='#928374'> </span>"
+      },
+      "format": "{icon}{}",
       "on-click-right": "waybar-updates refresh",
       "interval": "once"
     },
     "custom/mail": {
       "exec": "waybar-mail",
+      "format-icons": {
+          "icon": "<span foreground='#928374'> </span>"
+      },
+      "format": "{icon}{}",
       "return-type": "json"
     },
     "custom/vpn#work": {
@@ -342,7 +353,9 @@
         "car": "",
         "default": ["", "", ""]
       },
-      "on-click": "exec easyeffects-toggle toggle"
+     //  "on-click": "exec easyeffects-toggle toggle"
+        "on-click": "pavucontrol",
+        "on-click-right": "helvum"
     },
     "custom/dnd": {
         "tooltip": false,
