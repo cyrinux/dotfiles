@@ -1,0 +1,2555 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2017-2022 Nicolas Iooss
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+r"""Graph the links between hardware components of the current system
+
+Run through the sysfs (/sys) on Linux and produce a DOT file of a JSON file,
+which can be used to generate images with Graphviz.
+
+Usage example with graphviz, without /sys/devices/system/memory and with debug:
+
+    graph-hw -Md -O -o /tmp/hw.svg
+
+... which performs the same things as:
+
+    graph-hw -Md | sfdp -Goverlap=prism -Tsvg -o /tmp/hw.svg && xdg-open /tmp/hw.svg
+
+See also:
+* lsblk, lsmem, lspci, lsusb
+* lshw, https://ezix.org/project/wiki/HardwareLiSter
+* lstopo command from hwloc (and hwloc-ls)
+  https://www.open-mpi.org/projects/hwloc/
+
+When operating on embedded systems which do not provide Python, the sysfs can be
+replicated by copying the directories, the symbolic links and the needs files.
+This information can be recorded by the following commands:
+
+    find /sys -type d > sysfs_directories.txt
+    find /sys -type l -exec ls -ld {} \; > sysfs_symlinks.txt
+    find /sys -perm -400 -type f \( \
+        -name address -o \
+        -name bios_date -o \
+        -name bios_vendor -o \
+        -name bios_version -o \
+        -name block_size_bytes -o \
+        -name board_asset_tag -o \
+        -name board_name -o \
+        -name board_serial -o \
+        -name board_vendor -o \
+        -name board_version -o \
+        -name busnum -o \
+        -name chassis_asset_tag -o \
+        -name chassis_serial -o \
+        -name chassis_type -o \
+        -name chassis_vendor -o \
+        -name chassis_version -o \
+        -name class_id -o \
+        -name description -o \
+        -name devnum -o \
+        -name firmware_revision -o \
+        -name fw_ver -o \
+        -name model -o \
+        -name name -o \
+        -name path -o \
+        -name phys_device -o \
+        -name phys_index -o \
+        -name product_family -o \
+        -name product_name -o \
+        -name product_serial -o \
+        -name product_sku -o \
+        -name product_uuid -o \
+        -name product_version -o \
+        -name removable -o \
+        -name state -o \
+        -name sys_vendor -o \
+        -name uevent -o \
+        -name valid_zones \) -print -exec hexdump -Cv {} \; -exec echo EOF \; > sysfs_files.txt
+    cat /proc/self/mountinfo > proc_self_mountinfo.txt
+    cat /proc/swaps > proc_swaps.txt
+    lspci > lspci.txt
+    lsusb > lsusb.txt
+    ip addr > ip-addr.txt
+    ifconfig > ifconfig.txt
+"""
+import collections
+import errno
+import json
+import logging
+import os
+import os.path
+import re
+import subprocess
+import sys
+
+# Python 2.6 did not have argparse by default
+try:
+    import argparse
+    HAVE_ARGPARSE = True
+except ImportError:
+    HAVE_ARGPARSE = False
+
+# Python 2.7 on OpenWRT does not provide webbrowser
+try:
+    import webbrowser
+    HAVE_WEBBROWSER = True
+except ImportError:
+    HAVE_WEBBROWSER = False
+
+
+# Python 2.6 does not have collections.OrderedDict. Use dict instead.
+# It does not have subprocess.check_output either. Replace with an exception.
+if sys.version_info < (2, 7):
+    assert not hasattr(collections, 'OrderedDict')
+    collections.OrderedDict = dict
+    assert not hasattr(subprocess, 'check_output')
+
+    def fake_subprocess_check_output(_):
+        raise OSError(errno.ENOENT, 'too old Python version')
+    subprocess.check_output = fake_subprocess_check_output
+
+# pylint: disable=invalid-name
+logger = logging.getLogger(__name__)
+
+
+# Color by kind of bus
+FUNCTION_WITH_GUID_COLOR = '#ff8888'
+INTERFACE_COLOR = 'orange'
+PCI_COLOR = 'green'
+SENSOR_COLOR = '#ff9eea'
+STORAGE_COLOR = 'yellow'
+USB_COLOR = '#88ccff'
+VIRTUAL_COLOR = '#d09ef0'
+BUSKIND_COLORS = {
+    'acpi': '#ccffcc',
+    'ata': STORAGE_COLOR,
+    'backlight': INTERFACE_COLOR,
+    'bdi': VIRTUAL_COLOR,
+    'block': STORAGE_COLOR,
+    'clockevents': VIRTUAL_COLOR,
+    'clocksource': SENSOR_COLOR,
+    'cpu': VIRTUAL_COLOR,
+    'drm': INTERFACE_COLOR,
+    'event_source': VIRTUAL_COLOR,
+    'graphics': INTERFACE_COLOR,
+    'hdaudio': INTERFACE_COLOR,
+    'hid': INTERFACE_COLOR,
+    'hwmon': VIRTUAL_COLOR,
+    'input': INTERFACE_COLOR,
+    'iommu': VIRTUAL_COLOR,
+    'leds': INTERFACE_COLOR,
+    'machinecheck': VIRTUAL_COLOR,
+    'media': INTERFACE_COLOR,
+    'mei': FUNCTION_WITH_GUID_COLOR,
+    'mem': VIRTUAL_COLOR,
+    'memory': VIRTUAL_COLOR,
+    'memstick_host': STORAGE_COLOR,
+    'misc': VIRTUAL_COLOR,
+    'mmc_host': STORAGE_COLOR,
+    'mtd': STORAGE_COLOR,
+    'net': INTERFACE_COLOR,
+    'node': VIRTUAL_COLOR,
+    'nvme': STORAGE_COLOR,
+    'pci': PCI_COLOR,
+    'power_supply': SENSOR_COLOR,
+    'powercap': VIRTUAL_COLOR,
+    'ptp': INTERFACE_COLOR,
+    'rfkill': INTERFACE_COLOR,
+    'rtc': SENSOR_COLOR,
+    'scsi': STORAGE_COLOR,
+    'serio': INTERFACE_COLOR,
+    'sound': INTERFACE_COLOR,
+    'spi': STORAGE_COLOR,
+    'thermal': SENSOR_COLOR,
+    'tpm': SENSOR_COLOR,
+    'tty': VIRTUAL_COLOR,
+    'usb': USB_COLOR,
+    'vc': VIRTUAL_COLOR,
+    'video4linux': INTERFACE_COLOR,
+    'vtconsole': VIRTUAL_COLOR,
+    'watchdog': SENSOR_COLOR,
+    'wmi': FUNCTION_WITH_GUID_COLOR,
+    'workqueue': VIRTUAL_COLOR,
+}
+
+# List of included kinds
+MORE_PRECISE_KINDS = (
+    ('ata', 'ata_device'),
+    ('ata', 'ata_link'),
+    ('ata', 'ata_port'),
+    ('drm', 'drm_dp_aux_dev'),
+    ('hid', 'hidraw'),
+    ('i2c', 'i2c-adapter'),
+    ('nvme', 'nvme-subsystem'),
+    ('pci', 'pci_bus'),
+    ('pci', 'pci_express'),
+    ('scsi', 'bsg'),
+    ('scsi', 'scsi_device'),
+    ('scsi', 'scsi_disk'),
+    ('scsi', 'scsi_generic'),
+    ('scsi', 'scsi_host'),
+    ('spi', 'spi_host'),
+    ('spi', 'spi_transport'),
+    ('tpm', 'tpmrm'),
+    ('usb', 'udc'),  # USB device controller
+    ('usb', 'usb_device'),
+    ('usb', 'usbmisc'),
+    ('usb', 'usbmon'),
+    ('wmi', 'wmi_bus'),
+)
+
+
+class SysfsDevice(collections.OrderedDict):
+    """A node of the graph, with properties"""
+    _properties = (
+        'sysfs_path',
+        'sysfs_name',
+        'buskind',
+        'children',
+        'label_desc',  # Label description
+    )
+
+    def __init__(self, values):
+        super(SysfsDevice, self).__init__((k, None) for k in self._properties)
+        for k, v in values.items():
+            if k in self._properties:
+                self[k] = v
+            else:
+                logger.error("Unexpected property %r for object %r", k, type(self))
+                raise ValueError
+        # Load a full dict
+        if self['children']:
+            new_children = {}
+            for name, child in self['children'].items():
+                if isinstance(child, SysfsDevice):
+                    new_children[name] = child
+                else:
+                    new_children[name] = SysfsDevice(child)
+            self['children'] = new_children
+
+    def init_children(self):
+        """Init the children dict"""
+        if self['children'] is None:
+            self['children'] = {}
+
+    def sort_children(self):
+        """Sort the children of the device"""
+        if self['children'] is None:
+            return
+        self['children'] = collections.OrderedDict(sorted(self['children'].items()))
+        for child in self['children'].values():
+            child.sort_children()
+
+    def iter_all(self):
+        """Iterate on all items"""
+        yield self
+        if self['children'] is not None:
+            for child in self['children'].values():
+                for item in child.iter_all():
+                    yield item
+
+    def iter_all_depth_by_depth(self):
+        """Iterate on all items one depth after another"""
+        new_depth_nodes = [self]
+        while new_depth_nodes:
+            cur_depth_nodes = new_depth_nodes
+            new_depth_nodes = []
+            for dev in cur_depth_nodes:
+                yield dev
+                if dev['children'] is not None:
+                    for child in dev['children'].values():
+                        new_depth_nodes.append(child)
+
+    def resolve_path(self, path, create=False):
+        """Get the device matching the given path, creating nodes if needed"""
+        self_path = self['sysfs_path']
+        if path == self_path:
+            return self
+        if not path.startswith(self_path + '/'):
+            logger.error("Looking for %r in %r, but it is outside", path, self_path)
+            raise KeyError()
+        if self['children'] is None:
+            if create:
+                self.init_children()
+            else:
+                raise KeyError(path)
+        name_parts = path[len(self_path) + 1:].split('/', 1)
+        childname = name_parts[0]
+        child = self['children'].get(childname)
+        if child is None:
+            if create:
+                child = SysfsDevice({
+                    'sysfs_path': '{0}/{1}'.format(self_path, childname),
+                    'sysfs_name': childname,
+                })
+                self['children'][childname] = child
+            else:
+                raise KeyError(path)
+        return child.resolve_path(path, create)
+
+    def resolve_relative_path(self, path, create=False):
+        """Like resolve_path(), but with a relative path"""
+        return self.resolve_path('{0}/{1}'.format(self['sysfs_path'], path), create)
+
+    @property
+    def label(self):
+        """Label for the graph"""
+        if not self['buskind']:
+            # Directory
+            label = '{0}/'.format(self['sysfs_name'])
+        else:
+            label = '{0}:{1}'.format(self['buskind'], self['sysfs_name'])
+
+        if self['label_desc']:
+            label = '{0}\n{1}'.format(label, self['label_desc'])
+        return label
+
+    def add_to_label_desc(self, desc):
+        """Add some information to the label description"""
+        if self['label_desc'] is None:
+            self['label_desc'] = desc
+        else:
+            self['label_desc'] = '{0}\n{1}'.format(self['label_desc'], desc)
+
+    @property
+    def color(self):
+        """Color of the item for the graph"""
+        color = BUSKIND_COLORS.get(self['buskind'])
+        if color:
+            # Easy case: there is a color
+            return color
+
+        # Try a less precise kind
+        for k1, k2 in MORE_PRECISE_KINDS:
+            if k2 == self['buskind']:
+                color = BUSKIND_COLORS.get(k1)
+                if color:
+                    return color
+
+        # If every child shares the same color, use it too
+        if self['children'] is None:
+            return None
+        child_colors = set(child.color for child in self['children'].values())
+        if len(child_colors) == 1:
+            return list(child_colors)[0]
+        return None
+
+
+def list_directory(dirpath):
+    """List a directory and fail nicely if it does not exist"""
+    try:
+        return sorted(os.listdir(dirpath))
+    except OSError as exc:
+        # On some virtual servers (and containers) there is no /sys/bus...
+        if exc.errno == errno.ENOENT:
+            logger.warning("%s does not exist", dirpath)
+            return []
+        raise
+
+
+def gather_sysfs_bus_devices(sysfs_path='/sys'):
+    """Walk /sys/bus, collect every device and put them in a tree"""
+    sys_devices_path = os.path.join(sysfs_path, 'devices')
+    sys_bus_path = os.path.join(sysfs_path, 'bus')
+    device_tree = SysfsDevice({
+        'sysfs_path': sys_devices_path,
+        'sysfs_name': sys_devices_path,
+    })
+    for buskind in list_directory(sys_bus_path):
+        devices_path = os.path.join(sys_bus_path, buskind, 'devices')
+        for devname in list_directory(devices_path):
+            sysfs_path = os.path.realpath(os.path.join(devices_path, devname))
+            if os.path.basename(sysfs_path) != devname:
+                logger.warning(
+                    "Skipping invalid sysfs entry for %s -> %s: mismatched names",
+                    os.path.join(devices_path, devname),
+                    sysfs_path)
+                continue
+            if not sysfs_path.startswith(sys_devices_path):
+                logger.warning(
+                    "Skipping non-device sysfs entry for %s -> %s",
+                    os.path.join(devices_path, devname),
+                    sysfs_path)
+                continue
+
+            # Walk the device tree according to sysfs_path
+            dev = device_tree.resolve_path(sysfs_path, create=True)
+            assert dev['buskind'] is None
+            dev['buskind'] = buskind
+    return device_tree
+
+
+def add_pci_bus_nodes(device_tree, sys_cls_pci_bus_path):
+    """Add PCI bus nodes to the device tree"""
+    for pcibus_id in list_directory(sys_cls_pci_bus_path):
+        pcibus_path = os.path.realpath(os.path.join(sys_cls_pci_bus_path, pcibus_id))
+        path_suffix = '/pci_bus/{0}'.format(pcibus_id)
+        if not pcibus_path.endswith(path_suffix):
+            logger.error("Unexpected pci_bus path for %s: %s", pcibus_id, pcibus_path)
+            continue
+        pcidev = device_tree.resolve_path(pcibus_path[:-len(path_suffix)], create=True)
+        logger.debug("PCI device %s is bus %s", pcidev['sysfs_name'], pcibus_id)
+        pcidev.add_to_label_desc('PCI bus {0}'.format(pcibus_id))
+        # PCI bus 0000:00 is not a PCI device but it is a PCI bus
+        if pcidev['buskind'] is None:
+            pcidev['buskind'] = 'pci_bus'
+
+
+def add_class_nodes(device_tree, cls, sys_cls_path):
+    """Add input nodes to the device tree"""
+    for name in list_directory(sys_cls_path):
+        symlink_path = os.path.join(sys_cls_path, name)
+        if not os.path.islink(symlink_path):
+            continue
+        sysfs_path = os.path.realpath(symlink_path)
+        dev = device_tree.resolve_path(sysfs_path, create=True)
+        logger.debug("Adding %s %s", cls, dev['sysfs_path'])
+        assert dev['sysfs_path'] == sysfs_path
+        assert dev['sysfs_name'] == name
+        if dev['buskind'] is None:
+            dev['buskind'] = cls
+        elif dev['buskind'] != cls:
+            # It may be a more precise kind
+            if (dev['buskind'], cls) in MORE_PRECISE_KINDS:
+                dev['buskind'] = cls
+            elif (cls, dev['buskind']) in MORE_PRECISE_KINDS:
+                pass
+            else:
+                logger.error(
+                    "Incompatible kinds %s and %s for %s",
+                    dev['buskind'], cls, sysfs_path)
+
+
+def add_all_class_nodes(device_tree):
+    """Add many nodes from /sys/class"""
+    # /sys/class/{cls} from /sys/devices
+    assert device_tree['sysfs_path'].endswith('devices')
+    sys_class_path = device_tree['sysfs_path'][:-len('devices')] + 'class'
+    for cls in list_directory(sys_class_path):
+        sys_cls_path = os.path.join(sys_class_path, cls)
+        if cls == 'pci_bus':
+            # pci_bus is special because it does not create more nodes
+            add_pci_bus_nodes(device_tree, sys_cls_path)
+        else:
+            add_class_nodes(device_tree, cls, sys_cls_path)
+
+
+def add_device_holders(device_tree):
+    """Add device holders (for RAID, LUKS, etc.)"""
+    need_rescan = True
+    while need_rescan:
+        need_rescan = False
+        for dev in device_tree.iter_all():
+            holders_path = os.path.join(dev['sysfs_path'], 'holders')
+            try:
+                for holder in os.listdir(holders_path):
+                    symlink = os.path.join(holders_path, holder)
+                    target_path = os.path.realpath(symlink)
+                    try:
+                        device_tree.resolve_path(symlink)
+                        continue
+                    except KeyError:
+                        lnkdev = device_tree.resolve_path(symlink, create=True)
+                        tgtdev = device_tree.resolve_path(target_path)
+                        lnkdev['buskind'] = tgtdev['buskind']
+                        lnkdev.add_to_label_desc(tgtdev['label_desc'])
+                        need_rescan = True  # scan of holder's children
+
+                    if dev['buskind'] != 'block':
+                        logger.warning(
+                            "Found 'holders/%s' for non-block device %s",
+                            holder, dev['sysfs_path'])
+            except OSError as exc:
+                if exc.errno != errno.ENOENT:
+                    raise
+
+
+def add_bridge_interfaces(device_tree):
+    """Add interfaces which are part of a bridge"""
+    need_rescan = True
+    while need_rescan:
+        need_rescan = False
+        for dev in device_tree.iter_all():
+            brif_path = os.path.join(dev['sysfs_path'], 'brif')
+            try:
+                for iface in os.listdir(brif_path):
+                    symlink = os.path.join(brif_path, iface)
+                    target_path = os.path.realpath(symlink)
+                    if not target_path.endswith('/brport'):
+                        logger.error(
+                            "%s target path does not end with /brport: %s",
+                            symlink, target_path)
+                        continue
+                    target_path = target_path[:-len('/brport')]
+                    try:
+                        device_tree.resolve_path(symlink)
+                        continue
+                    except KeyError:
+                        lnkdev = device_tree.resolve_path(symlink, create=True)
+                        tgtdev = device_tree.resolve_path(target_path)
+                        lnkdev['buskind'] = tgtdev['buskind']
+                        need_rescan = True  # scan of interface's children
+
+                    if dev['buskind'] != 'net':
+                        logger.warning(
+                            "Found 'brif/%s' for non-net device %s",
+                            iface, dev['sysfs_path'])
+            except OSError as exc:
+                if exc.errno != errno.ENOENT:
+                    raise
+
+
+def add_bonded_interfaces(device_tree):
+    """Add interfaces which are part of a bond
+
+    Traverse the "master" symlink from a bonded interface to bond0, like device
+    holders
+    """
+    need_rescan = True
+    while need_rescan:
+        need_rescan = False
+        for dev in device_tree.iter_all():
+            symlink = os.path.join(dev['sysfs_path'], 'master')
+            if os.path.exists(symlink):
+                master_path = os.path.realpath(symlink)
+                try:
+                    device_tree.resolve_path(symlink)
+                    continue
+                except KeyError:
+                    lnkdev = device_tree.resolve_path(symlink, create=True)
+                    tgtdev = device_tree.resolve_path(master_path)
+                    lnkdev['sysfs_name'] = os.path.basename(master_path)
+                    lnkdev['buskind'] = tgtdev['buskind']
+                    need_rescan = True  # scan of interface's children
+
+                    if dev['buskind'] != 'net':
+                        logger.warning(
+                            "Found 'master' for non-net device %s",
+                            dev['sysfs_path'])
+
+
+def fill_names_with_lspci_output(device_tree):
+    """Run lspci and parse its output to fill the name of the devices"""
+    # Prepare a dict to find devices from lspci output
+    pci_devices = {}
+    for dev in device_tree.iter_all():
+        if dev['buskind'] == 'pci':
+            pci_id = dev['sysfs_name']
+            pci_devices[pci_id] = dev
+            if pci_id.startswith('0000:'):
+                pci_devices[pci_id[5:]] = dev
+
+    logger.debug("Running lspci")
+    try:
+        output = subprocess.check_output(['lspci'])
+    except OSError as exc:
+        if exc.errno == errno.ENOENT:
+            logger.warning("lspci is not installed")
+            return
+        raise
+    except subprocess.CalledProcessError as exc:
+        logger.warning("lspci failed with exit code %d", exc.returncode)
+        if exc.output:
+            logger.debug("lspci output: %r", exc.output)
+        return
+
+    for line in output.decode('utf8', errors='ignore').splitlines():
+        m = re.match(r'([0-9a-f:.]+) (\S[^:]*): (.*)', line)
+        if m is None:
+            logger.error("Unable to parse lspci line: %r", line)
+            continue
+        pci_id, kind, name = m.groups()
+        dev = pci_devices.get(pci_id)
+        if dev is None:
+            logger.error("Unable to find device %s (from lspci) in sysfs", pci_id)
+            continue
+        dev.add_to_label_desc('{0}\n{1}'.format(kind, name))
+
+
+def read_integer_file(path):
+    """Read a file containing an integer, and return None if an error occurred"""
+    try:
+        with open(path, 'r') as int_fd:
+            return int(int_fd.read())
+    except IOError:
+        pass
+
+
+def fill_names_with_lsusb_output(device_tree):
+    """Run lsusb and parse its output to fill the name of the devices"""
+    # Prepare a dict (bus, device)->object to find devices from lsusb output
+    usb_devices = {}
+    for dev in device_tree.iter_all():
+        if dev['buskind'] == 'usb':
+            sysfs_path = dev['sysfs_path']
+            busnum = read_integer_file(os.path.join(sysfs_path, 'busnum'))
+            devnum = read_integer_file(os.path.join(sysfs_path, 'devnum'))
+            if busnum is not None and devnum is not None:
+                if (busnum, devnum) in usb_devices:
+                    logger.error(
+                        "Duplicated USB device for (%d, %d): %s and %s",
+                        busnum, devnum,
+                        usb_devices[busnum, devnum]['sysfs_path'],
+                        sysfs_path)
+                    continue
+                usb_devices[busnum, devnum] = dev
+
+    logger.debug("Running lsusb")
+    try:
+        output = subprocess.check_output(['lsusb'])
+    except OSError as exc:
+        if exc.errno == errno.ENOENT:
+            logger.warning("lsusb is not installed")
+            return
+        raise
+    except subprocess.CalledProcessError as exc:
+        logger.warning("lsusb failed with exit code %d", exc.returncode)
+        if exc.output:
+            logger.debug("lsusb output: %r", exc.output)
+        return
+
+    for line in output.decode('utf8', errors='ignore').splitlines():
+        m = re.match(r'Bus ([0-9]+) Device ([0-9]+): ID ([0-9a-f:]+)(.*)', line)
+        if m is None:
+            logger.error("Unable to parse lsusb line: %r", line)
+            continue
+        busnum, devnum, usbid, desc = m.groups()
+        dev = usb_devices.get((int(busnum), int(devnum)))
+        if dev is None:
+            logger.error("Unable to find device %s,%s (from lsusb) in sysfs", busnum, devnum)
+            continue
+        dev.add_to_label_desc('USB ID: {0}\n{1}'.format(usbid, desc.strip()))
+
+
+# Intel's Management Engine Interface UUIDs
+KNOWN_MEI_UUIDS = {
+    '05b79a6f-4628-4d7f-899d-a91514cb32ab': 'WD (Watchdog)',
+    '0bb17a78-2a8e-4c50-94d4-50266723775c': 'NFC HCI',
+    '12f80028-b4b7-4b2d-aca8-46e0ff65814c': 'PTHI = AMTHI (Active Management Technology Host Interface)',
+    '13280904-7792-4fcb-a1aa-5e70cbb1e865': 'WLAN (Wi-Fi)',
+    '309dcde8-ccb1-4062-8f78-600115a34327': 'FWU (Firmware Update)',
+    '3c4852d6-d47b-4f46-b05e-b5edc1aa430a': 'TDT = AT-p (Theft Deterrence Technology, Anti-Theft)',
+    '3c4852d6-d47b-4f46-b05e-b5edc1aa440e': 'JOM (Dynamic Application Loader, DAL)',
+    '3d98d9b7-1ce8-4252-b337-2eff106ef29f': 'LMS (Local Manageability Service)',
+    '42b3ce2f-bd9f-485a-96ae-26406230b1ff': 'old ICC (Integrated Clock Controller)',
+    '55213584-9a29-4916-badf-0fb7ed682aeb': 'MKHIF (ME Kernel Host Interface Fixed)',
+    '6733a4db-0476-4e7b-b3af-bcfc29bee7a7': 'LME (Local Manageability E?)',
+    '6b5205b9-8185-4519-b889-d98724b58607': 'QST',
+    '8c2f4425-77d6-4755-aca3-891fdbc66a58': 'ICC (Integrated Clock Controller)',
+    '8e6a6715-9abc-4043-88ef-9e39c6f63e0f': 'MKHI (ME Kernel Host Interface)',
+    'b638ab7e-94e2-4ea2-a552-d1c54b627f04': 'PAVP (Protected Audio Video Path, with HDCP)',
+    'd2de1625-382d-417d-48a4-efabba8a1206': 'NFC Info',
+    'd2ea63bc-5f04-4997-9454-8cadf4e3ef8a': 'Thermal',
+    'f908627d-13bf-4a04-b91f-a64e9245323d': 'CLS (Capability Licensing Service)',
+    'fbf6fcf1-96cf-4e2e-a6a6-1bab8cbe36b1': 'PAVP (Protected Audio Video Path)',
+}
+
+
+def fill_mei_names(device_tree):
+    """Fill names from MEI (Intel's Management Engine Interface) UUIDs"""
+    for dev in device_tree.iter_all():
+        if dev['buskind'] == 'mei':
+            # Match "mei:name:UUID:.*"
+            m = re.match(r'^mei:[^:]*:([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}):',
+                         dev['sysfs_name'])
+            if m is None:
+                # Match "0000:00:16.0-UUID" from Linux 5.3
+                m = re.match(
+                    r'^[0-9a-f]{4}:[0-9a-f]{2}:[0-9a-f]{2}\.[0-9a-f]-' +
+                    r'([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$',
+                    dev['sysfs_name'])
+            if m is None:
+                # Ignore "mei0", "mei1"... directories
+                if not re.match(r'mei[0-9]$', dev['sysfs_name']):
+                    logger.warning("Invalid MEI device name %s", dev['sysfs_name'])
+                continue
+            mei_uuid = m.group(1)
+            desc = KNOWN_MEI_UUIDS.get(mei_uuid)
+            if desc:
+                dev.add_to_label_desc(desc)
+
+
+# Microsoft's Hyper-V VMBus device UUIDs
+# UUIDs in Linux kernel:
+# - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/hyperv.h
+# - https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/hv/lsvmbus
+# UUIDs in Linux Integration Services for Microsoft Hyper-V:
+# - https://github.com/LIS/lis-next/tree/master/hv-rhel7.x/hv
+KNOWN_HV_VMBUS_UUIDS = {
+    '0e0b6031-5213-4934-818b-38d90ced39db': 'Shutdown',  # HV_SHUTDOWN_GUID, LIS hv_util driver
+    '15c04dc0-a8ca-461c-9c23-f43da76208f5': 'SCSI Storage device',  # hv_storvsc driver
+    '1eccfd72-4b41-45ef-b73a-4a6e44c12924': 'Dynamic Memory',  # hv_balloon driver
+    '242ff919-07db-4180-9c2e-b86cb68c8c55': 'Key Value Pair (KVP) device',  # hv_util driver
+    '2450ee40-33bf-4fbd-892e-9fb06e9214cf': 'VSS (Backup/Restore) device',  # hv_util driver
+    '276aacf4-ac15-426c-98dd-7521ad3f01fe': 'Remote Desktop Virtualization',  # HV_RDV_GUID
+    '2dd1ce17-079e-403c-b352-a1921ee207ee': 'Time Synch device',  # hv_util driver
+    '2f9bcc4a-0069-4af3-b76b-6fd0be528cda': 'Synthetic Fiber Channel (FC)',  # HV_SYNTHFC_GUID, LIS storvsc driver
+    '32412632-86cb-44a2-9b5c-50d1417354f5': 'IDE Controller',  # HV_IDE_GUID, LIS storvsc driver
+    '3375baf4-9e15-4b30-b765-67acb10d607b': 'Automatic Virtual Machine Activation 2',  # HV_AVMA2_GUID
+    '34d14be3-dee4-41c8-9ae7-6b174977c192': 'Guest File Copy Service',  # HV_FCOPY_GUID
+    '35fa2e29-ea23-4236-96ae-3a6ebacba440': 'VSS (Backup/Restore)',  # HV_VSS_GUID, LIS hv_util driver
+    '4487b255-b88c-403f-bb51-d1f69cf17f87': 'Automatic Virtual Machine Activation 2 device',
+    '44c4f61d-4444-4400-9d52-802e27ede19f': 'PCI Express Pass-Through',  # HV_PCIE_GUID, LIS PCI driver
+    '525074dc-8985-46e2-8057-a307dc18a502': 'Dynamic Memory',  # HV_DM_GUID, LIS balloon driver
+    '5620e0c7-8062-4dce-aeb7-520c7ef76171': 'Frame Buffer',  # hyperv_fb driver
+    '57164f39-9115-4e78-ab55-382f3bd5422d': 'Heartbeat',  # HV_HEART_BEAT_GUID, LIS hv_util driver
+    '58f75a6d-d949-4320-99e1-a2a2576d581c': 'Mouse device',  # hid_hyperv driver
+    '6310e6a7-4cf3-4035-ba8d-19c571e5697c': 'Network device',  # hv_netvsc driver
+    '8c2eaf3d-32a7-4b09-ab99-bd1f1c86b501': 'NetworkDirect (Guest RDMA service)',  # HV_ND_GUID
+    '9527e630-d0ae-497b-adce-e80ab0175caf': 'Time Synchronization (Synch)',  # HV_TS_GUID, LIS hv_util driver
+    '99221fa0-24ad-11e2-be98-001aa01bbf6e': 'Automatic Virtual Machine Activation 1 device',
+    'a9a0f4e7-5a45-4d96-b827-8a841e8c03e6': 'Key Value Pair (KVP Data Exchange)',  # HV_KVP_GUID, LIS hv_util driver
+    'b6650ff7-33bc-4840-8048-e0676786f393': 'Shutdown device',  # hv_util driver
+    'ba6163d9-04a1-4d29-b605-72e2ffb1dc7f': 'SCSI Controller',  # HV_SCSI_GUID, LIS storvsc driver
+    'cfa8b69e-5b4a-4cc0-b98b-8ba1a1f3f95a': 'Mouse',  # HV_MOUSE_GUID, LIS HID driver
+    'd34b2567-b9b6-42b9-8778-0a4ec0b955bf': 'Keyboard device',  # hyperv_keyboard driver
+    'da0a7802-e377-4aac-8e77-0558eb1073f8': 'Synthetic Video Frame Buffer',  # HV_SYNTHVID_GUID, LIS FB driver
+    'f5bee29c-1741-4aad-a4c2-8fdedb46dcc2': 'Remote Desktop Virtualization device',
+    'f8615163-df3e-46c5-913f-f2d2f965ed0e': 'Network adapter',  # HV_NIC_GUID, LIS netvsc driver
+    'f8e65716-3cb3-4a06-9a60-1889c5cccab5': 'Automatic Virtual Machine Activation 1',  # HV_AVMA1_GUID
+    'f912ad6d-2b17-48ea-bd65-f927a61c7684': 'Keyboard',  # HV_KBD_GUID, LIS keyboard driver
+    'fd149e91-82e0-4a7d-afa6-2a4166cbd7c0': 'Heartbeat device',  # hv_util driver
+}
+
+
+def fill_vmbus_names(device_tree):
+    """Fill names from Microsoft's Hyper-V VMBus device UUIDs"""
+    for dev in device_tree.iter_all():
+        if dev['buskind'] == 'vmbus':
+            m = re.match(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', dev['sysfs_name'])
+            if m is None:
+                logger.warning("Invalid VMBus device name %s", dev['sysfs_name'])
+                continue
+            vmbus_uuid = dev['sysfs_name']
+            desc = KNOWN_HV_VMBUS_UUIDS.get(vmbus_uuid)
+            if desc:
+                dev.add_to_label_desc(desc)
+
+            # Gather the class ID, if found. Its values is {UUID}
+            class_id_path = os.path.join(dev['sysfs_path'], 'class_id')
+            try:
+                with open(class_id_path, 'r') as fd_class_id:
+                    value = fd_class_id.read().strip()
+                    dev.add_to_label_desc("VMBus Class ID: {0}".format(value))
+                    m = re.match(r'\{([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\}$', value)
+                    if m is None:
+                        logger.warning("Invalid VMBus class ID %s", value)
+                    else:
+                        class_id_uuid = m.group(1)
+                        desc = KNOWN_HV_VMBUS_UUIDS.get(class_id_uuid)
+                        if desc:
+                            dev.add_to_label_desc("VMBus Class: {0}".format(desc))
+            except IOError:
+                pass
+
+
+# Decode the content of
+# /sys/devices/platform/PNP0C14:00/wmi_bus/wmi_bus-PNP0C14:00/05901221-D566-11D1-B2F0-00A0C9062910/bmof
+# using bmf2mof from https://github.com/pali/bmfdec
+# and UUIDs found in:
+# - Linux kernel
+# - https://bitbucket.org/tuxedocomputers/clevo-xsm-wmi/src/
+#       37c470bc8c3c31c7487964c26861a4ee5969ff2b/module/clevo-xsm-wmi.c
+# - https://github.com/iksaif/thinkpad-wmi/blob/8818f69faddb315b76adcf1a2b44eab5faf48393/
+#       drivers/platform/x86/thinkpad-wmi.c
+KNOWN_WMI_UUIDS = {
+    '02314822-307C-4F66-BF0E-48AEAEB26CC8': 'Dell All-In-One WMI Event (Linux)',
+    '05901221-D566-11D1-B2F0-00A0C9062910': 'BMOF (Embedded Binary Managed Object Format)',
+    '0B3CBB35-E3C2-45ED-91C2-4C5A6D195D1C': 'ASUS_NB_WMI_EVENT (Linux)',
+    '2651D9FD-911C-4B69-B94E-D0DED5963BD7': 'Lenovo_SetBiosPassword (Lenovo Thinkpad)',
+    '284A0E6B-380E-472A-921F-E52786257FB4': 'Dell All-In-One WMI Event (Linux)',
+    '35AA3CE0-7EEF-4CCA-A88E-A653A81910DA':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_Button\n(according to BMOF)',
+    '41227C2D-80E1-423F-8B8E-87E32755A0EB':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_PlatformEvents\n(according to BMOF)',
+    '51F5230E-9677-46CD-A1CF-C0B23EE34DB7': 'Lenovo_BiosSetting (Lenovo Thinkpad)',
+    '551A1F84-FBDD-4125-91DB-3EA8F44F1D45': 'MSIWMI_BIOS (Linux)',
+    '59142400-C6A3-40FA-BADB-8A2652834100': 'TOSHIBA_WMI_EVENT (Linux)',
+    '5B3CC38A-40D9-7245-8AE6-1145B751BE3F': 'MSIWMI_WIND_EVENT (Linux)',
+    '5FB7F034-2C63-45E9-BE91-3D44E2C707E4':
+    '\\\\.\\root\\wmi\\hpqBIntM\n(according to BMOF)\nHPWMI_BIOS (Linux)',
+    '61EF69EA-865C-4BC3-A502-A0DEBA0CB531': 'Acer WMID (Linux)',
+    '6A4B54EF-A5ED-4D33-9455-B0D9B48DF4B3': 'Lenovo_SaveBiosSettings (Lenovo Thinkpad)',
+    '6AF4F258-B401-42FD-BE91-3D4AC2D7C0D3': 'Acer WMID (Linux)',
+    '676AA15E-6A47-4D9F-A2CC-1E6D18D14026': 'ACERWMID_EVENT (Linux)',
+    '6FB7F034-2C63-45E9-BE91-3D44E2C707E4':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSPassword\n(according to BMOF)',
+    '7364651A-132F-4FE7-ADAA-40C6C7EE2E3B': 'Lenovo_GetBiosSelections (Lenovo Thinkpad)',
+    '7430019A-DCE9-4548-BAB0-9FDE0935CAFF': 'Lenovo_PlatformSetting (Lenovo Thinkpad)',
+    '74F1EBB6-927A-4C7D-95DF-698E21E80EB5': 'Lenovo_DiscardChangedBiosSettings (Lenovo Thinkpad)',
+    '7EEF04FF-4328-447C-B5BB-D449925D538D': 'Lenovo_LoadDefaultSettings (Lenovo Thinkpad)',
+    '7FF47003-3B6C-4E5E-A227-E979824A85D1': 'Lenovo_SetPlatformSettings (Lenovo Thinkpad)',
+    '8232DE3C-663D-4327-A8F4-E293ADB9BF05':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSString\n(according to BMOF)',
+    '8232DE3D-663D-4327-A8F4-E293ADB9BF05':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSInteger\n(according to BMOF)',
+    '8232DE3E-663D-4327-A8F4-E293ADB9BF05':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSEnumeration\n(according to BMOF)',
+    '8232DE3F-663D-4327-A8F4-E293ADB9BF05':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSOrderedList\n(according to BMOF)',
+    '82C54990-DB9F-4AEF-91BE-175D84386AC4':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_ButtonInterface\n(according to BMOF)',
+    '8ADB159E-1E32-455C-BC93-308A7ED98246': 'Lenovo_BiosPasswordSettings (Lenovo Thinkpad)',
+    '8D9DDCBC-A997-11DA-B012-B622A1EF5492': 'DELL_DESCRIPTOR (Linux)',
+    '8F1F6435-9F42-42C8-BADC-0E9424F20C9A':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSNumericSensor\n(according to BMOF)',
+    '8F1F6436-9F42-42C8-BADC-0E9424F20C9A':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSStateSensor\n(according to BMOF)',
+    '95764E09-FB56-4E83-B31A-37761F60994A': 'Acer WMID (Linux)',
+    '95F24279-4D7B-4334-9387-ACCDC67EF61C':
+    '\\\\.\\root\\wmi\\HPBIOS_BIOSEvent\n(according to BMOF)\nHPWMI_EVENT (Linux)',
+    '97845ED0-4E6D-11DE-8A39-0800200C9A66': 'ASUS_WMI_MGMT (Linux)',
+    '98479A64-33F5-4E33-A707-8E251EBBC3A1': 'Lenovo_SetBiosSetting (Lenovo Thinkpad)',
+    '9DBB5994-A997-11DA-B012-B622A1EF5492': 'DELL_EVENT (Linux)',
+    'A70591CE-A997-11DA-B012-B622A1EF5492': 'Alienware WMAX_CONTROL (Linux)',
+    'A80593CE-A997-11DA-B012-B622A1EF5492': 'Alienware LEGACY_POWER_CONTROL (Linux)',
+    'A90597CE-A997-11DA-B012-B622A1EF5492': 'Alienware LEGACY_CONTROL (Linux)',
+    'ABBC0F6B-8EA1-11D1-00A0-C90629100000': 'CLEVO_EVENT',
+    'ABBC0F6C-8EA1-11D1-00A0-C90629100000': 'CLEVO_EMAIL',
+    'ABBC0F6D-8EA1-11D1-00A0-C90629100000': 'CLEVO_GET',
+    'ABBC0F6F-8EA1-11D1-00A0-C90629100000': 'PEAQ_DOLBY_BUTTON (Linux)',
+    'ABBC0F72-8EA1-11D1-00A0-C90629100000': 'EEEPC_WMI_EVENT (Linux)',
+    'B6F3EEF2-3D2F-49DC-9DE3-85BCE18C62F2': 'MSIWMI_MSI_EVENT (Linux)',
+    'C364AC71-36DB-495A-8494-B439D472A505': 'tc1100 (Linux)',
+    'C9B590D8-E7E4-4DC5-BB0F-CB8A3522027E':
+    '\\\\.\\root\\HP\\InstrumentedBIOS\\HPBIOS_BIOSSettingInterface\n(according to BMOF)',
+    'F6CB5C3C-9CAE-4EBD-B577-931EA32A2CC0': 'MXM_WMMX (Linux)',
+    'F6E4FE6E-909D-47cb-8BAB-C9F6F2F8D396': 'DELL_LED_BIOS (Linux)',
+    'F7CC25EC-D20B-404C-8903-0ED4359C18AE': 'SURFACE3_LID (Linux)',
+}
+
+
+def fill_wmi_names(device_tree):
+    """Fill names from WMI (Microsoft Windows Management Instrumentation) UUIDs
+
+    The ACPI WMI bus appears in PNP0C14:00
+    """
+    for dev in device_tree.iter_all():
+        if dev['buskind'] == 'wmi':
+            m = re.match(r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$', dev['sysfs_name'])
+            if m is None:
+                logger.warning("Invalid WMI device name %s", dev['sysfs_name'])
+                continue
+            wmi_uuid = dev['sysfs_name']
+            desc = KNOWN_WMI_UUIDS.get(wmi_uuid)
+            if desc:
+                dev.add_to_label_desc(desc.replace('\\', '\\\\'))
+
+
+def add_uevent_names(device_tree, with_mountinfo=False):
+    """Add names from uevent file"""
+    mountpoints_for_devnum = {}  # Map major:minor number to (mountpoint, relative path)
+    swap_dev_paths = set()  # Path relative to /dev (such as "sda1") for swap devices
+    if with_mountinfo:
+        # Add mount path from /proc/self/mountinfo file
+        mountinfo_path = os.path.join(device_tree['sysfs_path'], os.path.pardir, os.path.pardir,
+                                      'proc', 'self', 'mountinfo')
+        logger.debug("Reading %s", mountinfo_path)
+        try:
+            with open(mountinfo_path, 'r') as fd_mountinfo:
+                for line in fd_mountinfo:
+                    parts = line.split(' ')
+                    dev_number = parts[2]
+                    if dev_number not in mountpoints_for_devnum:
+                        mountpoints_for_devnum[dev_number] = []
+                    mountpoints_for_devnum[dev_number].append((parts[4], parts[3]))
+        except IOError:
+            # This may occur if /proc is not mounted
+            logger.warning("Unable to read %s in order to gather mountpoints", mountinfo_path)
+
+        # Parse swap partitions from /proc/swaps
+        swaps_path = os.path.join(device_tree['sysfs_path'], os.path.pardir, os.path.pardir, 'proc', 'swaps')
+        logger.debug("Reading %s", swaps_path)
+        try:
+            with open(swaps_path, 'r') as fd_swaps:
+                for lineno, line in enumerate(fd_swaps):
+                    if lineno == 0:
+                        if not line.startswith('Filename'):
+                            logger.warning("%s does not start with 'Filename' but with %r", swaps_path, line)
+                        continue
+                    filename = line.split(None, 1)[0]
+                    if filename.startswith('/dev/'):
+                        swap_dev_paths.add(filename[5:])
+                    else:
+                        logger.warning("Unexpected file name in /proc/swaps: %r", filename)
+        except IOError:
+            logger.warning("Unable to read %s in order to gather swaps", swaps_path)
+
+    for dev in device_tree.iter_all():
+        # Use .../name to gather the name of some devices (mtd, sound I/O,
+        # graphics card, etc.), which might be repeated in uevent.
+        name_path = os.path.join(dev['sysfs_path'], 'name')
+        name_value = None
+        try:
+            with open(name_path, 'r') as fd_name:
+                name_value = fd_name.read().strip()
+                if name_value and name_value != dev['sysfs_name']:
+                    if not all(' ' <= c < '\x7f' for c in name_value):
+                        logger.warning(
+                            "Found 'name' with invalid characters (for %s): %r",
+                            dev['sysfs_path'],
+                            name_value)
+                        name_value = repr(name_value)
+                    dev.add_to_label_desc("Name: {0}".format(name_value))
+        except IOError:
+            pass
+
+        uevent_path = os.path.join(dev['sysfs_path'], 'uevent')
+        devname = None
+        devmajor = None
+        devminor = None
+        try:
+            with open(uevent_path, 'r') as fd_uevent:
+                for line in fd_uevent:
+                    parts = line.strip().split('=', 1)
+                    if len(parts) < 2:
+                        continue
+                    key, value = parts
+                    if value.startswith('"'):
+                        assert value.endswith('"')
+                        value = value[1:-1]
+                        assert '"' not in value
+                    if key == 'DRIVER':
+                        dev.add_to_label_desc("Driver: {0}".format(value))
+                    elif key == 'DEVNAME':
+                        devname = value
+                    elif key == 'DEVTYPE':
+                        dev.add_to_label_desc("Dev type: {0}".format(value))
+                    elif key == 'HID_NAME':
+                        dev.add_to_label_desc("HID name: {0}".format(value))
+                    elif key == 'MAJOR':
+                        devmajor = value
+                    elif key == 'MINOR':
+                        devminor = value
+                    elif key == 'NAME':
+                        if value != name_value:
+                            dev.add_to_label_desc("Name from uevent: {0}".format(value))
+        except IOError:
+            pass
+        if devname is not None:
+            dev.add_to_label_desc("/dev/{0} ({1}:{2})".format(
+                devname,
+                devmajor if devmajor is not None else '?',
+                devminor if devminor is not None else '?'))
+            if devname in swap_dev_paths:
+                dev.add_to_label_desc("Used as swap")
+        if devmajor is not None and devminor is not None:
+            dev_number = '{0}:{1}'.format(devmajor, devminor)
+            for mountpoint, relative_path in mountpoints_for_devnum.get(dev_number, []):
+                if relative_path == '/':
+                    dev.add_to_label_desc("Mounted on {0}".format(mountpoint))
+                else:
+                    dev.add_to_label_desc("Mounted on {0} (from {1})".format(mountpoint, relative_path))
+
+
+def add_dm_names(device_tree):
+    """Add names for dm block devices"""
+    for dev in device_tree.iter_all():
+        dm_name_path = os.path.join(dev['sysfs_path'], 'dm', 'name')
+        try:
+            with open(dm_name_path, 'r') as fd_dm_name:
+                value = fd_dm_name.read().strip()
+                dev.add_to_label_desc("DM Name: {0}".format(value))
+            if dev['buskind'] != 'block':
+                logger.warning("Found 'dm/name' for non-block device %s", dev['sysfs_path'])
+        except IOError:
+            pass
+
+        dm_uuid_path = os.path.join(dev['sysfs_path'], 'dm', 'uuid')
+        try:
+            with open(dm_uuid_path, 'r') as fd_dm_uuid:
+                value = fd_dm_uuid.read().strip()
+                dev.add_to_label_desc("DM UUID: {0}".format(value))
+            if dev['buskind'] != 'block':
+                logger.warning("Found 'dm/uuid' for non-block device %s", dev['sysfs_path'])
+        except IOError:
+            pass
+
+
+def add_scsi_models(device_tree):
+    """Add models for SCSI devices"""
+    for dev in device_tree.iter_all():
+        model_path = os.path.join(dev['sysfs_path'], 'model')
+        try:
+            with open(model_path, 'r') as fd_model:
+                value = fd_model.read().strip()
+                dev.add_to_label_desc("Model: {0}".format(value))
+            if dev['buskind'] not in ('media', 'nvme', 'nvme-subsystem', 'scsi'):
+                logger.warning("Found 'model' for non-SCSI device %s", dev['sysfs_path'])
+        except IOError:
+            pass
+
+
+def add_acpi_path_names(device_tree):
+    """Add names from path file in ACPI directories"""
+    allowed_path_chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\\._'
+    for dev in device_tree.iter_all():
+        # Read "path" file
+        path_path = os.path.join(dev['sysfs_path'], 'path')
+        if dev['buskind'] != 'acpi':
+            if os.path.exists(path_path):
+                logger.warning(
+                    "Skipping non-ACPI path file %s (the filter may be too restrictive, for bus %s)",
+                    path_path, dev['buskind'])
+            continue
+        try:
+            with open(path_path, 'r') as fd_path:
+                value = fd_path.read().strip()
+                if any(c not in allowed_path_chars for c in value):
+                    logger.error("Invalid ACPI path %r", value)
+                    continue
+                dev.add_to_label_desc("Path: {0}".format(value.replace('\\', '\\\\')))
+        except IOError:
+            pass
+
+
+# Known ACPI device IDs, as described by:
+# * http://www.acpi.info/DOWNLOADS/ACPIspec50.pdf
+# * https://uefi.org/sites/default/files/resources/ACPI_6_3_final_Jan30.pdf
+# * https://uefi.org/specs/ACPI/6.4/05_ACPI_Software_Programming_Model/ACPI_Software_Programming_Model.html
+# * https://www.kernel.org/doc/Documentation/acpi/namespace.txt
+# * https://www.kernel.org/doc/Documentation/PCI/acpi-info.txt
+# * https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/acpi/acpi_pnp.c?h=v4.20
+# * https://docs.microsoft.com/en-gb/windows-hardware/drivers/hid/acpi-button-device
+# * http://download.microsoft.com/download/1/6/1/161ba512-40e2-4cc9-843a-923143f3456c/devids.txt
+#   (from https://uefi.org/PNP_ACPI_Registry )
+# * http://cvsweb.netbsd.org/bsdweb.cgi/src/sys/dev/acpi/acpidevs?rev=1.35
+# * https://github.com/acpica/acpica/blob/R01_08_19/source/common/ahids.c
+# * https://wiki.linaro.org/LEG/ServerArchitecture/ACPI/LinaroRegistry
+# * /proc/acpi/*
+# * System Information Viewer (provides pnpdevs.txt):
+#   * http://rh-software.com/index_arc.html
+#   * https://chocolatey.org/packages/siv/5.36
+KNOWN_ACPI_DEVICES = {
+    '10EC5640': 'Realtek I2S Audio Codec',  # Seen as \_SB_.I2C2.RTEK
+
+    # Intel Atom
+    '80860F09': 'Intel Atom/Celeron/Pentium Processor Serial IO (SIO) PWM',  # Seen as \_SB_.PWM1 an  \_SB_.PWM2
+    '80860F0A': 'Intel Atom Processor UART Controller',  # Seen as \_SB_.URT1 and \_SB_.URT2
+    '80860F0E': 'Intel Atom Processor SPI Controller',  # Seen as \_SB_.SPI1
+    '80860F14': 'Intel eMMC Controller (SD Host Controller)',  # Seen as \_SB_.SDHA and \_SB_.SDHD
+    '80860F16': 'Intel SD Card Controller (SD Host Controller)',  # Seen as \_SB_.SDHC
+    '80860F28': 'Intel SST Audio DSP',  # Seen as \_SB_.LPEA
+    '80860F41': 'Intel Atom Processor I2C Controller',  # Seen as \_SB_.I2C1, \_SB_.I2C2, etc.
+
+    'ABCD0000': 'Dock',
+
+    'ACPI0001': 'SMBus 1.0 Host Controller (SMBUS-HC)',
+    'ACPI0002': 'Smart Battery Subsystem',
+    'ACPI0003': 'Power Source Device',
+    'ACPI0004': 'Module Device',
+    'ACPI0005': 'SMBus 2.0 Host Controller (SMBUS-HC)',
+    'ACPI0006': 'GPE Block Device',
+    'ACPI0007': 'Processor Device',
+    'ACPI0008': 'Ambient Light Sensor Device (ALSD)',
+    'ACPI0009': 'I/OxAPIC Device',
+    'ACPI000A': 'I/O APIC Device',
+    'ACPI000B': 'I/O SAPIC Device',
+    'ACPI000C': 'Processor Aggregator Device (PAGD)',
+    'ACPI000D': 'Power Meter Device (PMT)',
+    'ACPI000E': 'Time and Alarm Device',
+    'ACPI000F': 'User Presence Detection Device',
+    'ACPI0010': 'Processor Container Device',
+    'ACPI0011': 'Generic Button Device',
+    'ACPI0012': 'NVDIMM Root Device (NVDR)',
+    'ACPI0013': 'Generic Event Device (GED)',
+    'ACPI0014': 'Wireless Power Calibration Device',
+    'ACPI0015': 'USB4 Host Interface Device',
+    'ACPI0016': 'Compute Express Link Host Bridge (CXL)',
+    'ACPI0017': 'Compute Express Link Interconnect (CXL)',
+
+    # Alps Electric Company Ltd
+    'ALP0001': 'ALPS Touchpad',  # Seen as \_SB_.PCI0.I2C1.TPD2
+    'ALPS0001': 'ALPS Touchpad',  # Seen as \_SB_.PCI0.I2C4.TPD0
+
+    'APP0001': 'Apple System Management Controller (SMC)',  # Seen as \_SB_.PCI0.SBRG.SMC_
+
+    'ARMH0011': 'ARM PrimeCell UART (PL011 model)',
+    'ARMH0061': 'ARM PrimeCell GPIO (PL061 model)',
+
+    'ATML1000': 'Atmel Touchscreen Controller',
+
+    # Broadcom
+    'BCM2E20': 'Broadcom Serial Bus Driver over UART Bus Enumerator',  # \_SB_.PCI0.UA01.BTH2
+    'BCM2F1A': 'Broadcom NFC SMBus Device',  # Seen as \_SB_.PCI0.SMBU.NFC_
+    'BCM4752': 'Broadcom Integrated Multi-Constellation GNSS Receiver',  # Seen as \_SB_.PCI0.URT2.GPS1
+
+    'DELLABCE': 'Dell Airplane Mode Switch',
+
+    'DLL05CB': 'Dell Mouse',
+    'DLLK05CB': 'Samsung PS/2 Keyboard or Dell Latitude E7440 keyboard',
+
+    'DMA0F28': 'Intel Audio DMA0',  # Seen as \_SB_.LPA2.ADMA
+
+    # ELAN Microelectronics Corp.
+    'ELAN1000': 'ELAN Touchpad',  # Seen as \_SB_.PCI0.I2C1.TPD0',
+    'ELAN1001': 'ELAN Touch Panel',  # Seen as \_SB_.PCI0.I2C1.TPL1',
+    'ELAN1010': 'ELAN Touchpad',  # Seen as \_SB_.PCI0.I2C1.TPD7',
+
+    'ETD0000': 'ELAN PS/2 Port Input Device',
+    'ETD0400': 'Clevo ELAN PS/2 Port Smart-Pad',
+    'ETD0401': 'Acer Synaptics PS/2 Port Compatible TouchPad',
+    'ETD0402': 'ASUS ELAN PS/2 Port Smart-Pad',
+    'ETD0403': 'Clevo ELAN Synaptics PS/2 Port Smart-Pad (Pointing Device)',  # Seen as \_SB_.PCI0.LPCB.ELNM (Touchpad)
+    'ETD0406': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0407': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0408': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0409': 'ELAN PS/2 Port Smart-Pad',
+    'ETD040A': 'ELAN PS/2 Port Smart-Pad',
+    'ETD040B': 'ELAN PS/2 Port Smart-Pad',
+    'ETD040C': 'ELAN PS/2 Port Smart-Pad',
+    'ETD040D': 'ELAN PS/2 Port Smart-Pad',
+    'ETD040E': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0410': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0411': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0412': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0413': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0414': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0415': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0416': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0417': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0418': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0419': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041A': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041B': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041C': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041D': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041E': 'ELAN PS/2 Port Smart-Pad',
+    'ETD041F': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0420': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0421': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0422': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0423': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0424': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0425': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0426': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0427': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0428': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0429': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042A': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042B': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042C': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042D': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042E': 'ELAN PS/2 Port Smart-Pad',
+    'ETD042F': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0430': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0431': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0432': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0433': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0435': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0608': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0610': 'ELAN PS/2 Port Smart-Pad',
+    'ETD0702': 'ELAN PS/2 Port Smart-Pad',
+
+    # Synaptics Fingerprint Sensor
+    'FS4304': 'Synaptics biometric fingerprint sensor',  # Seen as \_SB_.PCI0.SPI1.FPNT
+
+    'HPQ0004': 'Hewlett-Packard 3D DriveGuard accelerometer',
+
+    'HYPER_V_GEN_COUN': 'Microsoft Hyper-V Generation Counter',
+    'HYPER_V_GEN_COUNTER_V1': 'Microsoft Hyper-V Generation Counter v1',
+
+    'IBM0068': 'IBM Hotkey HID',
+    'IBM0079': 'IBM Docking Station',
+
+    'ICO0102': 'Intel Trusted Platform Module (TPM)',
+
+    'ICV0A12': 'Intel NFC Device',
+
+    'IFX0101': 'Infineon Trusted Platform Module (TPM)',
+    'IFX0102': 'Infineon Trusted Platform Module (TPM)',
+
+    'IMPJ0003': 'Impinj RFID Device (MonzaX 8K)',  # Seen as \\_SB_.PCI0.I2C1.IMP3
+
+    'INT0002': 'Virtual GPIO Controller',  # Seen as \_SB_.GPED
+    # /proc/iomem on an x86-64 computer contains:
+    #   ff000000-ffffffff : INT0800:00
+    'INT0800': 'Intel 82802 Firmware Hub Device (FWHD)',  # Seen on Windows as ACPI\VEN_INT&DEV_0800
+    'INT0E0C': 'Software Guard Extensions Device',  # Seen as \_SB_.EPC_ (Enclave Page Cache)
+    # ftp://supermicro.com/ISO_Extracted/CDR-C7_V1.31_for_Intel_C7_platform/Intel/XTU/XTU%204.2%20BIOS%20Interface%20Specification.pdf
+    'INT3394': 'Intel Extreme Tuning Utility Device (XTU)',  # Seen as \_SB_.PTMD
+    'INT3396': 'Intel Atom/Celeron/Pentium Processor Power Engine Plug-in Device (PEP)',  # Seen as \_SB_.PEPD
+    'INT33A0': 'Intel Smart Connect Technology Device',
+    'INT33A1': 'Intel Power Engine (PEPD)',
+    'INT33A2': 'Global Navigation Satellite Systems (GNSS)',  # Seen as \_SB_.PCI0.GNSS
+    'INT33A3': 'ACPI Intel RealSense 3D Camera',  # Seen as \_SB_.ICAM
+    'INT33BB': 'Intel Baytrail SD Host Controller',  # Seen as \_SB_.SDHB
+    'INT33BE': 'Camera Sensor OV5693',  # Seen on \_SB_.PCI0.LNK1
+    'INT33C0': 'Intel Serial I/O SPI Host Controller',  # Seen as \_SB_.PCI0.SPI0
+    'INT33C1': 'Intel Serial I/O SPI Host Controller',  # Seen as \_SB_.PCI0.SPI1
+    'INT33C2': 'Intel Serial I/O I2C Host Controller',  # Seen as \_SB_.PCI0.I2C0
+    'INT33C3': 'Intel Serial I/O I2C Host Controller',  # Seen as \_SB_.PCI0.I2C1
+    'INT33C4': 'Intel Serial I/O UART Host Controller',  # Seen as \_SB_.PCI0.UA00
+    'INT33C5': 'Intel Serial I/O UART Host Controller',  # Seen as \_SB_.PCI0.UA01
+    'INT33C6': 'Intel SD Host Controller',  # Seen as \_SB_.PCI0.SDHC
+    'INT33C7': 'Intel Serial I/O GPIO Host Controller',  # Seen as \_SB_.PCI0.GPI0
+    # Seen as \_SB_.PCI0.ADSP
+    'INT33C8': 'Intel Smart Sound Technology Host Controller, or Intel Haswell-ULT DRAM Controller',
+    'INT33C9': 'Wolfson Microelectronics Audio WM5102',  # Seen as \_SB_.PCI0.I2C0.ACD1
+    'INT33CA': 'Intel SPB Peripheral',  # Seen as \_SB_.PCI0.I2C0.ACD0
+    'INT33CB': 'Intel Smart Sound Technology Audio Codec',  # Seen as \_SB_.PCI0.I2C0.ACD2
+    'INT33D0': 'Intel Sensor Solution ACPI Control',  # Seen as \SHAD
+    'INT33D1': 'Intel GPIO Buttons',
+    'INT33D2': 'Intel GPIO Buttons',
+    'INT33D3': 'Intel GPIO Buttons',
+    'INT33D4': 'Intel GPIO Buttons',
+    'INT33D5': 'Intel HID Event Filter',  # Seen as \_SB_.HIDD
+    'INT33D6': 'Intel Virtual Buttons Device',
+    # Seen as \_SB_.PCI0.UA00.BTH0 and \_SB_.PCI0.UA01.BTH1
+    'INT33E0': 'Intel Bluetooth Serial Bus Driver over UART Bus Enumerator',
+    'INT33E1': 'Intel Bluetooth Serial Bus Driver over UART Bus Enumerator',  # Also "Intel Bluetooth HCI UART"
+    'INT33E3': 'Intel Bluetooth Serial Bus Driver over UART Bus Enumerator',  # Seen as \_SB_.PCI0.BTH1
+    'INT33E4': 'Intel Bluetooth Serial Bus Driver over UART Bus Enumerator',
+    'INT33F4': 'X-Powers AXP288 PMIC (Battery)',
+    'INT33FC': 'Intel Baytrail GPIO Controller',  # Seen as \_SB_.GPO0, \_SB_.GPO1, \_SB_.GPO2...
+    'INT3400': 'Intel Dynamic Tuning Manager',
+    'INT3403': 'Intel Dynamic Platform and Thermal Framework Generic Participant',  # Thermal sensor
+    'INT3404': 'Fan',
+    'INT3406': 'Intel Dynamic Platform and Thermal Framework Display Participant',
+    'INT3407': 'Intel Dynamic Tuning Power Participant',
+    'INT3408': 'Intel Dynamic Tuning Wireless Participant',
+    'INT3409': 'Intel Dynamic Platform and Thermal Framework Ambient Temperature Sensor Participant',
+    'INT340A': 'Intel Dynamic Platform and Thermal Framework Storage Participant',
+    'INT340B': 'Intel Dynamic Platform and Thermal Framework Participant for Intel RealSense 3D Camera',
+    'INT340C': 'Intel Dynamic Tuning Thunderbolt Participant',
+    'INT340D': 'Intel Dynamic Tuning Multi-Chip Discrete Graphics(DGFX) Participant',
+    'INT340E': 'Motherboard Resources',  # Seen as \_SB_.PTID
+    'INT340F': 'Intel Collaborative Processor Performance Control (CPPC)',  # Seen as \_SB_.PCCD
+    'INT3420': 'Intel Bluetooth RF Kill (BTKL)',
+    'INT343A': 'Intel Smart Sound Technology Audio Codec',  # Seen as \_SB_.PCI0.I2C0.HDAC
+    'INT343D': 'Intel Dynamic Platform and Thermal Framework PCH SPT ACPI Participant',  # Seen as \_SB_.PCI0.TERM
+    'INT343E': 'Intel CSI2 Host Controller (CIO2)',  # Seen as \_SB_.PCI0.CIO2
+    'INT3440': 'Intel Serial IO SPI Host Controller',  # Seen as \_SB_.PCI0.SPI0
+    'INT3441': 'Intel Serial IO SPI Host Controller',  # Seen as \_SB_.PCI0.SPI1
+    'INT3442': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C0
+    'INT3443': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C1
+    'INT3444': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C2
+    'INT3445': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C3
+    'INT3446': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C4
+    'INT3447': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C5
+    'INT3448': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA00
+    'INT3449': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA01
+    'INT344A': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA02
+    'INT344B': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.PCI0.GPI0
+    'INT3450': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.PCI0.GPI0
+    'INT3451': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.PC00.GPI0
+    'INT3453': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.GPO1
+    'INT345D': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.PCI0.GPI0
+    'INT346F': 'Intel Control Logic',  # Seen as \_SB_.PCI0.I2C2.PMIC and \_SB_.PCI0.DSC0
+    'INT3470': 'Intel AVStream Camera 2500',  # Seen as \_SB_.SKC0
+    'INT3471': 'Intel Camera Sensor IMX135',  # Seen as \_SB_.PCI0.LNK0 and \_SB_.PCI0.LNK2
+    'INT3472': 'TPS68470 Power Management IC (PMIC-CRDG)',
+    'INT3474': 'Camera Sensor OV2740',  # Seen as \_SB_.PCI0.I2C4.CAM1
+    'INT34B0': 'Intel Serial IO SPI Host Controller',  # Seen as \_SB_.PCI0.SPI0
+    'INT34B1': 'Intel Serial IO SPI Host Controller',  # Seen as \_SB_.PCI0.SPI1
+    'INT34B3': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C1
+    'INT34B4': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C2
+    'INT34B5': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C3
+    'INT34B6': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C4
+    'INT34B7': 'Intel Serial IO I2C Host Controller',  # Seen as \_SB_.PCI0.I2C5
+    'INT34B8': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA00
+    'INT34B9': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA01
+    'INT34BA': 'Intel Serial IO UART Host Controller',  # Seen as \_SB_.PCI0.UA02
+    'INT34BB': 'Intel Serial IO GPIO Host Controller',  # Seen as \_SB_.PCI0.GPI0
+    'INT34BC': 'Intel Serial IO SPI Host Controller',  # Seen as \_SB_.PCI0.SPI2
+    'INT34C1': 'Intel Smart Sound Technology Audio Codec',  # Seen as \_SB_.PCI0.I2C0.ACD0
+    'INT3515': 'TI TPS6598x USB Power Delivery Controller (from USB Connection Manager, UCM)',
+    'INT3519': 'Intel CoExistence Manager',  # Seen as \_SB_.COEX
+    'INT3F0D': 'Intel Watchdog Timer (CWDT)',  # documented as "ACPI Motherboard Resources"
+
+    'INTC0102': 'Intel Trusted Platform Module (iTPM)',
+    'INTC1040': 'Intel Thermal Device',
+    'INTC1043': 'Intel Thermal Device',
+    'INTC1044': 'Intel Thermal Device',
+    'INTC1047': 'Intel Thermal Device',
+    'INTC1234': 'Toshiba\'s Bluetooth ACPI',
+
+    'INTL9C60': 'Intel Baytrail SOC DMA Controller',  # Seen as \_SB_.PCI0.SDMA
+
+    # IPMI device is seen as:
+    # * \_SB_.PCI0.LPC0.NIPM on a Dell server (for iDRAC)
+    # * \_SB_.PCI0.LPC0.KCS_ on a HP server (for iLO)
+    'IPI0001': 'Intelligent Platform Management Interface (IPMI)',
+
+    'ITE8708': 'ITECIR Infrared Receiver (EC)',  # Seen as \_SB_.PCI0.SBRG.CIR_
+
+    'LEN0017': 'Synaptics touchpad for Lenovo',
+    'LEN0018': 'Synaptics touchpad for Lenovo',
+    'LEN0019': 'Synaptics touchpad for Lenovo',
+    'LEN0023': 'Synaptics touchpad for Lenovo',
+    'LEN002A': 'Synaptics touchpad for Lenovo',
+    'LEN002B': 'Synaptics touchpad for Lenovo',
+    'LEN002C': 'Synaptics touchpad for Lenovo',
+    'LEN002D': 'Synaptics touchpad for Lenovo',
+    'LEN002E': 'Synaptics touchpad for Lenovo',
+    'LEN0033': 'Synaptics touchpad for Lenovo Helix',
+    'LEN0034': 'Synaptics touchpad for Lenovo T431s, L440, L540, T540, W540, X1 Carbon 2nd',
+    'LEN0035': 'Synaptics touchpad for Lenovo X240',
+    'LEN0036': 'Synaptics touchpad for Lenovo T440',
+    'LEN0037': 'Synaptics touchpad for Lenovo X1 Carbon 2nd',
+    'LEN0038': 'Synaptics touchpad for Lenovo',
+    'LEN0039': 'Synaptics touchpad for Lenovo T440s',
+    'LEN0041': 'Synaptics touchpad for Lenovo',
+    'LEN0042': 'Synaptics touchpad for Lenovo Yoga',
+    'LEN0045': 'Synaptics touchpad for Lenovo',
+    'LEN0046': 'Synaptics touchpad for Lenovo X250',
+    'LEN0047': 'Synaptics touchpad for Lenovo',
+    'LEN0048': 'Synaptics touchpad for Lenovo X1 Carbon 3 ',
+    'LEN0049': 'Synaptics touchpad for Lenovo',
+    'LEN004A': 'Synaptics touchpad for Lenovo W541',
+    'LEN005B': 'Synaptics touchpad for Lenovo P50',
+    'LEN005E': 'Synaptics touchpad for Lenovo T560',
+    'LEN0068': 'Lenovo ThinkPad Hotkey HID',
+    'LEN006E': 'Lenovo Synaptics Pointing Device (Mouse)',
+    'LEN0071': 'Synaptics touchpad for Lenovo T480',
+    'LEN0072': 'Synaptics Elan/ALPS trackpoint for Lenovo X1 Carbon Gen 5 (2017)',
+    'LEN0073': 'Synaptics touchpad for Lenovo X1 Carbon G5 (Elantech)',
+    'LEN0092': 'Synaptics touchpad for Lenovo X1 Carbon 6',
+    'LEN0096': 'Synaptics touchpad for Lenovo X280',
+    'LEN0097': 'Synaptics ALPS trackpoint for Lenovo X280',
+    'LEN0100': 'Lenovo Intelligent Thermal Solution',  # Seen as \_SB_.PCI0.LPCB.EC__.ITSD
+    'LEN0268': 'Lenovo ThinkPad Hotkey v2 HID',
+    'LEN2000': 'Synaptics touchpad for Lenovo S540',
+    'LEN2001': 'Synaptics touchpad for Lenovo Edge E431',
+    'LEN2002': 'Synaptics touchpad for Lenovo Edge E531',
+    'LEN2003': 'Synaptics touchpad for Lenovo',
+    'LEN2004': 'Synaptics touchpad for Lenovo L440',
+    'LEN2005': 'Synaptics touchpad for Lenovo',
+    'LEN2006': 'Synaptics touchpad for Lenovo Edge E440/E540',
+    'LEN2007': 'Synaptics touchpad for Lenovo',
+    'LEN2008': 'Synaptics touchpad for Lenovo',
+    'LEN2009': 'Synaptics touchpad for Lenovo',
+    'LEN200A': 'Synaptics touchpad for Lenovo',
+    'LEN200B': 'Synaptics touchpad for Lenovo',
+    'LEN200F': 'Synaptics touchpad for Lenovo T450s',
+    'LEN205B': 'Synaptics Pointing Device for Lenovo',  # Seen as \_SB_.PCI0.LPCB.MOU_
+
+    'LPE0F28': 'Intel(R) SST Audio device',  # Seen as \_SB_.LPA2
+
+    # Linaro ACPI Registry
+    'LNRO0003': 'Linaro smc91x',
+    'LNRO0005': 'Linaro Virtio MMIO device',  # Seen on AArch64 QEMU virtual machine
+    'LNRO0015': 'Linaro Flash MTD',  # MTD = Memory Technology Device
+    'LNRO001D': 'Linaro GPIO (PL061 model)',
+    'LNRO001E': 'Linaro AHCI',
+    'LNRO001F': 'Linaro non-standard ITS frames',
+    'LNRO0020': 'Linaro OP-TEE secure world OS',
+
+    # Virtual devices
+    'LNXCPU': 'Logical CPU',
+    'LNXPOWER': 'Power',
+    'LNXPWRBN': 'Power Button',
+    'LNXSLPBN': 'Sleep Button',
+    'LNXSYBUS': 'System Bus',
+    'LNXSYSTM': 'Root Node',
+    'LNXTHERM': 'Thermal Zone',
+    'LNXVIDEO': 'Video Controller',
+
+    # Seen as \_SB_.PCI0.LPCB.PS2K and \_SB_.PCI0.I2C1.TPD1
+    'MSFT0001': 'PS/2 Keyboard (106 Keys Ctrl+Caps) Device for Dell',
+    'MSFT0002': 'Touchpad (HID Protocol Device) for Dell',  # Seen as \_SB_.PCI0.I2C1.TPD8
+    'MSFT0003': 'PS/2 Port Compatible Pointing Device for Dell',  # Seen as \_SB_.PCI0.LPCB.PS2M
+    'MSFT0101': 'Intel Platform Trust Technology (PTT) TPM 2.0',  # Documented as "TPM 2.0 Security Device"
+    'MSFT1111': '(Unknown HID Device related to Dell Touchpad)',  # Seen as \_SB_.PCI0.I2C0.TPD4
+    # https://docs.microsoft.com/en-us/windows/uwp/devices-sensors/enable-usermode-access : "devcon status *msft8000"
+    'MSFT8000': 'Microsoft Resource Hub Proxy device (RHPX)',  # Seen as \_SB_.RHPX
+
+    # NTC: nuvoton (https://www.nuvoton.com/)
+    'NTC0702': 'nuvoton SafeKeeper TPM',  # NPCT75x0 (nuvoton SafeKeeper TPM 2.0) seen as \_SB_.TPM_
+
+    'NTRG0001': 'Touchscreen',  # Seen as \_SB_.PCI0.I2C1.TPL2
+
+    'NXP1001': 'NXP NFC',  # Seen as \_SB_.PCI0.I2C0.NFC1
+    'NXP5442': 'NXP 5442 Near Field Communications Controller (NFC)',
+    'NXP5472': 'NXP NFC',
+    'NXP6020': 'NXP NFC',
+    'NXP6022': 'NXP NFC',
+
+    'OVTI8856': 'Camera Sensor ov8856',  # Seen as \_SB_.PCI0.LNK2
+    'OVTI9234': 'Camera Sensor ov9234',  # Seen as \_SB_.PCI0.LNK1 and \_SB_.PCI0.LNK3
+    'OVTIF860': 'Camera Sensor ovF860',  # Seen as \_SB_.PCI0.LNK0, Linux driver IPU3 (Image Processing Unit 3)
+
+    # PNP0xxx are system devices
+    'PNP0000': 'Programmable Interrupt Controller (ISA 8259 PIC)',
+    'PNP0001': 'EISA Programmable Interrupt Controller',
+    'PNP0002': 'MCA Programmable Interrupt Controller',
+    'PNP0003': 'Advanced Programmable Interrupt Controller (IO-APIC)',
+    'PNP0004': 'Cyrix SLiC MP interrupt controller',
+    'PNP0100': 'System Timer (ISA 8254 Timer)',
+    'PNP0101': 'EISA System Timer',
+    'PNP0102': 'MCA System Timer',
+    'PNP0103': 'Intel High Precision Event Timer (HPET)',
+    'PNP0200': 'AT Direct Memory Access Controller (ISA 8237 DMA)',
+    'PNP0201': 'EISA Direct Memory Access Controller',
+    'PNP0202': 'MCA Direct Memory Access Controller',
+    'PNP0300': 'IBM PC/XT Keyboard Controller (83 key) (PS/2=i8042)',
+    'PNP0301': 'IBM PC/XT Keyboard Controller (86 key) (PS/2=i8042)',
+    'PNP0302': 'IBM PC/XT Keyboard Controller (84 key) (PS/2=i8042)',
+    'PNP0303': 'IBM Enhanced Keyboard (101/102-key, PS/2=i8042 Mouse) (PS2K)',
+    'PNP0304': 'Olivetti Keyboard (83-key) ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0305': 'Olivetti Keyboard (102-key) ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0306': 'Olivetti Keyboard (86-key) ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0307': 'Microsoft Windows(R) Keyboard',
+    'PNP0308': 'General Input Device Emulation Interface (GIDEI) legacy',
+    'PNP0309': 'Olivetti Keyboard (A101/102 key) ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP030A': 'AT&T 302 keyboard ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP030B': 'Reserved by Microsoft ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0320': 'Japanese 101-key keyboard ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0321': 'Japanese AX keyboard',
+    'PNP0322': 'Japanese 106-key keyboard A01',
+    'PNP0323': 'Japanese 106-key keyboard 002/003',
+    'PNP0324': 'Japanese 106-key keyboard 001',
+    'PNP0325': 'Japanese Toshiba Desktop keyboard',
+    'PNP0326': 'Japanese Toshiba Laptop keyboard',
+    'PNP0327': 'Japanese Toshiba Notebook keyboard',
+    'PNP0340': 'Korean 84-key keyboard',
+    'PNP0341': 'Korean 86-key keyboard',
+    'PNP0342': 'Korean Enhanced keyboard',
+    'PNP0343': 'Korean Enhanced keyboard 101b or 101c ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0344': 'Korean Enhanced keyboard 103 ; PS/2 (i8042) keyboard (PS2K)',
+    'PNP0345': 'PS/2 (i8042) keyboard (PS2K)',
+    'PNP0400': 'Standard LPT Printer Port',
+    'PNP0401': 'ECP Printer Port',
+    'PNP0500': 'Generic standard PC COM port',
+    'PNP0501': 'Generic 16550A-compatible COM port',
+    'PNP0510': 'Generic IRDA-compatible Device',
+    'PNP0600': 'Generic ESDI/IDE/ATA compatible hard disk controller',
+    'PNP0601': 'Plus Hardcard II',
+    'PNP0602': 'Plus Hardcard IIXL/EZ',
+    'PNP0603': 'Generic IDE supporting Microsoft Device Bay Specification',
+    'PNP0700': 'PC standard floppy disk controller',
+    'PNP0701': 'Standard floppy controller supporting MS Device Bay Spec',
+    'PNP0800': 'AT speaker',  # documented as "Microsoft Sound System Compatible Device"
+    'PNP0802': 'Microsoft Sound System compatible device',
+    'PNP0900': 'VGA Compatible',
+    'PNP0901': 'Video Seven VRAM/VRAM II/1024i',
+    'PNP0902': '8514/A Compatible',
+    'PNP0903': 'Trident VGA',
+    'PNP0904': 'Cirrus Logic Laptop VGA',
+    'PNP0905': 'Cirrus Logic VGA',
+    'PNP0906': 'Tseng ET4000',
+    'PNP0907': 'Western Digital VGA',
+    'PNP0908': 'Western Digital Laptop VGA',
+    'PNP0909': 'S3 Inc. 911/924',
+    'PNP090A': 'ATI Ultra Pro/Plus (Mach 32)',
+    'PNP090B': 'ATI Ultra (Mach 8)',
+    'PNP090C': 'XGA Compatible',
+    'PNP090D': 'ATI VGA Wonder',
+    'PNP090E': 'Weitek P9000 Graphics Adapter',
+    'PNP090F': 'Oak Technology VGA',
+    'PNP0910': 'Compaq QVision',
+    'PNP0911': 'XGA/2',
+    'PNP0912': 'Tseng Labs W32/W32i/W32p',
+    'PNP0913': 'S3 Inc. 801/928/964',
+    'PNP0914': 'Cirrus Logic 5429/5434 (memory mapped)',
+    'PNP0915': 'Compaq Advanced VGA (AVGA)',
+    'PNP0916': 'ATI Ultra Pro Turbo (Mach64)',
+    'PNP0917': 'Reserved by Microsoft',
+    'PNP0918': 'Matrox MGA',
+    'PNP0919': 'Compaq QVision 2000',
+    'PNP091A': 'Tseng W128',
+    'PNP0930': 'Chips & Technologies Super VGA',
+    'PNP0931': 'Chips & Technologies Accelerator',
+    'PNP0940': 'NCR 77c22e Super VGA',
+    'PNP0941': 'NCR 77c32blt',
+    'PNP09FF': 'Plug and Play Monitors (VESA DDC)',
+    'PNP0A00': 'ISA Bus',
+    'PNP0A01': 'EISA Bus',
+    'PNP0A02': 'MCA Bus',
+    'PNP0A03': 'PCI host bridge',
+    'PNP0A04': 'VESA/VL Bus',
+    'PNP0A05': 'ACPI Generic ISA Bus / Generic Container Device',
+    'PNP0A06': 'ACPI Generic EIO Bus',  # EIO = Extended Input/Output
+    'PNP0A08': 'PCI Express host bridge',
+    'PNP0A0A': 'Asus BIOS component',  # https://kb.stonegroup.co.uk/index.php?View=entry&EntryID=227
+    'PNP0B00': 'AT Real-Time Clock Controller (RTC)',
+    'PNP0B01': 'Intel PIIX4-compatible RTC/CMOS Device',
+    'PNP0B02': 'Dallas Semiconductor-compatible RTC/CMOS Device',
+    'PNP0C00': 'PnP BIOS',
+    'PNP0C01': 'System board',
+    'PNP0C02': '(Catch-all devices)',  # not specific to a particular device
+    'PNP0C03': 'PnP BIOS event notification interrupt',
+    'PNP0C04': 'Math Coprocessor (x87 FPU)',  # documented as "x87-compatible Floating Point Processing Unit"
+    'PNP0C05': 'Advanced Power Management (APM) BIOS',
+    'PNP0C06': 'Reserved for identification of early Plug and Play',
+    'PNP0C07': 'Reserved for identification of early Plug and Play',
+    'PNP0C08': 'Advanced Configuration and Power Interface (ACPI) BIOS',  # documented as "ACPI Core Hardware"
+    'PNP0C09': 'Embedded Controller (EC)',
+    'PNP0C0A': 'Control Method Battery',
+    'PNP0C0B': 'Fan',
+    'PNP0C0C': 'Power Button (PWRB)',
+    'PNP0C0D': 'Lid Switch',
+    'PNP0C0E': 'Sleep Button (SLPB)',
+    'PNP0C0F': 'PCI Interrupt Link',
+    'PNP0C10': 'System Indicator',
+    'PNP0C11': 'Thermal Zone',
+    'PNP0C12': 'Device Bay Controller',
+    'PNP0C13': 'PnP BIOS (fail safe)',
+    'PNP0C14': 'Windows Management Instrumentation (WMI)',
+    'PNP0C15': 'Docking Station',
+    'PNP0C20': 'SMI_CMD',
+    'PNP0C21': 'PM1a_EVT_BLK / X_PM1a_EVT_BLK',
+    'PNP0C22': 'PM1b_EVT_BLK / X_PM1b_EVT_BLK',
+    'PNP0C23': 'PM1a_CNT_BLK / X_PM1a_CNT_BLK',
+    'PNP0C24': 'PM1b_CNT_BLK / X_PM1b_CNT_BLK',
+    'PNP0C25': 'PM2_CNT_BLK / X_PM2_CNT_BLK',
+    'PNP0C26': 'PM_TMR_BLK / X_PM_TMR_BLK',
+    'PNP0C27': 'GPE0_BLK / X_GPE0_BLK',
+    'PNP0C28': 'GPE1_BLK / X_GPE1_BLK',
+    'PNP0C30': 'Trusted Mobile Keyboard Controller (TMKBC)',
+    'PNP0C31': 'Trusted Platform Module (TPM)',
+    'PNP0C32': 'HIDACPI Button',
+    'PNP0C33': 'Hardware Error Device (HED)',  # Seen as \_SB_.WERR
+    'PNP0C34': 'Metering Device / Microsoft Virtual S3 Generic VGA Device',
+    'PNP0C40': 'Standard Button Controller',
+    'PNP0C50': 'HID Protocol Device (I2C bus)',
+    'PNP0C60': 'Convertible Laptop Display Sensor',
+    'PNP0C70': 'Dock Sensor',
+    'PNP0C80': 'Memory',
+    'PNP0D00': 'Multifunction 3.0 PC Card',
+    'PNP0D10': 'XHCI-compliant USB Controller without Std. Debug support',
+    'PNP0D15': 'XHCI-compliant USB Controller with Std. Debug support',
+    'PNP0D20': 'EHCI-compliant USB Controller without Std. Debug support',
+    'PNP0D25': 'EHCI-compliant USB Controller with Std. Debug support',
+    'PNP0D40': 'SDA Standard Compliant SD Host Controller',
+    'PNP0D80': 'Windows-compatible System Power Management Controller',
+    'PNP0E00': 'Intel 82365-Compatible PCMCIA Controller',
+    'PNP0E01': 'Cirrus Logic CL-PD6720 PCMCIA Controller',
+    'PNP0E02': 'VLSI VL82C146 PCMCIA Controller',
+    'PNP0E03': 'Intel 82365-compatible CardBus controller',
+    'PNP0F00': 'Microsoft Bus Mouse',
+    'PNP0F01': 'Microsoft Serial Mouse',
+    'PNP0F02': 'Microsoft InPort Mouse',
+    'PNP0F03': 'Microsoft PS/2-style Mouse (i8042 aux)',
+    'PNP0F04': 'Mouse Systems Mouse',
+    'PNP0F05': 'Mouse Systems 3-Button Mouse (COM2)',
+    'PNP0F06': 'Genius Mouse (COM1)',
+    'PNP0F07': 'Genius Mouse (COM2)',
+    'PNP0F08': 'Logitech Serial Mouse',
+    'PNP0F09': 'Microsoft BallPoint Serial Mouse',
+    'PNP0F0A': 'Microsoft Plug and Play Mouse',
+    'PNP0F0B': 'Microsoft Plug and Play BallPoint Mouse ; i8042 aux',
+    'PNP0F0C': 'Microsoft-compatible Serial Mouse',
+    'PNP0F0D': 'Microsoft-compatible InPort-compatible Mouse',
+    'PNP0F0E': 'Microsoft-compatible PS/2-style Mouse ; i8042 aux',
+    'PNP0F0F': 'Microsoft-compatible Serial BallPoint-compatible Mouse',
+    'PNP0F10': 'Texas Instruments QuickPort Mouse',
+    'PNP0F11': 'Microsoft-compatible Bus Mouse',
+    'PNP0F12': 'Logitech PS/2-style Mouse ; i8042 aux',
+    'PNP0F13': 'PS/2 (i8042) Mouse',
+    'PNP0F14': 'Microsoft Kids Mouse',
+    'PNP0F15': 'Logitech bus mouse',
+    'PNP0F16': 'Logitech SWIFT device',
+    'PNP0F17': 'Logitech-compatible serial mouse',
+    'PNP0F18': 'Logitech-compatible bus mouse',
+    'PNP0F19': 'Logitech-compatible PS/2-style Mouse ; i8042 aux',
+    'PNP0F1B': 'HP Omnibook Mouse',
+    'PNP0F1C': 'Compaq LTE Trackball PS/2-style Mouse ; i8042 aux',
+    'PNP0F1D': 'Compaq LTE Trackball Serial Mouse',
+    'PNP0F1E': 'Microsoft Kids Trackball Mouse',
+    'PNP0F1F': 'Reserved by Microsoft Input Device Group',
+    'PNP0F20': 'Reserved by Microsoft Input Device Group',
+    'PNP0F21': 'Reserved by Microsoft Input Device Group',
+    'PNP0F22': 'Reserved by Microsoft Input Device Group',
+    'PNP0F23': 'Reserved by Microsoft Input Device Group',
+    'PNP0FFC': 'Reserved (temporarily) by Microsoft Kernel team',
+    'PNP0FFF': 'Reserved by Microsoft Systems (SDA Standard Compliant SD Host Controller Vendor)',
+
+    # PNP8xxx are network adapters
+    'PNP8390': 'Generic Network Adapter',
+
+    # PNPAxxx are SCSI, proprietary CD adapters
+    'PNPA002': 'Future Domain 16-700 compatible controller',
+    'PNPA003': 'Panasonic proprietary CD-ROM adapter (SBPro/SB16)',
+    'PNPA01B': 'Trantor 128 SCSI Controller',
+    'PNPA01D': 'Trantor T160 SCSI Controller',
+    'PNPA01E': 'Trantor T338 Parallel SCSI controller',
+    'PNPA01F': 'Trantor T348 Parallel SCSI controller',
+    'PNPA020': 'Trantor Media Vision SCSI controller',
+    'PNPA022': 'Always IN-2000 SCSI controller',
+    'PNPA02B': 'Sony proprietary CD-ROM controller',
+    'PNPA02D': 'Trantor T13b 8-bit SCSI controller',
+    'PNPA02F': 'Trantor T358 Parallel SCSI controller',
+    'PNPA030': 'Mitsumi LU-005 Single Speed CD-ROM controller + drive',
+    'PNPA031': 'Mitsumi FX-001 Single Speed CD-ROM controller + drive',
+    'PNPA032': 'Mitsumi FX-001 Double Speed CD-ROM controller + drive',
+
+    # PNPBxxx are sound, video capture, multimedia
+    'PNPB000': 'Sound Blaster 1.5-compatible sound device',
+    'PNPB001': 'Sound Blaster 2.0-compatible sound device',
+    'PNPB002': 'Sound Blaster Pro-compatible sound device',
+    'PNPB003': 'Sound Blaster 16-compatible sound device',
+    'PNPB004': 'Thunderboard-compatible sound device',
+    'PNPB005': 'Adlib-compatible FM synthesizer device',
+    'PNPB006': 'MPU401 compatible ',
+    'PNPB007': 'Microsoft Windows Sound System-compatible sound device',
+    'PNPB008': 'Compaq Business Audio',
+    'PNPB009': 'Plug and Play Microsoft Windows Sound System Device',
+    'PNPB00A': 'MediaVision Pro Audio Spectrum',
+    'PNPB00B': 'MediaVision Pro Audio 3D',
+    'PNPB00C': 'MusicQuest MQX-32M',
+    'PNPB00D': 'MediaVision Pro Audio Spectrum Basic',
+    'PNPB00E': 'MediaVision Pro Audio Spectrum',
+    'PNPB00F': 'MediaVision Jazz-16 chipset (OEM Versions)',
+    'PNPB010': 'Auravision VxP500 chipset - Orchid Videola',
+    'PNPB018': 'MediaVision Pro Audio Spectrum 8-bit',
+    'PNPB019': 'MediaVision Pro Audio Spectrum Basic',
+    'PNPB020': 'Yamaha OPL3-compatible FM synthesizer device',
+    'PNPB02F': 'Joystick/Game port',
+
+    # PNPCxxx and PNPDxxx are modems
+    'PNPC000': 'Compaq 14400 Modem (TBD)',
+    'PNPC001': 'Compaq 2400/9600 Modem (TBD)',
+
+    'PRP00001': 'Generic Container Device',  # Share _CID=PNP0A05, seen as \_SB_.PCI0.HDAS.SNDW
+
+    'QEMU0001': 'QEMU\'s PVPanic',
+    'QEMU0002': 'QEMU\'s Firmware Configuration',
+    'QEMUVGID': 'QEMU Virtual Machine Generation ID',  # Compatible with _CID=VM_Gen_Counter
+
+    'RTL8723': 'Realtek Wireless Controller',
+
+    'SKTD000': 'Intel NFC Device',
+
+    'SMB0349': 'Charger',
+
+    # STMicroelectronics
+    'SMO1200': 'STMicroelectronics Trusted Platform Module',  # Seen as \_SB_.PCI0.LPC_.TPM_
+    'SMO8800': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8801': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8810': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8811': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8820': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8821': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8830': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+    'SMO8831': 'STMicroelectronics Free Fall Sensor for Dell Latitude',
+
+    # Sentelic Corporation
+    'STL3842': 'Finger Sensing Pad',
+    'STL3886': 'Finger Sensing Pad',
+    'STL3888': 'Finger Sensing Pad',
+    'STLC000': 'Finger Sensing Pad',
+    'STLC001': 'Finger Sensing Pad',
+    'STLC002': 'Finger Sensing Pad',
+    'STLC003': 'Finger Sensing Pad',
+    'STLC010': 'Finger Sensing Pad',
+    'STLC011': 'Finger Sensing Pad',
+    'STLC012': 'Finger Sensing Pad',
+    'STLC013': 'Finger Sensing Pad',
+    'STLC020': 'Finger Sensing Pad',
+    'STLC021': 'Finger Sensing Pad',
+    'STLC022': 'Finger Sensing Pad',
+    'STLC023': 'Finger Sensing Pad',
+    'STLC030': 'Finger Sensing Pad',
+    'STLC031': 'Finger Sensing Pad',
+    'STLC032': 'Finger Sensing Pad',
+    'STLC033': 'Synaptics PS/2 Port Compatible TouchPad ; Finger Sensing Pad',  # Seen as \_SB_.PCI0.LPCB.SENM
+    'STLC040': 'Finger Sensing Pad',
+    'STLC041': 'Finger Sensing Pad',
+    'STLC042': 'Finger Sensing Pad',
+    'STLC043': 'Finger Sensing Pad',
+    'STLC050': 'Finger Sensing Pad',
+    'STLC051': 'Finger Sensing Pad',
+    'STLC052': 'Finger Sensing Pad',
+    'STLC053': 'Finger Sensing Pad',
+    'STLC060': 'Finger Sensing Pad',
+    'STLC061': 'Finger Sensing Pad',
+    'STLC062': 'Finger Sensing Pad',
+    'STLC063': 'Finger Sensing Pad',
+    'STLC100': 'Finger Sensing Pad',
+    'STLC101': 'Finger Sensing Pad',
+    'STLC102': 'Finger Sensing Pad',
+    'STLC103': 'Finger Sensing Pad',
+    'STLC110': 'Finger Sensing Pad',
+    'STLC111': 'Finger Sensing Pad',
+    'STLC112': 'Finger Sensing Pad',
+    'STLC113': 'Finger Sensing Pad',
+    'STLC120': 'Finger Sensing Pad',
+    'STLC121': 'Finger Sensing Pad',
+    'STLC122': 'Finger Sensing Pad',
+    'STLC123': 'Finger Sensing Pad',
+    'STLC130': 'Finger Sensing Pad',
+    'STLC131': 'Finger Sensing Pad',
+    'STLC132': 'Finger Sensing Pad',
+    'STLC133': 'Finger Sensing Pad',
+    'STLC140': 'Finger Sensing Pad',
+    'STLC141': 'Finger Sensing Pad',
+    'STLC142': 'Finger Sensing Pad',
+    'STLC143': 'Finger Sensing Pad',
+    'STLC150': 'Finger Sensing Pad',
+    'STLC151': 'Finger Sensing Pad',
+    'STLC152': 'Finger Sensing Pad',
+    'STLC153': 'Finger Sensing Pad',
+    'STLC160': 'Finger Sensing Pad',
+    'STLC161': 'Finger Sensing Pad',
+    'STLC162': 'Finger Sensing Pad',
+    'STLC163': 'Finger Sensing Pad',
+    'STLC400': 'Finger Sensing Pad',
+    'STLC401': 'Finger Sensing Pad',
+    'STLC524': 'Finger Sensing Pad',
+    'STLC525': 'Finger Sensing Pad',
+    'STLC526': 'Finger Sensing Pad',
+    'STLC527': 'Finger Sensing Pad',
+    'STLC528': 'Finger Sensing Pad',
+    'STLC529': 'Finger Sensing Pad',
+    'STLC52A': 'Finger Sensing Pad',
+    'STLC52B': 'Finger Sensing Pad',
+    'STLC52C': 'Finger Sensing Pad',
+    'STLC52D': 'Finger Sensing Pad',
+    'STLC52E': 'Finger Sensing Pad',
+    'STLC52F': 'Finger Sensing Pad',
+    'STLC530': 'Finger Sensing Pad',
+    'STLC531': 'Finger Sensing Pad',
+    'STLC532': 'Finger Sensing Pad',
+    'STLC533': 'Finger Sensing Pad',
+    'STLC534': 'Finger Sensing Pad',
+    'STLC535': 'Finger Sensing Pad',
+    'STLC536': 'Finger Sensing Pad',
+    'STLC537': 'Finger Sensing Pad',
+    'STLC538': 'Finger Sensing Pad',
+    'STLC539': 'Finger Sensing Pad',
+    'STLC53A': 'Finger Sensing Pad',
+    'STLC53B': 'Finger Sensing Pad',
+    'STLC53C': 'Finger Sensing Pad',
+    'STLC53D': 'Finger Sensing Pad',
+    'STLC53E': 'Finger Sensing Pad',
+    'STLC53F': 'Finger Sensing Pad',
+    'STLC544': 'Finger Sensing Pad',
+    'STLC545': 'Finger Sensing Pad',
+    'STLC546': 'Finger Sensing Pad',
+    'STLC547': 'Finger Sensing Pad',
+    'STLC548': 'Finger Sensing Pad',
+    'STLC549': 'Finger Sensing Pad',
+    'STLC54A': 'Finger Sensing Pad',
+    'STLC54B': 'Finger Sensing Pad',
+    'STLC54C': 'Finger Sensing Pad',
+    'STLC54D': 'Finger Sensing Pad',
+    'STLC54E': 'Finger Sensing Pad',
+    'STLC54F': 'Finger Sensing Pad',
+    'STLC550': 'Finger Sensing Pad',
+    'STLC551': 'Finger Sensing Pad',
+    'STLC552': 'Finger Sensing Pad',
+    'STLC553': 'Finger Sensing Pad',
+    'STLC554': 'Finger Sensing Pad',
+    'STLC555': 'Finger Sensing Pad',
+    'STLC556': 'Finger Sensing Pad',
+    'STLC557': 'Finger Sensing Pad',
+    'STLC558': 'Finger Sensing Pad',
+    'STLC559': 'Finger Sensing Pad',
+    'STLC55A': 'Finger Sensing Pad',
+    'STLC55B': 'Finger Sensing Pad',
+    'STLC55C': 'Finger Sensing Pad',
+    'STLC55D': 'Finger Sensing Pad',
+    'STLC55E': 'Finger Sensing Pad',
+    'STLC55F': 'Finger Sensing Pad',
+    'STLC564': 'Finger Sensing Pad',
+    'STLC565': 'Finger Sensing Pad',
+    'STLC566': 'Finger Sensing Pad',
+    'STLC567': 'Finger Sensing Pad',
+    'STLC568': 'Finger Sensing Pad',
+    'STLC569': 'Finger Sensing Pad',
+    'STLC56A': 'Finger Sensing Pad',
+    'STLC56B': 'Finger Sensing Pad',
+    'STLC56C': 'Finger Sensing Pad',
+    'STLC56D': 'Finger Sensing Pad',
+    'STLC56E': 'Finger Sensing Pad',
+    'STLC56F': 'Finger Sensing Pad',
+    'STLC570': 'Finger Sensing Pad',
+    'STLC571': 'Finger Sensing Pad',
+    'STLC572': 'Finger Sensing Pad',
+    'STLC573': 'Finger Sensing Pad',
+    'STLC574': 'Finger Sensing Pad',
+    'STLC575': 'Finger Sensing Pad',
+    'STLC576': 'Finger Sensing Pad',
+    'STLC577': 'Finger Sensing Pad',
+    'STLC578': 'Finger Sensing Pad',
+    'STLC579': 'Finger Sensing Pad',
+    'STLC57A': 'Finger Sensing Pad',
+    'STLC57B': 'Finger Sensing Pad',
+    'STLC57C': 'Finger Sensing Pad',
+    'STLC57D': 'Finger Sensing Pad',
+    'STLC57E': 'Finger Sensing Pad',
+    'STLC57F': 'Finger Sensing Pad',
+    'STLC5A4': 'Finger Sensing Pad',
+    'STLC5A5': 'Finger Sensing Pad',
+    'STLC5A6': 'Finger Sensing Pad',
+    'STLC5A7': 'Finger Sensing Pad',
+    'STLC5A8': 'Finger Sensing Pad',
+    'STLC5A9': 'Finger Sensing Pad',
+    'STLC5AA': 'Finger Sensing Pad',
+    'STLC5AB': 'Finger Sensing Pad',
+    'STLC5AC': 'Finger Sensing Pad',
+    'STLC5AD': 'Finger Sensing Pad',
+    'STLC5AE': 'Finger Sensing Pad',
+    'STLC5AF': 'Finger Sensing Pad',
+    'STLC5B0': 'Finger Sensing Pad',
+    'STLC5B1': 'Finger Sensing Pad',
+    'STLC5B2': 'Finger Sensing Pad',
+    'STLC5B3': 'Finger Sensing Pad',
+    'STLC5B4': 'Finger Sensing Pad',
+    'STLC5B5': 'Finger Sensing Pad',
+    'STLC5B6': 'Finger Sensing Pad',
+    'STLC5B7': 'Finger Sensing Pad',
+    'STLC5B8': 'Finger Sensing Pad',
+    'STLC5B9': 'Finger Sensing Pad',
+    'STLC5BA': 'Finger Sensing Pad',
+    'STLC5BB': 'Finger Sensing Pad',
+    'STLC5BC': 'Finger Sensing Pad',
+    'STLC5BD': 'Finger Sensing Pad',
+    'STLC5BE': 'Finger Sensing Pad',
+    'STLC5BF': 'Finger Sensing Pad',
+    'STLC5C4': 'Finger Sensing Pad',
+    'STLC5C5': 'Finger Sensing Pad',
+    'STLC5C6': 'Finger Sensing Pad',
+    'STLC5C7': 'Finger Sensing Pad',
+    'STLC5C8': 'Finger Sensing Pad',
+    'STLC5C9': 'Finger Sensing Pad',
+    'STLC5CA': 'Finger Sensing Pad',
+    'STLC5CB': 'Finger Sensing Pad',
+    'STLC5CC': 'Finger Sensing Pad',
+    'STLC5CD': 'Finger Sensing Pad',
+    'STLC5CE': 'Finger Sensing Pad',
+    'STLC5CF': 'Finger Sensing Pad',
+    'STLC5D0': 'Finger Sensing Pad',
+    'STLC5D1': 'Finger Sensing Pad',
+    'STLC5D2': 'Finger Sensing Pad',
+    'STLC5D3': 'Finger Sensing Pad',
+    'STLC5D4': 'Finger Sensing Pad',
+    'STLC5D5': 'Finger Sensing Pad',
+    'STLC5D6': 'Finger Sensing Pad',
+    'STLC5D7': 'Finger Sensing Pad',
+    'STLC5D8': 'Finger Sensing Pad',
+    'STLC5D9': 'Finger Sensing Pad',
+    'STLC5DA': 'Finger Sensing Pad',
+    'STLC5DB': 'Finger Sensing Pad',
+    'STLC5DC': 'Finger Sensing Pad',
+    'STLC5DD': 'Finger Sensing Pad',
+    'STLC5DE': 'Finger Sensing Pad',
+    'STLC5DF': 'Finger Sensing Pad',
+    'STLC5E4': 'Finger Sensing Pad',
+    'STLC5E5': 'Finger Sensing Pad',
+    'STLC5E6': 'Finger Sensing Pad',
+    'STLC5E7': 'Finger Sensing Pad',
+    'STLC5E8': 'Finger Sensing Pad',
+    'STLC5E9': 'Finger Sensing Pad',
+    'STLC5EA': 'Finger Sensing Pad',
+    'STLC5EB': 'Finger Sensing Pad',
+    'STLC5EC': 'Finger Sensing Pad',
+    'STLC5ED': 'Finger Sensing Pad',
+    'STLC5EE': 'Finger Sensing Pad',
+    'STLC5EF': 'Finger Sensing Pad',
+    'STLC5F0': 'Finger Sensing Pad',
+    'STLC5F1': 'Finger Sensing Pad',
+    'STLC5F2': 'Finger Sensing Pad',
+    'STLC5F3': 'Finger Sensing Pad',
+    'STLC5F4': 'Finger Sensing Pad',
+    'STLC5F5': 'Finger Sensing Pad',
+    'STLC5F6': 'Finger Sensing Pad',
+    'STLC5F7': 'Finger Sensing Pad',
+    'STLC5F8': 'Finger Sensing Pad',
+    'STLC5F9': 'Finger Sensing Pad',
+    'STLC5FA': 'Finger Sensing Pad',
+    'STLC5FB': 'Finger Sensing Pad',
+    'STLC5FC': 'Finger Sensing Pad',
+    'STLC5FD': 'Finger Sensing Pad',
+    'STLC5FE': 'Finger Sensing Pad',
+    'STLC5FF': 'Finger Sensing Pad',
+
+    'STU0104': 'Finger Sensing Pad',
+    'STU0107': 'Finger Sensing Pad',
+    'STU0403': 'Finger Sensing Pad',
+    'STU0404': 'Finger Sensing Pad',
+    'STU0405': 'Finger Sensing Pad',
+    'STU0603': 'Finger Sensing Pad',
+    'STU0604': 'Finger Sensing Pad',
+    'STU0605': 'Finger Sensing Pad',
+    'STU0606': 'Finger Sensing Pad',
+    'STU0607': 'Finger Sensing Pad',
+    'STU0608': 'Finger Sensing Pad',
+    'STU0701': 'Finger Sensing Pad',
+    'STU0702': 'Finger Sensing Pad',
+    'STU0801': 'Finger Sensing Pad',
+    'STU0802': 'Finger Sensing Pad',
+    'STU0803': 'Finger Sensing Pad',
+    'STU0804': 'Finger Sensing Pad',
+    'STU0805': 'Finger Sensing Pad',
+    'STU0903': 'Finger Sensing Pad',
+    'STU0B02': 'Finger Sensing Pad',
+    'STU0B03': 'Finger Sensing Pad',
+    'STU0E01': 'Finger Sensing Pad',
+    'STU0E04': 'Finger Sensing Pad',
+    'STU1502': 'Finger Sensing Pad',
+    'STU1601': 'Finger Sensing Pad',
+    'STU1701': 'Finger Sensing Pad',
+    'STU1702': 'Finger Sensing Pad',
+    'STU1703': 'Finger Sensing Pad',
+    'STU1801': 'Finger Sensing Pad',
+    'STU1902': 'Finger Sensing Pad',
+    'STU1B01': 'Finger Sensing Pad',
+    'STU1B02': 'Finger Sensing Pad',
+
+    'SYN0159': 'Finger Sensing Pad',
+    'SYN0A01': 'Finger Sensing Pad',
+    'SYN0A06': 'Finger Sensing Pad',
+    'SYN1B01': 'Finger Sensing Pad',
+    'SYN1B1C': 'Finger Sensing Pad',
+
+    'USBC000': 'USB Type C',
+
+    'VMBUS': 'Microsoft Hyper-V Virtual Machine Bus',
+
+    # Wacom
+    'WCOM508E': 'Wacom Touch panel',  # Seen as \_SB_.PCI0.I2C7.TPL1
+
+    # Winbond
+    'WEC0001': 'Winbond LED',  # Seen as \_SB_.PCI0.LPCB.WPCN.LD15
+    'WEC1022': 'Winbond CIR Transceiver',  # Seen as \_SB_.PCI0.LPCB.WPCN.ECIR
+}
+
+# ACPI device IDs that have been seen but are not known
+UNKNWON_ACPI_DEVICES = {
+    'ATML2000': '\\_SB_.PCI0.I2C1.TPFU',
+    'CYP0001': '\\_SB_.PCI0.I2C1.TPD3',
+    'EETI7900': '\\_SB_.PCI0.I2C1.TPL3',
+    'FPNT_DIS': '\\_SB_.PCI0.SPI1.FPNT',
+    'INT0000': '\\_SB_.PCI0.I2C0.HDAC',
+    'INT339B': '\\CHUB',
+    'INT33D7': '\\_SB_.PCI0.I2C0.DFUD',
+    'IWC0001': '\\_SB_.WCT0',
+    'XXXX0000': '\\_SB_.PCI0.I2C0.TPD0 and \\_SB_.PCI0.I2C1.TPL1',
+}
+
+
+def add_firmware_nodes(device_tree):
+    """Add references to physical_node and firmware_node"""
+    node_labels = (
+        ('physical_node', 'Physical node'),
+        ('firmware_node', 'FW node'),
+    )
+    sys_devices_path = device_tree['sysfs_path']
+    for dev in device_tree.iter_all():
+        acpi_dev_name = None
+        if dev['buskind'] == 'acpi':
+            acpi_dev_name = dev['sysfs_name']
+
+        for nodename, label in node_labels:
+            node_path = os.path.realpath(os.path.join(dev['sysfs_path'], nodename))
+            if not os.path.exists(node_path):
+                continue
+            if not node_path.startswith(sys_devices_path):
+                logger.error("%s symlink not in %s: %s", label, sys_devices_path, node_path)
+            else:
+                node_path = node_path[len(sys_devices_path):]
+            dev.add_to_label_desc("{0}: {1}".format(label, node_path))
+
+            # Name the ACPI device
+            if nodename == 'firmware_node':
+                acpi_dev_name = os.path.basename(node_path)
+            elif nodename == 'physical_node':
+                acpi_dev_name = dev['sysfs_name']
+
+        if acpi_dev_name:
+            m = re.match(r'^(.*):([0-9A-F][0-9A-F])$', acpi_dev_name.upper())
+            if not m:
+                logger.warning("Unable to parse ACPI device name %r", acpi_dev_name)
+            else:
+                acpi_dev_id, acpi_id = m.groups()
+                acpi_dev_desc = KNOWN_ACPI_DEVICES.get(acpi_dev_id)
+                if acpi_dev_desc:
+                    if acpi_id == '00':
+                        dev.add_to_label_desc("ACPI device: {0}".format(acpi_dev_desc))
+                    else:
+                        dev.add_to_label_desc("ACPI sub-device {0}: {1}".format(acpi_id, acpi_dev_desc))
+                elif acpi_dev_id == 'DEVICE':
+                    pass
+                elif acpi_dev_id in UNKNWON_ACPI_DEVICES:
+                    last_encounter = UNKNWON_ACPI_DEVICES[acpi_dev_id]
+                    logger.debug("Unknown ACPI device ID %s already seen as %r: %r",
+                                 acpi_dev_id, last_encounter, dev.label)
+                    dev.add_to_label_desc("Unknown ACPI device, already seen as {0}".format(last_encounter))
+                else:
+                    logger.warning("Unknown ACPI device ID %s for %r", acpi_dev_id, dev.label)
+
+
+def add_firmware_revisions(device_tree):
+    """Add firmware_revision file contents for devices"""
+    for dev in device_tree.iter_all():
+        description_path = os.path.join(dev['sysfs_path'], 'firmware_revision')
+        try:
+            with open(description_path, 'r') as fd_fwrev:
+                value = fd_fwrev.read().strip()
+                if '\n' in value:
+                    logger.warning("Skipping multi-line firmware revision for %s", dev['sysfs_path'])
+                    continue
+                dev.add_to_label_desc("FW revision: {0}".format(value))
+            if dev['buskind'] not in ('platform', 'scsi_host'):
+                logger.warning(
+                    "Found 'firmware_revision' for unexpected device %s (%s)",
+                    dev['sysfs_path'], dev['buskind'])
+        except IOError:
+            pass
+
+        description_path = os.path.join(dev['sysfs_path'], 'fw_ver')
+        try:
+            with open(description_path, 'r') as fd_fwrev:
+                # /sys/class/mei/meiN/fw_ver contains lines in the following format:
+                # <platform>:<major>.<minor>.<milestone>.<build_no>.
+                value_lines = fd_fwrev.read().strip().splitlines()
+                value = ', '.join(sorted(set(value_lines)))
+                dev.add_to_label_desc("FW version: {0}".format(value))
+            if dev['buskind'] != 'mei':
+                logger.warning(
+                    "Found 'fw_ver' for unexpected device %s (%s)",
+                    dev['sysfs_path'], dev['buskind'])
+        except IOError:
+            pass
+
+
+def add_dev_descriptions(device_tree):
+    """Add description file contents for devices"""
+    for dev in device_tree.iter_all():
+        description_path = os.path.join(dev['sysfs_path'], 'description')
+        try:
+            with open(description_path, 'r') as fd_description:
+                value = fd_description.read().strip()
+                if '\n' in value:
+                    logger.warning("Skipping multi-line description for %s", dev['sysfs_path'])
+                    continue
+                dev.add_to_label_desc("Desc: {0}".format(value))
+            if dev['buskind'] not in ('acpi', 'serio'):
+                logger.warning(
+                    "Found 'description' for unexpected device %s (%s)",
+                    dev['sysfs_path'], dev['buskind'])
+        except IOError:
+            pass
+
+
+def add_dmi_info(device_tree):
+    """Add files that are specific to DMI (Desktop Management Interface)"""
+    dmi_files = (
+        'bios_date',
+        'bios_vendor',
+        'bios_version',
+        'board_asset_tag',
+        'board_name',
+        'board_serial',
+        'board_vendor',
+        'board_version',
+        'chassis_asset_tag',
+        'chassis_serial',
+        'chassis_type',
+        'chassis_vendor',
+        'chassis_version',
+        'product_family',
+        'product_name',
+        'product_serial',
+        'product_sku',
+        'product_uuid',
+        'product_version',
+        'sys_vendor',
+    )
+    for dev in device_tree.iter_all():
+        for file_name in dmi_files:
+            file_path = os.path.join(dev['sysfs_path'], file_name)
+            try:
+                with open(file_path, 'r') as fd:
+                    value = fd.read().strip()
+                    if '\n' in value:
+                        logger.warning("Skipping multi-line %s for %s", file_name, dev['sysfs_path'])
+                        continue
+                    if not value:
+                        # Skip empty value
+                        continue
+                    label_name = ' '.join(
+                        part.upper() if part in ('bios', 'sku') else part.title()
+                        for part in file_name.split('_')
+                    )
+                    dev.add_to_label_desc("{0}: {1}".format(label_name, value))
+                if dev['buskind'] != 'dmi':
+                    logger.warning(
+                        "Found 'dmi' for unexpected device %s (%s)",
+                        dev['sysfs_path'], dev['buskind'])
+            except IOError:
+                pass
+
+
+def add_net_addresses(device_tree):
+    """Add addresses for network devices"""
+    # Only run commands when using the live system
+    is_live_system = (device_tree['sysfs_path'] == '/sys/devices')
+    has_ip = is_live_system
+    has_ifconfig = is_live_system
+    for dev in device_tree.iter_all():
+        hwaddr = None
+        address_path = os.path.join(dev['sysfs_path'], 'address')
+        try:
+            with open(address_path, 'r') as fd_address:
+                hwaddr = fd_address.read().strip()
+            if dev['buskind'] == 'nvme':
+                # Ignore address file for NVME disks, as this file shows the PCIe address
+                continue
+            if dev['buskind'] != 'net':
+                logger.warning("Found 'address' for non-net device %s", dev['sysfs_path'])
+                continue
+        except IOError:
+            continue
+        assert hwaddr is not None
+
+        # Get the IP addresses of the interface
+        ipv4_addresses = set()
+        ipv6_addresses = set()
+        hw_addr_kind = ''
+        iface = dev['sysfs_name']
+        if has_ip:
+            cmdline = ['ip', 'addr', 'show', 'dev', iface]
+            logger.debug("Running %s", ' '.join(cmdline))
+            try:
+                output = subprocess.check_output(cmdline)
+            except OSError as exc:
+                if exc.errno == errno.ENOENT:
+                    logger.warning("ip is not installed")
+                    has_ip = False
+                else:
+                    raise
+            else:
+                for line in output.decode('utf8', errors='ignore').splitlines():
+                    m = re.match(r'\s+link/(\S*)\s+(\S+)', line)
+                    if m is not None:
+                        kind, addr = m.groups()
+                        if addr != hwaddr and (addr, hwaddr) != ('0.0.0.0', '00:00:00:00'):
+                            # sit0 devices have 00:00:00:00 in /sys/.../address but
+                            # ip addr shows "link/sit 0.0.0.0 brd 0.0.0.0"
+                            logger.error("Unexpected HW address from ip: %s != %s", addr, hwaddr)
+                        elif hw_addr_kind and kind != hw_addr_kind:
+                            logger.error("Unexpected HW address kind from ip: %s != %s", kind, hw_addr_kind)
+                        else:
+                            hw_addr_kind = kind
+                    m = re.match(r'\s+inet\s+(\S+)', line)
+                    if m is not None:
+                        ipv4_addresses.add(m.group(1))
+                    m = re.match(r'\s+inet6\s+(\S+)', line)
+                    if m is not None:
+                        ipv6_addresses.add(m.group(1))
+
+        if has_ifconfig:
+            cmdline = ['ifconfig', iface]
+            logger.debug("Running %s", ' '.join(cmdline))
+            try:
+                output = subprocess.check_output(cmdline)
+            except subprocess.CalledProcessError as exc:
+                logger.warning("Command %r failed with exit code %d", ' '.join(cmdline), exc.returncode)
+            except OSError as exc:
+                if exc.errno == errno.ENOENT:
+                    logger.warning("ifconfig is not installed")
+                    has_ifconfig = False
+                else:
+                    raise
+            else:
+                for line in output.decode('utf8', errors='ignore').splitlines():
+                    m = re.match(r'\s+(ether)\s+(\S+)', line)
+                    if m is not None:
+                        kind, addr = m.groups()
+                        if addr != hwaddr:
+                            logger.error("Unexpected HW address from ifconfig: %s != %s", addr, hwaddr)
+                        elif hw_addr_kind and kind != hw_addr_kind:
+                            logger.error("Unexpected HW address kind from ifconfig: %s != %s", kind, hw_addr_kind)
+                        else:
+                            hw_addr_kind = kind
+                    m = re.match(r'\s+inet\s+(\S+).*netmask\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)', line)
+                    if m is not None:
+                        addr, netmask = m.groups()
+                        netmask_i = sum(int(x) << (24 - i * 8) for i, x in enumerate(netmask.split('.', 3)))
+                        prefixlen = 33 - ((0xffffffff ^ netmask_i) + 1).bit_length()
+                        ipv4_addresses.add('{0}/{1}'.format(addr, prefixlen))
+                    m = re.match(r'\s+inet6\s+(\S+).*prefixlen\s+(\S+)', line)
+                    if m is not None:
+                        addr, prefixlen = m.groups()
+                        ipv6_addresses.add('{0}/{1}'.format(addr, prefixlen))
+
+        if hwaddr:
+            dev.add_to_label_desc("Address: {0} {1}".format(hw_addr_kind, hwaddr))
+        for addr in sorted(ipv4_addresses):
+            dev.add_to_label_desc("IPv4: {0}".format(addr))
+        for addr in sorted(ipv6_addresses):
+            dev.add_to_label_desc("IPv6: {0}".format(addr))
+
+    if is_live_system:
+        if not has_ip and not has_ifconfig:
+            logger.warning("Unable to gather IP addresses")
+        elif has_ip and not has_ifconfig:
+            logger.info("Using 'ip addr' to gather IP addresses")
+        elif not has_ip and has_ifconfig:
+            logger.info("Using 'ifconfig' to gather IP addresses")
+
+
+def add_mem_info(device_tree):
+    """Add information on memory nodes"""
+    # Retrieve the block size from /sys/devices/system/memory/block_size_bytes
+    block_size_bytes_path = os.path.join(device_tree['sysfs_path'], 'system', 'memory', 'block_size_bytes')
+    try:
+        with open(block_size_bytes_path, 'r') as fd_blocksize:
+            blocksize = int(fd_blocksize.read().strip(), 16)
+    except IOError:
+        # This may occur on ARM-based systems
+        logger.warning("Unable to read %s in order to gather memory properties", block_size_bytes_path)
+        return
+
+    for dev in device_tree.iter_all():
+        dev_data = {}
+        for key in ('phys_device', 'phys_index', 'removable', 'state', 'valid_zones'):
+            data_path = os.path.join(dev['sysfs_path'], key)
+            try:
+                with open(data_path, 'r') as fd_data:
+                    dev_data[key] = fd_data.read().strip()
+            except IOError:
+                if dev['buskind'] == 'memory':
+                    logger.warning(
+                        "Missing %r in %s device %s",
+                        key, dev['buskind'], dev['sysfs_path'])
+                dev_data = None
+                break
+        if dev_data is None:
+            continue
+
+        if dev['buskind'] != 'memory':
+            logger.warning(
+                "Found memory properties for unexpected device %s (%s)",
+                dev['sysfs_path'], dev['buskind'])
+
+        phys_index = int(dev_data['phys_index'], 16)
+        dev.add_to_label_desc("Device: {0}/{1:#x}".format(
+            dev_data['phys_device'], phys_index))
+        dev.add_to_label_desc("Range: {0:#x}-{1:#x}".format(
+            phys_index * blocksize,
+            (phys_index + 1) * blocksize - 1))
+
+        state = dev_data['state']
+        if dev_data['removable']:
+            state += ', removable'
+        if dev_data['valid_zones'] != 'Normal':
+            state += ', ' + dev_data['valid_zones']
+        dev.add_to_label_desc("State: {0}".format(state))
+
+
+def shorten_paths_in_label(label):
+    """Shorten the paths in the given label to a reasonable length"""
+    if len(label) <= 30 or ':' not in label:
+        return label
+    try:
+        first_part_idx = label.index('/', 1)
+        last_part_idx = label.rindex('/')
+    except ValueError:
+        return label
+    if first_part_idx + 6 >= last_part_idx:
+        return label
+    return '{0}/...{1}'.format(label[:first_part_idx], label[last_part_idx:])
+
+
+def shorten_label_paths(device_tree):
+    """Shorten the paths in the labels of the given tree to a reasonable length"""
+    for dev in device_tree.iter_all():
+        desc = dev['label_desc']
+        if not desc:
+            continue
+        dev['label_desc'] = '\n'.join(shorten_paths_in_label(lab) for lab in desc.split('\n'))
+
+
+def dump_dot_graph(device_tree, stream, output_tree, output_circle):
+    """Produce a dot graph"""
+    logger.debug("Producing a DOT graph")
+    stream.write('digraph {\n')
+    # stream.write('    overlap=false;\n')
+    stream.write('    node [shape=box,style=filled];\n')
+    if output_circle:
+        stream.write('    overlap=prism;\n')
+    elif output_tree:
+        # Top-to-bottom graph (which is the default in Graphviz)
+        stream.write('    rankdir=TB;\n')
+    else:
+        # Left-to-Right graph
+        stream.write('    rankdir=LR;\n')
+        # stream.write('    splines=polyline;\n')
+
+    # Dump nodes
+    for dev in device_tree.iter_all_depth_by_depth():
+        stream.write('    "{0}" [label="{1}"'.format(dev['sysfs_path'], dev.label))
+        color = dev.color
+        if color is not None:
+            stream.write(',fillcolor="{0}"'.format(color))
+        stream.write('];\n')
+
+    # Dump edges
+    for dev in device_tree.iter_all():
+        if dev['children'] is not None:
+            for child in dev['children'].values():
+                if output_circle:
+                    stream.write('    "{0}" -> "{1}";\n'.format(dev['sysfs_path'], child['sysfs_path']))
+                elif output_tree:
+                    # Use compass points as port position for Top-to-bottom graph
+                    stream.write('    "{0}":s -> "{1}":n;\n'.format(dev['sysfs_path'], child['sysfs_path']))
+                else:
+                    # Use compass points as port position for Left-to-Right graph
+                    stream.write('    "{0}":e -> "{1}":w;\n'.format(dev['sysfs_path'], child['sysfs_path']))
+    stream.write('}\n')
+
+
+def main(argv=None):
+    if HAVE_ARGPARSE:
+        parser = argparse.ArgumentParser(description="Graph hardware components")
+        parser.add_argument('-c', '--circle', action='store_true',
+                            help="output the graph as something that looks like a circle")
+        parser.add_argument('-d', '--debug', action='store_true',
+                            help="show debug messages")
+        parser.add_argument('-i', '--input', type=str,
+                            help="load a JSON format instead of scanning /sys")
+        parser.add_argument('-j', '--json', action='store_true',
+                            help="output the tree in JSON format")
+        parser.add_argument('-M', '--no-memory', action='store_true',
+                            help="remove /sys/devices/system/memory nodes")
+        parser.add_argument('-o', '--output', type=str,
+                            help="write the output to this file")
+        parser.add_argument('-O', '--open', action='store_true',
+                            help="open the output file once it is written")
+        parser.add_argument('-p', '--pci', action='store_true',
+                            help="restrict to PCI devices")
+        parser.add_argument('-r', '--root', type=str, default='/',
+                            help="path to the root directory to use")
+        parser.add_argument('-s', '--shorten-paths', action='store_true',
+                            help="shorten the long paths in labels")
+        parser.add_argument('-S', '--syspath', type=str, default='sys',
+                            help="path to the sysfs directory to use (/sys by default)")
+        parser.add_argument('-t', '--tree', action='store_true',
+                            help="output the graph as a flat top-to-bottom tree")
+        parser.add_argument('-T', '--type', type=str,
+                            help="specify a Graphviz/dot output format (svg, png...)")
+        parser.add_argument('-V', '--no-virtual', action='store_true',
+                            help="remove /sys/devices/virtual nodes")
+        parser.add_argument('-W', '--web-browser', action='store_true',
+                            help="open the output file in a browser")
+        parser.add_argument('-X', '--xdot', action='store_true',
+                            help="open the output file in xdot")
+        args = parser.parse_args(argv)
+    else:
+        # Fake an argparse object to produce a JSON output that can be loaded
+        # on an up-to-date system.
+        class FakeArguments(object):
+            circle = False
+            debug = True
+            input = None
+            json = True
+            no_memory = False
+            output = None
+            open = False
+            pci = False
+            root = '/'
+            shorten_paths = False
+            syspath = 'sys'
+            tree = False
+            type = None
+            no_virtual = False
+            web_browser = False
+            xdot = False
+        args = FakeArguments()
+
+    if args.open and not args.output:
+        parser.error("--open requires an output file (option -o)")
+    if args.web_browser and not args.output:
+        parser.error("--web-browser requires an output file (option -o)")
+    if args.xdot and not args.output:
+        parser.error("--xdot requires an output file (option -o)")
+    if args.web_browser and args.xdot:
+        parser.error("--web-browser and --xdot can not be used together")
+    if args.type and args.type not in ('json', 'dot') and not args.output:
+        parser.error("--type requires an output file (option -o)")
+    if args.json and args.type and args.json != 'json':
+        parser.error("--json and --type are exclusive")
+
+    # Find out the output format
+    outformat = 'dot'
+    if args.json:
+        outformat = 'json'
+    elif args.type:
+        outformat = args.type
+    elif args.output:
+        fileext = os.path.basename(args.output).rsplit('.', 1)[-1].lower()
+        if fileext in ('dot', 'fig', 'jpg', 'jpeg', 'json', 'pdf', 'png', 'ps', 'svg', 'svgz', 'xdot'):
+            outformat = fileext
+        elif args.xdot:
+            # Using --xdot makes using dot format implicit
+            outformat = 'dot'
+        else:
+            parser.error("--type needed to specify the format of unknown file extension {0}".format(fileext))
+
+    if args.xdot and outformat != 'dot':
+        parser.error("--xdot only supports dot format")
+
+    # Build the path to the scanned sysfs
+    root_path = args.root.strip() or '/'
+    root_path = os.path.realpath(root_path)
+    if not root_path.endswith('/'):
+        root_path += '/'
+    sysfs_path = root_path + args.syspath.strip('/')
+
+    logging.basicConfig(
+        format='[%(levelname)s] %(message)s',
+        level=logging.DEBUG if args.debug else logging.INFO)
+
+    if args.input:
+        with open(args.input, 'r') as input_fd:
+            device_tree = SysfsDevice(json.load(input_fd))
+        logger.info("Loading %s", args.input)
+    else:
+        logger.info("Scanning %s/bus for devices", sysfs_path)
+
+        # Collect every nodes
+        device_tree = gather_sysfs_bus_devices(sysfs_path)
+
+        logger.info("Scanning %s/class for more devices", sysfs_path)
+        add_all_class_nodes(device_tree)
+
+        logger.info("Add device holders")
+        add_device_holders(device_tree)
+        add_bridge_interfaces(device_tree)
+        add_bonded_interfaces(device_tree)
+
+        # Collect information for labels
+        logger.info("Filling device names")
+        if sysfs_path == '/sys':
+            # Only run commands when using the live system
+            fill_names_with_lspci_output(device_tree)
+            fill_names_with_lsusb_output(device_tree)
+
+        fill_mei_names(device_tree)
+        fill_vmbus_names(device_tree)
+        fill_wmi_names(device_tree)
+        add_dm_names(device_tree)
+        add_scsi_models(device_tree)
+        add_acpi_path_names(device_tree)
+        add_firmware_nodes(device_tree)
+        add_firmware_revisions(device_tree)
+        add_dev_descriptions(device_tree)
+        add_dmi_info(device_tree)
+        add_net_addresses(device_tree)
+        add_mem_info(device_tree)
+        add_uevent_names(device_tree, with_mountinfo=(sysfs_path == '/sys'))
+
+        # Now that we are done collecting, remove the root from the path.
+        # This makes the graph cleaner
+        if root_path != '/':
+            # Keep the last / of root_path
+            assert root_path.endswith('/')
+            stripped_prefix_len = len(root_path) - 1
+            assert device_tree['sysfs_name'].startswith(root_path)
+            device_tree['sysfs_name'] = device_tree['sysfs_name'][stripped_prefix_len:]
+            for dev in device_tree.iter_all():
+                assert dev['sysfs_path'].startswith(root_path)
+                dev['sysfs_path'] = dev['sysfs_path'][stripped_prefix_len:]
+
+    if args.no_memory:
+        try:
+            sysdev = device_tree.resolve_relative_path('system') or {}
+            del sysdev['children']['memory']
+        except KeyError:
+            logger.info("No %s/devices/system/memory found", sysfs_path)
+        else:
+            logger.info("Pruning nodes in %s/devices/system/memory", sysfs_path)
+
+    if args.no_virtual and device_tree['children']:
+        try:
+            del device_tree['children']['virtual']
+        except KeyError:
+            logger.info("No %s/devices/virtual found", sysfs_path)
+        else:
+            logger.info("Pruning nodes in %s/devices/virtual", sysfs_path)
+
+    if args.pci:
+        # Destroy non-pci nodes
+        for name in list(device_tree['children'].keys()):
+            if not name.startswith('pci'):
+                del device_tree['children'][name]
+            else:
+                logger.info("Keeping %s", device_tree['children'][name]['sysfs_path'])
+
+    # Reorder the graph
+    device_tree.sort_children()
+
+    # Shorten the paths in labels
+    if args.shorten_paths:
+        shorten_label_paths(device_tree)
+
+    # Format the graph
+    if outformat == 'json':
+        if args.output:
+            logger.info("Writing JSON file %s", args.output)
+            with open(args.output, 'w') as fout:
+                json.dump(device_tree, fout, indent=2)
+        else:
+            json.dump(device_tree, sys.stdout, indent=2)
+    elif outformat == 'dot':
+        if args.output:
+            logger.info("Writing DOT file %s", args.output)
+            with open(args.output, 'w') as fout:
+                dump_dot_graph(device_tree, fout, args.tree, args.circle)
+        else:
+            dump_dot_graph(device_tree, sys.stdout, args.tree, args.circle)
+    else:
+        assert args.output  # It should have triggered a parser.error
+        # Run graphviz
+        if args.circle:
+            cmdline = ['sfdp', '-Goverlap=prism', '-T' + outformat, '-o' + args.output]
+        else:
+            cmdline = ['dot', '-T' + outformat, '-o' + args.output]
+
+        logger.info("Running %s", ' '.join(cmdline))
+        proc = subprocess.Popen(cmdline, stdin=subprocess.PIPE, universal_newlines=True)
+        dump_dot_graph(device_tree, proc.stdin, args.tree, args.circle)
+        proc.stdin.close()
+        exitcode = proc.wait()
+        if exitcode:
+            logger.error("sfdp (Graphviz) failed: %d", exitcode)
+            return exitcode
+
+    # Open the file
+    if args.web_browser:
+        if HAVE_WEBBROWSER:
+            logger.info("Opening in a web browser %s", args.output)
+            webbrowser.open(args.output)
+        else:
+            logger.fatal("Module webbrowser cannot be imported")
+            return 1
+    elif args.xdot:
+        logger.info("Opening in xdot %s", args.output)
+        subprocess.call(['xdot', args.output])
+    elif args.open:
+        logger.info("Opening %s", args.output)
+        if sys.platform == 'darwin':
+            subprocess.call(['open', args.output])
+        elif sys.platform == 'win32':
+            subprocess.call(['start', args.output])
+        elif sys.platform.startswith('linux'):
+            subprocess.call(['xdg-open', args.output])
+        else:
+            webbrowser.open(args.output)
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

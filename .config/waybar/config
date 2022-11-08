@@ -104,7 +104,10 @@
         "portable": "",
         "car": "",
         "default": ["", "", ""]
-      }
+      },
+      "on-double-click": "exec easyeffects-toggle toggle",
+      "on-click": "pavucontrol",
+      "on-click-right": "helvum"
     },
     "custom/yubikey": {
       "exec": "waybar-yubikey",
@@ -353,7 +356,7 @@
         "car": "",
         "default": ["", "", ""]
       },
-     //  "on-click": "exec easyeffects-toggle toggle"
+        "on-double-click": "exec easyeffects-toggle toggle",
         "on-click": "pavucontrol",
         "on-click-right": "helvum"
     },

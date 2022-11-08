@@ -41,7 +41,7 @@ case $container in
 		echo "$url" | wl-copy &
 		;;
 	"chromium")
-		chromium "$url" &
+		chromium-incognito "$url" &
 		;;
 	"mpv")
 		cglaunch mpv "$url" &

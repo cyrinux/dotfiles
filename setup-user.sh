@@ -258,7 +258,6 @@ else
 	systemctl_enable_start "display-switch.service"
 	systemctl_enable_start "waybar-eyes.service"
 	systemctl_enable_start "flashfocus.service"
-	# systemctl_enable_start "gamemoded.service"
 	systemctl_enable_start "gocryptfs-automount.service"
 	systemctl_enable_start "gotify-dunst.service"
 	systemctl_enable_start "nm-applet.service"

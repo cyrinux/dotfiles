@@ -130,7 +130,7 @@ depends=(
     'dcraw'
     'python-ldap'
     'ddcutil'
-    # 'dell-command-configure'
+    # 'dell-command-configure' # libcrypto mess
     'devtools'
     'dfrs'
     'dictd'
@@ -167,7 +167,6 @@ depends=(
     'freerdp'
     'fwupd'
     'fzf'
-    'gamemode'
     'gcc'
     'gdu'
     'gegl'
