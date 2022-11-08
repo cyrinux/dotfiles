@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.28.5
+pkgver=2.29.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -706,4 +706,5 @@ depends=(
     'nextcloud-client'
     'qflipper-git'
     'waybar-eyes'
+    'exegol-git'
 )
