@@ -35,6 +35,12 @@
       "return-type": "json",
       "interval": 3600
     },
+    "custom/prod-status": {
+      "exec": "waybar-livestatus",
+      "return-type": "json",
+      "markup": true,
+      "on-click": "pkill -SIGUSR1 -x waybar-livestat"
+    },
     "custom/dnd": {
       "tooltip": false,
       "format": "{icon}",
@@ -145,7 +151,6 @@
       "sway/language",
       "battery",
       "clock",
-      // "tray",
       "custom/yubikey",
       "custom/power_profile",
       "idle_inhibitor",
@@ -356,9 +361,9 @@
         "car": "",
         "default": ["", "", ""]
       },
-        "on-double-click": "exec easyeffects-toggle toggle",
-        "on-click": "pavucontrol",
-        "on-click-right": "helvum"
+      "on-double-click": "exec easyeffects-toggle toggle",
+      "on-click": "pavucontrol",
+      "on-click-right": "helvum"
     },
     "custom/dnd": {
         "tooltip": false,

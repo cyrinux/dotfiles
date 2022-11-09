@@ -101,6 +101,7 @@ window#waybar {
 #battery.warning,
 #memory.warning,
 #cpu.warning,
+#upower.disccharging,
 #custom-movie.on,
 #custom-dnd.dnd-notification,
 #custom-dnd.dnd-none {

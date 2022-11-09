@@ -28,7 +28,7 @@ case "$1" in
 		;;
 	lock)
 		before_lock
-		swaylock
+		swaylock -f
 		;;
 	suspend)
 		before_lock
