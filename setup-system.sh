@@ -105,6 +105,7 @@ copy "etc/conf.d/snapper"
 copy "etc/default/earlyoom"
 copy "etc/docker/daemon.json"
 copy "etc/fwupd/uefi_capsule.conf"
+copy "etc/fwupd/remotes.d/lvfs.conf"
 copy "etc/iwd/main.conf"
 copy "etc/modules-load.d/ddcci.conf"
 copy "etc/modules-load.d/pkcs8.conf"
@@ -228,7 +229,7 @@ if is_chroot || in_ci; then
 	echo >&2 "=== Running in chroot or CI, skipping firewall, resolv.conf and udev setup..."
 else
 	echo "Sudo config"
-	copy "etc/sudoers.d/override"
+	visudo -cf "etc/sudoers.d/override" && copy "etc/sudoers.d/override"
 
 	echo "Applying kernel tuning"
 	sysctl --system > /dev/null

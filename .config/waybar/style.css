@@ -28,7 +28,6 @@
   margin-left: 100000px;
 }
 
-
 window#waybar {
   background: @background;
   border-bottom: 3px solid @gray;
@@ -57,6 +56,7 @@ window#waybar {
 #custom-power_profile,
 #idle_inhibitor,
 #custom-prod-status,
+#custom-vpn-work,
 #pulseaudio {
   color: @dim;
 }
@@ -85,11 +85,6 @@ window#waybar {
   background-color: @background;
   border-top: 3px solid @background;
   border-bottom: 3px solid @red;
-}
-
-#custom-vpn.work {
-  color: @dim;
-  border-bottom: 3px solid @blue;
 }
 
 #custom-usbguard,
@@ -144,6 +139,7 @@ window#waybar {
 #custom-mail,
 #network,
 #custom-infra-status,
+#custom-vpn-work,
 #custom-prod-status,
 #custom-prod-status.pause,
 #temperature,
@@ -154,15 +150,17 @@ window#waybar {
 #idle_inhibitor,
 #custom-fwupd,
 #custom-secureboot,
+#custom-netatmo,
 #custom-dnd,
 #custom-power_profile,
+#custom-movie,
 #clock {
   padding: 0 6px;
   margin: 0 6px;
 }
 
 #custom-vpn,
-#custom-vpn-work,
+#custom-vpn-work.on,
 #custom-recording,
 #custom-cast {
   border-top: 3px solid @background;

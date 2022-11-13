@@ -16,20 +16,12 @@
       "custom/eyes",
       "pulseaudio",
       "custom/netatmo",
-      "idle_inhibitor",
     ],
     "modules-right": [
       "custom/prod-status",
       "clock",
       "custom/dnd",
     ],
-    "idle_inhibitor": {
-      "format": "{icon}",
-      "format-icons": {
-        "activated": "\uf06e",
-        "deactivated": "\uf070"
-      }
-    },
     "custom/fwupd": {
       "exec": "waybar-fwupd",
       "return-type": "json",
@@ -153,7 +145,6 @@
       "clock",
       "custom/yubikey",
       "custom/power_profile",
-      "idle_inhibitor",
       "custom/dnd"
     ],
     "sway/language": {
@@ -201,13 +192,6 @@
       "interval": 5,
       "return-type": "json",
       "on-click": "pkill -f -SIGUSR1 waybar-eyes",
-    },
-    "idle_inhibitor": {
-      "format": "{icon}",
-      "format-icons": {
-        "activated": "\uf06e",
-        "deactivated": "\uf070"
-      }
     },
     "custom/yubikey": {
       "exec": "waybar-yubikey",

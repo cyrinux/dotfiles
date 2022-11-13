@@ -16,7 +16,7 @@ case "$1" in
 		vcs="$(aur vercmp-devel)"
 		off="$(checkofficial)"
 		dif="$(pacdiff -o)"
-		reb="$(checkrebuild | egrep -v '(opencv|zoom|goland|ledger-live)')"
+		reb="$(checkrebuild | egrep -v '(opencv|zoom|goland|ledger-live|piavpn)')"
 		rep="$(repoctl status | grep -v 'On repo' | grep -v '^$' | grep -v 'Everything up-to-date' | sed 's/^\s*//g')"
 
 		pac_n=$(printf "$pac" | grep -c '^')

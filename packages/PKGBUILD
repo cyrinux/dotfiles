@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.29.1
+pkgver=2.29.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -79,7 +79,7 @@ depends=(
     'awless'
     'tesseract-data-eng'
     'tesseract-data-fra'
-    'aws-cli-v2-bin'
+    'aws-cli-v2'
     'azure-cli'
     'bandwhich'
     'bash-completion'
@@ -297,7 +297,6 @@ depends=(
     'lzop'
     'mailcap'
     'make'
-    'mangohud'
     'mda.lv2'
     'meld'
     'mellowplayer'
@@ -401,7 +400,6 @@ depends=(
     'pyenv'
     'pygmentize'
     'pymdown-extensions'
-    'python2'
     'python-adblock'
     'python-aiohttp'
     'python-black'
@@ -663,7 +661,6 @@ depends=(
     'ansible-lint'
     'reuse'
     'torbrowser-launcher'
-    'howdy'
     'yaml-language-server'
     'gyrolock'
     'mkcert'

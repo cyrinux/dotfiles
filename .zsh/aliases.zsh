@@ -20,7 +20,7 @@ man() (
 )
 
 # Udiskie
-alias um='udiskie-mount -r'
+alias um='udiskie-mount --recursive --options noatime'
 alias uu='udiskie-umount'
 alias up='um -p "builtin:tty"'
 

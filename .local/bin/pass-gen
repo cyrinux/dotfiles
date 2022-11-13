@@ -3,22 +3,30 @@
 set -eu -o pipefail
 
 length=40
-symbols="-y"
+filter=""
+symbol="-y"
+random=""
 
 case $(echo -e "default\nno special chars\nshort\n" | dmenu -p "pass generator") in
-	default) ;;
+	default)
+		filter="[:print:]"
+		;;
 	"no special chars")
-		symbols=""
+		filter="[:alnum:]"
+		symbol=""
 		;;
 	short)
+		filter="[:alnum:]"
 		length=16
-		symbols=""
 		;;
 	*)
 		exit 1
 		;;
 esac
 
+random="$(echo -n "scd random 512" | gpg-connect-agent | tr -cd "$filter" | tr -d '[:space:]' | xargs -0 | cut -c-$length)"
+[[ "$random" =~ "ERR" ]] && random="$(pwgen -s "$length" 1 "$symbol")"
+
 wl-clipboard-manager lock
-pwgen -s "$length" "$symbols" | wl-copy -n
+printf "%s" "$random" | wl-copy -n
 wl-clipboard-manager unlock
