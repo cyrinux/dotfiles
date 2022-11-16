@@ -111,6 +111,7 @@ copy "etc/modules-load.d/ddcci.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/qemu/bridge.conf"
+copy "etc/udev/rules.d/50-yubikey_power_save.rules"
 # copy "etc/nftables.conf"
 copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
