@@ -73,3 +73,17 @@ $ boltctl authorize zdazdaz-aaa-xxx-ffff-ffffffffffff
 podman login docker.io
 podman login quay.io
 ```
+
+# Thermal management
+
+```
+sudo smbios-thermal-ctl --set-thermal-mode=Quiet
+```
+
+# Yubikey GPG management from recovery
+
+https://github.com/drduh/YubiKey-Guide
+
+```
+sudo pacman -S ccid pcsclite
+```

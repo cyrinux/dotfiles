@@ -3,8 +3,8 @@ zstyle    ':z4h:'                                              start-tmux       
 zstyle    ':z4h:'                                              term-shell-integration yes
 zstyle    ':z4h:'                                              propagate-cwd          yes
 zstyle    ':z4h:*'                                             channel                stable
-zstyle    ':z4h:autosuggestions'                               end-of-line            partial-accept
-zstyle    ':z4h:autosuggestions'                               forward-char           partial-accept
+# zstyle    ':z4h:autosuggestions'                               end-of-line            partial-accept
+zstyle    ':z4h:autosuggestions'                               forward-char           accept
 zstyle    ':z4h:fzf-complete'                                  fzf-command            my-fzf
 zstyle    ':z4h:(fzf-complete|fzf-dir-history|fzf-history)'    fzf-flags              --no-exact --color=hl:14,hl+:14
 zstyle    ':z4h:(fzf-complete|fzf-dir-history)'                fzf-bindings           'tab:repeat'

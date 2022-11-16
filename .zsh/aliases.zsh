@@ -3,7 +3,7 @@
 command -v bat           &> /dev/null    && alias c='bat'                                              || alias c='cat'
 command -v lsd           &> /dev/null    && alias la='ll -a'                                           || alias la='ll -A'
 command -v lsd           &> /dev/null    && alias lk='ll -s=size'                                      || alias lk='ll -r --sort=size'
-command -v lsd           &> /dev/null    && alias lm='ll --timesort'                                   || alias lm='ll -r --sort=time'
+command -v lsd           &> /dev/null    && alias lm='ll --timesort -r'                                || alias lm='ll -r --sort=time'
 command -v lsd           &> /dev/null    && alias ls='lsd --icon=never'                                || alias ls='ls --color=auto --group-directories-first -h'
 command -v fd            &> /dev/null    && alias fd='fd --hidden --follow'                || alias fd='find . -name'
 command -v git           &> /dev/null    && alias diff='git diff --no-index'

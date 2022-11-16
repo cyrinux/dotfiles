@@ -1,6 +1,7 @@
 color = true
 enable-notifications = false
-notification-command = notify-send -i '%a' scli '%s - %m'
+# notification-command = notify-send -i '%a' scli '%s - %m'
+notification-command = notify-send -i '%a' scli '%s - You receive a message'
 one-sided = true
 save-history = true
 contacts-autohide = true
