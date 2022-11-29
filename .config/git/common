@@ -146,4 +146,7 @@
 	helper =
 	helper = !/usr/bin/gh auth git-credential
 
+[sendemail]
+	annotate = yes
+
 # vim:ft=ini

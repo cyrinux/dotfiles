@@ -1,1 +1,14 @@
-# set recolor true
+set adjust-open width
+
+# Colors to apply when recolouring
+set recolor-lightcolor \#bea58b
+set recolor-darkcolor \#000000
+
+set font "system-ui 11"
+
+# This file will be a symlink to `dark-mode` when the system dark mode is on,
+# and will be absent when it's off (so keep this line last).
+#
+# This has my username hardcoded, since zathura doesn't expand tildes or
+# environment variables.
+include "/home/cyril/.local/state/zathura/current-mode"

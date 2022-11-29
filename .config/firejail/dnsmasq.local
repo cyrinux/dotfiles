@@ -1,4 +1,0 @@
-noblacklist /usr/lib/libvirt/libvirt_leaseshelper
-noblacklist /var/lib/libvirt/dnsmasq/default.conf
-whitelist /var/lib/libvirt/dnsmasq/default.conf
-whitelist /usr/lib/libvirt/libvirt_leaseshelper

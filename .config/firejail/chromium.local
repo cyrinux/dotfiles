@@ -1,8 +1,0 @@
-# I tend to send a lot of files from here:
-whitelist /tmp/screenshots/
-include whitelist-runuser-common.inc
-ignore noroot
-whitelist ${RUNUSER}/pipewire-0
-dbus-user.talk org.freedesktop.Notifications
-dbus-user.talk org.freedesktop.portal.*
-ignore nou2f

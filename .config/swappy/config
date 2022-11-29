@@ -1,2 +1,4 @@
 [Default]
 save_dir=/tmp/screenshots
+early_exit=true
+paint_mode=arrow

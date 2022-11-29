@@ -161,6 +161,7 @@ define-command select-or-add-cursor -docstring 'Search the word under cursor, au
     } catch %{
         execute-keys -save-regs '' -with-hooks "*"
     } catch nop
+    trigger-user-hook view-scrolled
 }
 
 define-command toggle-highlighter -params 2.. -docstring 'toggle-highlighter <path>/[name] <type> [type-params…]' %{
@@ -199,7 +200,12 @@ hook global NormalKey <esc> %{ try %{
     remove-highlighter window/search-results-highlighter
 }}
 
+source "~/.config/kak/scrollbar.kak/scrollbar.kak"
+set-face global Scrollbar bright-yellow,black
+set-face global ScrollThumb bright-yellow,rgb:7c6f64
+
 hook global WinCreate .* %{ try %{
+    scrollbar-enable
     add-highlighter buffer/numbers  number-lines -hlcursor
     add-highlighter buffer/matching show-matching
     add-highlighter buffer/wrap     wrap -word -indent
@@ -279,9 +285,9 @@ hook global WinSetOption filetype=(javascript|typescript|css|scss|json|markdown|
     hook buffer -group format BufWritePre .* format
 }
 
-# hook global WinSetOption filetype=json %{
-#     set-option window formatcmd "jq --monochrome-output '.'"
-# }
+hook global WinSetOption filetype=json %{
+    set-option window formatcmd "jq --monochrome-output '.'"
+}
 
 # https://github.com/kak-lsp/kak-lsp/issues/592
 define-command tsserver-organize-imports -docstring "Ask the typescript language server to organize imports in the buffer" %{
@@ -315,7 +321,6 @@ source "~/.config/kak/surround.kak/rc/surround.kak"
 source "~/.config/kak/vertical-selection/vertical-selection.kak"
 source "~/.config/kak/restclient.kak/restclient.kak"
 source "~/.config/kak/pandoc/rc/pandoc.kak"
-
 
 ## start git##
 map global user g ': enter-user-mode git<ret>' -docstring 'git mode'

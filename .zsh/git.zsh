@@ -19,6 +19,7 @@ alias g='git'
 alias gcl='ghq get --look'
 command -v git-number &> /dev/null && alias ga='g number add' || alias ga='g add'
 alias gaa='ga --all'
+alias gau='git autofixup ${upstream}'
 alias gap='ga -p'
 alias gb='git branch'
 alias gba='git branch --all'
@@ -87,6 +88,7 @@ alias gxs='git annex sync'
 alias gxg='git annex get'
 alias gxd='git annex drop'
 alias gxc='git annex copy'
+alias fork='hub fork'
 
 grf() {
 	upstream="$(git remote get-url upstream 2> /dev/null || git remote get-url origin)"

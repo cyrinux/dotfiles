@@ -80,6 +80,6 @@ case $extemptrend in
 esac
 
 tooltip="$in_trend Indoor:\n\nTemperature ${intemp}°C, Humidity ${inhumi}%, Pressure ${pres} hPa\nNoise ${innoise} Db\n\n$ex_trend Outdoor:\n\nTemperature ${extemp}°C, Humidity ${exhumi}%, CO2 ${co2}ppm\n"
-text="$intemp°C"
+text="<span foreground='#928374'>$intemp°C</span>"
 
 printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon $text" "$tooltip" "$class"

@@ -32,7 +32,7 @@ else
 	success "Connected to wifi ${BOLD}$WIFI${RESET}."
 fi
 
-if resolvectl query captive.apple.com > /dev/null; then
+if drill captive.apple.com > /dev/null; then
 	success "DNS works."
 else
 	failure "DNS resolution failing."

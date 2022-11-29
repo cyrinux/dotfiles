@@ -18,5 +18,5 @@ else
 
 	tooltip="$(printf "$tooltip" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"
 
-	printf "{\"text\": \"<span foreground='#928374'> </span>%s\", \"tooltip\": \"%s\"}\n" "$text" "$tooltip"
+	printf "{\"text\": \" %s\", \"tooltip\": \"%s\"}\n" "$text" "$tooltip"
 fi

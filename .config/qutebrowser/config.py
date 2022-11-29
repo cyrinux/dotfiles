@@ -47,7 +47,7 @@ c.hints.mode = "word"
 
 c.content.webrtc_ip_handling_policy = "default-public-interface-only"
 c.content.site_specific_quirks.enabled = False
-c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.5304.107 Safari/537.36"
+c.content.headers.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.5304.121 Safari/537.36"
 
 c.content.cookies.accept = "no-3rdparty"
 c.content.autoplay = False
@@ -59,12 +59,10 @@ c.content.blocking.enabled = True
 with config.pattern("*://*.dm.gg/") as p:
     p.content.autoplay = True
     c.content.canvas_reading = True
-    c.content.site_specific_quirks.enabled = (
-        True  # Change to True to be able to login to google
-    )
+    c.content.site_specific_quirks.enabled = False
 
 c.url.searchengines = {
-    "DEFAULT": "https://www.startpage.com/sp/search?q={}",
+    "DEFAULT": "https://encrypted.google.com/search?hl=fr&q={}",
     "?": "https://encrypted.google.com/search?hl=fr&q={}",
     "g": "https://encrypted.google.com/search?hl=fr&q={}",
     "gt": "https://translate.google.com/{}",
@@ -78,10 +76,11 @@ c.url.searchengines = {
     "dict": "https://www.dict.cc/?s={}",
     "s": "https://search.levis.ws/?q={}",
     "c": "https://artifacthub.io/packages/search?ts_query_web={}",
+    "sp": "https://www.startpage.com/sp/search?q={}",
 }
 
-c.url.default_page = "chrome://network-error/-106"
-c.url.start_pages = ["chrome://network-error/-106"]
+c.url.default_page = "~/.config/qutebrowser/blank.html"
+c.url.start_pages = ["~/.config/qutebrowser/blank.html"]
 
 c.content.user_stylesheets = ["~/.config/qutebrowser/user.css"]
 

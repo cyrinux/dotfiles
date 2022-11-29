@@ -7,13 +7,14 @@ command -v lsd           &> /dev/null    && alias lm='ll --timesort -r'         
 command -v lsd           &> /dev/null    && alias ls='lsd --icon=never'                                || alias ls='ls --color=auto --group-directories-first -h'
 command -v fd            &> /dev/null    && alias fd='fd --hidden --follow'                || alias fd='find . -name'
 command -v git           &> /dev/null    && alias diff='git diff --no-index'
-command -v htop          &> /dev/null    && alias top='htop'
+# command -v htop          &> /dev/null    && alias top='htop'
 command -v dfrs          &> /dev/null    && alias df='dfrs'
 command -v rg            &> /dev/null    && alias rg='rg --hidden --follow --smart-case 2>/dev/null'   || alias rg='grep --color=auto --exclude-dir=.git -R'
-command -v trash-put     &> /dev/null    && alias rm='trash-put'
+command -v trash-put     &> /dev/null    && alias rm='trash-put'; compdef trash-put=rm
 command -v dog           &> /dev/null    && alias d='dog'                                              || alias d='dig +nocmd +multiline +noall +answer'
 command -v curlie        &> /dev/null    && alias curl='curlie'
 command -v gdu           &> /dev/null    && alias ncdu='gdu'
+command -v lsplug        &> /dev/null    && alias lsusb='lsplug'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h

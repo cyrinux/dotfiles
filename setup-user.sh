@@ -94,6 +94,7 @@ link ".config/display-switch-all/display-switch.ini.$(detectgpu)" ".config/displ
 copy ".config/environment.d"
 link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/bat"
+link ".config/dmenu"
 link ".config/chromium-flags.conf"
 link ".config/electron-flags.conf"
 link ".config/electron-flags.conf" ".config/electron13-flags.conf"
@@ -214,6 +215,8 @@ link ".config/gh"
 link ".ignore"
 link ".local/bin"
 link ".local/share/applications"
+link ".local/share/dark-mode.d"
+link ".local/share/light-mode.d"
 link ".local/share/bsod.png"
 link ".gnupg/gpg-agent.conf"
 link ".gnupg/gpg.conf"
@@ -229,6 +232,8 @@ link ".zshrc"
 link ".ssh/config"
 link ".config/sclirc"
 link ".config/systemd/user/wl-clipboard-manager.service"
+link ".config/systemd/user/geoclue.service"
+link ".config/systemd/user/darkman.service.d/want-geoclue-agent.conf"
 link ".zprofile"
 
 echo ""
@@ -270,6 +275,7 @@ else
 	systemctl_enable_start "sway-autoname-workspaces.service"
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "swaync.service"
+	systemctl_enable_start "geoclue.service"
 	systemctl_enable_start "sway-inactive-window-transparency.service"
 	systemctl_enable_start "systembus-notify.service"
 	systemctl_enable_start "systemd-tmpfiles-setup.service"
@@ -289,7 +295,7 @@ else
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "systemd-autoreload.service"
 	systemctl_enable_start "signal-desktop.service"
-	# systemctl_enable_start "modprobed-db.timer"
+	systemctl_enable_start "battery-low-notify.service"
 
 	if [ ! -d "$HOME/.mail" ]; then
 		mkdir -p "$HOME/.mail/"{personal,work}
@@ -369,7 +375,7 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.plexamp.Plexamp com.rtosta.zapzap org.telegram.desktop
+flatpak install -y --noninteractive com.plexamp.Plexamp com.rtosta.zapzap org.telegram.desktop com.github.micahflee.torbrowser-launcher
 
 # asdf
 for s in direnv kubectl kind terraform kustomize helmfile helm; do

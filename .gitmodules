@@ -35,3 +35,7 @@
 [submodule ".config/mpv/scripts/sponsorblock"]
 	path = .config/mpv/scripts/sponsorblock
 	url = https://github.com/maximbaz/mpv_sponsorblock.git
+[submodule ".config/kak/scrollbar.kak"]
+	path = .config/kak/scrollbar.kak
+	url = https://github.com/Screwtapello/scrollbar.kak.git
+    branch = my-cool-rewrite

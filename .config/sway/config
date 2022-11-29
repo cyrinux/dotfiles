@@ -1,6 +1,6 @@
 input type:keyboard {
     xkb_layout fr-hyper,us,ua
-    xkb_variant basic,
+    xkb_variant basic,,
     xkb_options grp:shifts_toggle,grp:shift_caps_toggle,caps:hyper
     xkb_numlock enable
 }
@@ -11,10 +11,10 @@ input type:mouse {
 
 input type:touchpad {
 	accel_profile adaptive
-	dwt enabled
-	drag enabled
-	tap enabled
-	natural_scroll enabled
+	dwt enable
+	drag enable
+	tap enable
+	natural_scroll enable
     pointer_accel 0.2
     click_method button_areas
 }
@@ -116,17 +116,14 @@ mode $mode_audio {
     }
 }
 
-
-
-
-
-set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (H)alt, (t)rusted, (u)ntrusted, unm(o)unt, (e)xit"
+set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (H)alt, (t)rusted, (u)ntrusted, unm(o)unt, (e)xit, (d)arkman"
 mode $mode_system {
 	bindsym --to-code {
      l exec sway-exit lock, mode "default"
      e exec sway-exit exit, mode "default"
      s exec sway-exit suspend, mode "default"
      r exec sway-exit reboot, mode "default"
+     d exec darkman toggle, mode "default"
      Shift+h exec sway-exit shutdown, mode "default"
      t exec ttoggle -t, mode "default"
      u exec ttoggle -x, mode "default"
@@ -137,7 +134,7 @@ mode $mode_system {
 	}
 }
 
-bindsym XF86PowerOff       exec sway-exit lock
+# bindsym XF86PowerOff       exec sway-exit lock
 bindsym XF86Eject          exec sway-exit lock
 bindsym Pause              exec sway-exit lock
 
@@ -183,25 +180,6 @@ mode $mode_workspaces_monitors {
 	}
 }
 
-# Color scheme (Gruvbox dark)
-set $color_normal_white  #a89984
-set $color_bright_white  #ebdbb2
-set $color_normal_gray   #282828
-set $color_bright_gray   #3c3836
-set $color_bright_yellow #d79921
-set $color_normal_black  #1d2021
-set $color_unused        #ff0000
-
-
-
-# Colors                  border                 background             text                   indicator            child_border
-client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
-client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
-client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_normal_gray   $color_normal_black
-client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
-client.placeholder        $color_unused          $color_unused          $color_unused          $color_unused        $color_unused
-
-
 bindsym --to-code --locked {
     XF86AudioMute                 exec sway-audio output-mute
     XF86AudioRaiseVolume          exec sway-audio output-volume-up
@@ -243,9 +221,7 @@ bindsym --to-code {
 
     $hyper+Shift+Print exec cglaunch sway-gif-area
     $win+Shift+Print   exec cglaunch sway-screenshare
-    $win+i       exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
-
-
+    $win+i             exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
 	# open terminal
 	$hyper+Return exec cglaunch --term
@@ -378,8 +354,28 @@ bindsym --to-code {
 exec_always $kanshi
 exec_always import-gsettings
 
-# Load host-specific configs
+
+
+# Color scheme (Gruvbox dark)
+set $color_normal_white  #a89984
+set $color_bright_white  #ebdbb2
+set $color_normal_gray   #282828
+set $color_bright_gray   #3c3836
+set $color_bright_yellow #d79921
+set $color_normal_black  #1d2021
+set $color_unused        #ff0000
+
+# Colors                  border                 background             text                   indicator            child_border
+client.focused            $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
+client.focused_inactive   $color_bright_gray     $color_bright_gray     $color_bright_white    $color_bright_gray   $color_normal_black
+client.unfocused          $color_normal_gray     $color_normal_gray     $color_normal_white    $color_normal_gray   $color_normal_black
+client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
+client.placeholder        $color_unused          $color_unused          $color_unused          $color_unused        $color_unused
+
+
 include "~/.config/sway/default.conf"
+
+# Load host-specific configs
 include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 
 # Load systemd integration

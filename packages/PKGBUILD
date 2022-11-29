@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.29.7
+pkgver=2.29.11
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -130,8 +130,8 @@ depends=(
     'dcraw'
     'python-ldap'
     'ddcutil'
-    # 'dell-command-configure' # libcrypto mess
     'devtools'
+    'libsmbios'
     'dfrs'
     'dictd'
     'diff-so-fancy'
@@ -471,7 +471,6 @@ depends=(
     'qt5-websockets'
     'qt6-wayland'
     'qt6-websockets'
-    'quickemu-git'
     'qutebrowser'
     'radeontop'
     'radvd'
@@ -659,7 +658,6 @@ depends=(
     'ansible'
     'ansible-lint'
     'reuse'
-    'torbrowser-launcher'
     'yaml-language-server'
     'gyrolock'
     'mkcert'
@@ -680,7 +678,6 @@ depends=(
     'gofumpt'
     'kompose'
     'libnma-gtk4'
-    'modprobed-db'
     'pandoc'
     'thermald'
     'typescript-language-server'
@@ -703,4 +700,7 @@ depends=(
     'qflipper-git'
     'waybar-eyes'
     'exegol-git'
+    'lsplug'
+    'd-feet' # dbus explorer
+    'darkman'
 )
