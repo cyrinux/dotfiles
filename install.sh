@@ -191,9 +191,10 @@ pacman-key --lsign-key "$MY_GPG_KEY_ID"
 
 echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
+march="$(uname -m)"
 
 if [[ "${hostname}" == "work-"* ]]; then
-	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' 'https://aur.levis.ws/'
+	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' "https://aur.levis.ws/${march}"
 	rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 else
 	repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
@@ -205,7 +206,7 @@ if ! grep cyrinux /etc/pacman.conf > /dev/null; then
 Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
-Server = https://aur.levis.ws/
+Server = https://aur.levis.ws/${march}
 
 [options]
 CacheDir = /mnt/var/cache/pacman/pkg
@@ -214,7 +215,7 @@ EOF
 fi
 
 echo -e "\n### Installing packages"
-pacstrap /mnt cyrinux
+pacstrap /mnt cyrinux-base cyrinux-$(uname -m)
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh

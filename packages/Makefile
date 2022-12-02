@@ -9,7 +9,7 @@ build: ## Build the meta-package
 .PHONY: install
 install: ## Install the meta-package
 	@echo 📦 Install the meta-package
-	SNAP_PAC_SKIP=true sudo -E pacman --noconfirm -U *.pkg.tar.zst
+	SNAP_PAC_SKIP=true sudo -E pacman --noconfirm -U cyrinux-base-*.pkg.tar.zst cyrinux-$(shell uname -m)-*.pkg.tar.zst
 
 .PHONY: refresh
 refresh: ## Refresh the backup lists
