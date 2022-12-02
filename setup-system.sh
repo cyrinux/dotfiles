@@ -96,6 +96,7 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
+copy "usr/local/bin/backup-repo"
 copy "etc/apparmor/parser.conf"
 copy "etc/firewalld/firewalld.conf" 600
 copy "etc/apparmor.d/local"
@@ -116,7 +117,7 @@ copy "etc/udev/rules.d/50-yubikey_power_save.rules"
 copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/nmtrust/trusted_units" 644
-copy "etc/pacman.conf" 644
+copy "etc/pacman-$(uname -m).conf" 644 "etc/pacman.conf"
 copy "etc/pacman.d/hooks"
 copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"

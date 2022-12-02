@@ -1,5 +1,5 @@
 pkgname='cyrinux'
-pkgver=2.29.11
+pkgver=2.29.12
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -174,7 +174,6 @@ depends=(
     'ghq'
     'git'
     'git-absorb'
-    'git-annex'
     'git-cliff'
     'git-crypt'
     'git-delta'

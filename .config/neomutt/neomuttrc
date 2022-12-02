@@ -171,10 +171,4 @@ source neomuttrc-private
 macro index,pager \cb "<pipe-message> urlscan<Enter>"
 macro attach,compose \cb "<pipe-entry> urlscan<Enter>"
 
-
-# set header_cache_compress_method = "zstd"
-# set header_cache_compress_level = 11
-# set header_cache = "~/.cache/mutt"
-# set message_cachedir = "~/.cache/mutt"
-
 # vim: filetype=neomuttrc
