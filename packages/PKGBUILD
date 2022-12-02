@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.12
+pkgver=2.29.13
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -32,13 +32,11 @@ package_cyrinux-base() {
 
     depends=(
         'base'
-        'iptables'
         'firewalld'
         'btrfs-progs'
         'dash'
         'zsh'
         'mkinitcpio'
-        'mkinitcpio-encrypt-detached-header'
         'man-db'
         'ttf-liberation'
         'htop'
@@ -474,7 +472,6 @@ package_cyrinux-base() {
         'sd'
         'seafile-client'
         'shfmt'
-        'signal-desktop'
         'simple-scan'
         'sipcalc'
         'skaffold'
@@ -596,7 +593,6 @@ package_cyrinux-base() {
         'wrk'
         'wshowkeys-git'
         'wtype'
-        'x86_energy_perf_policy'
         'xdg-user-dirs'
         'xorg-server'
         'xorg-server-xwayland'
@@ -674,8 +670,8 @@ package_cyrinux-base() {
         'd-feet' # dbus explorer
         'darkman'
     )
-    # https://input.fontbureau.com/download/?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Regular&italic=InputMonoNarrow-Italic&bold=InputMonoNarrow-Bold&boldItalic=InputMonoNarrow-BoldItalic&a=0&g=0&i=serifs_round&l=serifs_round&zero=slash&asterisk=height&braces=0&preset=default&line-height=1.1&email=
 
+    # https://input.fontbureau.com/download/?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Regular&italic=InputMonoNarrow-Italic&bold=InputMonoNarrow-Bold&boldItalic=InputMonoNarrow-BoldItalic&a=0&g=0&i=serifs_round&l=serifs_round&zero=slash&asterisk=height&braces=0&preset=default&line-height=1.1&email=
     for font in InputMono*; do
         install -Dm644 -t "${pkgdir}/usr/share/fonts/${pkgname}/" "${font}"
     done
@@ -699,6 +695,7 @@ package_cyrinux-x86_64() {
 
         # boot
         'arch-secure-boot'
+        'mkinitcpio-encrypt-detached-header'
         'intel-ucode'
         'terminus-font'
 
@@ -709,15 +706,19 @@ package_cyrinux-x86_64() {
         'qemu-arch-extra'
         'qemu-arm-static-bin'
         'dnsmasq'
-        'ebtables'
+        'iptables'
         'edk2-ovmf'
 
         # hardware
+        'x86_energy_perf_policy'
         'intel-media-driver'
         'vulkan-headers'
         'vulkan-intel'
         'vulkan-tools'
         'wluma'
+
+        # electron
+        'signal-desktop'
     )
 }
 
