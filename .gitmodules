@@ -7,7 +7,7 @@
 	url = https://github.com/maximbaz/restclient.kak
 [submodule ".config/kak/state-save"]
 	path = .config/kak/state-save
-    url = https://gitlab.com/Screwtapello/kakoune-state-save
+        url = https://gitlab.com/Screwtapello/kakoune-state-save
 [submodule ".config/mpv/uosc"]
 	path = .config/mpv/uosc
 	url = https://github.com/darsain/uosc/
@@ -38,4 +38,13 @@
 [submodule ".config/kak/scrollbar.kak"]
 	path = .config/kak/scrollbar.kak
 	url = https://github.com/Screwtapello/scrollbar.kak.git
-    branch = my-cool-rewrite
+        branch = my-cool-rewrite
+[submodule ".config/kak/number-toggle.kak"]
+    path = .config/kak/number-toggle.kak
+    url = https://github.com/evanrelf/number-toggle.kak.git
+[submodule ".config/kak/prelude.kak"]
+   path = .config/kak/prelude.kak
+   url = https://github.com/kakounedotcom/prelude.kak.git
+[submodule ".config/kak/sudo-write.kak"]
+    path = .config/kak/sudo-write.kak
+    url = https://github.com/occivink/kakoune-sudo-write.git
