@@ -16,7 +16,7 @@ if [ -n "$FILTER_MODE" ]; then
 		tail -f /dev/null > fifo &
 
 		FZF_OPTS="$FZF_OPTS --preview-window=:0% --preview='printf \"%s\0\" {} >$PWD/fifo'"
-		kitty @ launch --cwd "$PWD" --keep-focus --env "PREVIEW_MODE=1" --env "PREVIEW_SCRIPT=$PREVIEW_SCRIPT" "$self"
+		env LIBGL_ALWAYS_SOFTWARE=1 kitty @ launch --cwd "$PWD" --keep-focus --env "PREVIEW_MODE=1" --env "PREVIEW_SCRIPT=$PREVIEW_SCRIPT" "$self"
 	fi
 
 	env FZF_DEFAULT_OPTS="$FZF_OPTS" fzf < in > out
@@ -68,11 +68,11 @@ mkdir "$tmp/done"
 cat > "$tmp/in"
 
 if [ -n "$kitty_panel" ]; then
-	kitty @ launch --no-response --cwd "$tmp" --env "FILTER_MODE=1" --env "FZF_OPTS=$fzf_args" --env "PREVIEW_SCRIPT=$preview_script" "$self" > /dev/null 2>&1
+	env LIBGL_ALWAYS_SOFTWARE=1 kitty @ launch --no-response --cwd "$tmp" --env "FILTER_MODE=1" --env "FZF_OPTS=$fzf_args" --env "PREVIEW_SCRIPT=$preview_script" "$self" > /dev/null 2>&1
 	inotifywait -q -e create "$tmp/done" > /dev/null
 else
 	source "$HOME/.config/dmenu/theme.conf"
-	env "FILTER_MODE=1" "FZF_OPTS=$fzf_args" "PREVIEW_SCRIPT=$preview_script" \
+	env "FILTER_MODE=1" "FZF_OPTS=$fzf_args" "PREVIEW_SCRIPT=$preview_script" "LIBGL_ALWAYS_SOFTWARE=1" \
 		kitty --class "$kitty_class" --directory "$tmp" -o font_size=12 -o background="${BACKGROUND:-'#242828'}" -o active_border_color="${ACTIVE_BORDER_COLOR:-'#242828'}" -o window_padding_width=5 "$self" > /dev/null 2>&1
 fi
 
