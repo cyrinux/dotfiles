@@ -182,6 +182,7 @@ mode $mode_workspaces_monitors {
 
 bindsym --to-code --locked {
     XF86AudioMute                 exec sway-audio output-mute
+    XF86AudioRecord               exec sway-audio output-mute
     XF86AudioRaiseVolume          exec sway-audio output-volume-up
     XF86AudioLowerVolume          exec sway-audio output-volume-down
     $win+Up                       exec sway-audio output-mute
@@ -211,6 +212,8 @@ bindsym --to-code {
     XF86MonBrightnessDown       exec light -U 1%
     Shift+XF86MonBrightnessUp   exec light -A 5%
     Shift+XF86MonBrightnessDown exec light -U 5%
+    $win+XF86MonBrightnessUp   exec light -s sysfs/leds/kbd_backlight -A 5%
+    $win+XF86MonBrightnessDown exec light -s sysfs/leds/kbd_backlight -U 5%
 
 
 
@@ -225,9 +228,9 @@ bindsym --to-code {
 
 	# open terminal
 	$hyper+Return exec cglaunch --term
-	$hyper+XF86AudioMute exec cglaunch --term
-	$hyper+Shift+Return exec kitty --config ~/.config/kitty/gruvbox-light.conf
-	$win+Return exec kitty --config NONE /bin/bash
+	$hyper+Shift+Return exec LIBGL_ALWAYS_SOFTWARE=1 kitty --config ~/.config/kitty/gruvbox-light.conf
+	#$win+Return exec kitty --config NONE /bin/bash
+	$win+Return exec terminator
 
 
 	# quit app

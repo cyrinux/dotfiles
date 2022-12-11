@@ -29,13 +29,13 @@ fi
 
 case $container in
 	"personal")
-		cglaunch qbpm launch personal "$url" &
+		cglaunch firefox "ext+container:name=Personal&url=$url" &
 		;;
 	"work")
-		cglaunch qbpm launch work "$url" &
+		cglaunch firefox "ext+container:name=Work&url=$url" &
 		;;
 	"shopping")
-		cglaunch qbpm launch shopping "$url" &
+		cglaunch firefox "ext+container:name=Shopping&url=$url" &
 		;;
 	"clipboard")
 		echo "$url" | wl-copy &

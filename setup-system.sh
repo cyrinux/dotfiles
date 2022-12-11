@@ -150,6 +150,8 @@ copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/bluetooth/main.conf"
+copy "usr/local/bin/sway-in-shell"
+copy "usr/share/wayland-sessions/sway-in-shell.desktop"
 
 (("$reverse")) && exit 0
 
@@ -215,6 +217,10 @@ fi
 
 echo "Configuring NTP"
 in_ci || timedatectl set-ntp true
+ 
+echo "Locales"
+localectl set-x11-keymap fr
+localectl set-keymap fr
 
 echo "Configuring aurutils"
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
@@ -243,11 +249,6 @@ else
 	echo "Force dns config"
 	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
-
-echo "Install xdg-open firejail wrapper"
-sudo gcc -o /usr/local/bin/xdg-open ./src/xdg-open.c
-sudo chown root:root /usr/local/bin/xdg-open
-sudo chmod 0755 /usr/local/bin/xdg-open
 
 echo "Firejail some apps"
 sudo systemctl enable --now apparmor.service || true

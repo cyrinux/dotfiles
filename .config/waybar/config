@@ -6,6 +6,7 @@
   {
     "layer": "top",
     "output": "!eDP-1",
+    "height": "24",
     "modules-left": ["sway/workspaces"],
     "modules-center": [
       "custom/yubikey",
@@ -129,7 +130,6 @@
       "custom/usbguard",
       "custom/eyes",
       "custom/decrypted",
-      "custom/security",
       "custom/systemd",
       "custom/updates",
       "custom/calendar",
@@ -296,11 +296,6 @@
         "warning": 80,
         "critical": 90
       }
-    },
-    "custom/security": {
-      "exec": "waybar-security",
-      "return-type": "json",
-      "interval": "once"
     },
     "backlight": {
       "format": "<span foreground='#928374'>{icon}</span> {percent}%",

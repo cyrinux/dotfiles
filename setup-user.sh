@@ -24,7 +24,7 @@ is_chroot() {
 }
 
 detectgpu() {
-	(lsmod | grep '^i915' || lsmod | grep '^amdgpu') | awk '{print $1}'
+	(lsmod | grep '^i915' || lsmod | grep '^amdgpu' || lsmod | grep '^hid_apple') | awk '{print $1}'
 }
 
 copy() {
@@ -285,12 +285,12 @@ else
 	systemctl_enable_start "waybar-updates.timer"
 	systemctl_enable_start "wl-clipboard-manager.service"
 	systemctl_enable_start "wlsunset.service"
-	systemctl_enable_start "wluma.service"
-	systemctl_enable_start "wluma-off.service"
+	#systemctl_enable_start "wluma.service"
+	#systemctl_enable_start "wluma-off.service"
 	systemctl_enable_start "work-unseal.service"
 	systemctl_enable_start "yubikey-touch-detector.socket"
 	systemctl_enable_start "systemd-lock-handler.service"
-	systemctl_enable_start "screen-off.service"
+	#systemctl_enable_start "screen-off.service"
 	systemctl_enable_start "kanshi.service"
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "systemd-autoreload.service"
@@ -375,7 +375,7 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.plexamp.Plexamp com.rtosta.zapzap org.telegram.desktop com.github.micahflee.torbrowser-launcher
+flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop com.github.micahflee.torbrowser-launcher
 
 # asdf
 for s in direnv kubectl kind terraform kustomize helmfile helm; do
