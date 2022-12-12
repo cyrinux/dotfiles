@@ -13,9 +13,9 @@ pac() {
 		repo-remove -s /var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar "$@"
 	fi
 
-	echo "\nCleaning up repo cache..."
-	sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
-	sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
+	# echo "\nCleaning up repo cache..."
+	# sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
+	# sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
 
 	rehash
 	refresh-waybar-updates

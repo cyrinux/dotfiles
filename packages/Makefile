@@ -34,8 +34,8 @@ clean: ## Cleanup
 .PHONY: sync
 sync: ## Push online the local repo
 	@echo 📦 Sync repository
-	sudo systemctl start backup-repo@pkgbuild || true
-	sudo systemctl status backup-repo@pkgbuild || true
+	systemctl --user start backup-repo@pkgbuild || true
+	systemctl --user status backup-repo@pkgbuild || true
 
 .PHONY: became-official
 became-official: ## Clean packages that became official

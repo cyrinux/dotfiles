@@ -1,0 +1,7 @@
+[Unit]
+Description=Backup pacman repository to %I
+
+[Service]
+Type=oneshot
+EnvironmentFile=%h/.config/systemd/user/backup-repo@%i
+ExecStart=%h/.local/bin/backup-repo

@@ -1,9 +1,0 @@
-[Unit]
-Description=Update library repositories
-
-[Service]
-Type=oneshot
-ExecStart=%h/.local/bin/library-repos
-
-[Install]
-WantedBy=multi-user.target

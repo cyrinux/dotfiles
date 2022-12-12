@@ -96,7 +96,6 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
-copy "usr/local/bin/backup-repo"
 copy "etc/apparmor/parser.conf"
 copy "etc/firewalld/firewalld.conf" 600
 copy "etc/apparmor.d/local"
@@ -133,9 +132,6 @@ copy "etc/sysctl.d/51-kexec-restrict.conf"
 copy "etc/systemd/journald.conf.d/override.conf"
 copy "etc/systemd/logind.conf.d/override.conf"
 copy "etc/systemd/resolved.conf.d/dnssec.conf"
-copy "etc/systemd/system/backup-repo@pkgbuild"
-copy "etc/systemd/system/backup-repo@.service"
-copy "etc/systemd/system/backup-repo@.timer"
 copy "etc/systemd/system/getty@tty1.service.d/override.conf"
 copy "etc/systemd/system/reflector.service.d"
 copy "etc/systemd/system/reflector.timer"
@@ -177,7 +173,6 @@ systemctl_enable_start "thermald.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "nfs-server.service"
-systemctl_enable_start "backup-repo@pkgbuild.timer"
 systemctl_enable_start "bluetooth.service"
 systemctl_enable_start "btrfs-scrub@-.timer"
 systemctl_enable_start "earlyoom.service"
@@ -218,7 +213,7 @@ fi
 
 echo "Configuring NTP"
 in_ci || timedatectl set-ntp true
- 
+
 echo "Locales"
 localectl set-x11-keymap fr
 localectl set-keymap fr

@@ -1,0 +1,8 @@
+#!/bin/bash
+arch="$(uname -m)"
+
+rsync --archive --partial --delete --verbose ${LOCAL_PATH} "${REMOTE_TEMP_PATH}/${arch}"
+rename -- '-local' '' ${REMOTE_TEMP_PATH}/${arch}/* || true
+rename -s -- '-local' '' ${REMOTE_TEMP_PATH}/${arch}/* || true
+rsync --archive --partial --delete --verbose ${REMOTE_TEMP_PATH}/${arch}/* "${REMOTE_ADDR}:${REMOTE_PATH}/${arch}/"
+rsync --archive --partial --delete --verbose ${LOCAL_PATH_AURUTILS} "${REMOTE_ADDR}:${REMOTE_PATH_AURUTILS}/${arch}"
