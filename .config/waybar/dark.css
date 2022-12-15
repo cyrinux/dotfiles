@@ -60,6 +60,7 @@ window#waybar {
 #mode,
 #network,
 #custom-dnd,
+#temperature,
 #custom-power_profile,
 #idle_inhibitor,
 #custom-prod-status,
@@ -127,8 +128,7 @@ window#waybar {
 #custom-netatmo.high,
 #cpu.critical,
 #custom-fwupd,
-#temperature-pc.critical,
-#temperature-laptop.critical {
+#temperature.critical {
   border-top: 3px solid @background;
   border-bottom: 3px solid @red;
 }

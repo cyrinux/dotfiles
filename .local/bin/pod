@@ -14,4 +14,4 @@ CONTAINER=$1
 shift
 COMMAND=${*:-bash}
 
-podman run --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND
+sudo podman run --arch=amd64 --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND

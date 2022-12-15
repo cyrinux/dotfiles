@@ -6,7 +6,6 @@
   {
     "layer": "top",
     "output": "!eDP-1",
-    "height": "24",
     "modules-left": ["sway/workspaces"],
     "modules-center": [
       "custom/yubikey",
@@ -14,7 +13,6 @@
       "custom/recording",
       "custom/cast",
       "custom/usbguard",
-      "custom/eyes",
       "pulseaudio",
       "custom/netatmo",
     ],
@@ -66,12 +64,6 @@
       "interval": 5,
       "signal": 3,
       "on-click": "sway-cast toggle-stream",
-    },
-    "custom/eyes": {
-      "exec": "cat ~/.cache/waybar-eyes.json",
-      "interval": 5,
-      "return-type": "json",
-      "on-click": "pkill -f -SIGUSR1 waybar-eyes",
     },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -128,7 +120,6 @@
       "custom/fwupd",
       "custom/netatmo",
       "custom/usbguard",
-      "custom/eyes",
       "custom/decrypted",
       "custom/systemd",
       "custom/updates",
@@ -136,6 +127,7 @@
       "custom/mail",
       "network",
       "custom/vpn#work",
+      "temperature",
       "cpu",
       "memory",
       "custom/movie",
@@ -186,12 +178,6 @@
       "return-type": "json",
       "on-click": "waybar-usbguard allow",
       "on-click-right": "waybar-usbguard reject"
-    },
-    "custom/eyes": {
-      "exec": "cat ~/.cache/waybar-eyes.json",
-      "interval": 5,
-      "return-type": "json",
-      "on-click": "pkill -f -SIGUSR1 waybar-eyes",
     },
     "custom/yubikey": {
       "exec": "waybar-yubikey",
@@ -271,15 +257,9 @@
       "on-click": "exec gsimplecal",
       "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
-    "temperature#laptop": {
-      "hwmon-path": "/sys/class/hwmon/hwmon7/temp1_input",
-      "critical-threshold": 80,
-      "format-critical": " {temperatureC}°C",
-      "format": " {temperatureC}°C"
-    },
-    "temperature#pc": {
-      "thermal-zone": 2,
-      "critical-threshold": 80,
+    "temperature": {
+      "thermal-zone": 0,
+      "critical-threshold": 40,
       "format-critical": " {temperatureC}°C",
       "format": " {temperatureC}°C"
     },

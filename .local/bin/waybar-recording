@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+[ ! -x /usr/bin/obs-cli ] && exit 2
 
 trap 'pkill -P $$' EXIT
 
