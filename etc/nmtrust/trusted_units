@@ -1,10 +1,8 @@
-goimapnotify@personal.service,user:cyril
-goimapnotify@work.service,user:cyril
 restic-check.timer,user:cyril
 restic.timer,user:cyril
 tarsnap.timer,user:cyril
 autovdirsyncer.service,user:cyril
-reflector.timer
 sshd.service
-seaf-cli@cyril.service
+seaf-cli.service,user:cyril
 checkmail.timer,user:cyril
+goimapnotify@personal.service,user:cyril

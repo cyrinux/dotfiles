@@ -134,20 +134,11 @@ mode $mode_system {
 	}
 }
 
-# bindsym XF86PowerOff       exec sway-exit lock
-bindsym XF86Eject          exec sway-exit lock
-bindsym Pause              exec sway-exit lock
-
-set $mode_cpu "CPU: (c)ool, (n)ormal"
-mode $mode_cpu {
-	bindsym --to-code {
-     c exec sudo cpu cooling, mode "default"
-     n exec sudo cpu normal, mode "default"
-
-     Return mode "default"
-     Escape mode "default"
-	}
-}
+bindsym XF86PowerOff          exec sway-exit shutdown
+bindsym XF86Eject             exec sway-exit lock
+bindsym Pause                 exec sway-exit lock
+bindsym XF86Sleep             exec systemctl -i suspend
+bindsym XF86Search            exec firefox "https://google.com"
 
 set $mode_resize "Resize window"
 mode $mode_resize {
@@ -182,13 +173,13 @@ mode $mode_workspaces_monitors {
 
 bindsym --to-code --locked {
     XF86AudioMute                 exec sway-audio output-mute
-    XF86AudioRecord               exec sway-audio output-mute
     XF86AudioRaiseVolume          exec sway-audio output-volume-up
     XF86AudioLowerVolume          exec sway-audio output-volume-down
     $win+Up                       exec sway-audio output-mute
     $win+Down                     exec sway-audio output-mute
     $win+Right                    exec sway-audio output-volume-up
     $win+Left                     exec sway-audio output-volume-down
+    XF86AudioRecord               exec sway-audio input-mute
     $win+Shift+Up                 exec sway-audio input-mute
     $win+Shift+Down               exec sway-audio input-mute
     XF86AudioMicMute              exec sway-audio input-mute
@@ -215,22 +206,24 @@ bindsym --to-code {
     $win+XF86MonBrightnessUp   exec light -s sysfs/leds/kbd_backlight -A 5%
     $win+XF86MonBrightnessDown exec light -s sysfs/leds/kbd_backlight -U 5%
 
-
-
-	Print exec cglaunch sway-screenshot-area
+	Print       exec cglaunch sway-screenshot-area
+	XF86LaunchA exec cglaunch sway-screenshot-area
     # Print       exec cglaunch shotman region
     # $hyper+Print exec cglaunch shotman window
     # $win+Print   exec cglaunch shotman output
 
-    $hyper+Shift+Print exec cglaunch sway-gif-area
-    $win+Shift+Print   exec cglaunch sway-screenshare
-    $win+i             exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
+    $hyper+Shift+Print       exec cglaunch sway-gif-area
+    $hyper+Shift+XF86LaunchA exec cglaunch sway-gif-area
+    $win+Shift+Print         exec cglaunch sway-screenshare
+    $win+Shift+XF86LaunchA   exec cglaunch sway-screenshare
+    $win+i                   exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
 	# open terminal
-	$hyper+Return exec cglaunch --term
+	$hyper+Return exec cglaunch alacritty
+	# $hyper+Return exec cglaunch --term
 	$hyper+Shift+Return exec LIBGL_ALWAYS_SOFTWARE=1 kitty --config ~/.config/kitty/gruvbox-light.conf
 	#$win+Return exec kitty --config NONE /bin/bash
-	$win+Return exec terminator
+	$win+Return exec alacritty
 
 
 	# quit app
@@ -345,7 +338,6 @@ bindsym --to-code {
 	# mode
 	$win+a        mode $mode_audio
 	$win+Escape   mode $mode_system
-	$hyper+Escape mode $mode_cpu
 	$win+m        mode $mode_workspaces_monitors
 	$hyper+r      mode $mode_resize
 
@@ -356,7 +348,6 @@ bindsym --to-code {
 
 exec_always $kanshi
 exec_always import-gsettings
-
 
 
 # Color scheme (Gruvbox dark)

@@ -11,7 +11,7 @@ alias drmvd='docker volume rm $(docker volume ls -q -f dangling=true)'
 alias drmid='drmi $(docker images -q -f dangling=true)'
 alias dpurge="drmcd ; drmvd ; drmid ;docker network prune -f"
 
-# command -v podman-compose &> /dev/null && alias docker-compose='podman-compose'
+command -v sudo docker-compose &> /dev/null && alias docker-compose='sudo docker-compose'
 alias dc="docker-compose"
 alias dcd='dc down'
 alias dcl='dc logs -t -f --tail=1000'
@@ -41,21 +41,21 @@ alias java10-docker="pod --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="pod --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="pod --cpus 2 --entrypoint bash openjdk:8-jdk"
 alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
-alias android-build="docker run --rm -v \"$(pwd):/project\" -v \"/tmp/java:/root/.gradle\" -v \"/tmp/android:/root/.android\" mingc/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
-alias workspace='docker run --rm -it rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
+alias android-build="pod -v \"$(pwd):/project\" -v \"/tmp/java:/root/.gradle\" -v \"/tmp/android:/root/.android\" docker.io/library/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
+alias workspace='pod rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
 
 function dockershellhere() {
 	dirname=${PWD##*/}
-	podman run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
+	sudo docker run --rm -it --entrypoint=/bin/bash -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
 function dockershellshhere() {
 	dirname=${PWD##*/}
-	podman run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
+	sudo docker run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
 function vagrant() {
-	podman run -it --rm \
+	sudo docker run -it --rm \
 		-e LIBVIRT_DEFAULT_URI \
 		-v /var/run/libvirt/:/var/run/libvirt/ \
 		-v ~/.vagrant.d/boxes:/vagrant/boxes \

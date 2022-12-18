@@ -87,8 +87,6 @@ echo "============================"
 echo "Setting up /usr/local/bin..."
 echo "============================"
 
-copy "usr/local/bin/checkluksheader" 750
-
 in_ci && echo "!!! Running in CI !!!"
 
 echo ""
@@ -101,7 +99,6 @@ copy "etc/firewalld/firewalld.conf" 600
 copy "etc/apparmor.d/local"
 copy "etc/geoclue/geoclue.conf"
 copy "etc/audit/auditd.conf"
-copy "etc/conf.d/snapper"
 copy "etc/default/earlyoom"
 copy "etc/docker/daemon.json"
 copy "etc/gdm/custom.conf"
@@ -121,7 +118,6 @@ copy "etc/pacman.d/hooks"
 copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"
 copy "etc/snap-pac.conf"
-copy "etc/snapper/configs/root"
 copy "etc/modprobe.d/kvm.conf"
 copy "etc/modprobe.d/hid_apple.conf"
 copy "etc/ssh/ssh_config"
@@ -169,7 +165,6 @@ echo "================================="
 systemctl_enable_start "systemd-oomd.socket"
 systemctl_enable_start "power-profiles-daemon.service"
 systemctl_enable_start "firewalld.service"
-systemctl_enable_start "thermald.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "nfs-server.service"
@@ -186,12 +181,11 @@ systemctl_enable_start "NetworkManager.service"
 # systemctl_enable_start "nftables.service"
 systemctl_disable_stop "pcscd.service"
 systemctl_enable_start "privoxy.service"
-systemctl_enable_start "snapper-boot.timer"
-systemctl_enable_start "snapper-cleanup.timer"
 systemctl_enable_start "system-dotfiles-sync.timer"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
+systemctl_enable "docker.socket"
 systemctl_enable "pcscd.socket"
 systemctl_enable "apparmor.service"
 systemctl_enable "unbind-suspend-failing-device.service"
@@ -251,6 +245,8 @@ sudo systemctl enable --now apparmor.service || true
 # sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
 # sudo firecfg --add-users $user
 
-echo "Setup docker rootless"
-sudo touch /etc/{subgid,subuid}
-sudo usermod --add-subuids 31072-65536 --add-subgids 31072-65536 "$USER"
+# echo "Setup docker rootless"
+# sudo usermod --add-subuids 600000-665535 --add-subgids 600000-665535 "$USER"
+# copy "etc/subuid"
+# copy "etc/subgid"
+# sudo -U "$USER" podman system migrate

@@ -89,8 +89,6 @@ echo "======================================="
 echo "Setting up dotfiles for current user..."
 echo "======================================="
 
-copy ".config/display-switch-all"
-link ".config/display-switch-all/display-switch.ini.$(detectgpu)" ".config/display-switch/display-switch.ini"
 copy ".config/environment.d"
 link ".config/environment.d/60-wayland/60-wayland.conf.$(detectgpu)" ".config/environment.d/60-wayland.conf"
 link ".config/bat"
@@ -102,7 +100,6 @@ link ".config/firejail"
 link ".config/pipewire"
 link ".config/stylua"
 link ".config/swaync"
-# link ".config/easyeffects/output"
 link ".config/swayimg"
 link ".config/firewarden"
 link ".config/flashfocus"
@@ -152,11 +149,10 @@ link ".config/systemd/user/backup-packages.timer"
 link ".config/systemd/user/git-annex.service"
 link ".config/systemd/user/checkmail.service"
 link ".config/systemd/user/checkmail.timer"
-link ".config/systemd/user/display-switch.service"
-# link ".config/systemd/user/easyeffects.service"
 link ".config/systemd/user/gocryptfs-automount.service"
 link ".config/systemd/user/nm-applet.service"
 link ".config/systemd/user/battery-low-notify.service"
+link ".config/alacritty"
 link ".config/systemd/user/polkit-gnome.service"
 link ".config/systemd/user/qutebrowser-update-useragent.service"
 link ".config/systemd/user/qutebrowser-update-useragent.timer"
@@ -235,6 +231,7 @@ link ".config/systemd/user/darkman.service.d/want-geoclue-agent.conf"
 link ".zprofile"
 link ".config/systemd/user/backup-repo@pkgbuild"
 link ".config/systemd/user/backup-repo@.service"
+link ".config/systemd/user/seaf-cli.service"
 link ".config/systemd/user/backup-repo@.timer"
 
 echo ""
@@ -259,11 +256,8 @@ if is_chroot; then
 else
 	systemctl_enable_start "backup-repo@pkgbuild.timer"
 	systemctl_enable "swaylock.service"
-	systemctl_enable_start "podman.socket"
 	systemctl_enable_start "apparmor-notify.service"
 	systemctl_enable_start "backup-packages.timer"
-	systemctl_enable_start "display-switch.service"
-	systemctl_enable_start "waybar-eyes.service"
 	systemctl_enable_start "flashfocus.service"
 	systemctl_enable_start "gocryptfs-automount.service"
 	systemctl_enable_start "gotify-dunst.service"
@@ -377,7 +371,7 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop com.github.micahflee.torbrowser-launcher
+flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop
 
 # asdf
 for s in direnv kubectl kind terraform kustomize helmfile helm; do

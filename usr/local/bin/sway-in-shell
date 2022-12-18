@@ -1,24 +1,15 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 
-if [ "x$XDG_SESSION_TYPE" = "xwayland" ] &&
-   [ "x$XDG_SESSION_CLASS" != "xgreeter" ] &&
-   [  -n "$SHELL" ] &&
-   grep -q "$SHELL" /etc/shells &&
-   ! (echo "$SHELL" | grep -q "false") &&
-   ! (echo "$SHELL" | grep -q "nologin"); then
-  if [ "$1" != '-l' ]; then
-    exec bash -c "exec -l '$SHELL' -c '$0 -l $*'"
-  else
-    shift
-  fi
-fi
-
+# Import variables defined via environment.d.
+# This is temporary until varctl if finalised.
+# shellcheck disable=SC2046
 export $(systemctl --user show-environment)
 
 export GPG_TTY="$TTY"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 systemctl --user import-environment GPG_TTY SSH_AUTH_SOCK
 
-systemd-cat -t sway /usr/bin/sway "$@"
+systemd-cat --identifier sway /usr/bin/sway "$@"
+
 systemctl --user stop graphical-session.target
 systemctl --user unset-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK

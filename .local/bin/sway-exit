@@ -3,22 +3,34 @@
 set -u
 
 stop_vpn() {
-	nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down
+	nmcli con show --active | grep vpn | cut -d' ' -f1 | xargs -n1 nmcli con down 2> /dev/null
 }
 
 stop_wwan() {
-	nmcli con show --active | grep gsm | cut -d' ' -f1 | xargs -n1 nmcli con down
+	nmcli con show --active | grep gsm | cut -d' ' -f1 | xargs -n1 nmcli con down 2> /dev/null
 }
 
 stop_wlan() {
-	nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down
+	nmcli con show --active | grep wifi | cut -d' ' -f1 | xargs -n1 nmcli con down 2> /dev/null
 }
 
 before_lock() {
 	playerctl -a pause > /dev/null 2>&1
-	# sway-cast stop
+	sway-cast stop
+	stop_vpn
+	stop_wwan
 	fusermount -u ~/Vault > /dev/null 2>&1
-	# gpg-connect-agent --no-autostart reloadagent /bye > /dev/null 2>&1
+}
+
+after_lock() {
+	bluetoothctl power on > /dev/null 2>&1
+	kanshictl reload
+	systemctl --user restart wlsunset
+	gpgconf --kill scdaemon
+}
+
+lock() {
+	swaylock -f
 }
 
 case "$1" in
@@ -28,30 +40,22 @@ case "$1" in
 		;;
 	lock)
 		before_lock
-		swaylock -f
+		lock
 		;;
 	suspend)
+		bluetoothctl power off > /dev/null 2>&1
 		before_lock
-		stop_vpn
-		stop_wwan
-		sleep 2
-		# systemctl --user stop wluma
-		# systemctl --user stop waybar-eyes
-		systemctl suspend
-		kanshictl reload
-		systemctl --user restart wlsunset
-		# systemctl --user start wluma
-		# systemctl --user start waybar-eyes
-		gpgconf --kill scdaemon
+		sleep 0.5
+		systemctl -i suspend
+		bluetoothctl power on > /dev/null 2>&1
+		after_lock
 		;;
 	reboot)
-		stop_vpn
-		stop_wwan
+		before_lock
 		systemctl -i reboot
 		;;
 	shutdown)
-		stop_vpn
-		stop_wwan
+		before_lock
 		systemctl -i poweroff
 		;;
 	*)

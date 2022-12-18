@@ -7,7 +7,7 @@ usage() {
 }
 
 connect() {
-	bluetooth on
+	bluetoothctl power on
 	bluetoothctl connect $1
 }
 

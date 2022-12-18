@@ -23,7 +23,7 @@ if [ -s "${list}" ]; then
 	done < $list
 fi
 
-if [ -z $container ]; then
+if [ -z "$container" ]; then
 	container=$(echo -e "personal\nwork\nshopping\ndisposable\nchromium\nclipboard\nmpv" | dmenu -p "browser")
 fi
 
@@ -41,7 +41,7 @@ case $container in
 		echo "$url" | wl-copy &
 		;;
 	"chromium")
-		chromium-incognito "$url" &
+		cglaunch chromium-incognito "$url" &
 		;;
 	"mpv")
 		cglaunch mpv "$url" &

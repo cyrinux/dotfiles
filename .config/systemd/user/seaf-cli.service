@@ -1,0 +1,11 @@
+[Unit]
+Description=Seafile command line client
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/seaf-cli start
+ExecStop=/usr/bin/seaf-cli stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
