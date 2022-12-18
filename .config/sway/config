@@ -219,6 +219,9 @@ bindsym --to-code {
 
 	Print       exec cglaunch sway-screenshot-area
 	XF86LaunchA exec cglaunch sway-screenshot-area
+    # Print       exec cglaunch shotman region
+    # $hyper+Print exec cglaunch shotman window
+    # $win+Print   exec cglaunch shotman output
 
     $hyper+Shift+Print       exec cglaunch sway-gif-area
     $hyper+Shift+XF86LaunchA exec cglaunch sway-gif-area
@@ -229,7 +232,9 @@ bindsym --to-code {
 	# open terminal
 	$hyper+Return exec cglaunch alacritty
 	# $hyper+Return exec cglaunch --term
-	$win+Return exec cglaunch alacritty
+	$hyper+Shift+Return exec LIBGL_ALWAYS_SOFTWARE=1 kitty --config ~/.config/kitty/gruvbox-light.conf
+	#$win+Return exec kitty --config NONE /bin/bash
+	$win+Return exec alacritty
 
     # cut / copy / paste win alt leader
     $alt+x exec wtype -P XF86Cut
