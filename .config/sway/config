@@ -134,12 +134,6 @@ mode $mode_system {
 	}
 }
 
-bindsym XF86PowerOff          exec sway-exit shutdown
-bindsym XF86Eject             exec sway-exit lock
-bindsym Pause                 exec sway-exit lock
-bindsym XF86Sleep             exec systemctl -i suspend
-bindsym XF86Search            exec firefox "https://google.com"
-
 set $mode_resize "Resize window"
 mode $mode_resize {
     bindsym --to-code {
@@ -208,9 +202,6 @@ bindsym --to-code {
 
 	Print       exec cglaunch sway-screenshot-area
 	XF86LaunchA exec cglaunch sway-screenshot-area
-    # Print       exec cglaunch shotman region
-    # $hyper+Print exec cglaunch shotman window
-    # $win+Print   exec cglaunch shotman output
 
     $hyper+Shift+Print       exec cglaunch sway-gif-area
     $hyper+Shift+XF86LaunchA exec cglaunch sway-gif-area
@@ -221,10 +212,12 @@ bindsym --to-code {
 	# open terminal
 	$hyper+Return exec cglaunch alacritty
 	# $hyper+Return exec cglaunch --term
-	$hyper+Shift+Return exec LIBGL_ALWAYS_SOFTWARE=1 kitty --config ~/.config/kitty/gruvbox-light.conf
-	#$win+Return exec kitty --config NONE /bin/bash
-	$win+Return exec alacritty
+	$win+Return exec cglaunch alacritty
 
+    # cut / copy / paste win alt leader
+    $alt+x exec wtype -P XF86Cut
+    $alt+c exec wtype -P XF86Copy
+    $alt+v exec wtype -P XF86Paste
 
 	# quit app
 	$win+q kill
@@ -344,6 +337,13 @@ bindsym --to-code {
 	# Notification actions
     $hyper+q exec swaync-client --close-all
     Alt+space exec swaync-client --toggle-dnd
+
+
+    XF86PowerOff          exec sway-exit shutdown
+    XF86Eject             exec sway-exit lock
+    Pause                 exec sway-exit lock
+    XF86Sleep             exec systemctl -i suspend
+    XF86Search            exec firefox "https://google.com"
 }
 
 exec_always $kanshi

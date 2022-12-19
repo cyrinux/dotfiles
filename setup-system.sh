@@ -94,8 +94,8 @@ echo "=========================="
 echo "Setting up /etc configs..."
 echo "=========================="
 
-copy "etc/apparmor/parser.conf"
 copy "etc/firewalld/firewalld.conf" 600
+copy "etc/apparmor/parser.conf"
 copy "etc/apparmor.d/local"
 copy "etc/geoclue/geoclue.conf"
 copy "etc/audit/auditd.conf"
