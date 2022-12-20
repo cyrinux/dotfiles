@@ -702,5 +702,7 @@ package_cyrinux-aarch64() {
 
         # boot
         'grub'
+
+        'libinput-gestures'
     )
 }
