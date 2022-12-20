@@ -677,7 +677,6 @@ package_cyrinux-x86_64() {
         'streamlink-twitch-gui-bin'
 
         # misc
-        # HERE
         'vault-kv-search'
         'dsh'
         'obs-cli-bin'
