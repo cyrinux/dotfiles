@@ -440,7 +440,6 @@ package_cyrinux-base() {
         'solaar'
         'songrec'
         'sox'
-        'speedtest-cli'
         'spice-vdagent'
         'squashfs-tools'
         'sshfs'

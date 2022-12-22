@@ -3,4 +3,4 @@ Description=Sync system dotfiles
 
 [Service]
 Type=oneshot
-ExecStart=/home/cyril/.dotfiles/setup-system.sh -r
+ExecStart=sudo /home/cyril/.dotfiles/setup-system.sh -r

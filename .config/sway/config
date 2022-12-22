@@ -93,10 +93,27 @@ for_window    [app_id="dmenu.*"]                         floating enable, resize
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
 for_window    [app_id="dmenu-emoji"]                     resize set height 20ppt
 for_window    [app_id="iriunwebcam"]                     floating disable
-# for_window    [app_id="mpv"] floating enable, sticky enable
-# for_window    [app_id="mpv"] floating enable, resize set width 531 height 300, move position 1005 113
-# for_window    [app_id="mpv"] floating enable, sticky enable, floating_maximum_size 531px x 300px, resize set width 531px height 300px, move position 1352 113
-for_window    [app_id="mpv"] floating enable, sticky enable, resize set width 600px height 400px, move position 1052 100
+
+for_window [app_id="mpv"] {
+  floating enable
+  resize set height 280
+  resize set width  500
+  border none
+  sticky toggle
+  move position 2060 1320
+  opacity 0.7
+}
+
+for_window [title="Picture-in-Picture"] {
+  floating enable
+  resize set height 280
+  resize set width  500
+  border none
+  sticky toggle
+  move position 2060 1320
+  opacity 0.7
+}
+
 
 
 # Audio settings

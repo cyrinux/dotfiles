@@ -184,6 +184,8 @@ link ".config/systemd/user/waybar-updates.timer"
 link ".config/systemd/user/wlsunset.service"
 link ".config/systemd/user/work-unseal.service"
 link ".config/systemd/user/signal-desktop.service"
+link ".config/systemd/user/system-dotfiles-sync.service"
+link ".config/systemd/user/system-dotfiles-sync.timer"
 link ".config/tig"
 link ".config/tmux"
 link ".config/transmission/settings.json"
@@ -294,6 +296,7 @@ else
 	systemctl_enable_start "libinput-gestures.service"
 	systemctl_enable_start "signal-desktop.service"
 	systemctl_enable_start "battery-low-notify.service"
+	systemctl_enable_start "system-dotfiles-sync.timer"
 
 	if [ ! -d "$HOME/.mail" ]; then
 		mkdir -p "$HOME/.mail/"{personal,work}
