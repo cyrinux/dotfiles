@@ -178,3 +178,9 @@ alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
 alias meteo='curl -s wttr.in/paris'
 
 alias tf=terraform
+
+go-release() {
+    git tag "$(svu next)"
+    git push --tags
+    goreleaser --rm-dist
+}
