@@ -58,7 +58,6 @@ alias la='ls -la'
 alias logviewer="lnav -q"
 alias mkdir='mkdir -p'
 alias mtr-report='mtr --report --report-cycles 10'
-alias o='xdg-open'
 alias play_cercle="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCPKT_csvP72boVX0XrMtagQ/videos"
 alias play_techno="mpv --no-resume-playback --shuffle https://www.youtube.com/channel/UCmfF7JZv26UUKyRedViGIlw/videos"
 alias play_bloques="mpv --no-resume-playback --shuffle 'https://www.youtube.com/playlist?list=PL5e6ZkQmSoKeA-KmjgHVOTtYZFH7XIfeM'"
@@ -77,7 +76,7 @@ alias '?'='google'
 e64() { [[ $# == 1 ]] && base64 <<<"$1" || base64 }
 d64() { [[ $# == 1 ]] && base64 --decode <<<"$1" || base64 --decode }
 iowaiting() { watch -n 1 "(ps aux | awk '\$8 ~ /D/  { print \$0 }')" }
-
+alias o=xdg-open
 
 # Make directory and enter it
 function md() { [[ $# == 1 ]] && mkdir -p -- "$1" && cd -- "$1" }
@@ -178,6 +177,7 @@ alias unsafeshell='setarch "$(uname -m)" -R /bin/bash'
 alias meteo='curl -s wttr.in/paris'
 
 alias tf=terraform
+qr()  { [[ $# == 1 ]] && qrencode -t utf8 <<<"$1" || qrencode -t utf8 }
 
 go-release() {
     git tag "$(svu next)"

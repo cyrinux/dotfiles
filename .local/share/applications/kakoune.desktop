@@ -4,5 +4,4 @@ Name=kakoune
 Comment=Simple text editor
 Exec=kak
 Terminal=true
-MimeType=text/plain;
 Categories=Editor

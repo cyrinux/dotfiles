@@ -24,31 +24,18 @@ if [ ! -f "history.db" ]; then
     "
 fi
 
-#### History migration ###
-
-if [ -d "history" ]; then
-	echo >&2 "History migration started..."
-
-	for file in "history/"*; do
-		[[ $(find "$file" -type f -size 0) ]] && continue
-		[[ $(find "$file" -type f -size +10000000c) ]] && continue
-
-		mime="$(file --mime-type "$file" | awk '{ print $2 }')"
-		if [[ "$mime" == "application/json" || "$mime" == text/* ]]; then
-			sed -i -Ez 's/\s+$//' "$file"
-		fi
-
-		timestamp="${file%%.*}"
-		timestamp="datetime('${timestamp##*/}', 'unixepoch')"
-
-		query "INSERT OR REPLACE INTO entries (mime, timestamp, contents) VALUES ('$mime', $timestamp, readfile('$file'))"
-	done
-
-	echo >&2 "History migration completed!"
-	rm -rf history
-fi
-
-#########################
+list-entries() {
+	python -u << EOF
+import sqlite3
+for row in sqlite3.connect("history.db").cursor().execute("SELECT id, mime, contents FROM entries ORDER BY id DESC"):
+    print(row[0], '| ', end='')
+    if row[1] == "application/json" or row[1].startswith("text/"):
+        print(row[2].decode("utf-8", errors="ignore"), end='')
+    else:
+        print(row[1], end='')
+    print('\0', end='')
+EOF
+}
 
 case "${1:-dmenu}" in
 	daemon) wl-paste -w "$prog" on-copy ;;
@@ -75,17 +62,8 @@ case "${1:-dmenu}" in
 
 	dmenu)
 		{
-			python -u << EOF
-import sqlite3
-for row in sqlite3.connect("history.db").cursor().execute("SELECT id, mime, contents FROM entries ORDER BY id DESC"):
-    print(row[0], '| ', end='')
-    if row[1] == "application/json" or row[1].startswith("text/"):
-        print(row[2].decode("utf-8", errors="ignore"), end='')
-    else:
-        print(row[1], end='')
-    print('\0', end='')
-EOF
-		} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" | {
+			list-entries
+		} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" -f "--bind 'alt-bspace:execute-silent(wl-clipboard-manager delete "{}")+reload($prog list-entries)'" | {
 			read -r -d '' result
 			[ -z "$result" ] && exit 0
 
@@ -121,9 +99,16 @@ EOF
 		;;
 
 	delete)
-		query "DELETE FROM entries WHERE id='$2'" > /dev/null
-		echo "$prog entry with id: $2 delete"
+		[ -z "${2:-}" ] && echo >&2 "Enter an ID" && exit 1
+		id="${2%\|*}"
+		query "DELETE FROM entries WHERE id='$id'" > /dev/null
+		echo "$prog entry with id: $id delete"
 		;;
+
+	list-entries)
+		list-entries
+		;;
+
 	*)
 		echo >&2 "Usage: $prog <daemon|lock|unlock|on-copy|dmenu|preview|delete>"
 		exit 1

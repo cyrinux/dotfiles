@@ -13,7 +13,7 @@ input type:touchpad {
 	accel_profile adaptive
 	dwt enable
 	drag enable
-	tap enable
+	tap disable
 	natural_scroll enable
     pointer_accel 0.2
     click_method button_areas

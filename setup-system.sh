@@ -178,10 +178,8 @@ systemctl_enable_start "linux-modules-cleanup.service"
 systemctl_enable_start "ModemManager.service"
 systemctl_enable_start "NetworkManager-dispatcher.service"
 systemctl_enable_start "NetworkManager.service"
-# systemctl_enable_start "nftables.service"
 systemctl_disable_stop "pcscd.service"
 systemctl_enable_start "privoxy.service"
-# systemctl_enable_start "system-dotfiles-sync.timer"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
@@ -242,6 +240,9 @@ fi
 
 echo "Firejail some apps"
 sudo systemctl enable --now apparmor.service || true
+
+echo "Mask wpa_supplicant"
+sudo systemctl mask "wpa_supplicant*"
 # sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
 # sudo firecfg --add-users $user
 

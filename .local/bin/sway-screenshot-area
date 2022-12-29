@@ -3,7 +3,7 @@
 mkdir -p /tmp/screenshots
 cd /tmp/screenshots || exit 1
 
-# systemctl --user stop sway-inactive-window-transparency.service
+systemctl --user stop sway-inactive-window-transparency.service
 
 OUTPUT=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
 grim -o "$OUTPUT" -t png screen.png
@@ -18,15 +18,14 @@ fi
 
 kill $!
 
-# systemctl --user start sway-inactive-window-transparency.service
-
-[ -f area.png ] && swappy -f area.png
+[ -f area.png ] && swappy -f area.png -o draw.png
 WITDH=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .current_mode.width')
 if ((WITDH > 1920)); then
-	convert area.png -resize 50% reduced.png
+	convert draw.png -resize 50% reduced.png
 	wl-copy < reduced.png
-else
-	wl-copy < area.png
 fi
+wl-copy < draw.png
 
-rm -f screen.png area.png
+systemctl --user start sway-inactive-window-transparency.service
+
+rm -f screen.png area.png reduced.png draw.png

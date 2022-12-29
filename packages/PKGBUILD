@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.21
+pkgver=2.29.31
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -321,13 +321,9 @@ package_cyrinux-base() {
         'pkgconf'
         'pkgdiff'
         'playerctl'
-        'podman'
-        'podman-compose'
-        'podman-dnsname'
         'poetry'
         'polkit'
         'polkit-gnome'
-        'powershell-bin'
         'powertop'
         'prettier'
         'privoxy'
@@ -505,9 +501,7 @@ package_cyrinux-base() {
         'usbguard'
         'util-linux'
         'v4l2loopback-dkms'
-        'vault'
         'vdirsyncer'
-        'ventoy-bin'
         'vimiv-qt'
         'virt-viewer'
         'visidata'
