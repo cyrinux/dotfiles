@@ -1,8 +1,10 @@
 #!/bin/bash
+set -euo pipefail
 
+prog=$(basename "$0")
 workdir="${XDG_DATA_HOME:-$HOME/.local/share}/wl-clipboard-manager"
 mkdir -p "$workdir"
-cd "$workdir"
+cd "$workdir" || return
 
 query() {
 	echo "$@" | sqlite3 -line "history.db"
@@ -48,32 +50,32 @@ fi
 
 #########################
 
-case "$1" in
-daemon) wl-paste -w $0 on-copy ;;
-lock) touch .lock ;;
-unlock) rm -f .lock ;;
+case "${1:-dmenu}" in
+	daemon) wl-paste -w "$prog" on-copy ;;
+	lock) touch .lock ;;
+	unlock) rm -f .lock ;;
 
-on-copy)
-	[ -f .lock ] && exit 0
+	on-copy)
+		[ -f .lock ] && exit 0
 
-	file="$(mktemp)"
-	trap 'rm $file' EXIT
-	cat >"$file"
+		file="$(mktemp)"
+		trap 'rm $file' EXIT
+		cat > "$file"
 
-	[[ $(find "$file" -type f -size 0) ]] && exit 0
-	[[ $(find "$file" -type f -size +10000000c) ]] && exit 0
+		[[ $(find "$file" -type f -size 0) ]] && exit 0
+		[[ $(find "$file" -type f -size +10000000c) ]] && exit 0
 
-	mime="$(file --mime-type "$file" | awk '{ print $2 }')"
-	if [[ "$mime" == "application/json" || "$mime" == text/* ]]; then
-		sed -i -Ez 's/\s+$//' "$file"
-	fi
+		mime="$(file --mime-type "$file" | awk '{ print $2 }')"
+		if [[ "$mime" == "application/json" || "$mime" == text/* ]]; then
+			sed -i -Ez 's/\s+$//' "$file"
+		fi
 
-	query "INSERT OR REPLACE INTO entries (mime, contents) VALUES ('$mime', readfile('$file'))"
-	;;
+		query "INSERT OR REPLACE INTO entries (mime, contents) VALUES ('$mime', readfile('$file'))"
+		;;
 
-dmenu)
-	{
-		python -u <<EOF
+	dmenu)
+		{
+			python -u << EOF
 import sqlite3
 for row in sqlite3.connect("history.db").cursor().execute("SELECT id, mime, contents FROM entries ORDER BY id DESC"):
     print(row[0], '| ', end='')
@@ -83,42 +85,47 @@ for row in sqlite3.connect("history.db").cursor().execute("SELECT id, mime, cont
         print(row[1], end='')
     print('\0', end='')
 EOF
-	} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" | {
-		read -r -d '' result
-		[ -z "$result" ] && exit 0
+		} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" | {
+			read -r -d '' result
+			[ -z "$result" ] && exit 0
 
-		id="${result%%\|*}"
+			id="${result%%\|*}"
+			file="$(mktemp)"
+			trap 'rm $file' EXIT
+
+			query "SELECT writefile('$file', contents) FROM entries WHERE id='$id'" > /dev/null
+			wl-copy < "$file"
+		}
+		;;
+
+	preview)
+		id="${2%%\|*}"
 		file="$(mktemp)"
 		trap 'rm $file' EXIT
 
-		query "SELECT writefile('$file', contents) FROM entries WHERE id='$id'" >/dev/null
-		wl-copy <"$file"
-	}
-	;;
+		mime="$(query "SELECT mime, writefile('$file', contents) FROM entries WHERE id='$id'" | awk 'NR == 1 { print $3 }')"
 
-preview)
-	id="${2%%\|*}"
-	file="$(mktemp)"
-	trap 'rm $file' EXIT
+		if [[ "$mime" == image/* ]]; then
+			kitty +kitten icat --silent --stdin=no "$file"
+		else
+			language="bash"
+			[[ "$mime" == application/json ]] && language="json"
+			[[ "$mime" == text/x-c ]] && language="c"
+			[[ "$mime" == text/x-c++ ]] && language="c++"
+			[[ "$mime" == text/x-diff ]] && language="diff"
+			[[ "$mime" == text/x-makefile ]] && language="makefile"
+			[[ "$mime" == text/x-script.python ]] && language="python"
 
-	mime="$(query "SELECT mime, writefile('$file', contents) FROM entries WHERE id='$id'" | awk 'NR == 1 { print $3 }')"
+			bat -l "$language" --color always -pp < "$file"
+		fi
+		;;
 
-	if [[ "$mime" == image/* ]]; then
-		kitty +kitten icat --silent --stdin=no "$file"
-	else
-		language="bash"
-		[[ "$mime" == application/json ]] && language=json
-		[[ "$mime" == text/x-c ]] && language=c
-		[[ "$mime" == text/x-c++ ]] && language=c++
-		[[ "$mime" == text/x-diff ]] && language=diff
-		[[ "$mime" == text/x-makefile ]] && language=makefile
-		[[ "$mime" == text/x-script.python ]] && language=python
-
-		cat "$file" | bat -l "$language" --color always -pp
-	fi
-	;;
-*)
-	echo >&2 "Usage: $0 <daemon|lock|unlock|on-copy|dmenu|preview>"
-	exit 1
-	;;
+	delete)
+		query "DELETE FROM entries WHERE id='$2'" > /dev/null
+		echo "$prog entry with id: $2 delete"
+		;;
+	*)
+		echo >&2 "Usage: $prog <daemon|lock|unlock|on-copy|dmenu|preview|delete>"
+		exit 1
+		;;
 esac
