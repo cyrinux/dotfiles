@@ -230,11 +230,8 @@ bindsym --to-code {
     $win+i                   exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
 	# open terminal
-	$hyper+Return exec cglaunch alacritty
-	# $hyper+Return exec cglaunch --term
-	$hyper+Shift+Return exec LIBGL_ALWAYS_SOFTWARE=1 kitty --config ~/.config/kitty/gruvbox-light.conf
-	#$win+Return exec kitty --config NONE /bin/bash
-	$win+Return exec alacritty
+	$hyper+Return exec cglaunch --term
+	$win+Return exec cglaunch --term
 
     # cut / copy / paste win alt leader
     $alt+x exec wtype -P XF86Cut

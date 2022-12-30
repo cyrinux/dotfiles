@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-prog=$(basename "$0")
+app=$(basename "$0")
+
 workdir="${XDG_DATA_HOME:-$HOME/.local/share}/wl-clipboard-manager"
 mkdir -p "$workdir"
 cd "$workdir" || return
@@ -38,7 +39,7 @@ EOF
 }
 
 case "${1:-dmenu}" in
-	daemon) wl-paste -w "$prog" on-copy ;;
+	daemon) wl-paste -w "$app" on-copy ;;
 	lock) touch .lock ;;
 	unlock) rm -f .lock ;;
 
@@ -63,17 +64,19 @@ case "${1:-dmenu}" in
 	dmenu)
 		{
 			list-entries
-		} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" -f "--bind 'alt-bspace:execute-silent(wl-clipboard-manager delete "{}")+reload($prog list-entries)'" | {
-			read -r -d '' result
-			[ -z "$result" ] && exit 0
+		} | dmenu -0 -p clipboard -r "$(realpath "$0") preview" \
+			-f "--bind 'alt-bspace:execute-silent($app delete "{}")+reload(wl-clipboard-manager list-entries)'" |
+			{
+				read -r -d '' result
+				[ -z "$result" ] && exit 0
 
-			id="${result%%\|*}"
-			file="$(mktemp)"
-			trap 'rm $file' EXIT
+				id="${result%%\|*}"
+				file="$(mktemp)"
+				trap 'rm $file' EXIT
 
-			query "SELECT writefile('$file', contents) FROM entries WHERE id='$id'" > /dev/null
-			wl-copy < "$file"
-		}
+				query "SELECT writefile('$file', contents) FROM entries WHERE id='$id'" > /dev/null
+				wl-copy < "$file"
+			}
 		;;
 
 	preview)
@@ -99,10 +102,11 @@ case "${1:-dmenu}" in
 		;;
 
 	delete)
-		[ -z "${2:-}" ] && echo >&2 "Enter an ID" && exit 1
+		set -x
+		[ -z "${2:-''}" ] && echo >&2 "Usage: $app delete <id>" && exit 1
 		id="${2%\|*}"
 		query "DELETE FROM entries WHERE id='$id'" > /dev/null
-		echo "$prog entry with id: $id delete"
+		echo "$app entry with id: $id delete"
 		;;
 
 	list-entries)
@@ -110,7 +114,7 @@ case "${1:-dmenu}" in
 		;;
 
 	*)
-		echo >&2 "Usage: $prog <daemon|lock|unlock|on-copy|dmenu|preview|delete>"
+		echo >&2 "Usage: $app <daemon|lock|unlock|on-copy|dmenu|preview|delete>"
 		exit 1
 		;;
 esac

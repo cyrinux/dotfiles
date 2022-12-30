@@ -1,0 +1,22 @@
+[
+  {
+    "layer": "top",
+    "position": "top",
+    "output": "eDP-1",
+    "height": "17px",
+    "modules-left": ["sway/mode", "custom/updates"],
+    "custom/updates": {
+      "exec": "waybar-updates show",
+      "return-type": "json",
+      "signal": 1,
+      "format-icons": {
+          "icon": "<span foreground='#928374'> </span>"
+      },
+      "format": "{icon}{}",
+      "on-click-right": "waybar-updates refresh",
+      "interval": "once"
+    },
+  },
+]
+
+// vi: ft=json

@@ -10,6 +10,9 @@
 [includeIf "gitdir:~/library/src/personal/"]
     path = ~/.config/git/home
 
+[includeIf "gitdir:~/.cache/aurutils/sync/"]
+    path = ~/.config/git/home
+
 [includeIf "gitdir:~/.dotfiles/"]
     path = ~/.config/git/home
 

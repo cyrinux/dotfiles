@@ -2,17 +2,34 @@
 
 data="${XDG_CACHE_HOME:-$HOME/.cache}/emoji.data"
 [ -f "$data" ] || {
-	notify-send "Emoji launcher" "Bootstrapping, please wait ..."
-	import-joypixels.sh
+    notify-send "emoji-dmenu" "Bootstrapping emojis, please wait..."
+    emoji-bootstrap
 }
 
-line="$(cat "$data" | dmenu -p emoji)"
+[ "$1" = "kitty" ] && kitty=1 || kitty=0
 
+find() {
+    if [ "$kitty" = "1" ]; then
+        fzf --reverse --prompt='emoji> '
+    else
+        dmenu -p emoji
+    fi
+}
+
+output() {
+    if [ "$kitty" = "1" ]; then
+        cat
+    else
+        wl-clipboard-manager lock
+        wl-copy
+        wl-clipboard-manager unlock
+    fi
+}
+
+line="$(cat "$data" | find)"
 if [ -n "$line" ]; then
-	sed -i "/$line/d" "$data"
-	sed -i "1s;^;$line\n;;" "$data"
+    sed -i "/$line/d" "$data"
+    sed -i "1s;^;$line\n;;" "$data"
 
-	wl-clipboard-manager lock
-	printf '%s' "$line" | cut -d' ' -f1 | tr -d '\n' | wl-copy
-	wl-clipboard-manager unlock
+    printf '%s' "$line" | cut -d' ' -f1 | tr -d '\n' | output
 fi
