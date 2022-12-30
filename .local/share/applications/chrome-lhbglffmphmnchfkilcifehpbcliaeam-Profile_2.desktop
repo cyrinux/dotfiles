@@ -1,9 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Version=1.0
-Terminal=false
-Type=Application
-Name=The Lounge
-Exec=/usr/bin/chromium "--profile-directory=Profile 2" --app-id=lhbglffmphmnchfkilcifehpbcliaeam
-Icon=chrome-lhbglffmphmnchfkilcifehpbcliaeam-Profile_2
-StartupWMClass=crx_lhbglffmphmnchfkilcifehpbcliaeam

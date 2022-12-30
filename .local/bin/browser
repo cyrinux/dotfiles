@@ -6,7 +6,9 @@
 # *.work.org/.*@work
 #
 # first match win
-url="$1"
+set -euo pipefail -x
+
+url="${1:-google.com}"
 
 list="$XDG_CACHE_HOME/works-url-patterns"
 [ -s "$list" ] || pass work/works-url-patterns > $list
@@ -14,17 +16,16 @@ list="$XDG_CACHE_HOME/works-url-patterns"
 # echo $url
 if [ -s "${list}" ]; then
 	while read line; do
-		rule=$(echo ${line} | cut -d'@' -f1)
-		echo ${url} | grep -q -E "^${rule}"
-		if [ $? -eq 0 ]; then
-			container=$(echo ${line} | cut -d'@' -f2)
+		rule=${line%%@*}
+		if [[ ${url} =~ ${rule} ]]; then
+			container=${line##*@}
 			break
 		fi
 	done < $list
 fi
 
-if [ -z "$container" ]; then
-	container=$(echo -e "personal\nwork\nshopping\ndisposable\nchromium\nclipboard\nmpv" | dmenu -p "browser")
+if [ -z "${container:-}" ]; then
+	container=$(printf "personal\nwork\nshopping\nprivate\nclipboard\nmpv" | dmenu -p "browser")
 fi
 
 case $container in
@@ -37,11 +38,11 @@ case $container in
 	"shopping")
 		cglaunch firefox "ext+container:name=Shopping&url=$url" &
 		;;
+	"private")
+		cglaunch firefox --private-window "$url" &
+		;;
 	"clipboard")
 		echo "$url" | wl-copy &
-		;;
-	"chromium")
-		cglaunch chromium-incognito "$url" &
 		;;
 	"mpv")
 		cglaunch mpv "$url" &

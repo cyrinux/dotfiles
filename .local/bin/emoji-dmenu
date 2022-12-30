@@ -6,27 +6,21 @@ data="${XDG_CACHE_HOME:-$HOME/.cache}/emoji.data"
     emoji-bootstrap
 }
 
-[ "$1" = "kitty" ] && kitty=1 || kitty=0
+case "$*" in
+    *overlay*)
+        output() { cat; }
+        ;;
 
-find() {
-    if [ "$kitty" = "1" ]; then
-        fzf --reverse --prompt='emoji> '
-    else
-        dmenu -p emoji
-    fi
-}
+    *)
+        output() {
+            wl-clipboard-manager lock
+            wl-copy
+            wl-clipboard-manager unlock
+        }
+        ;;
+esac
 
-output() {
-    if [ "$kitty" = "1" ]; then
-        cat
-    else
-        wl-clipboard-manager lock
-        wl-copy
-        wl-clipboard-manager unlock
-    fi
-}
-
-line="$(cat "$data" | find)"
+line="$(dmenu -p emoji "$@" < "$data")"
 if [ -n "$line" ]; then
     sed -i "/$line/d" "$data"
     sed -i "1s;^;$line\n;;" "$data"

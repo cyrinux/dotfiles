@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
 # Import variables defined via environment.d.
 # This is temporary until varctl if finalised.
