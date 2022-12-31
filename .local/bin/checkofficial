@@ -1,2 +1,2 @@
 #!/bin/bash
-comm -12 <(pacman -Sl | egrep -v '(maximbaz|cyrinux)' | cut -d' ' -f2 | sort) <(aur repo --list 2>/dev/null | cut -f1 | sort)
+comm -12 <(pacman -Sl | grep -Ev '(maximbaz|cyrinux)' | cut -d' ' -f2 | sort) <(aur repo --list 2> /dev/null | cut -f1 | sort)

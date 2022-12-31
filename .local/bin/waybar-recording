@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 [ ! -x /usr/bin/obs-cli ] && exit 2
 

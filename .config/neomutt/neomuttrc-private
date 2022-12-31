@@ -11,7 +11,6 @@ tag-transforms "newsletter" " " \
                "frnog" " " \
                "frsag" " " \
                "gmail" " " \
-               "work" "" \
                "archlinux" ""
 
 virtual-mailboxes "GMAIL" "notmuch://?query=tag:gmail"
@@ -20,9 +19,9 @@ virtual-mailboxes "Mailing" "notmuch://?query=tag:github-issues"
 virtual-mailboxes "Family" "notmuch://?query=tag:family"
 virtual-mailboxes "Friends" "notmuch://?query=tag:friends or tag:friend"
 virtual-mailboxes "Newsletters" "notmuch://?query=tag:newsletter"
-virtual-mailboxes "Shinken" "notmuch://?query=tag:monitoring"
 
 macro index,pager gn "<change-vfolder>Newsletters<enter>" "Go to newsletter"
 macro index,pager gf "<change-vfolder>Family<enter>" "Go to family"
 macro index,pager gF "<change-vfolder>Friends<enter>" "Go to friends"
 macro index,pager gm "<change-vfolder>GMAIL<enter>" "Go to gmail"
+macro index,pager gM "<change-vfolder>Mailing<enter>" "Go to mailing"

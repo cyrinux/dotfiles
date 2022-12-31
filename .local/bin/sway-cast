@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 [ ! -x /usr/bin/obs-cli ] && exit 2
 
@@ -6,7 +8,7 @@ trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 
 { sleep 5 && pkill -RTMIN+3 -x waybar; } &
 
-case $1 in
+case ${1:-} in
 	toggle-stream)
 		pgrep -x obs || cglaunch obs &
 		sleep 1

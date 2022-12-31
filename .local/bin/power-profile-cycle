@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+set -eu
 #
 # Script to cycle through power-profiles-daemon profiles. Handy for integration
 # with waybar, i3blocks and others. When run it will cycle to next profile and
@@ -26,7 +27,7 @@ while getopts "mh" opt; do
       esac
       ;;
     h)
-      echo -e "Run script without arguments to cycle power profiles and print icon. \n-m Monitor. Get power profile and print icon. \n-h Help. Show this help text"
+      printf "Run script without arguments to cycle power profiles and print icon. \n-m Monitor. Get power profile and print icon. \n-h Help. Show this help text"
       exit 0
       ;;
     *)

@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/bin/sh
 
 # Import variables defined via environment.d.
 # This is temporary until varctl if finalised.
@@ -9,7 +9,7 @@ export GPG_TTY="$TTY"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"
 systemctl --user import-environment GPG_TTY SSH_AUTH_SOCK
 
-systemd-cat --identifier sway /usr/bin/sway "$@"
+systemd-cat --identifier sway /usr/bin/sway
 
 systemctl --user stop graphical-session.target
 systemctl --user unset-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK

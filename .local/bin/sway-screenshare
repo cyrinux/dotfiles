@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if ! pkill -x wf-recorder; then
 	trap 'sleep 1; notify-send "Screen sharing" "Exiting..."; pkill -P $$; pkill -RTMIN+3 -x waybar' EXIT

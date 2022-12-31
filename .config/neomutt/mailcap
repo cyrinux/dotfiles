@@ -8,7 +8,7 @@ application/pgp-encrypted; gpg -d '%s'; copiousoutput;
 application/pgp-keys; pgp -f < %s ; copiousoutput;
 text/plain; kak %s ; needsterminal;
 text/calendar; mutt-ics; copiousoutput; print=khal import --batch -a personal %s;
-text/html; LS_COLORS= exec qutebrowser --desktop-file-name qutepreview --temp-basedir -C ~/.config/qutebrowser/qutepreview.py %s; needsterminal; nametemplate=%s.html;
+text/html; firefox %s && sleep 5; test=test -n "$DISPLAY";;
 text/html; html2text --reference-links %s %{charset}}; copiousoutput
 message/rfc822; formail -b < %s > %s.mbox && mutt -f '%s.mbox'; needsterminal;
 video/*; setsid mpv --quiet %s &; copiousoutput;

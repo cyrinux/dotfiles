@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -ueo pipefail
 
 mkdir -p /tmp/screenshots
 cd /tmp/screenshots || exit 1
@@ -18,14 +19,9 @@ fi
 
 kill $!
 
-[ -f area.png ] && swappy -f area.png -o draw.png
-WITDH=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .current_mode.width')
-if ((WITDH > 1920)); then
-	convert draw.png -resize 50% reduced.png
-	wl-copy < reduced.png
-fi
-wl-copy < draw.png
+[ -f area.png ] && swappy -f area.png
+wl-copy < area.png
 
 systemctl --user start sway-inactive-window-transparency.service
 
-rm -f screen.png area.png reduced.png draw.png
+rm -f screen.png area.png

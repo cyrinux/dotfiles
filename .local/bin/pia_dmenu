@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 # dont forgot to first `piactl login /tmp/login`
-set -e
+set -eu
 # force background mode
 piactl background enable
 
@@ -10,7 +10,7 @@ piactl set protocol wireguard
 state="$(piactl get connectionstate)"
 current_region="$(piactl get region)"
 
-if [[ "$state" == "Connected" || "$state" == "Connecting" ]]; then
+if [ "$state" = "Connected" ] || [ "$state" = "Connecting" ]; then
 	state="disconnect from $current_region"
 else
 	state="connect to $current_region"
@@ -25,17 +25,17 @@ selection=$( (
 
 # switcher
 case "$selection" in
-disconnect*)
-	piactl disconnect
-	;;
-connect*)
-	piactl connect
-	;;
----)
-	exit 0
-	;;
-*)
-	[ -n "$selection" ] && piactl set region "$selection" &&
+	disconnect*)
+		piactl disconnect
+		;;
+	connect*)
 		piactl connect
-	;;
+		;;
+	---)
+		exit 0
+		;;
+	*)
+		[ -n "$selection" ] && piactl set region "$selection" &&
+			piactl connect
+		;;
 esac

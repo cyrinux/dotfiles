@@ -290,8 +290,8 @@
       "states": {
         "full": 86,
         "good": 80,
-        "warning": 30,
-        "critical": 15
+        "warning": 15,
+        "critical": 10
       },
       "format": "<span foreground='#928374'>{icon}</span> {capacity}%",
       "format-charging": "<span foreground='#928374'></span>{capacity}%",

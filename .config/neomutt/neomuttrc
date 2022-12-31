@@ -19,8 +19,8 @@ set pgp_default_key = 0x6DB88737C11F5A48
 
 set crypt_use_gpgme = yes
 set crypt_use_pka = yes
-
 set pgp_auto_decode = yes
+
 set sleep_time = 0
 set date_format="%d/%m/%y %I:%M"
 set markers = no
@@ -107,7 +107,6 @@ set trash = "+local/Trash"
 
 macro index,pager gi "<change-vfolder>INBOX<enter>" "Go to INBOX"
 macro index,pager gp "<change-vfolder>Personal<enter>" "Go to personal"
-macro index,pager gw "<change-vfolder>Work<enter>" "Go to work"
 macro index,pager gs "<change-vfolder>Sent<enter>" "Go to sent"
 macro index,pager gd "<change-vfolder>Drafts<enter>" "Go to drafts"
 macro index,pager gt "<change-vfolder>Trash<enter>" "Go to trash"
@@ -121,7 +120,6 @@ subscribe arch-announce@archlinux.org arch-dev-public@archlinux.org arch-events@
 unvirtual-mailboxes *
 virtual-mailboxes "INBOX" "notmuch://?query=folder:/INBOX/"
 virtual-mailboxes "Personal" "notmuch://?query=folder:/INBOX/ and tag:personal"
-virtual-mailboxes "Work" "notmuch://?query=folder:/INBOX/ and tag:work"
 virtual-mailboxes "Trash" "notmuch://?query=folder:/Trash/"
 virtual-mailboxes "Drafts" "notmuch://?query=folder:/Drafts/"
 virtual-mailboxes "Junk" "notmuch://?query=folder:/Junk/"
@@ -160,9 +158,6 @@ macro index,pager <tab> "\
 <vfolder-from-query>tag:personal AND tag:archive<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -archive<enter><save-message>=personal/Archive<enter><enter><end-cond>\
 <vfolder-from-query>tag:personal AND tag:spam<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -spam   <enter><save-message>=personal/Junk<enter><enter><end-cond>\
 <vfolder-from-query>tag:personal AND tag:ham<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>+inbox -unread -ham    <enter><save-message>=personal/INBOX<enter><enter><end-cond>\
-<vfolder-from-query>tag:work AND tag:archive<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -archive<enter><save-message>=work/Archive<enter><enter><end-cond>\
-<vfolder-from-query>tag:work AND tag:spam<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>-inbox -unread -spam<enter><save-message>=work/Junk<enter><enter><end-cond>\
-<vfolder-from-query>tag:work AND tag:ham<enter><tag-pattern>.<enter><tag-prefix-cond><modify-tags>+inbox -unread -ham<enter><save-message>=work/INBOX<enter><enter><end-cond>\
 <change-vfolder>INBOX<enter>\
 <sync-mailbox>y2<enter><enter><check-stats>"
 

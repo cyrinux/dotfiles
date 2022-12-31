@@ -1,9 +1,9 @@
 columnate = true
 color = "auto"
 quiet = false
-default_profile = "default"
+default_profile = "nobackup"
 
-[profiles.default]
+[profiles.backup]
   repo = "/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar"
   add_params = ["-s"]
   rm_params = ["-s"]

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 [ $# -ne 1 ] && {
 	echo >&2 "usage: $0 <tmp_view>"
@@ -8,9 +8,9 @@
 tmp_view="$1"
 seen_dir="${XDG_DATA_HOME:-$HOME/.local/share}/aurutils/view"
 
-cd "$tmp_view"
+cd "$tmp_view" || return
 for f in *; do
-	[[ -f "$f" || -s "$seen_dir/$f" ]] || mv "$f" "_$f"
+	[ -f "$f" ] || [ -s "$seen_dir/$f" ] || mv "$f" "_$f"
 done
 
 xplr

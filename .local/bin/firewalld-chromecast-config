@@ -1,0 +1,21 @@
+#!/bin/sh
+sudo firewall-cmd --permanent --new-service=chromecast
+sudo firewall-cmd --permanent --service=chromecast --set-description=Chromecast
+sudo firewall-cmd --permanent --service=chromecast --set-short=chromecast
+sudo firewall-cmd --permanent --service=chromecast --add-port=32768-61000/udp
+sudo firewall-cmd --permanent --service=chromecast --add-port=8008-8009/tcp
+sudo firewall-cmd --permanent --service=chromecast --add-source-port=32768-61000/udp
+
+sudo firewall-cmd --permanent --new-service=chromecast-ssdp
+sudo firewall-cmd --permanent --service=chromecast-ssdp --set-description=Chromecast SSDP
+sudo firewall-cmd --permanent --service=chromecast-ssdp --set-short=chromecast-ssdp
+sudo firewall-cmd --permanent --service=chromecast-ssdp --add-port=1900/udp
+sudo firewall-cmd --permanent --service=chromecast-ssdp --set-destination=ipv4:239.255.255.250/32
+
+sudo firewall-cmd --zone=home --add-service=chromecast-ssdp --permanent
+sudo firewall-cmd --zone=home --add-service=chromecast-ssdp
+
+sudo firewall-cmd --zone=home --add-service=chromecast --permanent
+sudo firewall-cmd --zone=home --add-service=chromecast
+
+sudo firewall-cmd --reload
