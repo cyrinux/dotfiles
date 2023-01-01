@@ -108,7 +108,10 @@
   {
     "layer": "top",
     "output": "eDP-1",
-    "modules-left": ["sway/workspaces"],
+    "modules-left": [
+      "sway/workspaces",
+      "custom/pomo",
+    ],
     "modules-right": [
       "custom/eyes",
       "custom/recording",
@@ -343,6 +346,12 @@
         "on-click": "swaync-client --toggle-dnd --skip-wait",
         "escape": true
     },
+    "custom/pomo": {
+        "interval": 1,
+        "exec": "pomo",
+        "on-click": "pomo start",
+        "on-click-right": "pomo stop"
+    }
   }
 ]
 

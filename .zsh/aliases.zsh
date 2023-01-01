@@ -187,3 +187,5 @@ go-release() {
     git push --tags
     goreleaser --rm-dist
 }
+
+complete -C pomo pomo

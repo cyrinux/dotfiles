@@ -1,122 +1,70 @@
-# gruvbox dark (contrast dark):
+# vim: filetype=neomuttrc
 
-# bg0    = 234
-# bg1    = 237
-# bg2    = 239
-# bg3    = 241
-# bg4    = 243
-#
-# gray   = 245
-#
-# fg0    = 229
-# fg1    = 223
-# fg2    = 250
-# fg3    = 248
-# fg4    = 246
-#
-# red    = 167
-# green  = 142
-# yellow = 214
-# blue   = 109
-# purple = 175
-# aqua   = 108
-# orange = 208
+# Default index colors:
+color index yellow default '.*'
+color index_author red default '.*'
+color index_number blue default
+color index_subject cyan default '.*'
 
+# For new mail:
+color index brightyellow black "~N"
+color index_author brightred black "~N"
+color index_subject brightcyan black "~N"
 
-# See http://www.mutt.org/doc/manual/#color
+# Header colors:
+color header blue default ".*"
+color header brightmagenta default "^(From)"
+color header brightcyan default "^(Subject)"
+color header brightwhite default "^(CC|BCC)"
 
-color attachment  color109 color234
-color bold        color229 color234
-color error       color167 color234
-color hdrdefault  color246 color234
-color indicator   color223 color237
-color markers     color243 color234
-color normal      color223 color234
-color quoted      color250 color234
-color quoted1     color108 color234
-color quoted2     color250 color234
-color quoted3     color108 color234
-color quoted4     color250 color234
-color quoted5     color108 color234
-color search      color234 color208
-color signature   color108 color234
-color status      color234 color250
-color tilde       color243 color234
-color tree        color142 color234
-color underline   color223 color239
+mono bold bold
+mono underline underline
+mono indicator reverse
+mono error bold
+color normal default default
+color indicator brightblack white
+color sidebar_highlight red default
+color sidebar_divider brightblack black
+color sidebar_flagged red black
+color sidebar_new green black
+color normal brightyellow default
+color error red default
+color tilde black default
+color message cyan default
+color markers red white
+color attachment white default
+color search brightmagenta default
+color status brightyellow black
+color hdrdefault brightgreen default
+color quoted green default
+color quoted1 blue default
+color quoted2 cyan default
+color quoted3 yellow default
+color quoted4 red default
+color quoted5 brightred default
+color signature brightgreen default
+color bold black default
+color underline black default
+color normal default default
 
-color sidebar_divider    color250 color234
-color sidebar_new        color142 color234
+color body brightred default "[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+" # Email addresses
+color body brightblue default "(https?|ftp)://[\-\.,/%~_:?&=\#a-zA-Z0-9]+" # URL
+color body green default "\`[^\`]*\`" # Green text between ` and `
+color body brightblue default "^# \.*" # Headings as bold blue
+color body brightcyan default "^## \.*" # Subheadings as bold cyan
+color body brightgreen default "^### \.*" # Subsubheadings as bold green
+color body yellow default "^(\t| )*(-|\\*) \.*" # List items as yellow
+color body brightcyan default "[;:][-o][)/(|]" # emoticons
+color body brightcyan default "[;:][)(|]" # emoticons
+color body brightcyan default "[ ][*][^*]*[*][ ]?" # more emoticon?
+color body brightcyan default "[ ]?[*][^*]*[*][ ]" # more emoticon?
+color body red default "(BAD signature)"
+color body cyan default "(Good signature)"
+color body brightyellow default "^[a-zA-Z]+ signature"
+color body brightgreen default "^Good signature"
+color body brightyellow red "^\\*BAD\\* signature"
+color body red default "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
 
-color index color142 color234 ~N
-color index color108 color234 ~O
-color index color109 color234 ~P
-color index color214 color234 ~F
-color index color175 color234 ~Q
-color index color167 color234 ~=
-color index color234 color223 ~T
-color index color234 color167 ~D
-
-color header color214 color234 "^(To:|From:)"
-color header color142 color234 "^Subject:"
-color header color108 color234 "^X-Spam-Status:"
-color header color108 color234 "^Received:"
-
-# Regex magic for URLs and hostnames
-#
-# Attention: BSD's regex has RE_DUP_MAX set to 255.
-#
-# Examples:
-#   http://some-service.example.com
-#   example.com
-#   a.example.com
-#   some-service.example.com
-#   example.com/
-#   example.com/datenschutz
-#   file:///tmp/foo
-#
-# Non-examples:
-#   1.1.1900
-#   14.02.2022/24:00
-#   23.59
-#   w.l.o.g
-#   team.its
-color body color142 color234 "[a-z]{3,255}://[[:graph:]]*"
-color body color142 color234 "([-[:alnum:]]+\\.)+([0-9]{1,3}|[-[:alpha:]]+)/[[:graph:]]*"
-color body color142 color234 "([-[:alnum:]]+\\.){2,255}[-[:alpha:]]{2,10}"
-
-# IPv4 and IPv6 stolen from https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
-color body color142 color234 "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
-color body color142 color234 "(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))"
-
-# Mail addresses and mailto URLs
-color body color208 color234 "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
-color body color208 color234 "mailto:[-a-z_0-9.]+@[-a-z_0-9.]+"
-
-# some simleys and stuff
-color body color234 color214 "[;:]-*[)>(<lt;|]"
-color body color229 color234 "\\*[- A-Za-z]+\\*"
-
-color body color214 color234 "^-.*PGP.*-*"
-color body color142 color234 "^gpg: Good signature from"
-color body color167 color234 "^gpg: Can't.*$"
-color body color214 color234 "^gpg: WARNING:.*$"
-color body color167 color234 "^gpg: BAD signature from"
-color body color167 color234 "^gpg: Note: This key has expired!"
-color body color214 color234 "^gpg: There is no indication that the signature belongs to the owner."
-color body color214 color234 "^gpg: can't handle these multiple signatures"
-color body color214 color234 "^gpg: signature verification suppressed"
-color body color214 color234 "^gpg: invalid node with packet of type"
-
-color body color142 color234 "^Good signature from:"
-color body color167 color234 "^.?BAD.? signature from:"
-color body color142 color234 "^Verification successful"
-color body color167 color234 "^Verification [^s][^[:space:]]*$"
-
-color compose header            color223 color234
-color compose security_encrypt  color175 color234
-color compose security_sign     color109 color234
-color compose security_both     color142 color234
-color compose security_none     color208 color234
-
-color sidebar_unread     color108 color234
+# Git patches
+color body brightred   default '^-[^-].*'
+color body brightgreen default '^\+[^\+].*'

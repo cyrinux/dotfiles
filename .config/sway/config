@@ -110,7 +110,7 @@ for_window [title="Picture-in-Picture"] {
   resize set width  500
   border none
   sticky toggle
-  move position 2060 1320
+  # move position 2060 1320
   opacity 0.7
 }
 

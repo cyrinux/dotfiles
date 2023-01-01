@@ -63,6 +63,7 @@ package_cyrinux-base() {
         'cni-plugins'
         'aurpublish'
         'aurutils'
+        'helvum'
         'autoconf'
         'automake'
         'autovdirsyncer'

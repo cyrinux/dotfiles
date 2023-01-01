@@ -1,1 +1,1 @@
-../uosc/scripts/uosc.lua
+../uosc/uosc.lua

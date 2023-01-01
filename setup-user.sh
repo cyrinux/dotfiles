@@ -383,3 +383,6 @@ for s in direnv kubectl kind terraform kustomize helmfile helm; do
 	asdf plugin-add $s
 	asdf install $s latest
 done
+
+# pomo
+go install github.com/rwxrob/pomo/cmd/pomo@latest
