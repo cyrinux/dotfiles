@@ -392,6 +392,7 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 # Load systemd integration
 include /etc/sway/config.d/*
 
+exec_always "darkman set dark"
 exec_always "systemctl --user start sway-session.target"
 
 # vi:ft=i3
