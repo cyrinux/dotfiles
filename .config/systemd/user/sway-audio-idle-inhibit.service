@@ -1,7 +1,7 @@
 [Unit]
 Description=Sway audio idle inhibiter
-PartOf=graphical-session.target
-After=graphical-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 ExecStart=/usr/bin/sway-audio-idle-inhibit
@@ -9,4 +9,4 @@ Restart=on-failure
 RestartSec=10s
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target

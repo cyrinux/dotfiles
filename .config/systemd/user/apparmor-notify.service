@@ -1,7 +1,7 @@
 [Unit]
 Description=Apparmor notification
-PartOf=graphical-session.target
-After=graphical-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 Type=forking
@@ -9,4 +9,4 @@ ExecStart=/usr/bin/aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
 
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target

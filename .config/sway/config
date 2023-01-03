@@ -5,17 +5,15 @@ input type:keyboard {
     xkb_numlock enable
 }
 
-input type:mouse {
-    pointer_accel 0.2
-}
+# input type:mouse {
+#     pointer_accel 0.2
+# }
 
 input type:touchpad {
-	accel_profile adaptive
-	dwt enable
-	drag enable
-	tap disable
-	natural_scroll enable
+    natural_scroll enabled
     pointer_accel 0.2
+    tap enabled
+    dwt enabled
     click_method button_areas
 }
 
@@ -391,8 +389,10 @@ include "~/.config/sway/default.conf"
 # Load host-specific configs
 include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 
+
 # Load systemd integration
 include /etc/sway/config.d/*
-exec systemctl --user start sway-session.target
+
+exec_always "systemctl --user start sway-session.target"
 
 # vi:ft=i3

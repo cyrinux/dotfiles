@@ -7,4 +7,4 @@ BindsTo=pipewire.service
 ExecStart=/usr/bin/pipewire -c %h/.config/pipewire/rnoise.conf
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target

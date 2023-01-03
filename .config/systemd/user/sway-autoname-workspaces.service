@@ -1,7 +1,7 @@
 [Unit]
 Description=Autoname sway workspaces
-PartOf=graphical-session.target
-After=graphical-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 ExecStart=%h/.local/bin/sway-autoname-workspaces -d
@@ -9,4 +9,4 @@ Restart=always
 RestartSec=10s
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target

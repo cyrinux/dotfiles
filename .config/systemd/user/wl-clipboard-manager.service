@@ -1,7 +1,7 @@
 [Unit]
 Description=Clipboard manager daemon
-PartOf=graphical-session.target
-After=graphical-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 ExecStart=%h/.local/bin/wl-clipboard-manager daemon
@@ -9,4 +9,4 @@ Restart=always
 RestartSec=10s
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target

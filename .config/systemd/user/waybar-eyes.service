@@ -1,7 +1,7 @@
 [Unit]
 Description=Eyes detection for waybar-eyes
-PartOf=graphical-session.target
-After=graphical-session.target
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 ExecStart=
@@ -9,4 +9,4 @@ ExecStart=/usr/bin/waybar-eyes -d 2 -m /usr/share/waybar-eyes/models/haarcascade
 Restart=on-failure
 
 [Install]
-WantedBy=graphical-session.target
+WantedBy=sway-session.target
