@@ -6,3 +6,6 @@ require("ui").setup()
 require("keys").setup()
 require("visit-path").setup()
 require("trash-cli").setup()
+require("wl-clipboard").setup{
+  copy_command = "wl-copy -t text/uri-list"
+}

@@ -48,3 +48,6 @@
 [submodule ".config/kak/sudo-write.kak"]
     path = .config/kak/sudo-write.kak
     url = https://github.com/occivink/kakoune-sudo-write.git
+[submodule ".config/xplr/wl-clipboard"]
+	path = .config/xplr/wl-clipboard
+	url = https://github.com/sayanarijit/wl-clipboard.xplr.git
