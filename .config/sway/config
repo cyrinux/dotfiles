@@ -5,17 +5,26 @@ input type:keyboard {
     xkb_numlock enable
 }
 
-# input type:mouse {
-#     pointer_accel 0.2
-# }
+input type:mouse {
+    pointer_accel 0.2
+}
 
 input type:touchpad {
     natural_scroll enabled
     pointer_accel 0.2
     tap enabled
     dwt enabled
+    dwtp enabled
     click_method button_areas
 }
+
+bindgesture --exact swipe:3:left focus right
+bindgesture --exact swipe:4:left workspace next
+bindgesture --exact swipe:3:right focus left
+bindgesture --exact swipe:4:right workspace prev
+bindgesture --exact swipe:3:up exec swayr switch-to-urgent-or-lru-window
+bindgesture --exact swipe:4:up fullscreen toggle
+bindgesture --exact swipe:4:down exec sway-audio output-mute
 
 output * {
     bg "#1a1c1c" solid_color
@@ -79,8 +88,6 @@ for_window    [app_id="com.plexamp.Plexamp"]             floating enable
 for_window    [app_id="personal"]                        move container to $workspace1
 for_window    [app_id="org.qutebrowser.qutebrowser"]     move container to $workspace1
 for_window    [app_id="work"]                            move container to $workspace2
-for_window    [app_id="chrome-faolnafnngnfdaknnbpnkhgohbobgegn-Default"] \
-                                                         move container to $workspace2
 for_window    [class="Slack"]                            move container to $workspace2
 for_window    [app_id="discord"]                         move container to $workspace7
 for_window    [app_id="MellowPlayer"]                    move container to $workspace8
@@ -90,7 +97,6 @@ for_window    [app_id="Signal"]                          move container to $work
 for_window    [app_id="dmenu.*"]                         floating enable, resize set width 60ppt height 80ppt
 for_window    [app_id="dmenu-browser"]                   resize set height 20ppt
 for_window    [app_id="dmenu-emoji"]                     resize set height 20ppt
-for_window    [app_id="iriunwebcam"]                     floating disable
 
 for_window [app_id="mpv"] {
   floating enable
@@ -344,6 +350,9 @@ bindsym --to-code {
 	# reload the configuration file
 	$win+r reload
 
+	# dpms toggle
+	$win+Shift+b exec toggle-monitor
+
 	# mode
 	$win+a        mode $mode_audio
 	$win+Escape   mode $mode_system
@@ -392,7 +401,7 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 # Load systemd integration
 include /etc/sway/config.d/*
 
-exec_always "darkman set dark"
+# exec_always "darkman set dark"
 exec_always "systemctl --user start sway-session.target"
 
 # vi:ft=i3

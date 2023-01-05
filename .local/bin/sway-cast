@@ -9,7 +9,7 @@ trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 { sleep 5 && pkill -RTMIN+3 -x waybar; } &
 
 case ${1:-} in
-	toggle-stream)
+	start | toggle-stream)
 		pgrep -x obs || cglaunch obs &
 		sleep 1
 		obs-cli stream toggle
@@ -20,7 +20,7 @@ case ${1:-} in
 		obs-cli recording toggle
 		;;
 	preview)
-		mpv rtmp://live.levis.name:1935/live/cyrinux
+		mpv https://twitch.tv/cyrinux
 		;;
 	stop)
 		obs-cli stream stop > /dev/null 2>&1
@@ -28,6 +28,6 @@ case ${1:-} in
 		killall obs 2> /dev/null
 		;;
 	*)
-		echo "Help: $0 toggle-stream|toggle-recording|preview|stop"
+		echo "Help: $0 toggle-stream|toggle-recording|preview|start|stop"
 		;;
 esac
