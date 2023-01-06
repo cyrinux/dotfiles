@@ -1,0 +1,9 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=Slack
+Exec=/usr/bin/chromium --profile-directory=Default --app-id=bgbanhkgmahalckpffclocebakdpkhgd
+Icon=chrome-bgbanhkgmahalckpffclocebakdpkhgd-Default
+StartupWMClass=crx_bgbanhkgmahalckpffclocebakdpkhgd

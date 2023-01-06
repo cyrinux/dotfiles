@@ -6,20 +6,15 @@ set -ueo pipefail
 mkdir -p /tmp/screenshots
 cd /tmp/screenshots || exit 1
 
-systemctl --user stop sway-inactive-window-transparency.service
-
 case ${1:-monitor} in
 	window)
-		window="$(swaymsg -t get_tree | jq '.. | select(type == "object") | select(.focused)')"
-		x="$(jq .rect.x <<< "$window")"
-		y="$(jq .rect.y <<< "$window")"
-		width="$(jq .rect.width <<< "$window")"
-		height="$(jq .rect.height <<< "$window")"
-		output="${x},${y} ${width}x${height}"
+		at="$(hyprctl activewindow | awk '/at:/ {print $2}')"
+		size="$(hyprctl activewindow | awk '/size:/ {print $2}' | tr ',' 'x')"
+		output="${at} ${size}"
 		grim -g "$output" -t png area.png
 		;;
 	monitor | selection)
-		output=$(swaymsg -t get_outputs | jq -r '.[] | select(.focused)' | jq -r '.name')
+		output=$(hyprctl monitors -j | jq -r '.[] | select(.focused)' | jq -r '.name')
 		grim -o "$output" -t png screen.png
 		geometry="$(slurp -b '#AFAFAFAF' -c '#FF3F3FAF' -s '#00000000' -w 3 -d -o)"
 
@@ -38,8 +33,6 @@ case ${1:-monitor} in
 		exit 0
 		;;
 esac
-
-systemctl --user start sway-inactive-window-transparency.service
 
 [ -f area.png ] && swappy -f area.png -o edited.png &&
 	convert edited.png \

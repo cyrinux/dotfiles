@@ -45,7 +45,7 @@ window#waybar {
 #backlight,
 #battery,
 #clock,
-#sway-language,
+#hyprland-language,
 #cpu,
 #custom-eyes,
 #custom-mail,
@@ -83,7 +83,7 @@ window#waybar {
   border-bottom: 3px solid @blue;
 }
 
-#workspaces button.focused {
+#workspaces button.active {
   border-bottom: 3px solid @green;
 }
 

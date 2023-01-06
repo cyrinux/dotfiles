@@ -1,12 +1,8 @@
 [
   {
     "layer": "top",
-    "modules-left": ["sway/mode"]
-  },
-  {
-    "layer": "top",
     "output": "!eDP-1",
-    "modules-left": ["sway/workspaces"],
+    "modules-left": ["hyprland/window"],
     "modules-center": [
       "custom/yubikey",
       "custom/fwupd",
@@ -68,6 +64,7 @@
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
       "on-click": "exec gsimplecal",
+      "on-scroll": { "calendar": 1 },
       "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
     "custom/usbguard": {
@@ -109,13 +106,15 @@
     "layer": "top",
     "output": "eDP-1",
     "modules-left": [
-      "sway/workspaces",
+      "hyprland/window",
       "custom/pomo",
+      "hyprland/submap",
     ],
     "modules-right": [
       "custom/eyes",
       "custom/recording",
       "custom/cast",
+      "custom/dnd",
       "pulseaudio",
       "custom/mediaplayer",
       "custom/prod-status",
@@ -135,16 +134,11 @@
       "temperature",
       "memory",
       "backlight",
-      "sway/language",
       "battery",
       "clock",
       "custom/yubikey",
-      "custom/power_profile",
-      "custom/dnd"
+      "custom/power_profile"
     ],
-    "sway/language": {
-      "min-length": 2
-    },
     "custom/power_profile": {
         "exec": "sleep 0.3 && power-profile-cycle -m",
         "interval": 120,

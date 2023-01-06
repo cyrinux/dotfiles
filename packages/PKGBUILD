@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.34
+pkgver=2.29.36
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -59,7 +59,7 @@ package_cyrinux-base() {
         'pipewire-jack'
         'pipewire-v4l2'
         'gst-plugin-pipewire'
-        'xdg-desktop-portal-wlr'
+        'xdg-desktop-portal-hyprland'
         'cni-plugins'
         'aurpublish'
         'aurutils'
@@ -135,7 +135,6 @@ package_cyrinux-base() {
         'fd'
         'fdupes'
         'ffmpeg'
-        'flashfocus'
         'flatpak-builder'
         'fontforge'
         'fping'
@@ -456,7 +455,6 @@ package_cyrinux-base() {
         'swayidle'
         'swaylock'
         'swaync-git'
-        'swayr'
         'systembus-notify'
         'system-config-printer'
         'systemd-autoreload'
