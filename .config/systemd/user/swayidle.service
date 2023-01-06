@@ -6,9 +6,10 @@ PartOf=sway-session.target
 After=sway-session.target
 
 [Service]
-ExecStart=/usr/bin/swayidle \
+ExecStart=/usr/bin/swayidle -w \
   timeout 1800 'hyprctl dispatch dpms off' \
-  resume 'hyprctl dispatch dpms on'
+  resume 'hyprctl dispatch dpms on' \
+  lock 'hyprctl dispatch dpms off'
 
 # Note: Because swayidle runs as a service, systemd won't identify it as part
 # of the user session. It's unconfirmed if lock/unlock are triggered correctly.
