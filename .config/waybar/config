@@ -5,7 +5,6 @@
     "modules-left": ["hyprland/window"],
     "modules-center": [
       "custom/yubikey",
-      "custom/fwupd",
       "custom/recording",
       "custom/cast",
       "custom/usbguard",
@@ -107,8 +106,10 @@
     "output": "eDP-1",
     "modules-left": [
       "hyprland/window",
-      "custom/pomo",
-      "hyprland/submap",
+      "custom/pomo"
+    ],
+    "modules-center": [
+      "hyprland/submap"
     ],
     "modules-right": [
       "custom/eyes",

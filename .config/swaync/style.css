@@ -146,7 +146,7 @@
 }
 
 .control-center {
-  border-top-left-radius: 50px;
+  border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   background: @bg-gruvbox;
 }
