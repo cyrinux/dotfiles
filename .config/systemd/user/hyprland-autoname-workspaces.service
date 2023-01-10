@@ -1,12 +1,12 @@
 [Unit]
-Description=Apparmor notification
+Description=Autoname Hyprland workspaces
 PartOf=hyprland-session.target
 After=hyprland-session.target
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/aa-notify -p -s 1 -w 60 -f /var/log/audit/audit.log
-
+ExecStart=/usr/bin/hyprland-autoname-workspaces
+Restart=always
+RestartSec=10s
 
 [Install]
 WantedBy=hyprland-session.target

@@ -1,7 +1,7 @@
 [Unit]
 Description=PulseEffects audio mixer
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 Type=simple
@@ -9,4 +9,4 @@ ExecStart=/usr/bin/pulseeffects --gapplication-service
 Restart=always
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

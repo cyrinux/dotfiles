@@ -105,11 +105,10 @@
     "layer": "top",
     "output": "eDP-1",
     "modules-left": [
+      "hyprland/submap",
+      "wlr/workspaces",
       "hyprland/window",
       "custom/pomo"
-    ],
-    "modules-center": [
-      "hyprland/submap"
     ],
     "modules-right": [
       "custom/eyes",
@@ -140,6 +139,10 @@
       "custom/yubikey",
       "custom/power_profile"
     ],
+    "wlr/workspaces": {
+         "format": "{icon}",
+         "on-click": "activate"
+    },
     "custom/power_profile": {
         "exec": "sleep 0.3 && power-profile-cycle -m",
         "interval": 120,

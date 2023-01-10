@@ -1,7 +1,7 @@
 [Unit]
 Description=Clipboard manager daemon
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=%h/.local/bin/wl-clipboard-manager daemon
@@ -9,4 +9,4 @@ Restart=always
 RestartSec=10s
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

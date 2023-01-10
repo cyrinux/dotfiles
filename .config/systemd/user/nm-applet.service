@@ -1,11 +1,11 @@
 [Unit]
 Description=NetworkManager applet
 Documentation=https://wiki.gnome.org/Projects/NetworkManager/
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/nm-applet
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

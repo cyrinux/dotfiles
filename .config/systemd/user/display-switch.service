@@ -1,11 +1,11 @@
 [Unit]
 Description=Auto display switch with DDC
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/display_switch
 Restart=on-failure
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

@@ -183,7 +183,7 @@ alias meteo='curl -s wttr.in/paris'
 alias tf=terraform
 
 go-release() {
-    git tag "$(svu next)"
+    git tag -s "$(svu --strip-prefix $1)"
     git push --tags
     goreleaser --rm-dist
 }

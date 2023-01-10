@@ -1,13 +1,13 @@
 [Unit]
 Description=Idle manager for Wayland
 Documentation=man:swayidle(1)
-Requires=sway-session.target
-PartOf=sway-session.target
-After=sway-session.target
+Requires=hyprland-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/swayidle -w \
-  timeout 1800 'hyprctl dispatch dpms off' \
+  timeout 600 'hyprctl dispatch dpms off' \
   resume 'hyprctl dispatch dpms on' \
   lock 'hyprctl dispatch dpms off'
 
@@ -15,4 +15,4 @@ ExecStart=/usr/bin/swayidle -w \
 # of the user session. It's unconfirmed if lock/unlock are triggered correctly.
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

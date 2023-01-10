@@ -1,10 +1,10 @@
 [Unit]
 Description=Automatically mount newly inserted USB drives
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/udiskie
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

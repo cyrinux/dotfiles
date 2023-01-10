@@ -1,5 +1,5 @@
 [Unit]
-PartOf=sway-session.target
+PartOf=hyprland-session.target
 After=lock.target
 StartLimitIntervalSec=400
 StartLimitBurst=0

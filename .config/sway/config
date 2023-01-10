@@ -401,6 +401,6 @@ include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
 include /etc/sway/config.d/*
 
 # exec_always "darkman set dark"
-exec_always "systemctl --user start sway-session.target"
+exec_always "systemctl --user start hyprland-session.target"
 
 # vi:ft=i3

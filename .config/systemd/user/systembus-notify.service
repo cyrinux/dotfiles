@@ -1,10 +1,10 @@
 [Unit]
 Description=Show desktop notifications for earlyoom
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/systembus-notify -q
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

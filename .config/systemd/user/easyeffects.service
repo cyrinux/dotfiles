@@ -1,6 +1,6 @@
 [Unit]
 Description=Audio effects for PipeWire applications
-PartOf=sway-session.target
+PartOf=hyprland-session.target
 After=pipewire.service
 Wants=pipewire.service
 
@@ -11,4 +11,4 @@ ExecStart=/usr/bin/easyeffects --gapplication-service
 Slice=session.slice
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

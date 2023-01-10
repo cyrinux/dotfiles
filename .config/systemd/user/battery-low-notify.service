@@ -1,10 +1,10 @@
 [Unit]
 Description=Notify when battery level is low
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 
 [Service]
 ExecStart=%h/.local/bin/battery-low-notify
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target

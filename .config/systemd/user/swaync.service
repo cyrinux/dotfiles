@@ -1,8 +1,8 @@
 [Unit]
 Description=Swaync notification daemon
 Documentation=https://github.com/ErikReider/SwayNotificationCenter
-PartOf=sway-session.target
-After=sway-session.target
+PartOf=hyprland-session.target
+After=hyprland-session.target
 # ConditionEnvironment requires systemd v247 to work correctly
 ConditionEnvironment=WAYLAND_DISPLAY
 
@@ -14,4 +14,4 @@ ExecReload=/usr/bin/swaync-client --reload-config ; /usr/bin/swaync-client --rel
 Restart=on-failure
 
 [Install]
-WantedBy=sway-session.target
+WantedBy=hyprland-session.target
