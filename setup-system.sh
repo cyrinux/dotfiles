@@ -242,7 +242,8 @@ echo "Firejail some apps"
 sudo systemctl enable --now apparmor.service || true
 
 echo "Mask wpa_supplicant"
-sudo systemctl mask "wpa_supplicant*"
+sudo systemctl mask "wpa_supplicant.service"
+sudo systemctl mask "wpa_supplicant.socket"
 # sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
 # sudo firecfg --add-users $user
 

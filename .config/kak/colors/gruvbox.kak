@@ -1,1 +1,1 @@
-/home/cyril/.config/kak/colors/gruvbox-light.kak
+/home/cyril/.config/kak/colors/gruvbox-dark.kak
