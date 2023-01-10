@@ -143,8 +143,8 @@ copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/bluetooth/main.conf"
-copy "usr/local/bin/sway-in-shell"
-copy "usr/share/wayland-sessions/sway-in-shell.desktop"
+copy "usr/local/bin/hyprland-in-shell"
+copy "usr/share/wayland-sessions/hyprland-in-shell.desktop"
 
 (("$reverse")) && exit 0
 
