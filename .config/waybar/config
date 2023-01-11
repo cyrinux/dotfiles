@@ -51,14 +51,14 @@
       "return-type": "json",
       "interval": 5,
       "signal": 3,
-      "on-click": "sway-cast toggle-recording",
+      "on-click": "cast toggle-recording",
     },
     "custom/cast": {
       "exec": "waybar-cast",
       "return-type": "json",
       "interval": 5,
       "signal": 3,
-      "on-click": "sway-cast toggle-stream",
+      "on-click": "cast toggle-stream",
     },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
@@ -134,12 +134,18 @@
       "temperature",
       "memory",
       "backlight",
+      "hyprland/language",
       "battery",
       "clock",
       "custom/yubikey",
       "custom/power_profile"
     ],
+    "hyprland/language": {
+        // "format": "{flag}",
+        "min-length": 3,
+    },
     "wlr/workspaces": {
+         "sort-by-number": true,
          "format": "{icon}",
          "on-click": "activate"
     },
@@ -242,14 +248,14 @@
       "return-type": "json",
       "interval": 5,
       "signal": 3,
-      "on-click": "sway-cast toggle-recording",
+      "on-click": "cast toggle-recording",
     },
     "custom/cast": {
       "exec": "waybar-cast",
       "return-type": "json",
       "interval": 5,
       "signal": 3,
-      "on-click": "sway-cast toggle-stream",
+      "on-click": "cast toggle-stream",
     },
     "custom/movie": {
       "exec": "waybar-movie show",

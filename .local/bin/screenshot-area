@@ -6,6 +6,8 @@ set -ueo pipefail
 mkdir -p /tmp/screenshots
 cd /tmp/screenshots || exit 1
 
+hyprctl keyword decoration:dim_strength 0
+
 case ${1:-monitor} in
 	window)
 		at="$(hyprctl activewindow | awk '/at:/ {print $2}')"
@@ -42,5 +44,7 @@ esac
 		\( +clone -flop \) -compose Multiply -composite \
 		\) -alpha off -compose CopyOpacity -composite rounded.png &&
 	wl-copy < rounded.png
+
+hyprctl keyword decoration:dim_strength 0.2
 
 rm -f screen.png area.png rounded.png edited.png

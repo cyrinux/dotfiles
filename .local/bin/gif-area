@@ -2,6 +2,7 @@
 
 if ! pkill -x wf-recorder -SIGINT; then
 	{
+		hyprctl keyword decoration:dim_strength 0
 		path="/tmp/record_$(date +%s)"
 		notify-send -t 2000 'GIF recording' 'Select an area to start the recording...'
 		geometry="$(slurp)"
@@ -9,6 +10,7 @@ if ! pkill -x wf-recorder -SIGINT; then
 		wf-recorder -g "$geometry" -f "$path.mkv"
 		pkill -RTMIN+3 -x waybar
 		notify-send -t 2000 'GIF recording' "Encoding to GIF format..."
+		hyprctl keyword decoration:dim_strength 0.2
 		ffmpeg -i "$path.mkv" -vf "fps=15,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" "$path.gif"
 		wl-copy -t image/gif < "$path.gif"
 		notify-send 'GIF recording' "Recording is ready: $path.gif"

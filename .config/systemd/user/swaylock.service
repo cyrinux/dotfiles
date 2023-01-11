@@ -9,7 +9,7 @@ After=lock.target
 # systemd will consider this service started when swaylock forks.
 # swaylock will fork only after it has locked the screen.
 Type=forking
-ExecStart=%h/.local/bin/sway-exit lock
+ExecStart=%h/.local/bin/exit-wm lock
 
 [Install]
 WantedBy=lock.target

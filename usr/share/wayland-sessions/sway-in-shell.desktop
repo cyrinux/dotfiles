@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Sway (in login shell)
-Comment=SirCmpwn's Wayland window manager
-Exec=/usr/local/bin/sway-in-shell
-Type=Application

@@ -2,6 +2,6 @@
 
 set -e
 
-unit=$(systemctl --user --type=service --type scope --no-pager --no-legend list-units | awk '{ print $1 }' | grep 'launch-' | sort --reverse | fzf)
+unit=$(systemctl --user --type=service --type scope --no-pager --no-legend list-units | awk '/launch-/ { print $1 }' | sort --reverse | fzf)
 
 systemctl --user kill "$unit"

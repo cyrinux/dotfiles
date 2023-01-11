@@ -57,7 +57,7 @@ window#waybar {
 #custom-yubikey,
 #disk,
 #memory,
-#mode,
+#submap,
 #network,
 #custom-dnd,
 #temperature,
@@ -91,9 +91,7 @@ window#waybar {
   border-bottom: 3px solid @yellow;
 }
 
-#mode {
-  background-color: @background;
-  border-top: 3px solid @background;
+#submap {
   border-bottom: 3px solid @red;
 }
 
@@ -134,7 +132,7 @@ window#waybar {
 }
 
 #custom-scratchpad,
-#mode,
+#submap,
 #pulseaudio,
 #custom-progress,
 #custom-usbguard,

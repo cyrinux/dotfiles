@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.36
+pkgver=2.29.37
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -60,6 +60,7 @@ package_cyrinux-base() {
         'pipewire-v4l2'
         'gst-plugin-pipewire'
         'xdg-desktop-portal-hyprland'
+        'hyprland'
         'cni-plugins'
         'aurpublish'
         'aurutils'
@@ -503,7 +504,6 @@ package_cyrinux-base() {
         'vdirsyncer'
         'vimiv-qt'
         'virt-viewer'
-        'visidata'
         'viu'
         'vnstat'
         'w3m'
