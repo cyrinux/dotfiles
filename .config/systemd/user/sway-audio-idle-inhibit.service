@@ -1,0 +1,12 @@
+[Unit]
+Description=Sway audio idle inhibiter
+PartOf=hyprland-session.target
+After=hyprland-session.target
+
+[Service]
+ExecStart=/usr/bin/hyprland-audio-idle-inhibit
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=hyprland-session.target

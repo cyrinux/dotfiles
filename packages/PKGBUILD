@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.37
+pkgver=2.29.38
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -41,6 +41,7 @@ package_cyrinux-base() {
         'ttf-liberation'
         'htop'
         'kernel-modules-hook'
+        'bolt'
         'dashbinsh'
         'logrotate'
         'man-pages'
@@ -61,6 +62,7 @@ package_cyrinux-base() {
         'gst-plugin-pipewire'
         'xdg-desktop-portal-hyprland'
         'hyprland'
+        'hyprland-autoname-workspaces-git'
         'cni-plugins'
         'aurpublish'
         'aurutils'

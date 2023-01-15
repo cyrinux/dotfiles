@@ -17,6 +17,7 @@ stop_wlan() {
 before_lock() {
 	playerctl -a pause > /dev/null 2>&1
 	hyprctl switchxkblayout 'apple-internal-keyboard-/-trackpad' 0
+	light -s sysfs/leds/kbd_backlight -S 0%
 	cast stop
 	stop_vpn
 	stop_wwan
@@ -38,6 +39,7 @@ case "$1" in
 	exit)
 		systemctl --user stop hyprland-session.target
 		hyprctl keyword exit ''
+		pkill Hyprland
 		;;
 	lock)
 		before_lock

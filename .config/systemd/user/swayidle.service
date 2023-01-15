@@ -7,6 +7,7 @@ After=hyprland-session.target
 
 [Service]
 ExecStart=/usr/bin/swayidle -w \
+  timeout 60 'light -s sysfs/leds/kbd_backlight -S 0%' \
   timeout 600 'hyprctl dispatch dpms off' \
   resume 'hyprctl dispatch dpms on' \
   lock 'hyprctl dispatch dpms off'
