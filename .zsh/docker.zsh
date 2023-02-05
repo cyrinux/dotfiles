@@ -40,7 +40,8 @@ alias archlinux-docker="pod -it --cpus 2 -v $(pwd):/data -w /data --entrypoint b
 alias java10-docker="pod --cpus 2 --entrypoint bash openjdk:10-jdk"
 alias java9-docker="pod --cpus 2 --entrypoint bash openjdk:9-jdk"
 alias java8-docker="pod --cpus 2 --entrypoint bash openjdk:8-jdk"
-alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
+alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix arm64v8/openjdk bash"
+# alias javaws="xhost +'local:docker@'; docker run -ti --net=host --rm -e DISPLAY=\$DISPLAY -e HOSTNAME=\$HOSTNAME -v \$(pwd):/data -v /tmp/.X11-unix:/tmp/.X11-unix xnaveira/docker-javaws bash"
 alias android-build="pod -v \"$(pwd):/project\" -v \"/tmp/java:/root/.gradle\" -v \"/tmp/android:/root/.android\" docker.io/library/android-build-box bash -c 'cd /project; ./gradlew assembleDebug'"
 alias workspace='pod rwxrob/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Seafile/notes/zet:/zet'
 
