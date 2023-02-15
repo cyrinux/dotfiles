@@ -1,5 +1,4 @@
 .#.*
-bin/checkmail
 **/index-v*.db/.*
 *.log
 *./logs/.*
@@ -14,6 +13,7 @@ __pycache__/
 .pytest_cache
 .cache
 qalc.history
+bin/checkmail
 readability.html
 .ssh/known_hosts
 .ssh/known_hosts.old

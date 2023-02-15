@@ -60,8 +60,8 @@
     untrackedCache = true
     editor = kak
 
-[commit]
-    template = ~/.config/git/message
+; [commit]
+    ; template = ~/.config/git/message
 
 [diff]
     colorMoved = default
