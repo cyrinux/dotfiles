@@ -2,13 +2,13 @@
     alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
     lg = !gitui
     lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
-    bdr = !git branch --merged | egrep -v \"(main|master|dev)\" | xargs git branch -d
+    bdr = !git branch --merged | grep -E -v \"(main|master|dev)\" | xargs git branch -d
     pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
     branches = for-each-ref --sort=-committerdate --format=\"%(color:blue)%(authordate:relative)\t%(color:red)%(authorname)\t%(color:white)%(color:bold)%(refname:short)\" refs/remotes
     createmr = !git push -o merge_request.create
     createmrstaging = !git push -o merge_request.create -o merge_request.target=staging
     createmrskipci = !git push -o merge_request.create -o ci.skip
-    fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+    fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit -n --fixup"
     workflow = "!hub ci-status -v"
     fork = "!hub fork"
     last = for-each-ref --sort=-committerdate --count=20 --format='%(align:50,left)%(refname:short)%(end)%(committerdate:relative)' refs/heads/

@@ -70,7 +70,7 @@ mkdir "$tmp/done"
 cat > "$tmp/in"
 
 if [ -n "$kitty_launch_type" ]; then
-    env LIBGL_ALWAYS_SOFTWARE=1 kitty @ launch --type "$kitty_launch_type" --no-response --cwd "$tmp" --env "FILTER_MODE=1" --env "FZF_OPTS=$fzf_args" --env "PREVIEW_SCRIPT=$preview_script" "$self" > /dev/null 2>&1
+    kitty @ launch --type "$kitty_launch_type" --no-response --cwd "$tmp" --env "FILTER_MODE=1" --env "FZF_OPTS=$fzf_args" --env "PREVIEW_SCRIPT=$preview_script" "$self" > /dev/null 2>&1
     inotifywait -q -e create "$tmp/done" > /dev/null 2>&1
 else
     env "FILTER_MODE=1" "FZF_OPTS=$fzf_args" "PREVIEW_SCRIPT=$preview_script" \

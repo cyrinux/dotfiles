@@ -20,6 +20,7 @@ case "$*" in
         ;;
 esac
 
+# line="$(dmenu -p emoji -f '--no-sort' "$@" < "$data")"
 line="$(dmenu -p emoji "$@" < "$data")"
 if [ -n "$line" ]; then
     sed -i "/$line/d" "$data"

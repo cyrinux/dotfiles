@@ -45,28 +45,26 @@ window#waybar {
 #backlight,
 #battery,
 #clock,
-#language,
 #cpu,
-#custom-eyes,
+#custom-burnout-detector,
+#custom-decrypted,
+#custom-dnd,
 #custom-mail,
+#custom-prod-status,
 #custom-recording,
 #custom-security,
 #custom-systemd,
 #custom-updates,
 #custom-usbguard,
+#custom-vpn-work,
 #custom-yubikey,
 #disk,
-#memory,
-#submap,
-#network,
-#custom-dnd,
-#temperature,
-#custom-power_profile,
-#custom-eyes,
 #idle_inhibitor,
-#custom-decrypted,
-#custom-prod-status,
-#custom-vpn-work,
+#language,
+#memory,
+#network,
+#submap,
+#temperature,
 #pulseaudio {
   color: @dim;
 }
@@ -95,16 +93,17 @@ window#waybar {
   border-bottom: 3px solid @red;
 }
 
-#custom-usbguard,
-#custom-decrypted,
-#custom-systemd,
-#custom-calendar.on,
-#custom-mail,
-#custom-vpn.off,
 #battery.warning,
-#memory.warning,
 #cpu.warning,
+#custom-calendar.on,
+#custom-decrypted,
 #custom-dnd.dnd-notification,
+#custom-burnout-detector.warning,
+#custom-mail,
+#custom-systemd,
+#custom-usbguard,
+#custom-vpn.off,
+#memory.warning,
 #custom-dnd.dnd-none {
   border-top: 3px solid @background;
   border-bottom: 3px solid @yellow;
@@ -116,7 +115,7 @@ window#waybar {
 }
 
 #custom-whistle.in-use-open,
-#custom-eyes,
+#custom-burnout-detector.critical,
 #custom-yubikey,
 #custom-recording,
 #custom-cast,
@@ -136,7 +135,7 @@ window#waybar {
 #pulseaudio,
 #custom-progress,
 #custom-usbguard,
-#custom-eyes,
+#custom-burnout-detector,
 #custom-yubikey,
 #custom-decrypted,
 #custom-updates,
@@ -157,8 +156,7 @@ window#waybar {
 #custom-secureboot,
 #custom-netatmo,
 #custom-dnd,
-#custom-power_profile,
-#custom-eyes,
+#custom-burnout-detector,
 #clock {
   padding: 0 6px;
   margin: 0 6px;

@@ -30,10 +30,10 @@ fi
 
 case $container in
 	"personal")
-		cglaunch firefox "ext+container:name=Personal&url=$url" &
+		cglaunch firefox-container --fingerprint --orange --name=Personal "$url" &
 		;;
 	"work")
-		cglaunch firefox "ext+container:name=Work&url=$url" &
+		cglaunch firefox-container --briefcase --blue --name=Work "$url" &
 		;;
 	"shopping")
 		cglaunch firefox "ext+container:name=Shopping&url=$url" &

@@ -94,7 +94,7 @@
       },
       "on-double-click": "exec easyeffects-toggle toggle",
       "on-click": "pavucontrol",
-      "on-click-right": "helvum"
+      "on-click-right": "env LIBGL_ALWAYS_SOFTWARE=1 helvum"
     },
     "custom/yubikey": {
       "exec": "waybar-yubikey",
@@ -111,7 +111,7 @@
       "custom/pomo"
     ],
     "modules-right": [
-      "custom/eyes",
+      "custom/burnout-detector",
       "custom/recording",
       "custom/cast",
       "custom/dnd",
@@ -138,7 +138,6 @@
       "battery",
       "clock",
       "custom/yubikey",
-      "custom/power_profile"
     ],
     "hyprland/language": {
         // "format": "{flag}",
@@ -149,16 +148,10 @@
          "format": "{icon}",
          "on-click": "activate"
     },
-    "custom/power_profile": {
-        "exec": "sleep 0.3 && power-profile-cycle -m",
-        "interval": 120,
-        "on-click": "power-profile-cycle",
-        "exec-on-event": true
-    },
-    "custom/eyes": {
-        "exec": "waybar-eyes",
+    "custom/burnout-detector": {
+        "exec": "burnout-detector --waybar -i 3600 -m 3",
         "return-type": "json",
-        "on-click": "waybar-eyes done"
+        "on-click": "burnout-detector done"
     },
     "custom/mediaplayer": {
       "exec": "waybar-mediaplayer",

@@ -17,6 +17,9 @@ if ! (( P9K_SSH )); then
     zstyle ':z4h:sudo' term ''
 fi
 
+# asahi hack
+unset LIBGL_ALWAYS_SOFTWARE
+
 ##
 
 [ ! -f /etc/motd ] || cat /etc/motd

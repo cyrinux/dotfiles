@@ -174,7 +174,6 @@ link ".config/systemd/user/waybar-updates.service"
 link ".config/systemd/user/waybar-updates.timer"
 link ".config/systemd/user/wlsunset.service"
 link ".config/systemd/user/work-unseal.service"
-link ".config/systemd/user/sway-audio-idle-inhibit.service"
 link ".config/systemd/user/signal-desktop.service"
 link ".config/systemd/user/system-dotfiles-sync.service"
 link ".config/systemd/user/system-dotfiles-sync.timer"
@@ -266,7 +265,6 @@ else
 	systemctl_enable_start "solaar.service"
 	systemctl_enable_start "swayidle.service"
 	systemctl_enable_start "swaync.service"
-	systemctl_enable_start "sway-audio-idle-inhibit.service"
 	systemctl_enable_start "systembus-notify.service"
 	systemctl_enable_start "systemd-autoreload.service"
 	systemctl_enable_start "systemd-lock-handler.service"
@@ -359,7 +357,7 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop
+flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian
 
 # asdf
 for s in direnv kubectl kind terraform kustomize helmfile helm; do

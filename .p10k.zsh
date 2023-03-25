@@ -18,6 +18,7 @@
         direnv
         goenv
         pyenv
+        rust_version
         virtualenv
         vcs
         xplr
@@ -125,6 +126,7 @@
     typeset -g POWERLEVEL9K_DIRENV_FOREGROUND=179
     typeset -g POWERLEVEL9K_DIRENV_VISUAL_IDENTIFIER_EXPANSION=" "
 
+    typeset -g POWERLEVEL9K_RUST_VERSION_FOREGROUND=37
     ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
     typeset -g POWERLEVEL9K_VIRTUALENV_FOREGROUND=37
     typeset -g POWERLEVEL9K_VIRTUALENV_SHOW_PYTHON_VERSION=false

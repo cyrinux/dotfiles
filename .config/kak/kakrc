@@ -51,6 +51,7 @@ map global user -docstring 'clip-paste (after)'       P      '!wl-paste --no-new
 map global user -docstring 'clip-replace'             R      '|wl-paste --no-newline | dos2unix<ret>'
 map global user -docstring 'clip-yank'                y      '<a-|>wl-copy<ret>'
 map global user -docstring 'save buffer'              w      ':w<ret>'
+map global user -docstring 'save buffer'              z      ':w<ret>'
 map global user -docstring 'close buffer'             c      ':db<ret>'
 map global user -docstring 'kill buffer'              C      ':db!<ret>'
 map global user -docstring 'save all and exit'        q      ':waq<ret>'

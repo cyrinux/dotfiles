@@ -188,4 +188,6 @@ go-release() {
     goreleaser --rm-dist
 }
 
+alias cachegrind='valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes --simulate-cache=yes'
+
 complete -C pomo pomo
