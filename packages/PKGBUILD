@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.29.41
+pkgver=2.30.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -401,15 +401,12 @@ package_cyrinux-base() {
         'python-xlib'
         'python-xlrd'
         'qalculate-gtk'
-        'qbpm-git'
         'qrencode'
         'qt5-script'
         'qt5-wayland'
         'qt5-websockets'
         'qt6-wayland'
         'qt6-websockets'
-        'qutebrowser'
-        'radeontop'
         'radvd'
         'realtime-privileges'
         'rebuild-detector'
@@ -456,7 +453,7 @@ package_cyrinux-base() {
         'swayidle'
         'swaybg'
         'swaylock'
-        'swaync-git'
+        'swaync'
         'systembus-notify'
         'system-config-printer'
         'systemd-autoreload'

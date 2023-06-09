@@ -1,12 +1,18 @@
 #!/bin/sh
 
 on() {
-    [ "$(swaync-client --get-dnd)" = "true" ] || swaync-client --toggle-dnd
+    [ "$(swaync-client --get-dnd)" = "true" ] || {
+        swaync-client --inhibitor-add "xdg-desktop-portal-wlr"
+        swaync-client --toggle-dnd
+    }
     pkill -RTMIN+2 -x waybar
 }
 
 off() {
-    [ "$(swaync-client --get-dnd)" = "false" ] || swaync-client --toggle-dnd
+    [ "$(swaync-client --get-dnd)" = "false" ] || {
+        swaync-client --inhibitor-remove "xdg-desktop-portal-wlr"
+        swaync-client --toggle-dnd
+    }
     pkill -RTMIN+2 -x waybar
 }
 

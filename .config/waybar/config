@@ -140,7 +140,6 @@
       "custom/yubikey",
     ],
     "hyprland/language": {
-        // "format": "{flag}",
         "min-length": 3,
     },
     "wlr/workspaces": {
@@ -149,9 +148,8 @@
          "on-click": "activate"
     },
     "custom/burnout-detector": {
-        "exec": "burnout-detector --waybar -i 3600 -m 3",
+        "exec": "burnout-detector --waybar -i 1800 -m 4",
         "return-type": "json",
-        "on-click": "burnout-detector done"
     },
     "custom/mediaplayer": {
       "exec": "waybar-mediaplayer",
@@ -259,7 +257,6 @@
     },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-      "on-click": "exec gsimplecal",
       "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
     "temperature": {
@@ -269,7 +266,7 @@
       "format": "{temperatureC}°C"
     },
     "cpu": {
-      "format": "<span foreground='#928374'></span> {usage}%",
+      "format": "<span foreground='#928374'></span> {usage}% {avg_frequency}GHz",
       "states": {
         "warning": 90,
         "critical": 100
@@ -284,12 +281,13 @@
     },
     "backlight": {
       "format": "<span foreground='#928374'>{icon}</span> {percent}%",
+      "tooltip-format": "{icon} {percent}%",
       "format-icons": ["",""]
     },
     "battery": {
       "states": {
-        "full": 86,
-        "good": 80,
+        "full": 80,
+        "good": 75,
         "warning": 15,
         "critical": 10
       },

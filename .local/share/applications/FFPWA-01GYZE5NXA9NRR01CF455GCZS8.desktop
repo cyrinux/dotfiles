@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.4
+Name=SoGo
+Comment=SOGo Web Interface
+Keywords=;
+Categories=GTK;WebApps;;
+Icon=FFPWA-01GYZE5NXA9NRR01CF455GCZS8
+Exec=/usr/bin/firefoxpwa site launch 01GYZE5NXA9NRR01CF455GCZS8 --protocol %u
+Actions=
+MimeType=x-scheme-handler/mailto;
+Terminal=false
+StartupNotify=true
+StartupWMClass=FFPWA-01GYZE5NXA9NRR01CF455GCZS8

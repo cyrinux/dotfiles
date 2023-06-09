@@ -15,7 +15,7 @@ gitio() {
 	curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
 }
 
-alias g='git'
+alias gpr='hub pull-request'
 alias gcl='ghq get --look'
 command -v git-number &> /dev/null && alias ga='g number add' || alias ga='g add'
 alias gaa='ga --all'
@@ -52,6 +52,7 @@ alias gcpc='gcp --continue'
 alias gd='git diff'
 alias gds='gd --cached'
 alias gf='git fetch --tags'
+alias glast="git checkout \$(git last | fzf | awk '{print $1}')"
 alias gl='git pull --tags -f --rebase --autostash'
 alias glog="git log --graph --pretty='%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)<%an>%Creset' --abbrev-commit"
 alias gloga="glog --all"
@@ -68,8 +69,8 @@ alias grv='git remote -v'
 alias grba='git rebase --abort'
 alias grbc='git rebase --continue'
 alias grbi='git rebase -i --autosquash'
-alias grbm='git rebase -i master || git rebase -i main'
-alias grbom='git rebase -i origin/master || git rebase -i origin/main'
+alias grbm='git rebase -i main || git rebase -i master'
+alias grbom='git rebase -i origin/main || git rebase -i origin/master'
 alias gr='git reset'
 alias gr!='gr --hard'
 alias grh='gr HEAD'

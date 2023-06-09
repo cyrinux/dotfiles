@@ -59,7 +59,7 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("privacy.webrtc.legacyGlobalIndicator", false);
 
 // This setting makes firefox use dark mode depending on the theme.
-// However, the detection of dark theme isn't very good, and triggers might
+// However, the detection of dark theme isn't very good, and triggers night
 // mode when I'm using my daytime theme (Arc-Darker).
 //
 // Explicitly disable this, since it just makes websites render dark mode
@@ -72,18 +72,18 @@ user_pref("privacy.webrtc.legacyGlobalIndicator", false);
 // Enable web rendered, which uses GPU acceleration for rendering.
 user_pref("gfx.webrender.all", true);
 
-// Site Isolation.
-user_pref("fission.autostart", true);
-
 // This leaks history data and is also very annoying when re-visiting pages.
 user_pref("layout.css.visited_links_enabled", false);
+
+// Don't show the downloads panel each time a file is downloaded.
+user_pref("browser.download.alwaysOpenPanel", false);
 
 // TODO: Maybe try out https://github.com/intika/Librefox#features ?
 
 /******************************************************************************
  * The following are all from ghacks-userjs.
  * Extracted this bits I care about from from this version:
- * https://github.com/arkenfox/user.js/blob/95.0/user.js
+ * https://github.com/arkenfox/user.js/blob/105.0/user.js
  *
  * Just diff it with the latest to see what's new/changed, e.g.:
  * https://github.com/arkenfox/user.js/compare/90.0...95.0
@@ -105,9 +105,15 @@ user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.telemetry", false);
 user_pref("browser.newtabpage.activity-stream.feeds.snippets", false); // [DEFAULT: false]
 user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
-user_pref("browser.newtabpage.activity-stream.section.highlights.includePocket", false);
+user_pref(
+  "browser.newtabpage.activity-stream.section.highlights.includePocket",
+  false
+);
 user_pref("browser.newtabpage.activity-stream.showSponsored", false);
-user_pref("browser.newtabpage.activity-stream.feeds.discoverystreamfeed", false); // [FF66+]
+user_pref(
+  "browser.newtabpage.activity-stream.feeds.discoverystreamfeed",
+  false
+); // [FF66+]
 user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false); // [FF83+]
 
 /* 0207: disable region updates
@@ -125,7 +131,6 @@ user_pref("extensions.htmlaboutaddons.recommendations.enabled", false);
  * [SETTING] Privacy & Security>Firefox Data Collection & Use>Allow Firefox to make personalized extension recommendations
  * [1] https://support.mozilla.org/kb/personalized-extension-recommendations ***/
 user_pref("browser.discovery.enabled", false);
-
 
 /** TELEMETRY ***/
 /* 0330: disable new data submission [FF41+]
@@ -203,14 +208,6 @@ user_pref("network.proxy.socks_remote_dns", true);
  * [3] https://en.wikipedia.org/wiki/GIO_(software) ***/
 user_pref("network.gio.supported-protocols", ""); // [HIDDEN PREF]
 
-/* 0802: disable location bar domain guessing
- * domain guessing intercepts DNS "hostname not found errors" and resends a
- * request (e.g. by adding www or .com). This is inconsistent use (e.g. FQDNs), does not work
- * via Proxy Servers (different error), is a flawed use of DNS (TLDs: why treat .com
- * as the 411 for DNS errors?), privacy issues (why connect to sites you didn't
- * intend to), can leak sensitive data (e.g. query strings: e.g. Princeton attack),
- * and is a security risk (e.g. common typos & malicious sites set up to exploit this) ***/
-user_pref("browser.fixup.alternate.enabled", false);
 /* 0803: display all parts of the url in the location bar ***/
 user_pref("browser.urlbar.trimURLs", false);
 
@@ -222,15 +219,6 @@ user_pref("browser.urlbar.trimURLs", false);
  * [2] https://bugzilla.mozilla.org/381681 ***/
 user_pref("browser.formfill.enable", false);
 /* 0811: disable Form Autofill
- * [NOTE] Stored data is NOT secure (uses a JSON file)
- * [NOTE] Heuristics controls Form Autofill on forms without @autocomplete attributes
- * [SETTING] Privacy & Security>Forms and Autofill>Autofill addresses
- * [1] https://wiki.mozilla.org/Firefox/Features/Form_Autofill ***/
-user_pref("extensions.formautofill.addresses.enabled", false); // [FF55+]
-user_pref("extensions.formautofill.available", "off"); // [FF56+]
-user_pref("extensions.formautofill.creditCards.available", false); // [FF57+]
-user_pref("extensions.formautofill.creditCards.enabled", false); // [FF56+]
-user_pref("extensions.formautofill.heuristics.enabled", false); // [FF55+]
 
 /* 0903: disable auto-filling username & password form fields
  * can leak in cross-site forms *and* be spoofed
@@ -254,28 +242,20 @@ user_pref("media.memory_cache_max_size", 65536);
 
 /** SSL (Secure Sockets Layer) / TLS (Transport Layer Security) ***/
 /* 1201: require safe negotiation
- * Blocks connections (SSL_ERROR_UNSAFE_NEGOTIATION) to servers that don't support RFC 5746 [2]
- * as they're potentially vulnerable to a MiTM attack [3]. A server without RFC 5746 can be
- * safe from the attack if it disables renegotiations but the problem is that the browser can't
- * know that. Setting this pref to true is the only way for the browser to ensure there will be
- * no unsafe renegotiations on the channel between the browser and the server.
- * [STATS] SSL Labs (July 2021) reports over 99% of sites have secure renegotiation [4]
+ * Blocks connections to servers that don't support RFC 5746 [2] as they're potentially vulnerable to a
+ * MiTM attack [3]. A server without RFC 5746 can be safe from the attack if it disables renegotiations
+ * but the problem is that the browser can't know that. Setting this pref to true is the only way for the
+ * browser to ensure there will be no unsafe renegotiations on the channel between the browser and the server
+ * [SETUP-WEB] SSL_ERROR_UNSAFE_NEGOTIATION: is it worth overriding this for that one site?
+ * [STATS] SSL Labs (Sept 2022) reports over 99.3% of top sites have secure renegotiation [4]
  * [1] https://wiki.mozilla.org/Security:Renegotiation
  * [2] https://datatracker.ietf.org/doc/html/rfc5746
  * [3] https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2009-3555
  * [4] https://www.ssllabs.com/ssl-pulse/ ***/
 user_pref("security.ssl.require_safe_negotiation", true);
 
-/* 1211: enforce OCSP fetching to confirm current validity of certificates
- * 0=disabled, 1=enabled (default), 2=enabled for EV certificates only
- * OCSP (non-stapled) leaks information about the sites you visit to the CA (cert authority)
- * It's a trade-off between security (checking) and privacy (leaking info to the CA)
- * [NOTE] This pref only controls OCSP fetching and does not affect OCSP stapling
- * [SETTING] Privacy & Security>Security>Certificates>Query OCSP responder servers...
- * [1] https://en.wikipedia.org/wiki/Ocsp ***/
-user_pref("security.OCSP.enabled", 1); // [DEFAULT: 1]
-
-/* 1212: set OCSP fetch failures (non-stapled, see 1211) to hard-fail [SETUP-WEB]
+/* 1212: set OCSP fetch failures (non-stapled, see 1211) to hard-fail
+ * [SETUP-WEB] SEC_ERROR_OCSP_SERVER_ERROR
  * When a CA cannot be reached to validate a cert, Firefox just continues the connection (=soft-fail)
  * Setting this pref to true tells Firefox to instead terminate the connection (=hard-fail)
  * It is pointless to soft-fail when an OCSP fetch fails: you cannot confirm a cert is still valid (it
@@ -284,15 +264,17 @@ user_pref("security.OCSP.enabled", 1); // [DEFAULT: 1]
  * [2] https://www.imperialviolet.org/2014/04/19/revchecking.html ***/
 user_pref("security.OCSP.require", true);
 
-/* 1223: enable strict pinning
- * PKP (Public Key Pinning) 0=disabled 1=allow user MiTM (such as your antivirus), 2=strict
- * [SETUP-WEB] If you rely on an AV (antivirus) to protect your web browsing
- * by inspecting ALL your web traffic, then leave at current default=1
- * [1] https://trac.torproject.org/projects/tor/ticket/16206 ***/
+/* 1223: enable strict PKP (Public Key Pinning)
+ * 0=disabled, 1=allow user MiTM (default; such as your antivirus), 2=strict
+ * [SETUP-WEB] MOZILLA_PKIX_ERROR_KEY_PINNING_FAILURE: If you rely on an AV (antivirus) to protect
+ * your web browsing by inspecting ALL your web traffic, then override to current default ***/
 user_pref("security.cert_pinning.enforcement_level", 2);
 /* 1224: enable CRLite [FF73+]
- * In FF84+ it covers valid certs and in mode 2 doesn't fall back to OCSP
- * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1429800,1670985
+ * 0 = disabled
+ * 1 = consult CRLite but only collect telemetry
+ * 2 = consult CRLite and enforce both "Revoked" and "Not Revoked" results
+ * 3 = consult CRLite and enforce "Not Revoked" results, but defer to OCSP for "Revoked" (FF99+, default FF100+)
+ * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1429800,1670985,1753071
  * [2] https://blog.mozilla.org/security/tag/crlite/ ***/
 user_pref("security.remote_settings.crlite_filters.enabled", true);
 user_pref("security.pki.crlite_mode", 2);
@@ -305,7 +287,7 @@ user_pref("security.mixed_content.block_display_content", true);
  * [SETTING] to add site exceptions: Padlock>HTTPS-Only mode>On (after "Continue to HTTP Site")
  * [SETTING] Privacy & Security>HTTPS-Only Mode (and manage exceptions)
  * [TEST] http://example.com [upgrade]
- * [TEST] http://neverssl.com/ [no upgrade] ***/
+ * [TEST] http://httpforever.com/ [no upgrade] ***/
 user_pref("dom.security.https_only_mode", true); // [FF76+]
 
 /* 1272: display advanced information on Insecure Connection warning pages
@@ -313,9 +295,6 @@ user_pref("dom.security.https_only_mode", true); // [FF76+]
  * i.e. it doesn't work for HSTS discrepancies (https://subdomain.preloaded-hsts.badssl.com/)
  * [TEST] https://expired.badssl.com/ ***/
 user_pref("browser.xul.error_pages.expert_bad_cert", true);
-
-/* 1273: display "Not Secure" text on HTTP sites ***/
-user_pref("security.insecure_connection_text.enabled", true); // [FF60+]
 
 /* 1601: control when to send a cross-origin referer
  * 0=always (default), 1=only if base domains match, 2=only if hosts match
@@ -326,7 +305,8 @@ user_pref("network.http.referer.XOriginPolicy", 2);
 user_pref("network.http.referer.XOriginTrimmingPolicy", 2);
 
 /* 1701: enable Container Tabs and its UI setting [FF50+]
- * [SETTING] General>Tabs>Enable Container Tabs ***/
+ * [SETTING] General>Tabs>Enable Container Tabs
+ * https://wiki.mozilla.org/Security/Contextual_Identity_Project/Containers ***/
 user_pref("privacy.userContext.enabled", true);
 user_pref("privacy.userContext.ui.enabled", true);
 
@@ -373,45 +353,35 @@ user_pref("privacy.window.name.update.enabled", true); // [DEFAULT: true FF86+]
  * [2] https://bugzilla.mozilla.org/1411425 ***/
 user_pref("widget.non-native-theme.enabled", true); // [DEFAULT: true FF89+]
 
-/* 2701: disable or isolate 3rd-party cookies and site-data [SETUP-WEB]
- * 0 = Accept cookies and site data
- * 1 = (Block) All third-party cookies
- * 2 = (Block) All cookies
- * 3 = (Block) Cookies from unvisited websites
- * 4 = (Block) Cross-site tracking cookies (default)
- * 5 = (Isolate All) Cross-site cookies (TCP: Total Cookie Protection / dFPI: dynamic FPI) [1] (FF86+)
- * Option 5 with FPI enabled (4001) is ignored and not shown, and option 4 used instead
- * [NOTE] You can set cookie exceptions under site permissions or use an extension
- * [NOTE] Enforcing category to custom ensures ETP related prefs are always honored
- * [SETTING] Privacy & Security>Enhanced Tracking Protection>Custom>Cookies
- * [1] https://blog.mozilla.org/security/2021/02/23/total-cookie-protection/ ***/
-user_pref("network.cookie.cookieBehavior", 1); // XXX: Breaks CW
-user_pref("browser.contentblocking.category", "custom");
-/* 2702: set third-party cookies (if enabled, see 2701) to session-only
- * [NOTE] .sessionOnly overrides .nonsecureSessionOnly except when .sessionOnly=false and
- * .nonsecureSessionOnly=true. This allows you to keep HTTPS cookies, but session-only HTTP ones
- * [1] https://feeding.cloud.geek.nz/posts/tweaking-cookies-for-privacy-in-firefox/ ***/
-user_pref("network.cookie.thirdparty.sessionOnly", true);
-user_pref("network.cookie.thirdparty.nonsecureSessionOnly", true); // [FF58+]
-
-/* 2710: enable Enhanced Tracking Protection (ETP) in all windows
- * [SETTING] Privacy & Security>Enhanced Tracking Protection>Custom>Tracking content
+/* 2701: enable ETP Strict Mode [FF86+]
+ * ETP Strict Mode enables Total Cookie Protection (TCP)
+ * [NOTE] Adding site exceptions disables all ETP protections for that site and increases the risk of
+ * cross-site state tracking e.g. exceptions for SiteA and SiteB means PartyC on both sites is shared
+ * [1] https://blog.mozilla.org/security/2021/02/23/total-cookie-protection/
  * [SETTING] to add site exceptions: Urlbar>ETP Shield
  * [SETTING] to manage site exceptions: Options>Privacy & Security>Enhanced Tracking Protection>Manage Exceptions ***/
-user_pref("privacy.trackingprotection.enabled", true);
-/* 2711: enable various ETP lists ***/
-user_pref("privacy.trackingprotection.socialtracking.enabled", true);
+user_pref("browser.contentblocking.category", "strict");
+
+/* 2720: enable APS (Always Partitioning Storage) ***/
+user_pref(
+  "privacy.partition.always_partition_third_party_non_cookie_storage",
+  true
+); // [FF104+]
+user_pref(
+  "privacy.partition.always_partition_third_party_non_cookie_storage.exempt_sessionstorage",
+  false
+); // [FF105+]
 
 /* 2760: enable Local Storage Next Generation (LSNG) [FF65+] ***/
 user_pref("dom.storage.next_gen", true); // [DEFAULT: true FF92+]
 
 /*** [SECTION 2800]: SHUTDOWN & SANITIZING ***/
 
-/** SANITIZE ON SHUTDOWN : ALL OR NOTHING ***/
-/* 2810: enable Firefox to clear items on shutdown (2811)
- * [SETTING] Privacy & Security>History>Custom Settings>Clear history when Firefox closes ***/
+/* 2810: enable Firefox to clear items on shutdown
+ * [SETTING] Privacy & Security>History>Custom Settings>Clear history when Firefox closes | Settings ***/
 user_pref("privacy.sanitize.sanitizeOnShutdown", true);
 
+/** SANITIZE ON SHUTDOWN: IGNORES "ALLOW" SITE EXCEPTIONS ***/
 /* 2811: set/enforce what items to clear on shutdown (if 2810 is true) [SETUP-CHROME]
  * These items do not use exceptions, it is all or nothing (1681701)
  * [NOTE] If "history" is true, downloads will also be cleared
@@ -419,40 +389,12 @@ user_pref("privacy.sanitize.sanitizeOnShutdown", true);
  * [NOTE] "offlineApps": Offline Website Data: localStorage, service worker cache, QuotaManager (IndexedDB, asm-cache)
  * [SETTING] Privacy & Security>History>Custom Settings>Clear history when Firefox closes>Settings
  * [1] https://en.wikipedia.org/wiki/Basic_access_authentication ***/
-user_pref("privacy.clearOnShutdown.cache", true);     // [DEFAULT: true]
+user_pref("privacy.clearOnShutdown.cache", true); // [DEFAULT: true]
 user_pref("privacy.clearOnShutdown.downloads", true); // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.formdata", true);  // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.history", false);   // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.sessions", false);  // [DEFAULT: true]
-user_pref("privacy.clearOnShutdown.offlineApps", false); // [DEFAULT: false]
-user_pref("privacy.clearOnShutdown.cookies", false);
+user_pref("privacy.clearOnShutdown.formdata", true); // [DEFAULT: true]
+user_pref("privacy.clearOnShutdown.history", false); // [DEFAULT: true]
+user_pref("privacy.clearOnShutdown.sessions", false); // [DEFAULT: true]
 // XXX: `history` and `sessions` has been locally changed.
-
-/*** [SECTION 4000]: FPI (FIRST PARTY ISOLATION)
-   1278037 - indexedDB (FF51+)
-   1277803 - favicons (FF52+)
-   1264562 - OCSP cache (FF52+)
-   1268726 - Shared Workers (FF52+)
-   1316283 - SSL session cache (FF52+)
-   1317927 - media cache (FF53+)
-   1323644 - HSTS and HPKP (FF54+)
-   1334690 - HTTP Alternative Services (FF54+)
-   1334693 - SPDY/HTTP2 (FF55+)
-   1337893 - DNS cache (FF55+)
-   1344170 - blob: URI (FF55+)
-   1300671 - data:, about: URLs (FF55+)
-   1473247 - IP addresses (FF63+)
-   1492607 - postMessage with targetOrigin "*" (requires 4002) (FF65+)
-   1542309 - top-level domain URLs when host is in the public suffix list (FF68+)
-   1506693 - pdfjs range-based requests (FF68+)
-   1330467 - site permissions (FF69+)
-   1534339 - IPv6 (FF73+)
-***/
-
-/* 4001: enable First Party Isolation [FF51+]
- * [SETUP-WEB] Breaks some cross-origin logins
- * [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1260931,1299996 ***/
-user_pref("privacy.firstparty.isolate", true);
 
 /*** [SECTION 5000]: PERSONAL
      Non-project related but useful. If any of these interest you, add them to your overrides

@@ -80,13 +80,11 @@ pacs() {
 }
 
 pacu() {
-	set -x
 	xargs -a <(aur vercmp-devel | cut -d' ' -f1) aur sync -Scu --rebuild "$@"
 	post_aur
 	pac -Syu "$@"
 	flatpak update
 	asdf plugin-update --all
-	set +x
 }
 
 pacQ() {

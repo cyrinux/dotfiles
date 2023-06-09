@@ -1,3 +1,8 @@
+/* hides the native tabs */
+#TabsToolbar {
+  visibility: collapse;
+}
+
 /* Workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=1704404 */
 .tab-label {
   line-height: 1.3;
@@ -10,12 +15,20 @@
    * this undoes that.
    */
 .tabbrowser-tab:hover
-  .tab-icon-stack:not([pinned], [sharing], [crashed], [soundplaying]):is([soundplaying], [muted], [activemedia-blocked])
+  .tab-icon-stack:not([pinned], [sharing], [crashed], [soundplaying]):is(
+    [soundplaying],
+    [muted],
+    [activemedia-blocked]
+  )
   > :not(.tab-icon-overlay) {
   opacity: 1 !important;
 }
 
-.tab-icon-overlay:not([pinned], [sharing], [crashed], [soundplaying]):is([soundplaying], [muted], [activemedia-blocked]) {
+.tab-icon-overlay:not([pinned], [sharing], [crashed], [soundplaying]):is(
+    [soundplaying],
+    [muted],
+    [activemedia-blocked]
+  ) {
   opacity: 0;
 }
 
@@ -59,18 +72,6 @@
 
 /* Hide icon for for templorary containers. */
 #userContext-label[value^="t"] + #userContext-indicator {
-  display: none;
-}
-
-/* Hide the "tracking protection" icon. */
-#tracking-protection-icon-container {
-  display: none;
-}
-
-/* Hide the icons in the URL bar unless its focused or hovered */
-#navigator-toolbox:not(:hover)
-  #urlbar:not([focused="true"])
-  #page-action-buttons {
   display: none;
 }
 

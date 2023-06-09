@@ -21,4 +21,4 @@ Cache
 Seafile
 .tox
 Nextcloud
-.local/share/containers
+src

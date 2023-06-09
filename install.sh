@@ -194,7 +194,7 @@ mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
 
 if [[ "${hostname}" == "work-"* ]]; then
-	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=2 -P '/mnt/var/cache/pacman/cyrinux-aur-local' "https://aur.levis.ws/${march}"
+	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=3 -P '/mnt/var/cache/pacman/cyrinux-aur-local' "https://aur.levis.ws/${march}"
 	rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 else
 	repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
@@ -276,12 +276,7 @@ arch-chroot /mnt arch-secure-boot initial-setup || true
 arch-chroot /mnt arch-secure-boot generate-efi || true
 
 echo -e "\n### Configuring swap file"
-truncate -s 0 /mnt/swap/swapfile
-chattr +C /mnt/swap/swapfile
-btrfs property set /mnt/swap/swapfile compression none
-dd if=/dev/zero of=/mnt/swap/swapfile bs=1M count=4096
-chmod 600 /mnt/swap/swapfile
-mkswap /mnt/swap/swapfile
+btrfs filesystem mkswapfile --size 4G /mnt/swap/swapfile
 echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 echo -e "\n### Creating user"

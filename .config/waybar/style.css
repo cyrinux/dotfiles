@@ -72,7 +72,7 @@ window#waybar {
 #workspaces button {
   padding: 0 5px;
   background: transparent;
-  color: @foreground;
+  color: red;
   border-top: 3px solid @background;
   border-bottom: 3px solid transparent;
 }
