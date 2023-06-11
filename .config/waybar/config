@@ -4,6 +4,7 @@
     "output": "!eDP-1",
     "modules-left": ["hyprland/window"],
     "modules-center": [
+      "custom/planning",
       "custom/yubikey",
       "custom/recording",
       "custom/cast",
@@ -16,10 +17,9 @@
       "clock",
       "custom/dnd",
     ],
-    "custom/fwupd": {
-      "exec": "waybar-fwupd",
-      "return-type": "json",
-      "interval": 3600
+    "custom/planning": {
+        "exec": "waybar-khal",
+        "return-type": "json",
     },
     "custom/prod-status": {
       "exec": "waybar-livestatus",
@@ -103,6 +103,7 @@
   },
   {
     "layer": "top",
+    "position": "bottom",
     "output": "eDP-1",
     "modules-left": [
       "hyprland/submap",
@@ -111,6 +112,7 @@
       "custom/pomo"
     ],
     "modules-right": [
+      "custom/planning",
       "custom/burnout-detector",
       "custom/recording",
       "custom/cast",
@@ -120,7 +122,6 @@
       "custom/prod-status",
       "custom/infra-status",
       "custom/progress",
-      "custom/fwupd",
       "custom/netatmo",
       "custom/usbguard",
       "custom/decrypted",
@@ -147,6 +148,10 @@
          "format": "{icon}",
          "on-click": "activate"
     },
+    "custom/planning": {
+        "exec": "waybar-khal",
+        "return-type": "json",
+    },
     "custom/burnout-detector": {
         "exec": "burnout-detector --waybar -i 1800 -m 4",
         "return-type": "json",
@@ -165,11 +170,6 @@
       "exec": "waybar-netatmo",
       "return-type": "json",
       "interval": 60
-    },
-    "custom/fwupd": {
-      "exec": "waybar-fwupd",
-      "return-type": "json",
-      "interval": 3600
     },
     "custom/progress": {
       "exec": "waybar-progress",

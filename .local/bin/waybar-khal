@@ -3,7 +3,7 @@
 # Shows the calendar event that's happening now, of the next on if there isn't
 # one.
 
-set -euo pipefail
+set -eu
 
 render() {
 	# Find events starting in two minutes.
@@ -26,7 +26,7 @@ render() {
 	)"
 
 	if [ -z "$EVENT" ]; then
-		TEXT="(nothing upcoming)"
+		TEXT=""
 		CLASS="no-event"
 	else
 		TEXT=" $EVENT"
@@ -67,7 +67,7 @@ while true; do
 		--monitor \
 		--timeout 120 \
 		--recursive \
-		"$HOME/.local/share/khal" 2>/dev/null |
+		"$HOME/.local/share/khal" 2> /dev/null |
 		while read -r _; do
 			sleep 1
 			render

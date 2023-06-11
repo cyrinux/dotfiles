@@ -20,10 +20,15 @@ filetypes = ["python"]
 roots = ["requirements.txt", "setup.py", ".git", ".hg"]
 command = "pylsp"
 
+[language.proto]
+filetypes = ["protobuf"]
+roots = [".git", ".hg"]
+command = "pls" # https://github.com/lasorda/protobuf-language-server
+
 [language.rust]
 filetypes = ["rust"]
 roots = ["Cargo.toml"]
-command = "rust-analyzer"
+command = "ra-multiplex"
 settings_section = "rust-analyzer"
 [language.rust.settings.rust-analyzer]
 hoverActions.enable = false # kak-lsp doesn't support this at the moment
@@ -53,6 +58,11 @@ filetypes = ["typescript"]
 roots = ["package.json", "tsconfig.json", ".git", ".hg"]
 command = "typescript-language-server"
 args = ["--stdio"]
+
+[language.zig]
+filetypes = ["zig"]
+roots = ["build.zig"]
+command = "zls"
 
 [semantic_tokens]
 faces = [

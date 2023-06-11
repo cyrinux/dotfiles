@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+set -eu
 trap 'pkill -P $$' EXIT
 
 tooltip="$(timeout 5 khal at | grep -v 'No events' | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')"

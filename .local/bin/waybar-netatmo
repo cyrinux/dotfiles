@@ -55,13 +55,13 @@ expres=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["70:ee
 rainlive=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["05:00:00:04:bd:ac"]["rain_live"]' "$publicdatafile")
 extemptrend=""
 
-if ! bc <<< "$extemp > 26.0" && ! bc <<< "$intemp > $extemp"; then
+if ! bc -q <<< "$extemp > 26.0" > /dev/null && ! bc -q <<< "$intemp > $extemp" > /dev/null; then
 	class="high"
 else
 	class="low"
 fi
 
-if ! bc <<< "$intemp > 25.0"; then
+if ! bc -q <<< "$intemp > 25.0" > /dev/null; then
 	icon="<span foreground='#F44336'></span>"
 else
 	icon="<span foreground='#928374'></span>"

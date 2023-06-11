@@ -22,6 +22,13 @@
     ls = ls-files
     ci = "!browser $(hub ci-status -v | awk '{print $3}')"
     lab = !glab
+	tree = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%n' --abbrev-commit --date=relative --branches
+
+[diff]
+	tool = vimdiff
+	algorithm = patience
+	compactionHeuristic = true
+	colorMoved = default
 
 [branch]
     autosetuprebase = always
@@ -30,30 +37,6 @@
 	templateDir = ~/.config/git/templates
     defaultBranch = main
 
-[color "branch"]
-    current = green reverse
-    local = green
-    remote = yellow
-
-[color "status"]
-    added = green
-    changed = yellow
-    untracked = blue
-
-[color "diff-highlight"]
-    oldNormal = red bold
-    oldHighlight = red bold 52
-    newNormal = green bold
-    newHighlight = green bold 22
-
-[color "diff"]
-    meta = 11
-    frag = magenta bold
-    commit = yellow bold
-    old = red bold
-    new = green bold
-    whitespace = red reverse
-
 [core]
     autocrlf = input
     excludesfile = ~/.config/git/ignore
@@ -61,27 +44,16 @@
     editor = kak
 
 ; [commit]
-    ; template = ~/.config/git/message
-
-[diff]
-    colorMoved = default
+; template = ~/.config/git/message
 
 [delta]
-	features = hyperlinks
-	width = 1
-	minus-emph-style = syntax bold "#780000"
-	minus-style = syntax "#400000"
-	plus-emph-style = syntax bold "#007800"
-	plus-style = syntax "#004000"
-	hunk-header-style = syntax italic "#303030"
-	hunk-header-decoration-style = omit
-	file-style = yellow bold
-	file-decoration-style = yellow ul
-	file-added-label = [+]
-	file-copied-label = [C]
-	file-modified-label = [M]
-	file-removed-label = [-]
-	file-renamed-label = [R]
+	commit-decoration-style = bold ol dim yellow
+	features = line-numbers decorations
+	file-decoration-style = brightyellow ul ol
+	file-style = brightyellow
+	hunk-header-decoration-style = purple box
+	whitespace-error-style = 22 reverse
+	hunk-header-style = file line-number syntax
 
 [merge]
     tool = meld
@@ -111,15 +83,22 @@
     cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED" 2>/dev/null
 
 [interactive]
-    diffFilter = delta --color-only
-[add.interactive]
-    useBuiltin = false
+	diffFilter = delta --relative-paths --line-numbers --color-only --features=interactive
+
+[delta "interactive"]
+	keep-plus-minus-markers = false
 
 [pager]
-    diff = delta
-    log = delta
-    reflog = delta
-    show = delta
+	log = delta --relative-paths
+	show = delta --relative-paths
+	diff = delta --relative-paths
+    reflog = delta --relative-paths
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 
 [user]
     useConfigOnly = true
@@ -148,5 +127,11 @@
 
 [sendemail]
 	annotate = yes
+
+[tag]
+	forceSignAnnotated = true
+
+[fetch]
+	prune = true
 
 # vim:ft=ini

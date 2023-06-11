@@ -70,17 +70,17 @@ install-metapackage:
 	sudo pacman -Sy cyrinux
 	# yes n | sudo pacman -Sy cyrinux
 
-.PHONY: build-podman
-build-podman:
-	podman build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
+.PHONY: build-docker
+build-docker:
+	docker build -t archlinux/dotfiles:latest -f docker/archlinux/Dockerfile .
 
 .PHONY: ci
 # ci: install-metapackage setup-system setup-user
 ci: install-metapackage
 
 .PHONY: test
-test: build-podman build-metapackage
-	podman run -it --rm \
+test: build-docker build-metapackage
+	docker run -it --rm \
 	    --tmpfs /tmp \
 	    --tmpfs /run \
 	    -v "/sys/fs/cgroup:/sys/fs/cgroup:ro" \

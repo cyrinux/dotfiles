@@ -96,6 +96,7 @@ window#waybar {
 #battery.warning,
 #cpu.warning,
 #custom-calendar.on,
+#custom-planning.event,
 #custom-decrypted,
 #custom-dnd.dnd-notification,
 #custom-burnout-detector.warning,
@@ -124,7 +125,6 @@ window#waybar {
 #memory.critical,
 #custom-netatmo.high,
 #cpu.critical,
-#custom-fwupd,
 #temperature.critical {
   border-top: 3px solid @background;
   border-bottom: 3px solid @red;
@@ -152,7 +152,6 @@ window#waybar {
 #backlight,
 #battery,
 #idle_inhibitor,
-#custom-fwupd,
 #custom-secureboot,
 #custom-netatmo,
 #custom-dnd,
