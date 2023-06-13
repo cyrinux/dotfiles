@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.30.0
+pkgver=2.31.0
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')

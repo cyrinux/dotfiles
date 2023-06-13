@@ -1,0 +1,32 @@
+#!/bin/bash
+
+trap 'pkill -P $$' EXIT
+
+if ! command -v piactl &> /dev/null; then
+	echo "$0: piactl command not found"
+	exit
+fi
+
+region() {
+	piactl get region
+}
+
+pubip() {
+	piactl get pubip
+}
+
+vpn() {
+	state=$1
+	if [[ "x${state}x" == "xConnectedx" ]]; then
+		icon="<span foreground='#928374'></span>"
+		class=on
+	else
+		icon="<span foreground='#928374'></span>"
+		class=off
+	fi
+	printf '{"text": " %s ", "tooltip": "%s-%s", "class": "%s"}\n' "$icon" "$(region)" "$(pubip)" "$class"
+}
+
+vpn
+
+piactl monitor connectionstate | while read -r state; do vpn $state; done

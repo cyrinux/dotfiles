@@ -103,7 +103,8 @@ window#waybar {
 #custom-mail,
 #custom-systemd,
 #custom-usbguard,
-#custom-vpn.off,
+#custom-vpn-pia.off,
+#custom-vpn-work.off,
 #memory.warning,
 #custom-dnd.dnd-none {
   border-top: 3px solid @background;
@@ -144,6 +145,7 @@ window#waybar {
 #network,
 #custom-infra-status,
 #custom-vpn-work,
+#custom-vpn-pia,
 #custom-prod-status,
 #custom-prod-status.pause,
 #temperature,
@@ -161,7 +163,7 @@ window#waybar {
   margin: 0 6px;
 }
 
-#custom-vpn,
+#custom-vpn-pia.on,
 #custom-vpn-work.on,
 #custom-recording,
 #custom-cast {

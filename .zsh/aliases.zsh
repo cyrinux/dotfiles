@@ -190,4 +190,6 @@ go-release() {
 
 alias cachegrind='valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes --simulate-cache=yes'
 
+alias pia-login='piactl login <(pass personal/http/privateinternetaccess.com-pactl-login)'
+
 complete -C pomo pomo

@@ -103,15 +103,15 @@
   },
   {
     "layer": "top",
-    "position": "bottom",
+    "position": "top",
     "output": "eDP-1",
     "modules-left": [
       "hyprland/submap",
       "wlr/workspaces",
       "hyprland/window",
-      "custom/pomo"
     ],
     "modules-right": [
+      "custom/pomo",
       "custom/planning",
       "custom/burnout-detector",
       "custom/recording",
@@ -131,6 +131,7 @@
       "custom/mail",
       "network",
       "custom/vpn#work",
+      "custom/vpn#pia",
       "cpu",
       "temperature",
       "memory",
@@ -140,6 +141,11 @@
       "clock",
       "custom/yubikey",
     ],
+    "custom/vpn#pia": {
+      "exec": "waybar-vpn-pia",
+      "return-type": "json",
+      "on-click": "pia_dmenu"
+    },
     "hyprland/language": {
         "min-length": 3,
     },

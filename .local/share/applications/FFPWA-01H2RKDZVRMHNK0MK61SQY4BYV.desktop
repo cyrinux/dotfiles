@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.4
+Name=Riot - Matrix
+Comment=Riot element matrix
+Keywords=;
+Categories=GTK;WebApps;Chat;Network;
+Icon=FFPWA-01H2RKDZVRMHNK0MK61SQY4BYV
+Exec=/usr/bin/firefoxpwa site launch 01H2RKDZVRMHNK0MK61SQY4BYV --protocol %u
+Actions=
+MimeType=
+Terminal=false
+StartupNotify=true
+StartupWMClass=FFPWA-01H2RKDZVRMHNK0MK61SQY4BYV

@@ -7,6 +7,7 @@ mkdir -p /tmp/screenshots
 cd /tmp/screenshots || exit 1
 
 hyprctl keyword decoration:dim_strength 0
+hyprctl keyword animations:enabled false
 
 case ${1:-monitor} in
 	window)
@@ -47,5 +48,6 @@ esac
 	wl-copy < rounded.png
 
 hyprctl keyword decoration:dim_strength 0.2
+hyprctl keyword animations:enabled true
 
 rm -f screen.png area.png rounded.png edited.png
