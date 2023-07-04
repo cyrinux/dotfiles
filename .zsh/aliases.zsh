@@ -1,21 +1,25 @@
 #!/usr/bin/env zsh
 
-command -v bat &> /dev/null && alias c='bat' || alias c='cat'
-command -v lsd &> /dev/null && alias la='ll -a' || alias la='ll -A'
-command -v lsd &> /dev/null && alias lk='ll -s=size' || alias lk='ll -r --sort=size'
-command -v lsd &> /dev/null && alias lm='ll --timesort -r' || alias lm='ll -r --sort=time'
-command -v lsd &> /dev/null && alias ls='lsd --icon=never' || alias ls='ls --color=auto --group-directories-first -h'
-command -v fd &> /dev/null && alias fd='fd --hidden --follow' || alias fd='find . -name'
-command -v git &> /dev/null && alias diff='git diff --no-index'
-command -v htop &> /dev/null && alias top='htop'
-command -v dfrs &> /dev/null && alias df='dfrs'
-command -v rg &> /dev/null && alias rg='rg --hidden --follow --smart-case 2>/dev/null' || alias rg='grep --color=auto --exclude-dir=.git -R'
-command -v trash-put &> /dev/null && alias rm='trash-put'
+iscmd() {
+    command -v "$1" > /dev/null
+}
+
+iscmd bat && alias c='bat' || alias c='cat'
+iscmd lsd && alias la='ll -a' || alias la='ll -A'
+iscmd lsd && alias lk='ll -s=size' || alias lk='ll -r --sort=size'
+iscmd lsd && alias lm='ll --timesort -r' || alias lm='ll -r --sort=time'
+iscmd lsd && alias ls='lsd --icon=never' || alias ls='ls --color=auto --group-directories-first -h'
+iscmd fd && alias fd='fd --hidden --follow' || alias fd='find . -name'
+iscmd git && alias diff='git diff --no-index'
+iscmd htop && alias top='htop'
+iscmd dfrs && alias df='dfrs'
+iscmd rg && alias rg='rg --hidden --follow --smart-case 2>/dev/null' || alias rg='grep --color=auto --exclude-dir=.git -R'
+iscmd trash-put && alias rm='trash-put'
 compdef trash-put=rm
-command -v dog &> /dev/null && alias d='dog' || alias d='dig +nocmd +multiline +noall +answer'
-command -v curlie &> /dev/null && alias curl='curlie'
-command -v gdu &> /dev/null && alias ncdu='gdu'
-command -v lsplug &> /dev/null && alias lsusb='lsplug'
+iscmd dog && alias d='dog' || alias d='dig +nocmd +multiline +noall +answer'
+iscmd curlie && alias curl='curlie'
+iscmd gdu && alias ncdu='gdu'
+iscmd lsplug && alias lsusb='lsplug'
 
 man() (
     command man "$@" || "$1" --help || "$1" -h
@@ -193,3 +197,10 @@ alias cachegrind='valgrind --tool=callgrind --dump-instr=yes --collect-jumps=yes
 alias pia-login='piactl login <(pass personal/http/privateinternetaccess.com-pactl-login)'
 
 complete -C pomo pomo
+
+alias battery='upower -i /org/freedesktop/UPower/devices/battery_macsmc_battery'
+
+alias issue='gh issue create'
+alias issues='gh issue list'
+alias pull-request='gh pr create'
+alias pull-requests='gh pr list'

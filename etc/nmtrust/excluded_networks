@@ -1,4 +1,5 @@
 tun-prod
+lo
 br-*
 virbr[0,1]
 venet[0,1]

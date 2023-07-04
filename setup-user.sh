@@ -357,10 +357,10 @@ pre-commit install-hooks
 mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
-flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian
+flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian dev.k8slens.OpenLens
 
-# asdf
-for s in direnv kubectl kind terraform kustomize helmfile helm; do
+# asdf (asdf plugin list | xargs)
+for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault; do
 	asdf plugin-add $s
 	asdf install $s latest
 done

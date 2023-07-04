@@ -129,11 +129,12 @@
       "custom/updates",
       "custom/calendar",
       "custom/mail",
+      "custom/storage-home",
       "network",
-      "custom/vpn#work",
-      "custom/vpn#pia",
+      "custom/vpn-work",
+      "custom/vpn-pia",
       "cpu",
-      "temperature",
+//      "temperature",
       "memory",
       "backlight",
       "hyprland/language",
@@ -141,7 +142,7 @@
       "clock",
       "custom/yubikey",
     ],
-    "custom/vpn#pia": {
+    "custom/vpn-pia": {
       "exec": "waybar-vpn-pia",
       "return-type": "json",
       "on-click": "pia_dmenu"
@@ -220,7 +221,7 @@
       "format": "{icon}{}",
       "return-type": "json"
     },
-    "custom/vpn#work": {
+    "custom/vpn-work": {
       "exec": "waybar-vpn-work",
       "return-type": "json",
       "on-click": "nmcli con up VPN-Prod",
@@ -247,6 +248,12 @@
       "signal": 3,
       "on-click": "cast toggle-recording",
     },
+    "custom/storage-home": {
+      "exec": "waybar-storage /home",
+      "format": " / {}%",
+      "return-type": "json",
+      "interval": 120,
+    },
     "custom/cast": {
       "exec": "waybar-cast",
       "return-type": "json",
@@ -254,25 +261,25 @@
       "signal": 3,
       "on-click": "cast toggle-stream",
     },
-    "custom/movie": {
-      "exec": "waybar-movie show",
-      "return-type": "json",
-      "signal": 4,
-      "interval": "once",
-      "on-click": "waybar-movie toggle"
-    },
+//    "custom/movie": {
+//      "exec": "waybar-movie show",
+//      "return-type": "json",
+//      "signal": 4,
+//      "interval": "once",
+//      "on-click": "waybar-movie toggle"
+//    },
     "clock": {
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
       "format": "<span foreground='#928374'></span> {:%a, %d %b  <span foreground='#928374'></span> %H:%M}"
     },
-    "temperature": {
-      "thermal-zone": 0,
-      "critical-threshold": 40,
-      "format-critical": "{temperatureC}°C",
-      "format": "{temperatureC}°C"
-    },
+//    "temperature": {
+//      "thermal-zone": 0,
+//      "critical-threshold": 40,
+//      "format-critical": "{temperatureC}°C",
+//      "format": "{temperatureC}°C"
+//    },
     "cpu": {
-      "format": "<span foreground='#928374'></span> {usage}% {avg_frequency}GHz",
+      "format": "<span foreground='#928374'> </span>{usage:>2}%",
       "states": {
         "warning": 90,
         "critical": 100

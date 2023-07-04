@@ -109,6 +109,7 @@ copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
 copy "etc/qemu/bridge.conf"
 copy "etc/udev/rules.d/50-yubikey_power_save.rules"
+copy "etc/udev/rules.d/10-battery.rules"
 copy "etc/containers"
 copy "etc/nmtrust/excluded_networks" 644
 copy "etc/nmtrust/trusted_units" 644

@@ -15,4 +15,4 @@ shift
 
 COMMAND=${*:-bash}
 
-sudo docker run --platform linux/arm64 --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND
+docker run --platform linux/arm64 --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND

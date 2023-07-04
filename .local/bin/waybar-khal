@@ -10,7 +10,7 @@ render() {
 	# So if my current event ends in two minutes and another one starts, the
 	# widget is already updated with what's upcoming.
 	SINCE="$(date -d 'now +2 min' '+%Y-%m-%d %H:%M')"
-	UNTIL="$(date -d 'now +1 day' '+%Y-%m-%d %H:%M')"
+	UNTIL="$(date -d 'now +8 hour' '+%Y-%m-%d %H:%M')"
 
 	# TODO: On overlap, try to prefer the event where I've confirmed attendance.
 

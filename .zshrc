@@ -111,6 +111,7 @@ export LPASS_CLIPBOARD_COMMAND='wl-copy -o'
 ###
 z4h source -- /etc/bash_completion.d/azure-cli
 z4h source -- /usr/share/LS_COLORS/dircolors.sh
-z4h source -- /opt/asdf-vm/asdf.sh
 z4h source -- ~/.zsh/{aliases,pacman,git,ssh,docker,kubectl,server,pentest}.zsh
 z4h source -- ~/.zshrc-private/{personal,work}.zsh
+z4h source -- /opt/asdf-vm/asdf.sh
+# z4h source -- ~/.config/asdf-direnv/zshrc

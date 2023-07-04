@@ -17,14 +17,16 @@ pubip() {
 
 vpn() {
 	state=$1
+
 	if [[ "x${state}x" == "xConnectedx" ]]; then
-		icon="<span foreground='#928374'></span>"
+		icon="<span foreground='#928374'></span>"
 		class=on
 	else
-		icon="<span foreground='#928374'></span>"
+		icon="<span foreground='#928374'></span>"
 		class=off
 	fi
-	printf '{"text": " %s ", "tooltip": "%s-%s", "class": "%s"}\n' "$icon" "$(region)" "$(pubip)" "$class"
+
+	printf '{"text": "%s", "tooltip": "%s-%s", "class": "%s"}\n' "$icon" "$(region)" "$(pubip)" "$class"
 }
 
 vpn

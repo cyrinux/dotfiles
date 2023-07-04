@@ -46,6 +46,7 @@ window#waybar {
 #battery,
 #clock,
 #cpu,
+#custom-storage-home,
 #custom-burnout-detector,
 #custom-decrypted,
 #custom-dnd,
@@ -104,7 +105,6 @@ window#waybar {
 #custom-systemd,
 #custom-usbguard,
 #custom-vpn-pia.off,
-#custom-vpn-work.off,
 #memory.warning,
 #custom-dnd.dnd-none {
   border-top: 3px solid @background;
@@ -131,7 +131,7 @@ window#waybar {
   border-bottom: 3px solid @red;
 }
 
-#custom-scratchpad,
+#custom-storage-home,
 #submap,
 #pulseaudio,
 #custom-progress,
@@ -163,7 +163,11 @@ window#waybar {
   margin: 0 6px;
 }
 
-#custom-vpn-pia.on,
+#custom-vpn-pia.on {
+  border-bottom: 3px solid @green;
+  border-top: 3px solid @green;
+}
+
 #custom-vpn-work.on,
 #custom-recording,
 #custom-cast {

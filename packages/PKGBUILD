@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.31.0
+pkgver=2.32.1
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -73,7 +73,6 @@ package_cyrinux-base() {
         'autovdirsyncer'
         'tesseract-data-eng'
         'tesseract-data-fra'
-        'aws-cli-v2'
         'azure-cli'
         'bandwhich'
         'bash-completion'
@@ -218,7 +217,6 @@ package_cyrinux-base() {
         'kitty'
         'kitty-terminfo'
         'kubecfg'
-        'kubectl'
         'krew'
         'kubectx'
         'helm'
@@ -467,7 +465,7 @@ package_cyrinux-base() {
         'terraform'
         'terraform-ls'
         'texinfo'
-        'texlive-moderncv-git'
+        'texlive-moderncv'
         'the_silver_searcher'
         'tig'
         'tmux-cssh'
@@ -566,7 +564,6 @@ package_cyrinux-base() {
         'yaml-language-server'
         'mkcert'
         'jless'
-        'google-cloud-sdk'
         'sops'
         'wlr-randr'
         'python-gitpython'

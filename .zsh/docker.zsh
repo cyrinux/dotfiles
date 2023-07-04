@@ -55,23 +55,27 @@ function dockershellshhere() {
 	sudo docker run --rm -it --entrypoint=/bin/sh -v $(pwd):/${dirname} -w /${dirname} "$@"
 }
 
-# function vagrant() {
-# 	sudo docker run -it --rm \
-# 		-e LIBVIRT_DEFAULT_URI \
-# 		-v /var/run/libvirt/:/var/run/libvirt/ \
-# 		-v ~/.vagrant.d/boxes:/vagrant/boxes \
-# 		-v ~/.vagrant.d/data:/vagrant/data \
-# 		-v ~/.vagrant.d/tmp:/vagrant/tmp \
-# 		-v $(realpath "${PWD}"):${PWD} \
-# 		-v /etc/hosts:/etc/hosts \
-# 		-w $(realpath "${PWD}") \
-# 		--network host \
-# 		--entrypoint /bin/bash \
-# 		--security-opt label=disable \
-# 		docker.io/vagrantlibvirt/vagrant-libvirt:latest \
-# 		vagrant $@
-# }
+function vagrant() {
+	sudo docker run -it --rm \
+		-e LIBVIRT_DEFAULT_URI \
+		-v /var/run/libvirt/:/var/run/libvirt/ \
+		-v ~/.vagrant.d/boxes:/vagrant/boxes \
+		-v ~/.vagrant.d/data:/vagrant/data \
+		-v ~/.vagrant.d/tmp:/vagrant/tmp \
+		-v $(realpath "${PWD}"):${PWD} \
+		-v /etc/hosts:/etc/hosts \
+		-w $(realpath "${PWD}") \
+		--network host \
+		--entrypoint /bin/bash \
+		--security-opt label=disable \
+		docker.io/vagrantlibvirt/vagrant-libvirt:latest \
+		vagrant $@
+}
 
 alias mk='minikube'
 alias dock-on='sudo nft -f /etc/nftables-docker.conf && sudo systemctl start docker'
 alias dock-off='sudo systemctl stop docker containerd && sudo nft -f /etc/nftables.conf && sudo ip l d docker0'
+
+# Helm
+alias hru="helm repo update"
+alias hp="helm pull"
