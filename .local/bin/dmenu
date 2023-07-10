@@ -75,7 +75,7 @@ if [ -n "$kitty_launch_type" ]; then
 else
 
     env "FILTER_MODE=1" "FZF_OPTS=$fzf_args" "PREVIEW_SCRIPT=$preview_script" \
-        env LIBGL_ALWAYS_SOFTWARE=1 kitty --class "$kitty_class" --directory "$tmp" -o font_size=12 -o window_padding_width=5 "$self" > /dev/null 2>&1
+        kitty --class "$kitty_class" --directory "$tmp" -o font_size=12 -o window_padding_width=5 "$self" > /dev/null 2>&1
 fi
 
 lines=$(wc -l < "$tmp/out")

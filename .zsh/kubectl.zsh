@@ -1,6 +1,7 @@
 export PATH="${PATH}:${HOME}/.krew/bin"
 
 alias k='kubectl'
+alias ku='kubectl uncordon'
 alias kc='kubectx "$(kubectx | fzf +m --height=10%)"'
 alias kn='kubens "$(kubens | fzf +m --height=10%)"'
 alias kd='k describe'
@@ -36,4 +37,12 @@ kcout() {
 		sed -i -E '/^\s*(access-token|expires-in|expires-on|refresh-token)/d' "$config"
 	done <<< "${KUBECONFIG:-$HOME/.kube/config}:"
 	echo "disconnected"
+}
+
+iscmd minikube && . <(minikube completion zsh)
+minikube-all-pause() {
+	for p in $(minikube profile list -o json | jq -r ".valid[] .Name") ; do minikube pause -p $p; done
+}
+minikube-all-resume() {
+	for p in $(minikube profile list -o json | jq -r ".valid[] .Name") ; do minikube resume -p $p; done
 }

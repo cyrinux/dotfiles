@@ -16,12 +16,13 @@ alias dc="docker-compose"
 alias dcd='dc down'
 alias dcl='dc logs -t -f --tail=1000'
 alias dclp='dc pull'
-alias dcr='dcd; dcu'
+alias dcdu='dcd; dcu'
 alias dce='dc exec'
 alias dcr='dc restart'
 alias dcs='dc ps'
-alias dcu='dc up'
-alias dcudb='dcu -d --build'
+alias dcu='dc up -d'
+alias dcuf='dc up'
+alias dcub='dcu --build'
 
 alias fedora="pod fedora:latest"
 alias ubuntu="pod ubuntu:latest"

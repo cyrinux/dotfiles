@@ -199,8 +199,3 @@ alias pia-login='piactl login <(pass personal/http/privateinternetaccess.com-pac
 complete -C pomo pomo
 
 alias battery='upower -i /org/freedesktop/UPower/devices/battery_macsmc_battery'
-
-alias issue='gh issue create'
-alias issues='gh issue list'
-alias pull-request='gh pr create'
-alias pull-requests='gh pr list'

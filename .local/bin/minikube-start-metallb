@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+MINIKUBE_PROFILE_NAME="minikube-metallb"
+
+minikube -p $MINIKUBE_PROFILE_NAME delete
+
+minikube start -p $MINIKUBE_PROFILE_NAME --addons=metallb --container-runtime=containerd -n 3
+kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0 --context $MINIKUBE_PROFILE_NAME
+kubectl expose deployment hello-minikube --type=LoadBalancer --port=80 --target-port=8080 --context $MINIKUBE_PROFILE_NAME
+
+configure_metallb_for_minikube() {
+    # determine load balancer ingress range
+    CIDR_BASE_ADDR="$(minikube ip -p $MINIKUBE_PROFILE_NAME)"
+    INGRESS_FIRST_ADDR="$(echo "${CIDR_BASE_ADDR}" | awk -F'.' '{print $1,$2,$3,2}' OFS='.')"
+    INGRESS_LAST_ADDR="$(echo "${CIDR_BASE_ADDR}" | awk -F'.' '{print $1,$2,$3,255}' OFS='.')"
+    INGRESS_RANGE="${INGRESS_FIRST_ADDR}-${INGRESS_LAST_ADDR}"
+
+    CONFIG_MAP="apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - $INGRESS_RANGE"
+
+    # configure metallb ingress address range
+    echo "${CONFIG_MAP}" | kubectl apply --context $MINIKUBE_PROFILE_NAME -f -
+}
+
+configure_metallb_for_minikube
+
+kubectl get nodes --context $MINIKUBE_PROFILE_NAME
+kubectl get svc -A --context $MINIKUBE_PROFILE_NAME
+
+minikube -p $MINIKUBE_PROFILE_NAME addons enable metrics-server
+minikube -p $MINIKUBE_PROFILE_NAME node add
+# minikube -p $MINIKUBE_PROFILE_NAME dashboard --url=false
+
+# curl 10.0.0.1.nip.io

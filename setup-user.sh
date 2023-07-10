@@ -358,11 +358,13 @@ mkdir -p ~/.vagrant.d/{boxes,data,tmp}
 
 # flatpak
 flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian dev.k8slens.OpenLens
+flatpak override --user --env=OBSIDIAN_USE_WAYLAND=1 md.obsidian.Obsidian
 
 # asdf (asdf plugin list | xargs)
 for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault; do
 	asdf plugin-add $s
 	asdf install $s latest
+	asdf global $s latest
 done
 
 # pomo

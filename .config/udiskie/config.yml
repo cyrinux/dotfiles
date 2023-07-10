@@ -2,6 +2,7 @@ program_options:
   tray: false
   automount: true
   notify: true
+  notify_command: "notify-send --icon=drive-removable-media {{event}} {{device_presentation}}"
   password_prompt: ["pass", "personal/crypt/usb/{id_uuid}"]
 
 device_config:

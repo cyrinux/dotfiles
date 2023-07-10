@@ -94,7 +94,7 @@ case "$subcommand" in
         mime="$(query "SELECT mime, writefile('$file', contents) FROM entries WHERE id='$id'" | awk 'NR == 1 { print $3 }')"
 
         if [[ "$mime" == image/* ]]; then
-            env LIBGL_ALWAYS_SOFTWARE=1 kitty +kitten icat --silent --stdin=no "$file"
+            env MESA_LOADER_DRIVER_OVERRIDE=asahi kitty +kitten icat --silent --stdin=no "$file"
         else
             language="bash"
             [[ "$mime" == application/json ]] && language="json"
