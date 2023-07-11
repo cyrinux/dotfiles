@@ -1,7 +1,7 @@
 source "~/.config/kak/state-save/state-save.kak"
 
 hook global KakBegin .* %{
-    state-save-reg-load colon
+        state-save-reg-load colon
     state-save-reg-load pipe
     state-save-reg-load slash
 }

@@ -94,7 +94,7 @@ case "$subcommand" in
         mime="$(query "SELECT mime, writefile('$file', contents) FROM entries WHERE id='$id'" | awk 'NR == 1 { print $3 }')"
 
         if [[ "$mime" == image/* ]]; then
-            env MESA_LOADER_DRIVER_OVERRIDE=asahi kitty +kitten icat --silent --stdin=no "$file"
+            cat "$file" | kitty +kitten icat
         else
             language="bash"
             [[ "$mime" == application/json ]] && language="json"
@@ -103,6 +103,7 @@ case "$subcommand" in
             [[ "$mime" == text/x-diff ]] && language="diff"
             [[ "$mime" == text/x-makefile ]] && language="makefile"
             [[ "$mime" == text/x-script.python ]] && language="python"
+            [[ "$mime" == text/x-script.python ]] && language="rs"
 
             bat -l "$language" --color always -pp < "$file"
         fi

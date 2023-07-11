@@ -1,5 +1,5 @@
 color = true
-enable-notifications = false
+enable-notifications = true
 # notification-command = notify-send -i '%a' scli '%s - %m'
 notification-command = notify-send -i '%a' scli '%s - You receive a message'
 one-sided = true

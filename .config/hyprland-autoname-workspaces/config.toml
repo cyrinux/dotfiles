@@ -126,7 +126,7 @@ aurs = ""
 [exclude]
 
 [format]
-dedup = true
+dedup = false
 dedup_inactive_fullscreen = true
 delim = " "
 workspace = "{id}:<span color='#ebdbb2'>{delim}{clients}</span>"
