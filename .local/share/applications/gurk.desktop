@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Gurk
+Categories=Network;
+Type=Application
+Exec=/usr/bin/gurk %u
+Terminal=true
+StartupNotify=true
+Icon=/usr/share/icons/hicolor/128x128/apps/signal-desktop-arm.png
