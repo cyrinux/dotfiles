@@ -8,6 +8,8 @@ set -eu
 # current profile.
 #
 
+command -v powerprofilectl || exit 0
+
 PSET="powerprofilesctl set"
 PGET="powerprofilesctl get"
 

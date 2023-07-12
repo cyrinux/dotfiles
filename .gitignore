@@ -13,4 +13,4 @@ etc/containers
 exegol
 .local/bin/backup-mailserver
 .local/bin/checkmail
-.local/share/applications/*Telegram*
+.local/share/applications/FFPWA-*.desktop

@@ -162,7 +162,6 @@ echo "Enabling and starting services..."
 echo "================================="
 
 systemctl_enable_start "systemd-oomd.socket"
-systemctl_enable_start "power-profiles-daemon.service"
 systemctl_enable_start "firewalld.service"
 systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"

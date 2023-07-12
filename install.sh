@@ -6,24 +6,15 @@
 # https://github.com/cyrinux/dotfiles
 # https://github.com/maximbaz/dotfiles
 #
-# Bootable USB:
-# - [Download](https://archlinux.org/download/) ISO and GPG files
-# - Verify the ISO file: `$ pacman-key -v archlinux-<version>-dual.iso.sig`
-# - Create a bootable USB with: `# dd if=archlinux*.iso of=/dev/sdX && sync`
-#
-# UEFI setup:
-#
-# - Set boot mode to UEFI, disable Legacy mode entirely.
-# - Temporarily disable Secure Boot.
-# - Make sure a strong UEFI administrator password is set.
-# - Delete preloaded OEM keys for Secure Boot, allow custom ones.
-# - Set SATA operation to AHCI mode.
+# Install minimal Asahi, choose option 2 for minimal:
+# - curl https://alx.sh | sh
+# - then boot on it and start this script
 #
 # Run installation:
 #
 # - Connect to wifi via: `# iwctl station wlan0 connect WIFI-NETWORK`
 #
-# bash <(curl -sL https://git.io/cyrinux-install-macbook)
+# bash <(curl -sL https://git.io/cyrinux-install)
 
 set -euf -o pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
@@ -195,7 +186,7 @@ ln -sfT dash /mnt/usr/bin/sh
 
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
-genfstab -L /mnt >> /mnt/etc/fstab
+genfstab -L /mnt > /mnt/etc/fstab
 echo "${hostname}" > /mnt/etc/hostname
 echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
@@ -218,9 +209,9 @@ EOF
 echo -e "\n### Setting up Secure Boot with custom keys"
 arch-chroot /mnt mkinitcpio -P
 cat << EOF > /mnt/etc/default/update-m1n1
-echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet splash loglevel=3 rd.udev.log_priority=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1"
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1"
 cat /lib/asahi-boot/m1n1.bin \
-<(echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet splash loglevel=3 rd.udev.log_priority=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1") \
+<(echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1") \
 /lib/modules/*-edge-ARCH/dtbs/*.dtb \
 /boot/initramfs-linux-asahi-edge.img \
 <(gzip -c /boot/vmlinuz-linux-asahi-edge) \
