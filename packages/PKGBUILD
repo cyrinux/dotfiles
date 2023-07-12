@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.3
+pkgver=2.33.4
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -798,6 +798,7 @@ package_cyrinux-x86_64() {
 package_cyrinux-aarch64() {
     depends=(
         # base
+        'linux-asahi-edge'
         'linux-asahi'
         'linux-asahi-headers'
 
@@ -807,6 +808,7 @@ package_cyrinux-aarch64() {
         'asahi-meta'
 
         'opensnitch-ebpf-module'
+        'python-pyasn'
         'python-qt-material'
     )
 }

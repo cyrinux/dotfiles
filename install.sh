@@ -23,7 +23,7 @@
 #
 # - Connect to wifi via: `# iwctl station wlan0 connect WIFI-NETWORK`
 #
-# bash <(curl -sL https://git.io/cyrinux-install)
+# bash <(curl -sL https://git.io/cyrinux-install-macbook)
 
 set -euf -o pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
@@ -34,7 +34,7 @@ exec 2> >(tee "stderr.log" >&2)
 export SNAP_PAC_SKIP=y
 
 # Dialog
-BACKTITLE="Arch Linux installation"
+BACKTITLE="Asahi Arch Linux installation"
 
 get_input() {
 	title="$1"
@@ -82,7 +82,7 @@ timedatectl set-timezone Europe/Paris
 hwclock --systohc --utc
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git reflector terminus-font dialog wget yubikey-full-disk-encryption bc
+pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools kakoune iwd
 
 echo -e "\n### HiDPI screens"
 noyes=("Yes" "The font is too small" "No" "The font size is just fine")
@@ -95,16 +95,9 @@ hostname=$(get_input "Hostname" "Enter hostname") || exit 1
 clear
 : "${hostname:?"hostname cannot be empty"}"
 
-echo -e "\n### Luks screens"
-noyes=("Yes" "Use luks Yubikey full disk encryption" "No" "Use standard luks full disk encryption")
-fde=$(get_choice "Luks Encryption" "Use Yubikey FDE project?" "${noyes[@]}") || exit 1
+lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
 clear
-
-[[ "$fde" == "No" ]] && {
-	lukspw=$(get_password "LUKS" "Enter luks password") || exit 1
-	clear
-	: "${lukspw:?"password cannot be empty"}"
-}
+: "${lukspw:?"password cannot be empty"}"
 
 user=$(get_input "User" "Enter username") || exit 1
 clear
@@ -119,42 +112,22 @@ read -r -a devicelist <<< "$devicelist"
 device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
 clear
 
-luks_header_device=$(get_choice "Installation" "Select disk to write LUKS header to" "${devicelist[@]}") || exit 1
-
-clear
-
-echo -e "\n### Setting up fastest mirrors"
-reflector --latest 30 --sort rate --save /etc/pacman.d/mirrorlist
-
 echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
-sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
+# sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
+# sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
 
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
-
-if [ "$device" != "$luks_header_device" ]; then
-	cryptargs="--header $luks_header_device"
-else
-	cryptargs=""
-	luks_header_device="$part_root"
-fi
+# TODO: do sgdisk --change-name and dosfstools
 
 echo -e "\n### Formatting partitions"
-mkfs.vfat -n "EFI" -F 32 "${part_boot}"
+echo -n "${lukspw}" | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks0 "${part_root}"
+echo -n "${lukspw}" | cryptsetup luksOpen "${part_root}" luks
 
-if [[ "$fde" == "Yes" ]]; then
-	ykfde-format --type luks2 --pbkdf argon2id --iter-time 5000 --label=luks "${part_root}"
-	ykfde-open -d "${part_root}" -n luks
-else
-	echo -n "${lukspw}" | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks $cryptargs "${part_root}"
-	echo -n "${lukspw}" | cryptsetup luksOpen $cryptargs "${part_root}" luks
-fi
-
-mkfs.btrfs -L btrfs /dev/mapper/luks
+mkfs.btrfs -L main0 /dev/mapper/luks
 
 echo -e "\n### Setting up BTRFS subvolumes"
 
@@ -172,8 +145,8 @@ btrfs subvolume create /mnt/snapshots
 umount /mnt
 
 mount -o noatime,nodiratime,compress=zstd,subvol=root /dev/mapper/luks /mnt
-mkdir -vp /mnt/{mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild,steam}},swap,.snapshots}
-mount "${part_boot}" /mnt/efi
+mkdir -vp /mnt/{mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild}},swap,.snapshots}
+mount "${part_boot}" /mnt/boot/efi
 mount -o noatime,nodiratime,compress=zstd,subvol=/ /dev/mapper/luks /mnt/mnt/btrfs-root
 mount -o noatime,nodiratime,compress=zstd,subvol=home /dev/mapper/luks /mnt/home
 mount -o noatime,nodiratime,compress=zstd,subvol=pkgs /dev/mapper/luks /mnt/var/cache/pacman
@@ -215,21 +188,10 @@ EOF
 fi
 
 echo -e "\n### Installing packages"
-pacstrap /mnt cyrinux-base cyrinux-$(uname -m)
+pacstrap /mnt posix base man-pages cyrinux-base cyrinux-"$(uname -m)"
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
-
-cryptsetup luksHeaderBackup "${luks_header_device}" --header-backup-file /tmp/header.img
-luks_header_size="$(stat -c '%s' /tmp/header.img)"
-rm -f /tmp/header.img
-
-if [[ "$fde" == "Yes" ]]; then
-	echo "root=LABEL=btrfs rw rootflags=subvol=root cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet" > /mnt/etc/kernel/cmdline
-else
-	echo "cryptdevice=PARTLABEL=primary:luks:allow-discards cryptheader=LABEL=luks:0:$luks_header_size root=LABEL=btrfs rw rootflags=subvol=root quiet loglevel=3 nowatchdog apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt intel_iommu=on systemd.unified_cgroup_hierarchy=1 quiet
-    " > /mnt/etc/kernel/cmdline
-fi
 
 echo "FONT=$font" > /mnt/etc/vconsole.conf
 echo "KEYMAP=fr" >> /mnt/etc/vconsole.conf
@@ -239,21 +201,13 @@ echo "en_US.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 echo "fr_FR.UTF-8 UTF-8" >> /mnt/etc/locale.gen
 ln -sf /usr/share/zoneinfo/Europe/Paris /mnt/etc/localtime
 arch-chroot /mnt locale-gen
-if [[ "$fde" == "Yes" ]]; then
-	cat << EOF > /mnt/etc/mkinitcpio.conf
+
+cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
-HOOKS=(base consolefont udev autodetect modconf block encrypt filesystems keyboard)
+HOOKS=(base asahi systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems resume fsck)
 EOF
-else
-	cat << EOF > /mnt/etc/mkinitcpio.conf
-MODULES=()
-BINARIES=(/usr/bin/btrfs)
-FILES=()
-HOOKS=(base consolefont udev autodetect modconf block encrypt-dh filesystems keyboard)
-EOF
-fi
 
 cat << EOF > /mnt/etc/sudoers
 root ALL=(ALL) ALL
@@ -262,18 +216,19 @@ root ALL=(ALL) ALL
 EOF
 
 echo -e "\n### Setting up Secure Boot with custom keys"
-[[ "$fde" == "Yes" ]] && {
-	sed -i 's/encrypt/ykfde encrypt/' /mnt/etc/mkinitcpio.conf
-	echo 'YKFDE_CHALLENGE_PASSWORD_NEEDED="1"' >> /mnt/etc/ykfde.conf
-	if [ "$device" != "$luks_header_device" ]; then
-		echo 'YKFDE_LUKS_OPTIONS="--allow-discards --header=/dev/mmcblk0"' >> /mnt/etc/ykfde.conf
-	fi
-}
-echo KERNEL=linux > /mnt/etc/arch-secure-boot/config
+arch-chroot /mnt mkinitcpio -P
+cat << EOF > /mnt/etc/default/update-m1n1
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet splash loglevel=3 rd.udev.log_priority=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1"
+cat /lib/asahi-boot/m1n1.bin \
+<(echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet splash loglevel=3 rd.udev.log_priority=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1") \
+/lib/modules/*-edge-ARCH/dtbs/*.dtb \
+/boot/initramfs-linux-asahi-edge.img \
+<(gzip -c /boot/vmlinuz-linux-asahi-edge) \
+> /boot/efi/m1n1/boot.bin
 
-arch-chroot /mnt mkinitcpio -p linux
-arch-chroot /mnt arch-secure-boot initial-setup || true
-arch-chroot /mnt arch-secure-boot generate-efi || true
+M1N1_UPDATE_DISABLED=1
+EOF
+arch-chroot /mnt update-m1n1
 
 echo -e "\n### Configuring swap file"
 btrfs filesystem mkswapfile --size 4G /mnt/swap/swapfile
@@ -295,7 +250,7 @@ arch-chroot /mnt chown -R "$user:$user" /var/cache/pacman/cyrinux-aur-local
 
 echo -e "\n### Cloning dotfiles"
 if [ "${user}" = "cyril" ]; then
-	arch-chroot /mnt sudo -u "$user" bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git ~/.dotfiles'
+	arch-chroot /mnt sudo -u "$user" bash -c 'git clone --recursive https://github.com/cyrinux/dotfiles.git --branch=macbook ~/.dotfiles '
 	echo -e "\n### Running initial setup"
 	arch-chroot /mnt "/home/$user/.dotfiles/setup-system.sh"
 	arch-chroot /mnt sudo -u "$user" "/home/$user/.dotfiles/setup-user.sh"
@@ -311,6 +266,3 @@ cryptsetup luksClose luks
 
 echo -e "\n### DONE - reboot and re-run both ~/.dotfiles/setup-*.sh scripts"
 echo -e "\n### Reboot now, and after power off remember to unplug the installation USB"
-
-# To remove luksHeader from the drive
-# dd bs=1 count=2097152 conv=notrunc if=/dev/urandom of=/dev/nvme0n1p2
