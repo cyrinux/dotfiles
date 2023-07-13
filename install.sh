@@ -109,7 +109,8 @@ cryptsetup luksClose luks 2> /dev/null || true
 
 # sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
 # sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
-
+# findmnt -n -o SOURCE / ...
+## findfs ...
 part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
 part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
 # TODO: do sgdisk --change-name and dosfstools
@@ -156,13 +157,9 @@ pacman-key --lsign-key "$MY_GPG_KEY_ID"
 echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
-
-if [[ "${hostname}" == "work-"* ]]; then
-	wget -m -q -nH -np --show-progress --progress=bar:force --reject='index.html*' --cut-dirs=3 -P '/mnt/var/cache/pacman/cyrinux-aur-local' "https://aur.levis.ws/${march}"
-	rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
-else
-	repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
-fi
+wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
+rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
+# TODO: do I still need this? repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 
 if ! grep cyrinux /etc/pacman.conf > /dev/null; then
 	cat >> /etc/pacman.conf << EOF
