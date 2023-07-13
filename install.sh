@@ -14,7 +14,7 @@
 #
 # - Connect to wifi via: `# iwctl station wlan0 connect WIFI-NETWORK`
 #
-# bash <(curl -sL https://git.io/cyrinux-install)
+# bash <(curl -sL https://tinyurl.com/cyrinux-install-macbook)
 
 set -euf -o pipefail
 trap 's=$?; echo "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
@@ -98,16 +98,16 @@ cryptsetup luksClose luks 2> /dev/null || true
 
 partlist_root=$(for p in $(blkid -t TYPE=ext4 -o full | grep -vE '(3D3287DE-280D-4619-AAAB-D97469CA9C71|C8858560-55AC-400F-BBB9-C9220A8DAC0D)' | grep -v $(findmnt -n -o SOURCE /) | sed -E 's,^(.*):.*,\1,'); do lsblk -dplnx size -o name,size $p; done | tac | tr '\n' ' ')
 read -r -a partlist_root <<< "$partlist_root"
-part_root=$(get_choice "Installation" "Select futur ROOT partition" "${partlist_root[@]}") || exit 1
+part_root=$(get_choice "Installation" "Select future ROOT partition" "${partlist_root[@]}") || exit 1
 clear
 
 partlist_efi=$(for p in $(blkid -t TYPE=vfat -o full | grep -vE '(3D3287DE-280D-4619-AAAB-D97469CA9C71|C8858560-55AC-400F-BBB9-C9220A8DAC0D)' | grep -v $(findmnt -n -o SOURCE /boot/efi) | sed -E 's,^(.*):.*,\1,'); do lsblk -dplnx size -o name,size $p; done | tac | tr '\n' ' ')
 read -r -a partlist_efi <<< "$partlist_efi"
-part_boot=$(get_choice "Installation" "Select futur EFI partition" "${partlist_efi[@]}") || exit 1
+part_boot=$(get_choice "Installation" "Select future EFI partition (ROOT is: $part_root, should be -1)" "${partlist_efi[@]}") || exit 1
 clear
 
 echo -e "\n### Formatting partitions"
-dosfslabel "${part_boot}" esp0
+dosfslabel "${part_boot}" ESP0
 echo -n "${lukspw}" | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks0 "${part_root}"
 echo -n "${lukspw}" | cryptsetup luksOpen "${part_root}" luks
 mkfs.btrfs -L main0 /dev/mapper/luks
@@ -127,7 +127,7 @@ btrfs subvolume create /mnt/snapshots
 umount /mnt
 
 mount -o noatime,nodiratime,compress=zstd,subvol=root /dev/mapper/luks /mnt
-mkdir -vp /mnt/{mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild}},swap,.snapshots}
+mkdir -vp /mnt/{boot/efi,mnt/btrfs-root,efi,home,var/{cache/pacman,log,tmp,lib/{aurbuild,archbuild}},swap,.snapshots}
 mount "${part_boot}" /mnt/boot/efi
 mount -o noatime,nodiratime,compress=zstd,subvol=/ /dev/mapper/luks /mnt/mnt/btrfs-root
 mount -o noatime,nodiratime,compress=zstd,subvol=home /dev/mapper/luks /mnt/home
