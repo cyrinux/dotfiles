@@ -65,22 +65,16 @@ if [ ! -f /sys/firmware/efi/fw_platform_size ]; then
 	exit 2
 fi
 
+echo -e "\n### Installing additional tools"
+pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools btrfs-progs kakoune iwd ntp rsync zip
+font="ter-132n"
+setfont $font
+
 echo -e "\n### Setting up clock"
-pacman -Sy --noconfirm ntp
 timedatectl set-ntp true
 ntpdate fr.pool.ntp.org
 timedatectl set-timezone Europe/Paris
 hwclock --systohc --utc
-
-echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools kakoune iwd
-
-echo -e "\n### HiDPI screens"
-noyes=("Yes" "The font is too small" "No" "The font size is just fine")
-hidpi=$(get_choice "Font size" "Is your screen HiDPI?" "${noyes[@]}") || exit 1
-clear
-[[ "$hidpi" == "Yes" ]] && font="ter-132n" || font="ter-716n"
-setfont "$font"
 
 hostname=$(get_input "Hostname" "Enter hostname") || exit 1
 clear
@@ -98,31 +92,27 @@ password=$(get_password "User" "Enter password") || exit 1
 clear
 : "${password:?"password cannot be empty"}"
 
-devicelist=$(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop" | tac | tr '\n' ' ')
-read -r -a devicelist <<< "$devicelist"
-device=$(get_choice "Installation" "Select installation disk" "${devicelist[@]}") || exit 1
-clear
-
 echo -e "\n### Setting up partitions"
 umount -R /mnt 2> /dev/null || true
 cryptsetup luksClose luks 2> /dev/null || true
 
-# sgdisk --clear "${device}" --new 1::-551MiB "${device}" --new 2::0 --typecode 2:ef00 "${device}"
-# sgdisk --change-name=1:primary --change-name=2:ESP "${device}"
-# findmnt -n -o SOURCE / ...
-## findfs ...
-part_root="$(ls ${device}* | grep -E "^${device}p?1$")"
-part_boot="$(ls ${device}* | grep -E "^${device}p?2$")"
-# TODO: do sgdisk --change-name and dosfstools
+partlist_root=$(for p in $(blkid -t TYPE=ext4 -o full | grep -vE '(3D3287DE-280D-4619-AAAB-D97469CA9C71|C8858560-55AC-400F-BBB9-C9220A8DAC0D)' | grep -v $(findmnt -n -o SOURCE /) | sed -E 's,^(.*):.*,\1,'); do lsblk -dplnx size -o name,size $p; done | tac | tr '\n' ' ')
+read -r -a partlist_root <<< "$partlist_root"
+part_root=$(get_choice "Installation" "Select futur ROOT partition" "${partlist_root[@]}") || exit 1
+clear
+
+partlist_efi=$(for p in $(blkid -t TYPE=vfat -o full | grep -vE '(3D3287DE-280D-4619-AAAB-D97469CA9C71|C8858560-55AC-400F-BBB9-C9220A8DAC0D)' | grep -v $(findmnt -n -o SOURCE /boot/efi) | sed -E 's,^(.*):.*,\1,'); do lsblk -dplnx size -o name,size $p; done | tac | tr '\n' ' ')
+read -r -a partlist_efi <<< "$partlist_efi"
+part_boot=$(get_choice "Installation" "Select futur EFI partition" "${partlist_efi[@]}") || exit 1
+clear
 
 echo -e "\n### Formatting partitions"
+dosfslabel "${part_boot}" esp0
 echo -n "${lukspw}" | cryptsetup luksFormat --type luks2 --pbkdf argon2id --label luks0 "${part_root}"
 echo -n "${lukspw}" | cryptsetup luksOpen "${part_root}" luks
-
 mkfs.btrfs -L main0 /dev/mapper/luks
 
 echo -e "\n### Setting up BTRFS subvolumes"
-
 mount /dev/mapper/luks /mnt
 btrfs subvolume create /mnt/root
 btrfs subvolume create /mnt/home
@@ -159,7 +149,6 @@ mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
 wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
 rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
-# TODO: do I still need this? repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 
 if ! grep cyrinux /etc/pacman.conf > /dev/null; then
 	cat >> /etc/pacman.conf << EOF
@@ -176,7 +165,16 @@ EOF
 fi
 
 echo -e "\n### Installing packages"
-pacstrap /mnt posix base man-pages cyrinux-base cyrinux-"$(uname -m)"
+cp /etc/pacman.d/mirrorlist.asahi /mnt/etc/pacman.d/
+pacstrap /mnt cyrinux-base cyrinux-"$(uname -m)"
+
+echo -e "\n### Installing asahi firmware"
+(
+	cd /tmp
+	rm -rf /mnt/lib/firmware/vendor
+	cpio -i < /mnt/boot/efi/vendorfw/firmware.cpio
+	mv vendorfw /mnt/lib/firmware/vendor
+)
 
 echo -e "\n### Generating base config files"
 ln -sfT dash /mnt/usr/bin/sh
@@ -194,7 +192,7 @@ cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
 BINARIES=(/usr/bin/btrfs)
 FILES=()
-HOOKS=(base asahi systemd autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems resume fsck)
+HOOKS=(systemd asahi autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 EOF
 
 cat << EOF > /mnt/etc/sudoers
@@ -203,16 +201,25 @@ root ALL=(ALL) ALL
 @includedir /etc/sudoers.d
 EOF
 
-echo -e "\n### Setting up Secure Boot with custom keys"
+echo -e "\n### Setting up boot m1n1"
 arch-chroot /mnt mkinitcpio -P
 cat << EOF > /mnt/etc/default/update-m1n1
-echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1"
+#!/bin/sh
+
+tmpdir="$(mktemp -d)"
+cd "$tmpdir"
+
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root loglevel=3 hid_apple.swap_opt_cmd=1 hid_apple.swap_fn_leftctrl=1 hid_apple.iso_layout=1 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
+gzip -c /boot/vmlinuz-linux-asahi-edge > vmlinuz-linux-asahi-edge.gz
+
 cat /lib/asahi-boot/m1n1.bin \
-<(echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root rootwait rw quiet loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1") \
-/lib/modules/*-edge-ARCH/dtbs/*.dtb \
-/boot/initramfs-linux-asahi-edge.img \
-<(gzip -c /boot/vmlinuz-linux-asahi-edge) \
-> /boot/efi/m1n1/boot.bin
+  cmdline \
+  /lib/modules/*-edge-ARCH/dtbs/*.dtb \
+  /boot/initramfs-linux-asahi-edge.img \
+  vmlinuz-linux-asahi-edge.gz \
+  > /boot/efi/m1n1/boot.bin
+
+rm -rf "$tmpdir"
 
 M1N1_UPDATE_DISABLED=1
 EOF
