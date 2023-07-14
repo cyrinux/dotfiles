@@ -358,7 +358,7 @@ flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.ob
 flatpak override --user --env=OBSIDIAN_USE_WAYLAND=1 md.obsidian.Obsidian
 
 # asdf (asdf plugin list | xargs)
-for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault; do
+for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault azure-cli; do
 	asdf plugin-add $s
 	asdf install $s latest
 	asdf global $s latest
