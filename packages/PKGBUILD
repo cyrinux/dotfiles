@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.4
+pkgver=2.33.5
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -79,7 +79,6 @@ package_cyrinux-base() {
         'bat'
         'bcc-tools'
         'benchmark'
-        'bfs'
         'bind'
         'bison'
         'bleachbit-cli'
@@ -158,7 +157,6 @@ package_cyrinux-base() {
         'glab'
         'glew'
         'glfw-wayland'
-        'gmime'
         'gnome-keyring'
         'gnuplot'
         'go'
@@ -346,7 +344,6 @@ package_cyrinux-base() {
         'python-h2'
         'python-humanfriendly'
         'python-i3ipc'
-        'python-imdbpy'
         'python-livereload'
         'python-lsp-server'
         'python-marshmallow'
@@ -418,7 +415,6 @@ package_cyrinux-base() {
         'rust-analyzer'
         'salt-lint'
         'samba'
-        'scli-git'
         'sd'
         'seafile-client'
         'shfmt'
@@ -504,7 +500,6 @@ package_cyrinux-base() {
         'dsh'
         'waybar-livestatus'
         'web-media-controller-mpris-git'
-        'webwormhole-git'
         'wev-git'
         'wf-recorder'
         'wgcf'
@@ -517,7 +512,6 @@ package_cyrinux-base() {
         'wl-clipboard'
         'wl-color-picker'
         'wldash'
-        'wlrctl'
         'pgformatter'
         'wlroots'
         'wlsunset-git'
@@ -582,7 +576,6 @@ package_cyrinux-base() {
         'packer'
         'kubeconform'
         'nextcloud-client'
-        'qflipper-git'
         'exegol-git'
         'd-feet' # dbus explorer
         'darkman'
@@ -666,7 +659,6 @@ package_cyrinux-base() {
         'python-argparse'
         'python-commonmark'
         'python-exceptiongroup'
-        'python-jarowinkler'
         'python-libevdev'
         'python-py'
         'python-pyaes'

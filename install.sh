@@ -147,7 +147,7 @@ pacman-key --lsign-key "$MY_GPG_KEY_ID"
 echo -e "\n### Configuring custom repo"
 # mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
-# repoctl add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+# repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 # wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
 # rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 
