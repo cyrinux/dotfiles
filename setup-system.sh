@@ -130,8 +130,8 @@ copy "etc/systemd/logind.conf.d/override.conf"
 copy "etc/systemd/resolved.conf.d/dnssec.conf"
 copy "etc/systemd/system/reflector.service.d"
 copy "etc/systemd/system/reflector.timer"
-#copy "etc/systemd/system/system-dotfiles-sync.service"
-#copy "etc/systemd/system/system-dotfiles-sync.timer"
+copy "etc/systemd/system/system-dotfiles-sync.service"
+copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "etc/systemd/system/rebind-suspend-failing-device.service"
 copy "etc/systemd/system/unbind-suspend-failing-device.service"
 copy "etc/systemd/system/usbguard.service.d"
@@ -181,7 +181,7 @@ systemctl_enable_start "privoxy.service"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
-systemctl_enable "docker.socket"
+# systemctl_enable "docker.socket"
 systemctl_enable "getty@tty1.service"
 systemctl_enable "pcscd.socket"
 systemctl_enable "apparmor.service"
@@ -244,5 +244,5 @@ sudo systemctl enable --now apparmor.service || true
 echo "Mask wpa_supplicant"
 sudo systemctl mask "wpa_supplicant.service"
 sudo systemctl mask "wpa_supplicant.socket"
-# sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
-# sudo firecfg --add-users $user
+sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
+sudo firecfg --add-users $user

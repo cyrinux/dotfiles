@@ -66,7 +66,7 @@ if [ ! -f /sys/firmware/efi/fw_platform_size ]; then
 fi
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools btrfs-progs kakoune iwd ntp rsync zip cpio
+pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools btrfs-progs kakoune iwd ntp rsync zip cpio arch-install-scripts
 font="ter-132n"
 setfont $font
 
@@ -168,7 +168,7 @@ fi
 echo -e "\n### Installing packages"
 pacstrap /mnt cyrinux-base cyrinux-"$(uname -m)"
 cp /etc/pacman.d/mirrorlist.asahi /mnt/etc/pacman.d/
-	cat >> /etc/pacman.conf << EOF
+cat >> /etc/pacman.conf << EOF
 [asahi]
 Include = /etc/pacman.d/mirrorlist.asahi
 
@@ -218,7 +218,7 @@ cat << 'EOF' > /mnt/etc/default/update-m1n1
 tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 
-echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards,no-read-workqueue,no-write-workqueue,fido2-device=auto rootflags=subvol=root loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards,no-read-workqueue,no-write-workqueue,fido2-device=auto rootflags=subvol=root loglevel=3 apparmor=0 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
 gzip -c /boot/vmlinuz-linux-asahi-edge > vmlinuz-linux-asahi-edge.gz
 
 cat /lib/asahi-boot/m1n1.bin \

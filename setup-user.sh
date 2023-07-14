@@ -257,7 +257,6 @@ else
 	systemctl_enable_start "gocryptfs-automount.service"
 	systemctl_enable_start "gotify-dunst.service"
 	systemctl_enable_start "hyprland-autoname-workspaces.service"
-	systemctl_enable_start "kanshi.service"
 	systemctl_enable_start "nm-applet.service"
 	systemctl_enable_start "polkit-gnome.service"
 	systemctl_enable_start "signal-desktop.service"
@@ -276,6 +275,7 @@ else
 	systemctl_enable_start "wl-clipboard-manager.service"
 	systemctl_enable_start "wlsunset.service"
 	systemctl_enable_start "work-unseal.service"
+	systemctl_enable_start "udiskie.service"
 	systemctl_enable_start "yubikey-touch-detector.socket"
 	systemctl_enable "swaylock.service"
 
