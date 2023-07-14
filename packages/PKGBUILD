@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.6
+pkgver=2.33.7
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -92,7 +92,7 @@ package_cyrinux-base() {
         'ccid'
         'checkbashisms'
         'chromium'
-        'chromium-widevine'
+        # 'chromium-widevine'
         'cidrmerge'
         'clang'
         'cli53'
@@ -614,7 +614,7 @@ package_cyrinux-base() {
         'gdb'
         'gdm'
         'gimp'
-        'glibc-debug'
+        # 'glibc-debug'
         'glmark2'
         'glusterfs'
         'gnome-disk-utility'
