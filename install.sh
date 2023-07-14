@@ -145,23 +145,23 @@ curl -s https://levis.name/pgp_keys.asc | pacman-key -a -
 pacman-key --lsign-key "$MY_GPG_KEY_ID"
 
 echo -e "\n### Configuring custom repo"
-mkdir /mnt/var/cache/pacman/cyrinux-aur-local
+# mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
-repoctl add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+# repoctl add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
 # wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
 # rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 
 if ! grep cyrinux /etc/pacman.conf > /dev/null; then
 	cat >> /etc/pacman.conf << EOF
-[cyrinux-aur-local]
-Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
+# [cyrinux-aur-local]
+# Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
 Server = https://aur.levis.ws/${march}
 
 [options]
 CacheDir = /mnt/var/cache/pacman/pkg
-CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
+# CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
 EOF
 fi
 
