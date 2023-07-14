@@ -201,7 +201,7 @@ MODULES=()
 BINARIES=()
 FILES=()
 # base required to give /bin/sh to fsck.btrfs
-HOOKS=(base systemd asahi autodetect keyboard sd-vconsole modconf block sd-encrypt btrfs filesystems fsck)
+HOOKS=(base systemd asahi autodetect keyboard sd-vconsole modconf kms block sd-encrypt btrfs filesystems fsck)
 EOF
 
 cat << EOF > /mnt/etc/sudoers
