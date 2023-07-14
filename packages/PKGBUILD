@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.5
+pkgver=2.33.6
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -66,7 +66,7 @@ package_cyrinux-base() {
         'hyprland-autoname-workspaces-git'
         'cni-plugins'
         'aurpublish'
-        'aurutils'
+        'aurutils-git'
         'helvum'
         'autoconf'
         'automake'
