@@ -8,7 +8,6 @@ b = "my_contacts_remote"
 collections = ["from a", "from b"]
 conflict_resolution = ["command", "meld"]
 
-
 [storage my_contacts_local]
 type = "filesystem"
 path = "~/library/contacts/"

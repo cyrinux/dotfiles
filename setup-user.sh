@@ -353,9 +353,6 @@ git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
 pre-commit install-hooks
 
-# vagrant
-mkdir -p ~/.vagrant.d/{boxes,data,tmp}
-
 # flatpak
 flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian dev.k8slens.OpenLens
 flatpak override --user --env=OBSIDIAN_USE_WAYLAND=1 md.obsidian.Obsidian

@@ -66,7 +66,7 @@ if [ ! -f /sys/firmware/efi/fw_platform_size ]; then
 fi
 
 echo -e "\n### Installing additional tools"
-pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools btrfs-progs kakoune iwd ntp rsync zip
+pacman -Sy --noconfirm --needed git terminus-font dialog wget bc dosfstools btrfs-progs kakoune iwd ntp rsync zip cpio
 font="ter-132n"
 setfont $font
 
@@ -145,29 +145,36 @@ curl -s https://levis.name/pgp_keys.asc | pacman-key -a -
 pacman-key --lsign-key "$MY_GPG_KEY_ID"
 
 echo -e "\n### Configuring custom repo"
-# mkdir /mnt/var/cache/pacman/cyrinux-aur-local
+mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
-# repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
-# wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
-# rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
+#repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
+rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 
 if ! grep cyrinux /etc/pacman.conf > /dev/null; then
 	cat >> /etc/pacman.conf << EOF
-# [cyrinux-aur-local]
-# Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
+[cyrinux-aur-local]
+Server = file:///mnt/var/cache/pacman/cyrinux-aur-local
 
 [cyrinux-aur]
 Server = https://aur.levis.ws/${march}
 
 [options]
 CacheDir = /mnt/var/cache/pacman/pkg
-# CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
+CacheDir = /mnt/var/cache/pacman/cyrinux-aur-local
 EOF
 fi
 
 echo -e "\n### Installing packages"
 pacstrap /mnt cyrinux-base cyrinux-"$(uname -m)"
 cp /etc/pacman.d/mirrorlist.asahi /mnt/etc/pacman.d/
+	cat >> /etc/pacman.conf << EOF
+[asahi]
+Include = /etc/pacman.d/mirrorlist.asahi
+
+[asahi-extra]
+Include = /etc/pacman.d/mirrorlist.asahi
+EOF
 
 echo -e "\n### Installing asahi firmware"
 (
@@ -191,7 +198,7 @@ arch-chroot /mnt locale-gen
 
 cat << EOF > /mnt/etc/mkinitcpio.conf
 MODULES=()
-BINARIES=(/usr/bin/btrfs)
+BINARIES=()
 FILES=()
 HOOKS=(systemd asahi autodetect keyboard sd-vconsole modconf block sd-encrypt filesystems fsck)
 EOF
@@ -204,13 +211,13 @@ EOF
 
 echo -e "\n### Setting up boot m1n1"
 arch-chroot /mnt mkinitcpio -P
-cat << EOF > /mnt/etc/default/update-m1n1
+cat << 'EOF' > /mnt/etc/default/update-m1n1
 #!/bin/sh
 
 tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 
-echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards rootflags=subvol=root loglevel=3 hid_apple.swap_opt_cmd=1 hid_apple.swap_fn_leftctrl=1 hid_apple.iso_layout=1 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards,no-read-workqueue,no-write-workqueue,fido2-device=auto rootflags=subvol=root loglevel=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
 gzip -c /boot/vmlinuz-linux-asahi-edge > vmlinuz-linux-asahi-edge.gz
 
 cat /lib/asahi-boot/m1n1.bin \
@@ -227,7 +234,7 @@ EOF
 arch-chroot /mnt update-m1n1
 
 echo -e "\n### Configuring swap file"
-btrfs filesystem mkswapfile --size 4G /mnt/swap/swapfile
+btrfs filesystem mkswap --size 4G /mnt/swap/swapfile
 echo "/swap/swapfile none swap defaults 0 0" >> /mnt/etc/fstab
 
 echo -e "\n### Creating user"

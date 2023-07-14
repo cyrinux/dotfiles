@@ -4,16 +4,10 @@
 [includeIf "gitdir:~/library/src/work/"]
     path = ~/.config/git/work
 
-[includeIf "gitdir:/home/cyril.homedir/library/src/work/"]
-    path = ~/.config/git/work
-
 [includeIf "gitdir:~/library/documents/git/"]
     path = ~/.config/git/work
 
 [includeIf "gitdir:~/library/src/personal/"]
-    path = ~/.config/git/home
-
-[includeIf "gitdir:/home/cyril.homedir/library/src/personal/"]
     path = ~/.config/git/home
 
 [includeIf "gitdir:~/.cache/aurutils/sync/"]

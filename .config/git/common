@@ -1,6 +1,5 @@
 [alias]
     alias = !git config --get-regexp '^alias\\.' | sed 's/alias\\.\\([^ ]*\\) \\(.*\\)/\\1\\\t => \\2/' | sort
-    lg = !gitui
     lgg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ci) %C(bold blue)<%an>%Creset' --abbrev-commit
     bdr = !git branch --merged | grep -E -v \"(main|master|dev)\" | xargs git branch -d
     pushall = !git remote | xargs -L1 -P0 git push --all --follow-tags
@@ -34,7 +33,7 @@
     autosetuprebase = always
 
 [init]
-	templateDir = ~/.config/git/templates
+    templateDir = ~/.config/git/templates
     defaultBranch = main
 
 [core]
@@ -117,13 +116,6 @@
 
 [help]
 	autocorrect = 20
-
-[credential "https://github.com"]
-	helper =
-	helper = !/usr/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper =
-	helper = !/usr/bin/gh auth git-credential
 
 [sendemail]
 	annotate = yes
