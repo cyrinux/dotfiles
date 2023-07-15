@@ -35,7 +35,7 @@ fileext = ".ics"
 
 [storage my_calendars_remote]
 type = "caldav"
-url.fetch = ["command", "vdirsyncer-get-creds", "calendars_url"]
+url.fetch = ["command", "vdirsyncer-get-creds", "calenders_url"]
 # verify_fingerprint = "957e20819ee5c17a57cf0e2dac510e24487b0dd3"
 username.fetch = ["command", "vdirsyncer-get-creds", "username"]
 password.fetch = ["command", "vdirsyncer-get-creds", "password"]

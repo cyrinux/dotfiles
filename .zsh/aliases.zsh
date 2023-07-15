@@ -4,6 +4,7 @@ iscmd() {
     command -v "$1" > /dev/null
 }
 
+iscmd lsd && alias tree='lsd --tree -t -A -I .git' || alias tree='LS_COLORS= tree -aC -I .git --dirsfirst'
 iscmd bat && alias c='bat' || alias c='cat'
 iscmd lsd && alias la='ll -a' || alias la='ll -A'
 iscmd lsd && alias lk='ll -s=size' || alias lk='ll -r --sort=size'
@@ -70,7 +71,6 @@ alias rm!='\rm -rf'
 alias send="croc --relay6 send"
 alias sudo='sudo -E '
 alias sysdig="sudo sysdig"
-alias tree='lsd --tree -t -A -I .git'
 alias utc='env TZ="UTC" date'
 alias yubikey-fix='sudo systemctl stop pcscd.service'
 alias zshupdate='z4h update'

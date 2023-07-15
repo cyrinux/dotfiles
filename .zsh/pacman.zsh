@@ -14,8 +14,8 @@ pac() {
 	fi
 
 	echo "\nCleaning up repo cache..."
-	# sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
-	# sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local
+	sudo -E paccache -vr -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local -i cyrilnux-aarch64 -i cyrilnux-x86_64
+	sudo -E paccache -vruk0 -c /var/cache/pacman/pkg -c /var/cache/pacman/cyrinux-aur-local -i cyrilnux-aarch64 -i cyrilnux-x86_64
 
 	rehash
 	refresh-waybar-updates
