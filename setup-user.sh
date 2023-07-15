@@ -289,6 +289,7 @@ else
 	systemctl_enable_start "socksproxy.service"
 	systemctl_enable_start "solaar.service"
 	systemctl_enable_start "swayidle.service"
+	systemctl_enable_start "ra-multiplex.service"
 	systemctl_enable_start "swaync.service"
 	systemctl_enable_start "systembus-notify.service"
 	systemctl_enable_start "systemd-autoreload.service"

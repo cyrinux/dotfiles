@@ -1,0 +1,1 @@
+luks0	LABEL=luks0	none allow-discards,no-write-queue,no-read-queue,fido2-device=auto

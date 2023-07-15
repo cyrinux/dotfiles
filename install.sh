@@ -147,7 +147,7 @@ pacman-key --lsign-key "$MY_GPG_KEY_ID"
 echo -e "\n### Configuring custom repo"
 mkdir /mnt/var/cache/pacman/cyrinux-aur-local
 march="$(uname -m)"
-#repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar
+#repo-add /mnt/var/cache/pacman/cyrinux-aur-local/cyrinux-aur-local.db.tar # In case an empty repo need to be created
 wget -m -q -nH -np --show-progress --progress=bar:force --reject="${march}*" --cut-dirs=3 --include-directories="${march}" -P "/mnt/var/cache/pacman/cyrinux-aur-local" "https://aur.levis.ws/${march}"
 rename -- 'cyrinux-aur.' 'cyrinux-aur-local.' /mnt/var/cache/pacman/cyrinux-aur-local/*
 
@@ -210,15 +210,18 @@ root ALL=(ALL) ALL
 @includedir /etc/sudoers.d
 EOF
 
-echo -e "\n### Setting up boot m1n1"
+echo -e "\n### Setting up initramfs"
+echo "luks0	LABEL=luks0	none allow-discards,no-write-queue,no-read-queue,fido2-device=auto" > /mnt/etc/crypttab.initramfs
 arch-chroot /mnt mkinitcpio -P
+
+echo -e "\n### Setting up boot m1n1"
 cat << 'EOF' > /mnt/etc/default/update-m1n1
 #!/bin/sh
 
 tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 
-echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks root=/dev/mapper/luks rd.luks.options=allow-discards,no-read-workqueue,no-write-workqueue,fido2-device=auto rootflags=subvol=root loglevel=3 apparmor=0 lsm=landlock,lockdown,yama,apparmor,bpf rd.emergency=halt systemd.unified_cgroup_hierarchy=1 quiet" > cmdline
+echo "chosen.bootargs=rd.luks.name=$(findfs LABEL=luks0 | xargs blkid -o value -s UUID)=luks0 root=LABEL=main0 rootflags=subvol=root quiet loglevel=3 systemd.show_status=auto rd.udev.log_level=3 apparmor=1 lsm=landlock,lockdown,yama,apparmor,bpf systemd.unified_cgroup_hierarchy=1" > cmdline
 gzip -c /boot/vmlinuz-linux-asahi-edge > vmlinuz-linux-asahi-edge.gz
 
 cat /lib/asahi-boot/m1n1.bin \
