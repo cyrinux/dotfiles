@@ -253,7 +253,6 @@ link ".config/systemd/user/darkman.service.d/want-geoclue-agent.conf"
 link ".zprofile"
 link ".config/systemd/user/backup-repo@pkgbuild"
 link ".config/systemd/user/backup-repo@.service"
-link ".config/systemd/user/seaf-cli.service"
 link ".config/systemd/user/backup-repo@.timer"
 
 echo ""

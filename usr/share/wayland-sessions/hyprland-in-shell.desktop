@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Hyprland (in login shell)
-Comment=Hyprland window manager
-Exec=/usr/local/bin/hyprland-in-shell
-Type=Application

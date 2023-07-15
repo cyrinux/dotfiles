@@ -82,6 +82,15 @@ systemctl_disable_stop() {
 	fi
 }
 
+systemctl_mask() {
+	if in_ci; then
+		echo "systemctl mask $1 (noop)"
+	else
+		echo "systemctl mask $1"
+		systemctl mask "$1"
+	fi
+}
+
 echo ""
 echo "============================"
 echo "Setting up /usr/local/bin..."
@@ -117,6 +126,7 @@ copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"
 copy "etc/snap-pac.conf"
 copy "etc/snap-pac.ini"
+copy "etc/snapper/configs/root"
 copy "etc/modprobe.d/hid_apple.conf"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/10-swappiness.conf"
@@ -126,8 +136,6 @@ copy "etc/sysctl.d/51-kexec-restrict.conf"
 copy "etc/systemd/journald.conf.d/override.conf"
 copy "etc/systemd/logind.conf.d/override.conf"
 copy "etc/systemd/resolved.conf.d/dnssec.conf"
-copy "etc/systemd/system/reflector.service.d"
-copy "etc/systemd/system/reflector.timer"
 copy "etc/systemd/system/system-dotfiles-sync.service"
 copy "etc/systemd/system/system-dotfiles-sync.timer"
 copy "etc/systemd/system/rebind-suspend-failing-device.service"
@@ -140,8 +148,6 @@ copy "etc/systemd/system/privoxy.service.d/override.conf"
 copy "etc/usbguard/usbguard-daemon.conf" 600
 copy "etc/vnstat.conf"
 copy "etc/bluetooth/main.conf"
-copy "usr/local/bin/hyprland-in-shell"
-copy "usr/share/wayland-sessions/hyprland-in-shell.desktop"
 
 (("$reverse")) && exit 0
 
@@ -183,6 +189,7 @@ systemctl_enable "pcscd.socket"
 systemctl_enable "unbind-suspend-failing-device.service"
 systemctl_enable "rebind-suspend-failing-device.service"
 systemctl_enable "opensnitchd.service"
+systemctl_mask "wpa_supplicant"
 # if is_chroot; then
 # 	echo >&2 "=== Running in chroot, skipping docker service setup..."
 # fi
@@ -232,7 +239,3 @@ else
 	echo "Force dns config"
 	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
-
-echo "Mask wpa_supplicant"
-sudo systemctl mask "wpa_supplicant.service"
-sudo systemctl mask "wpa_supplicant.socket"
