@@ -10,4 +10,4 @@
 # data2        /dev/sda5                                    /etc/cryptfs.key
 # swap         /dev/sdx4                                    /dev/urandom            swap,cipher=aes-cbc-essiv:sha256,size=256
 # vol          /dev/sdb7                                    none
-luks-ssd-backup UUID=24d8ba0e-46a7-4d6e-b639-d6abe298e016   allow-discards,fido2-device=auto,password-echo=no
+ssd_backup UUID=24d8ba0e-46a7-4d6e-b639-d6abe298e016  none fido2-device=auto,noauto

@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.12
+pkgver=2.33.13
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -160,6 +160,7 @@ package_cyrinux-base() {
         'glfw-wayland'
         'gnome-keyring'
         'gnuplot'
+        'systemd-ui'
         'go'
         'go-chromecast-git'
         'gocryptfs'
