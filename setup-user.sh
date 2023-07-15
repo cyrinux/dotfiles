@@ -85,6 +85,33 @@ systemctl_enable_start() {
 	fi
 }
 
+setup_asdf() {
+	echo "======================================="
+	echo "Setting up asdf                        "
+	echo "======================================="
+	for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault azure-cli; do
+		asdf plugin-add $s
+		asdf install $s latest
+		asdf global $s latest
+	done
+	asdf global python system
+}
+
+setup_golang() {
+	echo "======================================="
+	echo "Setting up golang                      "
+	echo "======================================="
+	go install github.com/rwxrob/pomo/cmd/pomo@latest
+}
+
+setup_flatpack() {
+	echo "======================================="
+	echo "Setting up flatpack                    "
+	echo "======================================="
+	flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian dev.k8slens.OpenLens
+	flatpak override --user --env=OBSIDIAN_USE_WAYLAND=1 md.obsidian.Obsidian
+}
+
 echo "======================================="
 echo "Setting up dotfiles for current user..."
 echo "======================================="
@@ -277,6 +304,7 @@ else
 	systemctl_enable_start "work-unseal.service"
 	systemctl_enable_start "udiskie.service"
 	systemctl_enable_start "yubikey-touch-detector.socket"
+	systemctl_enable_start "docker.socket"
 	systemctl_enable "swaylock.service"
 
 	if [ ! -d "$HOME/.mail" ]; then
@@ -353,16 +381,6 @@ git config commit.gpgsign true
 git remote set-url origin "git@github.com:cyrinux/dotfiles.git"
 pre-commit install-hooks
 
-# flatpak
-flatpak install -y --noninteractive com.rtosta.zapzap org.telegram.desktop md.obsidian.Obsidian dev.k8slens.OpenLens
-flatpak override --user --env=OBSIDIAN_USE_WAYLAND=1 md.obsidian.Obsidian
-
-# asdf (asdf plugin list | xargs)
-for s in awscli direnv flux2 gcloud helm helmfile k3d kind kubectl kustomize minikube python rust sops terraform vault azure-cli; do
-	asdf plugin-add $s
-	asdf install $s latest
-	asdf global $s latest
-done
-
-# pomo
-go install github.com/rwxrob/pomo/cmd/pomo@latest
+setup_flatpack
+setup_asdf
+setup_golang

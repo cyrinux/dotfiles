@@ -95,8 +95,6 @@ echo "Setting up /etc configs..."
 echo "=========================="
 
 copy "etc/firewalld/firewalld.conf" 600
-copy "etc/apparmor/parser.conf"
-copy "etc/apparmor.d/local"
 copy "etc/geoclue/geoclue.conf"
 copy "etc/audit/auditd.conf"
 copy "etc/default/earlyoom"
@@ -118,7 +116,7 @@ copy "etc/pacman.d/hooks"
 copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"
 copy "etc/snap-pac.conf"
-copy "etc/modprobe.d/kvm.conf"
+copy "etc/snap-pac.ini"
 copy "etc/modprobe.d/hid_apple.conf"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/10-swappiness.conf"
@@ -163,7 +161,6 @@ echo "================================="
 
 systemctl_enable_start "systemd-oomd.socket"
 systemctl_enable_start "firewalld.service"
-systemctl_enable_start "apparmor.service"
 systemctl_enable_start "auditd.service"
 systemctl_enable_start "nfs-server.service"
 systemctl_enable_start "bluetooth.service"
@@ -181,10 +178,8 @@ systemctl_enable_start "privoxy.service"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
-# systemctl_enable "docker.socket"
 systemctl_enable "getty@tty1.service"
 systemctl_enable "pcscd.socket"
-systemctl_enable "apparmor.service"
 systemctl_enable "unbind-suspend-failing-device.service"
 systemctl_enable "rebind-suspend-failing-device.service"
 systemctl_enable "opensnitchd.service"
@@ -238,11 +233,6 @@ else
 	ln -sf /run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 fi
 
-echo "Firejail some apps"
-sudo systemctl enable --now apparmor.service || true
-
 echo "Mask wpa_supplicant"
 sudo systemctl mask "wpa_supplicant.service"
 sudo systemctl mask "wpa_supplicant.socket"
-sudo apparmor_parser -r /etc/apparmor.d/firejail-default || true
-sudo firecfg --add-users $user

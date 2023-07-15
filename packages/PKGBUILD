@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.8
+pkgver=2.33.10
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -207,8 +207,7 @@ package_cyrinux-base() {
         'k9s'
         'kak-lsp'
         'kakoune'
-        'kanshi'
-        'khal'
+        'khal-git'
         'khard'
         'kitty'
         'kitty-terminfo'
@@ -382,7 +381,6 @@ package_cyrinux-base() {
         'python-tldextract'
         'python-tox'
         'python-tzlocal'
-        'python-undertime'
         'python-urwid'
         'python-urwid_readline'
         'python-virtualenv'
@@ -441,7 +439,6 @@ package_cyrinux-base() {
         's-tui'
         'sudo'
         'swappy'
-        'swayidle'
         'swaybg'
         'swaylock'
         'swaync'
@@ -535,9 +532,7 @@ package_cyrinux-base() {
         'yq'
         'yt-dlp'
         'yubico-piv-tool'
-        'yubikey-full-disk-encryption'
         'yubikey-manager'
-        'yubikey-personalization-gui'
         'yubikey-touch-detector'
         'zathura'
         'zathura-cb'
@@ -609,7 +604,6 @@ package_cyrinux-base() {
         'ff2mpv-native-messaging-host-git'
         'firefox'
         'firefox-pwa'
-        'fpm'
         'fscrypt'
         'fuse-overlayfs'
         'fwupd'
@@ -639,7 +633,6 @@ package_cyrinux-base() {
         'libva-utils'
         'libvdpau-va-gl'
         'libvisual'
-        'linux-asahi-edge'
         'llvm'
         'lua-language-server'
         'lvm2'
@@ -697,8 +690,6 @@ package_cyrinux-base() {
         'visual-studio-code-bin'
         'vscode-css-languageserver'
         'vscode-html-languageserver'
-        'vulkan-swrast-asahi-edge'
-        'waycorner'
         'webkit2gtk-4.1'
         'x86_64-elf-gcc'
         'xfsprogs'
@@ -796,13 +787,15 @@ package_cyrinux-aarch64() {
         'linux-asahi-edge'
         'linux-asahi'
         'linux-asahi-headers'
+        'linux-aarch64-headers'
 
         # arch
         'devtools-alarm'
         'archlinuxarm-keyring'
         'asahi-meta'
-        'asahi-mesa-edge'
+        'mesa-asahi-edge'
 
+        'vulkan-swrast-asahi-edge'
         'opensnitch-ebpf-module'
         'python-pyasn'
         'python-qt-material'

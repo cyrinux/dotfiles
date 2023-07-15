@@ -1,4 +1,7 @@
 #!/bin/bash
+
+exit 1
+
 set -eu
 trap 'pkill -P $$' EXIT
 

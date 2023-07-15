@@ -134,7 +134,7 @@
       "custom/vpn-work",
       "custom/vpn-pia",
       "cpu",
-//      "temperature",
+//    "temperature",
       "memory",
       "backlight",
       "hyprland/language",

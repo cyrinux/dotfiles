@@ -18,10 +18,10 @@ umask o-w
 if [ ! -e "$Z4H"/z4h.zsh ]; then
 	mkdir -p -- "$Z4H" || return
 	printf >&2 '\033[33mz4h\033[0m: fetching \033[4mz4h.zsh\033[0m\n'
-	if command -v curl >/dev/null 2>&1; then
-		curl -fsSL -- "$Z4H_URL"/z4h.zsh >"$Z4H"/z4h.zsh.$$ || return
-	elif command -v wget >/dev/null 2>&1; then
-		wget -O- -- "$Z4H_URL"/z4h.zsh >"$Z4H"/z4h.zsh.$$ || return
+	if command -v curl > /dev/null 2>&1; then
+		curl -fsSL -- "$Z4H_URL"/z4h.zsh > "$Z4H"/z4h.zsh.$$ || return
+	elif command -v wget > /dev/null 2>&1; then
+		wget -O- -- "$Z4H_URL"/z4h.zsh > "$Z4H"/z4h.zsh.$$ || return
 	else
 		printf >&2 '\033[33mz4h\033[0m: please install \033[32mcurl\033[0m or \033[32mwget\033[0m\n'
 		return 1

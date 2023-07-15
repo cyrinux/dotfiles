@@ -3,6 +3,8 @@
 # Shows the calendar event that's happening now, of the next on if there isn't
 # one.
 
+exit 1
+
 set -eu
 
 render() {
