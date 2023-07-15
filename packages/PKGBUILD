@@ -4,7 +4,7 @@ pkgname=(
     'cyrinux-x86_64'
     'cyrinux-aarch64'
 )
-pkgver=2.33.10
+pkgver=2.33.12
 pkgrel=1
 pkgdesc='Installed packages by cyrinux'
 arch=('any')
@@ -185,7 +185,6 @@ package_cyrinux-base() {
         'gutenprint'
         'gvfs-gphoto2'
         'gvfs-mtp'
-        'gvfs-nfs'
         'gvfs-smb'
         'gzip'
         'hamlib'
@@ -263,7 +262,6 @@ package_cyrinux-base() {
         'mupdf-gl'
         'mupdf-tools'
         'mutt-ics'
-        'myrepos'
         'neomutt'
         'nerd-fonts-noto-sans-mono'
         'nethogs'
@@ -272,7 +270,6 @@ package_cyrinux-base() {
         'network-manager-applet'
         'networkmanager-dmenu-git'
         'networkmanager-openvpn'
-        'nfs-utils'
         'ngrok'
         'nmap'
         'nm-connection-editor'
@@ -521,9 +518,7 @@ package_cyrinux-base() {
         'wshowkeys-git'
         'wtype'
         'xdg-user-dirs'
-        'xorg-server'
         'xorg-server-xwayland'
-        'xorg-xhost'
         'xplr'
         'xsv'
         'yamllint'
@@ -560,7 +555,6 @@ package_cyrinux-base() {
         'aspell-uk'
         'hspell'
         'gofumpt'
-        'kompose'
         'libnma-gtk4'
         'pandoc'
         'typescript-language-server'
@@ -570,16 +564,12 @@ package_cyrinux-base() {
         'lsb-release'
         'ocl-icd'
         'asdf-vm'
-        'packer'
-        'kubeconform'
         'nextcloud-client'
         'exegol-git'
         'd-feet' # dbus explorer
         'darkman'
         'qemu-user'
         'shellcheck-bin'
-        'acpica'
-        'alacritty'
         'base-devel'
         'bless'
         'bluez-firmware'
@@ -587,7 +577,6 @@ package_cyrinux-base() {
         'bpf'
         'breeze-gtk'
         'breeze-icons'
-        'brltty'
         'browserpass-firefox'
         'catch2-git'
         'cython'
@@ -608,14 +597,10 @@ package_cyrinux-base() {
         'fuse-overlayfs'
         'fwupd'
         'gdb'
-        'gdm'
         'gimp'
-        'glmark2'
-        'glusterfs'
         'gnome-disk-utility'
         'goreleaser'
         'grcov'
-        'helix'
         'hyprpicker-git'
         'icedtea-web'
         'ignite'
@@ -698,6 +683,7 @@ package_cyrinux-base() {
         'gurk-bin'
         'iptables-nft'
         'libdshconfig'
+        'python-qt-material'
     )
 
     # https://input.fontbureau.com/download/?customize&fontSelection=fourStyleFamily&regular=InputMonoNarrow-Regular&italic=InputMonoNarrow-Italic&bold=InputMonoNarrow-Bold&boldItalic=InputMonoNarrow-BoldItalic&a=0&g=0&i=serifs_round&l=serifs_round&zero=slash&asterisk=height&braces=0&preset=default&line-height=1.1&email=
@@ -797,6 +783,5 @@ package_cyrinux-aarch64() {
         'vulkan-swrast-asahi-edge'
         'opensnitch-ebpf-module'
         'python-pyasn'
-        'python-qt-material'
     )
 }

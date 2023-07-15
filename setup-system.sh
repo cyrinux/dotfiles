@@ -113,6 +113,8 @@ copy "etc/iwd/main.conf"
 copy "etc/modules-load.d/ddcci.conf"
 copy "etc/modules-load.d/pkcs8.conf"
 copy "etc/NetworkManager/conf.d"
+copy "etc/conf.d/snapper"
+copy "etc/snapper/configs/root"
 copy "etc/qemu/bridge.conf"
 copy "etc/systemd/system/getty@tty1.service.d/override.conf"
 copy "etc/udev/rules.d/50-yubikey_power_save.rules"
@@ -126,7 +128,6 @@ copy "etc/pam.d/polkit-1"
 copy "etc/pam.d/sudo"
 copy "etc/snap-pac.conf"
 copy "etc/snap-pac.ini"
-copy "etc/snapper/configs/root"
 copy "etc/modprobe.d/hid_apple.conf"
 copy "etc/ssh/ssh_config"
 copy "etc/sysctl.d/10-swappiness.conf"
@@ -184,6 +185,7 @@ systemctl_enable_start "privoxy.service"
 systemctl_enable_start "systemd-resolved"
 systemctl_enable_start "vnstat.service"
 systemctl_enable_start "smartd.service"
+systemctl_enable_start "snapper-cleanup.timer"
 systemctl_enable "getty@tty1.service"
 systemctl_enable "pcscd.socket"
 systemctl_enable "unbind-suspend-failing-device.service"
@@ -217,7 +219,8 @@ ln -sf /etc/pacman.conf /etc/aurutils/pacman-cyrinux-aur-local.conf
 ln -sf /etc/pacman.conf /etc/aurutils/pacman-"$(uname -m)".conf
 
 echo "Fixing local AUR repository"
-install -o "$USER" -d /var/cache/pacman/cyrinux-aur-local-temp
+mkdir -p /var/cache/pacman/cyrinux-aur-local-temp
+chown -R "$USER":"$USER" /var/cache/pacman/cyrinux-aur-local-temp
 chmod g+s /var/cache/pacman/cyrinux-aur-local-temp
 
 echo "Regenerating fonts cache"
