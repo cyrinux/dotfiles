@@ -412,7 +412,6 @@ package_cyrinux-base() {
         'salt-lint'
         'samba'
         'sd'
-        'seafile-client'
         'shfmt'
         'simple-scan'
         'sipcalc'

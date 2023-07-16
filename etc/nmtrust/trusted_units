@@ -6,3 +6,4 @@ checkmail.timer,user:cyril
 goimapnotify@personal.service,user:cyril
 autovdirsyncer.service,user:cyril
 restic-check.timer,user:cyril
+nextcloud-sync.service,user:cyril

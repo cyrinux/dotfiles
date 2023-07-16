@@ -95,6 +95,7 @@ setup_asdf() {
 		asdf global $s latest
 	done
 	asdf global python system
+	asdf global rust system
 }
 
 setup_golang() {
@@ -193,6 +194,7 @@ link ".config/systemd/user/tarsnap.service"
 link ".config/systemd/user/tarsnap.timer"
 link ".config/systemd/user/task-sync.service"
 link ".config/systemd/user/task-sync.timer"
+link ".config/systemd/user/nextcloud-sync.service"
 link ".config/systemd/user/udiskie.service"
 link ".config/systemd/user/urlwatch.service"
 link ".config/systemd/user/urlwatch.timer"

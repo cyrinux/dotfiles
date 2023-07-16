@@ -1,0 +1,13 @@
+[Unit]
+Description=Nextcloud sync
+PartOf=hyprland-session.target
+After=hyprland-session.target
+
+[Service]
+Type=oneshoy
+ExecStart=/usr/bin/nextcloudcmd --resync
+ExecStop=/usr/bin/nextcloudcmd --pause
+
+
+[Install]
+WantedBy=hyprland-session.target
