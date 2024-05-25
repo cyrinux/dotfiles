@@ -12,6 +12,7 @@ set -eu
 
 CONTAINER=$1
 shift
+
 COMMAND=${*:-bash}
 
-podman run --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND
+docker run --platform linux/arm64 --rm -it -v "$(pwd):/src" -w /src "$CONTAINER" $COMMAND

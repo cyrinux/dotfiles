@@ -1,0 +1,45 @@
+#!/bin/sh
+
+title="Audio"
+
+error() {
+	echo >&2 "$*"
+	exit 1
+}
+
+[ $# -gt 0 ] || error "Usage: $0 <action> (e.g. $0 output-mute)"
+
+case "$1" in
+	bt-toggle-profile)
+		bt_card=$(wpctl list | grep "Name: bluez_card." | cut -d ' ' -f 2)
+		a2dp=$(wpctl list | grep Active | grep a2dp-sink)
+		[ -n "$bt_card" ] || error "No bluetooth device connected"
+        [ -n "$a2dp" ] && new=headset-head-unit-msbc || new=a2dp-sink
+        echo wpctl set-card-profile "$bt_card" "$new"
+   	;;
+	bt-connect-headphones)
+		notify-send -i audio-headphones "$title" "headphones"
+		bluetoothctl connect 14:3F:A6:29:35:64
+		;;
+	bt-connect-headset)
+		notify-send -i audio-headset "$title" "headset"
+		bluetoothctl connect C0:86:B3:60:91:88
+		;;
+	bt-connect-speakers)
+		notify-send -i audio-speakers-symbolic "$title" "speakers"
+		bluetoothctl connect 08:DF:1F:A9:9E:EC
+		;;
+	bt-connect-earplugs)
+		notify-send -i audio-x-generic "$title" "earplugs"
+		bluetoothctl connect 00:0E:DD:06:24:1C
+		;;
+	bt-disconnect) bluetoothctl disconnect ;;
+  output-mute)           wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ;;
+  input-mute)            push2talk -t ;;
+  output-volume-up)      wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ ;;
+  output-volume-down)    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- ;;
+  input-volume-up)       wpctl set-volume @DEFAULT_SOURCE@ 5%+ ;;
+  input-volume-down)     wpctl set-volume @DEFAULT_SOURCE@ 5%- ;;
+  *)                     error "Unknown action '$1'" ;;
+
+esac

@@ -1,5 +1,5 @@
 *.log
-*.pkg.*
-src
+*.rpm
 pkg
+src
 InputMonoNarrow*.ttf

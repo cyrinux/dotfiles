@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 #
 # This dumps specific dconf settings into ini files.
 #
@@ -14,5 +14,5 @@ CONFIGS=(
 
 for CONFIG in "${CONFIGS[@]}"; do
 	FILENAME=$(echo "$CONFIG" | sed 's/\//./g' | sed '1s/^.//')
-	dconf dump "$CONFIG"/ >"$DUMPS_DIR/$FILENAME.conf"
+	dconf dump "$CONFIG"/ > "$DUMPS_DIR/$FILENAME.conf"
 done

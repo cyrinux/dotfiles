@@ -6,4 +6,13 @@ xkb_symbols "basic" {
     replace key <LWIN> { [ Super_L ] };
     modifier_map Mod4 { <META>, Hyper_L };
     modifier_map Mod3 { <META>, Super_L };
+    replace key <TLDE>  { [ at, numbersign, asciitilde, notsign ] };
+    replace key <AE08>  { [ exclam, 8, backslash, exclamdown ] };
+    replace key <AE06>  { [ minus, 6, trademark, notsign  ] };
+    replace key <AE12>  { [ minus, underscore, braceright, bar ] };
+    replace key <AB10>  { [ equal, plus, notsign, notsign ] };
+    replace key <AD12>  { [ dollar, asterisk, EuroSign, notsign ] };
+    replace key <BKSL>  { [ asterisk, grave, grave, notsign ] };
+    replace key <AC09>  { [ l, L, notsign, bar ] };
 };
+

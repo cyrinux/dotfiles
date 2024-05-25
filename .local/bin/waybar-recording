@@ -2,7 +2,9 @@
 
 trap 'pkill -P $$' EXIT
 
-if obs-cli recording status | grep -q "Recording: true"; then
+cli="obs-cli -H localhost -P 4444 -p randompassword"
+
+if $cli record status 2>/dev/null | grep -q started; then
 	printf "{\"text\": \" <span foreground='#928374'></span> \"}\n"
 else
 	printf '{"text": ""}\n'

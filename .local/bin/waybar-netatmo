@@ -1,10 +1,10 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eo pipefail
 
-nm-online -t 60 -q
+nm-wait
 
 error='503 Service Temporarily Unavailable'
-accountfile=~/.dotfiles-private/.config/netatmo_account.json
+accountfile=${HOME}/.dotfiles-private/.config/netatmo_account.json
 tokenfile=${XDG_CACHE_HOME:-$HOME/.cache}/netatmo_token.json
 datafile=${XDG_CACHE_HOME:-$HOME/.cache}/netatmo_data.json
 publicdatafile=${XDG_CACHE_HOME:-$HOME/.cache}/netatmo_public_data.json
@@ -44,22 +44,24 @@ intemp=$(jq -r ".body.devices[0].dashboard_data.Temperature" "$datafile")
 inhumi=$(jq -r ".body.devices[0].dashboard_data.Humidity" "$datafile")
 innoise=$(jq -r ".body.devices[0].dashboard_data.Noise" "$datafile")
 intemptrend=$(jq -r ".body.devices[0].dashboard_data.temp_trend" "$datafile")
+extemptrend=$(jq -r ".body.devices[0].dashboard_data.temp_trend" "$datafile")
 pres=$(jq -r ".body.devices[0].dashboard_data.Pressure" "$datafile")
 co2=$(jq -r ".body.devices[0].dashboard_data.CO2" "$datafile")
 
 curl -s -d "access_token=${atoken}&device_id=${device_id}&lat_ne=${lat_ne}&lon_ne=${lon_ne}&lat_sw=${lat_sw}&lon_sw=${lon_sw}&required_data=rain&filter=true" "https://api.netatmo.net/api/getpublicdata" > "$publicdatafile" || exit 0
 extemp=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["02:00:00:32:d5:46"]["res"][][0]' "$publicdatafile")
 exhumi=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["02:00:00:32:d5:46"]["res"][][1]' "$publicdatafile")
-# extemptrend=$(jq -r ".body.devices[0].dashboard_data.temp_trend" "$publicdatafile")
+expres=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["70:ee:50:32:d4:78"]["res"][][]' "$publicdatafile")
+rainlive=$(jq -r '.body[] | select(._id == "70:ee:50:32:d4:78") | .measures["05:00:00:04:bd:ac"]["rain_live"]' "$publicdatafile")
 extemptrend=""
 
-if [ $(bc <<< "$extemp > 26.0") -eq 1 ] && [ $(bc <<< "$intemp > $extemp") -eq 1 ]; then
+if ! bc -q <<< "$extemp > 26.0" > /dev/null && ! bc -q <<< "$intemp > $extemp" > /dev/null; then
 	class="high"
 else
 	class="low"
 fi
 
-if [ $(bc <<< "$intemp > 25.0") -eq 1 ]; then
+if ! bc -q <<< "$intemp > 25.0" > /dev/null; then
 	icon="<span foreground='#F44336'></span>"
 else
 	icon="<span foreground='#928374'></span>"
@@ -79,7 +81,7 @@ case $extemptrend in
 	*) ex_trend='' ;;
 esac
 
-tooltip="$in_trend Indoor:\n\nTemperature ${intemp}°C, Humidity ${inhumi}%, Pressure ${pres} hPa\nNoise ${innoise} Db\n\n$ex_trend Outdoor:\n\nTemperature ${extemp}°C, Humidity ${exhumi}%, CO2 ${co2}ppm\n"
+tooltip="$in_trend Indoor:\n\nTemperature ${intemp}°C, Humidity ${inhumi}%, Pressure ${pres} hPa\nNoise ${innoise} Db\n\n$ex_trend Outdoor:\n\nTemperature ${extemp}°C, Humidity ${exhumi}%, CO2 ${co2}ppm, Pressure ${expres} hPa, Rain ${rainlive}mm\n"
 text="<span foreground='#928374'>$intemp°C</span>"
 
 printf '{"text": " %s ", "tooltip": "%s", "class": "%s"}\n' "$icon $text" "$tooltip" "$class"

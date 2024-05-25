@@ -1,0 +1,4 @@
+#!/bin/sh
+while ! nmcli -t -f type connection show --active | grep -E -qv '(wireguard|vpn|loopback)'; do
+    sleep 1
+done

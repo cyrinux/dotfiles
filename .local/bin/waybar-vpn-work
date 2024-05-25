@@ -1,9 +1,11 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+
+set -eu
+
 trap 'pkill -P $$' EXIT
 
 vpn() {
-	if [ -e "/sys/class/net/tun-prod" ] || (($(nmcli --terse -f name conn show --active | grep -q VPN-Prod))); then
+	if [ -e "/sys/class/net/tun-prod" ]; then
 		icon="<span foreground='#928374'></span>"
 		tooltip="Connected to production"
 		class=on

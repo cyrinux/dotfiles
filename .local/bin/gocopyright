@@ -2,9 +2,9 @@
 
 addcopyright() {
 	file=$(tempfile)
-	cat <(echo "// Copyright 2022 Cyril Levis
+	cat <(echo "// Copyright 2023 Cyril Levis
 // SPDX-License-Identifier: Apache-2.0
-  ") "$1" >>"$file"
+  ") "$1" >> "$file"
 	mv "$file" "$1"
 }
 

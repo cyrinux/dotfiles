@@ -1,0 +1,4 @@
+#!/bin/sh
+
+git -C $HOME/.dotfiles add .
+sudo nixos-rebuild switch --impure --flake $HOME/.dotfiles

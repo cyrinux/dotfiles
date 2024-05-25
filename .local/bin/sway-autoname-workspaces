@@ -1,12 +1,5 @@
 #!/usr/bin/python
 
-# This script requires i3ipc-python package (install it from a system package manager
-# or pip).
-# It adds icons to the workspace name for each open window.
-# Set your keybindings like this: set $workspace1 workspace number 1
-# Add your icons to WINDOW_ICONS.
-# Based on https://github.com/maximbaz/dotfiles/blob/master/bin/i3-autoname-workspaces
-
 import argparse
 import logging
 import re
@@ -14,86 +7,43 @@ import signal
 import sys
 
 import i3ipc
-import setproctitle
-
-setproctitle.setproctitle("sway-autoname-workspaces")
 
 WINDOW_ICONS = {
-    "jetbrains-studio": "",
-    "swappy": "",
-    "dmenu-pass": "",
-    "dmenu-clipboard": "",
-    "gsimplecalc": "",
-    "kak": "kak",
-    "kitty": "",
-    "burp-startburp": "",
-    "songrec": "",
-    "calibre": "",
+    "calibre-gui": "",
     "chromium": "",
+    "code": "",
     "code-oss": "",
-    "colinduquesnoy.gitlab.com.mellowplayer": "",
-    "plexamp": "",
-    "spotify": "",
-    "cssh": "",
-    "darktable": "",
     "discord": "",
+    "dmenu": "",
+    "dmenu-browser": "",
+    "dmenu-clipboard": "",
+    "dmenu-emoji": "",
+    "dmenu-pass": "",
+    "dmenu-pass generator": "",
     "draw.io": "",
-    "duolingo": "",
-    "element": "",
     "firefox": "",
-    "fontforge": "",
-    "gcr-prompter": "",
+    "kak": "",
+    "Alacritty": "",
+    "kitty": "",
     "krita": "",
-    "ledger live": "",
     "libreoffice-calc": "",
-    "libreoffice-impress": "",
-    "libreoffice-startcenter": "",
     "libreoffice-writer": "",
     "mpv": "",
+    "nemo": "",
     "neomutt": "",
-    "chrome-faolnafnngnfdaknnbpnkhgohbobgegn-default": "",
-    "molotov": "",
-    "nm-connection-editor": "",
-    "xplr": "",
-    "org.ksnip.ksnip": "",
     "org.pwmt.zathura": "",
+    "org.qutebrowser.qutebrowser": "",
     "paperwork": "",
     "pavucontrol": "",
-    "org.qutebrowser.qutebrowser": "",
-    "personal": "",
-    "work": "",
-    "shopping": "",
-    "bleachbit": "",
+    "peek": "",
+    "qalculate-gtk": "",
     "qutepreview": "",
-    "rapid-photo-downloader": "",
-    "sandboxed-tor-browser": "",
-    "scli": "",
     "signal": "",
-    "slack": "",
-    "snappergui": "",
-    "steam": "",
-    "streamlink-twitch-gui": "",
-    "sun-awt-x11-xframepeer": "",
-    "taskwarrior-tui": "",
-    "org.telegram.desktop": "",
-    "telegramdesktop": "",
-    "tor browser": "",
+    "swappy": "",
     "transmission-gtk": "",
-    "udiskie": "",
     "vimiv": "",
     "virt-manager": "",
-    "vlc": "",
-    "vncviewer": "",
-    "wayvnc": "󰀄",
-    "com.rtosta.zapzap": "",
-    "whatsapp-desktop": "",
-    "whatsapp-nativefier-d52542": "",
-    "wire": "󰁀",
-    "wireshark-gtk": "",
-    "wlfreerdp": "󰀄",
-    "zoom": "",
-    "kicad": "",
-    "remote-viewer": "",
+    "xplr": "",
 }
 
 DEFAULT_ICON = ""
@@ -140,7 +90,7 @@ def undo_window_renaming(ipc):
 
 def parse_workspace_name(name):
     return re.match(
-        "(?P<num>[0-9]+):?(?P<shortname>\w+)? ?(?P<icons>.+)?", name
+        r"(?P<num>[0-9]+):?(?P<shortname>\w+)? ?(?P<icons>.+)?", name
     ).groupdict()
 
 
@@ -200,3 +150,4 @@ if __name__ == "__main__":
     rename_workspaces(ipc)
 
     ipc.main()
+

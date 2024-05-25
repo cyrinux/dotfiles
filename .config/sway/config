@@ -1,9 +1,27 @@
+set $screen_laptop 'eDP-1'
+bindswitch --locked lid:off output $screen_laptop dpms on
+bindswitch --locked lid:on  output $screen_laptop dpms off, exec brightnessctl set -d kbd_backlight 0
+
+output $screen_laptop {
+    scale 1.2
+}
+
 input type:keyboard {
-    xkb_layout fr-hyper,us,ua
-    xkb_variant basic,,
+    xkb_layout fr-hyper,us
+    xkb_variant basic,
     xkb_options grp:shifts_toggle,grp:shift_caps_toggle,caps:hyper
     xkb_numlock enable
+    repeat_delay 300
+    repeat_rate 60
 }
+
+input "device:Clavier de Florian Levis" {
+    xkb_layout fr-hyper,us
+    xkb_variant basic,
+    xkb_options grp:shifts_toggle,grp:shift_caps_toggle,caps:hyper
+    xkb_numlock disable
+}
+
 
 input type:mouse {
     pointer_accel 0.2
@@ -19,12 +37,19 @@ input type:touchpad {
     click_method button_areas
 }
 
+# Allow switching between workspaces with left and right swipes
+bindgesture swipe:right workspace prev
+bindgesture swipe:left workspace next
+
+# Allow container movements by pinching them
+bindgesture pinch:inward+up move up
+bindgesture pinch:inward+down move down
+bindgesture pinch:inward+left move left
+bindgesture pinch:inward+right move right
+
 output * {
     bg "#1a1c1c" solid_color
-    adaptive_sync off
 }
-
-# xwayland disable
 
 # hide cursor if idle while 10s
 seat * hide_cursor 10000
@@ -48,7 +73,6 @@ set $numlock Mod2
 set $hyper Mod4
 set $win Mod3
 floating_modifier $win
-set $kanshi bash -c "killall kanshi; kanshi;"
 
 gaps inner $default_gap
 smart_gaps on
@@ -103,11 +127,11 @@ for_window    [app_id="mpv"] floating enable, sticky enable, resize set width 60
 set $mode_audio "Audio:  (h)eadphones,  he(a)dset, (t)oggle, (s)peaker, (p)avucontrol, (e)qualizer"
 mode $mode_audio {
     bindsym --to-code {
-        h exec sway-audio bt-connect-headphones, mode "default"
-        a exec sway-audio bt-connect-headset, mode "default"
-        s exec sway-audio bt-connect-speakers, mode "default"
-        t exec sway-audio bt-toggle-profile, mode "default"
-        d exec sway-audio bt-disconnect, mode "default"
+        h exec audio bt-connect-headphones, mode "default"
+        a exec audio bt-connect-headset, mode "default"
+        s exec audio bt-connect-speakers, mode "default"
+        t exec audio bt-toggle-profile, mode "default"
+        d exec audio bt-disconnect, mode "default"
         e exec easyeffects-toggle toggle, mode "default"
         p exec pavucontrol, mode "default"
 
@@ -119,12 +143,12 @@ mode $mode_audio {
 set $mode_system "System: (l)ock, (s)uspend, (r)eboot, (H)alt, (t)rusted, (u)ntrusted, unm(o)unt, (e)xit, (d)arkman"
 mode $mode_system {
 	bindsym --to-code {
-     l exec sway-exit lock, mode "default"
-     e exec sway-exit exit, mode "default"
-     s exec sway-exit suspend, mode "default"
-     r exec sway-exit reboot, mode "default"
+     l exec exit-wm lock, mode "default"
+     e exec exit-wm exit, mode "default"
+     s exec exit-wm suspend, mode "default"
+     r exec exit-wm reboot, mode "default"
      d exec darkman toggle, mode "default"
-     Shift+h exec sway-exit shutdown, mode "default"
+     Shift+h exec exit-wm shutdown, mode "default"
      t exec ttoggle -t, mode "default"
      u exec ttoggle -x, mode "default"
      o exec udiskie-umount -a, mode "default"
@@ -134,20 +158,13 @@ mode $mode_system {
 	}
 }
 
-# bindsym XF86PowerOff       exec sway-exit lock
-bindsym XF86Eject          exec sway-exit lock
-bindsym Pause              exec sway-exit lock
+bindsym --locked XF86PowerOff exec swayidle -w \
+  timeout 1 'swaymsg "output * dpms off"' \
+  resume 'swaymsg "output * dpms on "; pkill -nx swayidle'
 
-set $mode_cpu "CPU: (c)ool, (n)ormal"
-mode $mode_cpu {
-	bindsym --to-code {
-     c exec sudo cpu cooling, mode "default"
-     n exec sudo cpu normal, mode "default"
-
-     Return mode "default"
-     Escape mode "default"
-	}
-}
+bindsym --locked XF86Sleep exec exit-wm suspend
+bindsym XF86Eject          exec exit-wm lock
+bindsym Pause              exec exit-wm lock
 
 set $mode_resize "Resize window"
 mode $mode_resize {
@@ -181,18 +198,25 @@ mode $mode_workspaces_monitors {
 }
 
 bindsym --to-code --locked {
-    XF86AudioMute                 exec sway-audio output-mute
-    XF86AudioRaiseVolume          exec sway-audio output-volume-up
-    XF86AudioLowerVolume          exec sway-audio output-volume-down
-    $win+Up                       exec sway-audio output-mute
-    $win+Down                     exec sway-audio output-mute
-    $win+Right                    exec sway-audio output-volume-up
-    $win+Left                     exec sway-audio output-volume-down
-    $win+Shift+Up                 exec sway-audio input-mute
-    $win+Shift+Down               exec sway-audio input-mute
-    XF86AudioMicMute              exec sway-audio input-mute
-    $win+Shift+Right              exec sway-audio input-volume-up
-    $win+Shift+Left               exec sway-audio input-volume-down
+    XF86AudioMute        exec audio output-mute
+    XF86AudioRaiseVolume exec audio output-volume-up
+    XF86AudioLowerVolume exec audio output-volume-down
+    $win+Up              exec audio output-mute
+    $win+Down            exec audio output-mute
+    $win+Right           exec audio output-volume-up
+    $win+Left            exec audio output-volume-down
+    $win+Shift+Up        exec audio input-mute
+    $win+Shift+Down      exec audio input-mute
+    $win+Shift+Right     exec audio input-volume-up
+    $win+Shift+Left      exec audio input-volume-down
+
+    # Brightness control
+    XF86MonBrightnessUp         exec brightnessctl set -- +1%
+    XF86MonBrightnessDown       exec brightnessctl set -- -1%
+    Shift+XF86MonBrightnessUp   exec brightnessctl set -- +5%
+    Shift+XF86MonBrightnessDown exec brightnessctl set -- -5%
+    $win+XF86MonBrightnessUp    exec brightnessctl set -d kbd_backlight -- +5%
+    $win+XF86MonBrightnessDown  exec brightnessctl set -d kbd_backlight -- -5%
 
     XF86AudioPlay                 exec playerctl --player playerctld play-pause
     XF86AudioNext                 exec playerctl --player playerctld next
@@ -201,27 +225,20 @@ bindsym --to-code --locked {
     $hyper+Down                   exec playerctl --player playerctld play-pause
     $hyper+Left                   exec playerctl --player playerctld previous
     $hyper+Right                  exec playerctl --player playerctld next
-    XF86Display 				  exec $kanshi
 }
 
 
 bindsym --to-code {
-	# Screen brightness controls
-    XF86MonBrightnessUp         exec light -A 1%
-    XF86MonBrightnessDown       exec light -U 1%
-    Shift+XF86MonBrightnessUp   exec light -A 5%
-    Shift+XF86MonBrightnessDown exec light -U 5%
+    Print                    exec cglaunch screenshot-area
+    XF86LaunchA              exec cglaunch screenshot-area
+    $hyper+Print             exec cglaunch screenshot-area window
+    $hyper+XF86LaunchA       exec cglaunch screenshot-area window
+    $hyper+Shift+Print       exec cglaunch gif-area
+    $hyper+Shift+XF86LaunchA exec cglaunch gif-area
+    $win+Shift+Print         exec cglaunch screenshare
+    $win+Shift+XF86LaunchA   exec cglaunch screenshare
+    $win+i                   exec cglaunch hyprpicker -n -a
 
-
-
-	Print exec cglaunch sway-screenshot-area
-    # Print       exec cglaunch shotman region
-    # $hyper+Print exec cglaunch shotman window
-    # $win+Print   exec cglaunch shotman output
-
-    $hyper+Shift+Print exec cglaunch sway-gif-area
-    $win+Shift+Print   exec cglaunch sway-screenshare
-    $win+i             exec cglaunch grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
 
 	# open terminal
 	$hyper+Return exec cglaunch --term
@@ -238,7 +255,7 @@ bindsym --to-code {
 	$hyper+equal       fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	XF86Calculator     fullscreen disable, exec bash -c "pkill -x qalculate-gtk || cglaunch qalculate-gtk"
 	$hyper+w           fullscreen disable, exec "pgrep -x dmenu && pkill dmenu || cglaunch browser"
-    $hyper+d           fullscreen disable, exec bash -c "pkill -x wldash || cglaunch wldash"
+    $hyper+d           fullscreen disable, exec bash -c "pkill -x wmenu-run || cglaunch wmenu-run"
     $hyper+f           fullscreen disable, exec cglaunch wl-clipboard-manager dmenu
     $hyper+p           fullscreen disable, exec "wl-clipboard-manager lock; cglaunch passmenu -p pass; wl-clipboard-manager unlock"
     $win+p             fullscreen disable, exec pass-gen
@@ -335,6 +352,19 @@ bindsym --to-code {
 
 	# switch to workspace with urgent window automatically
     $win+Tab exec swayr switch-to-urgent-or-lru-window
+    $hyper+x exec swayr switch-to-urgent-or-lru-window
+
+    $hyper+b exec swayr switch-to-app-or-urgent-or-lru-window \
+        --skip-lru-if-current-doesnt-match firefox \
+        || cglaunch firefox
+
+    $hyper+g exec swayr switch-to-app-or-urgent-or-lru-window \
+        --skip-lru-if-current-doesnt-match kitty \
+        || cglaunch kitty
+
+    $hyper+c exec swayr switch-to-app-or-urgent-or-lru-window \
+        --skip-lru-if-current-doesnt-match signal \
+        || cglaunch signal-desktop
 
 	# reload the configuration file
 	$win+r reload
@@ -342,19 +372,17 @@ bindsym --to-code {
 	# mode
 	$win+a        mode $mode_audio
 	$win+Escape   mode $mode_system
-	$hyper+Escape mode $mode_cpu
 	$win+m        mode $mode_workspaces_monitors
 	$hyper+r      mode $mode_resize
 
 	# Notification actions
     $hyper+q exec swaync-client --close-all
     Alt+space exec swaync-client --toggle-dnd
+
+
 }
 
-exec_always $kanshi
 exec_always import-gsettings
-
-
 
 # Color scheme (Gruvbox dark)
 set $color_normal_white  #a89984
@@ -372,14 +400,14 @@ client.unfocused          $color_normal_gray     $color_normal_gray     $color_n
 client.urgent             $color_bright_yellow   $color_bright_yellow   $color_normal_black    $color_unused        $color_unused
 client.placeholder        $color_unused          $color_unused          $color_unused          $color_unused        $color_unused
 
-
-include "~/.config/sway/default.conf"
-
-# Load host-specific configs
-include "~/.config/sway/$(cut -d'-' -f1 /etc/hostname).conf"
-
-# Load systemd integration
-include /etc/sway/config.d/*
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK
+exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SWAYSOCK
 exec systemctl --user start sway-session.target
+
+exec_always "cggrep neomutt || cglaunch --term neomutt"
+exec_always "cggrep signal-desktop || cglaunch signal-desktop"
+exec_always /usr/libexec/gsd-xsettings
+exec_always "darkman set dark"
+# exec_always cglaunch waybar
 
 # vi:ft=i3

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-mr -j 6 update || true

@@ -15,7 +15,7 @@ failure() {
 	echo "$RED$BOLD✗ ${RESET}$*"
 }
 
-DEVICE=$(iwctl station list | grep connected | awk '{ print $1 }')
+DEVICE=$(iwctl station list | awk '/connected/ { print $1 }')
 if [ -z "$DEVICE" ]; then
 	failure "Not connected to any network."
 	exit 1
@@ -24,7 +24,7 @@ else
 fi
 
 # FIXME: Only shows first work of networks with spaces:
-WIFI=$(iwctl station wlan0 show | grep "Connected network" | awk '{ print $3 }')
+WIFI=$(iwctl station wlan0 show | awk '/Connected network/ { print $3 }')
 if [ -z "$WIFI" ]; then
 	failure "Not connected to any network."
 	exit 1

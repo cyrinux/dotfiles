@@ -1,0 +1,98 @@
+#!/bin/sh
+
+MINIKUBE_PROFILE_NAME="minikube-metallb"
+
+# Function to configure MetalLB
+configure_metallb_for_minikube() {
+    CIDR_BASE_ADDR="$(minikube ip -p $MINIKUBE_PROFILE_NAME)"
+    INGRESS_FIRST_ADDR="$(echo "${CIDR_BASE_ADDR}" | awk -F'.' '{print $1,$2,$3,2}' OFS='.')"
+    INGRESS_LAST_ADDR="$(echo "${CIDR_BASE_ADDR}" | awk -F'.' '{print $1,$2,$3,255}' OFS='.')"
+    INGRESS_RANGE="${INGRESS_FIRST_ADDR}-${INGRESS_LAST_ADDR}"
+
+    CONFIG_MAP="apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - $INGRESS_RANGE"
+
+    echo "${CONFIG_MAP}" | kubectl apply --context $MINIKUBE_PROFILE_NAME -f -
+}
+
+install_and_configure_argo_workflow() {
+    # Add the Argo Helm repository
+    helm repo add argo https://argoproj.github.io/argo-helm
+
+    # Update Helm repository
+    helm repo update
+
+    # Install Argo Workflows
+    helm install argo-workflows argo/argo-workflows --namespace argo --create-namespace
+
+    # Wait for Argo Workflows to be ready
+    kubectl wait --for=condition=Ready pod -l app=argo-workflows -n argo --timeout=300s
+}
+
+install_and_configure_cert_manager() {
+    helm repo add jetstack https://charts.jetstack.io
+    helm repo update
+    helm install \
+        cert-manager jetstack/cert-manager \
+        --namespace cert-manager \
+        --create-namespace \
+        --version v1.6.0 \
+        --set installCRDs=true
+    kubectl wait --for=condition=Ready pod -l app=webhook -n cert-manager --timeout=300s
+
+    # Apply a ClusterIssuer or Issuer configuration
+    # This is a basic self-signed issuer. Modify as needed.
+    cat << EOF | kubectl apply -f -
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+spec:
+  selfSigned: {}
+EOF
+}
+
+# Check if Minikube is running
+status=$(minikube status -p $MINIKUBE_PROFILE_NAME | grep -o "Running" || true)
+
+# Check if Minikube is paused
+paused=$(minikube status -p $MINIKUBE_PROFILE_NAME | grep -o "Paused" || true)
+
+if [ -z "$status" ]; then
+    # Start Minikube if not running
+    minikube -p $MINIKUBE_PROFILE_NAME delete
+    minikube start -p $MINIKUBE_PROFILE_NAME --addons=metallb --container-runtime=containerd --nodes 3
+    kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0 --context $MINIKUBE_PROFILE_NAME
+    kubectl expose deployment hello-minikube --type=LoadBalancer --port=80 --target-port=8080 --context $MINIKUBE_PROFILE_NAME
+    configure_metallb_for_minikube
+    minikube -p $MINIKUBE_PROFILE_NAME addons enable metrics-server
+    # Install argo
+    # install_and_configure_cert_manager
+    # Install argo
+    # install_and_configure_argo_workflow
+    # Display nodes and services
+    kubectl get nodes --context $MINIKUBE_PROFILE_NAME
+    kubectl get svc -A --context $MINIKUBE_PROFILE_NAME
+
+    # minikube -p $MINIKUBE_PROFILE_NAME dashboard --url=false &
+    # curl 10.0.0.1.nip.io
+elif [ -n "$paused" ]; then
+    # Resume Minikube if paused
+    minikube unpause -p $MINIKUBE_PROFILE_NAME
+    # Display nodes and services
+    kubectl get nodes --context $MINIKUBE_PROFILE_NAME
+    kubectl get svc -A --context $MINIKUBE_PROFILE_NAME
+else
+    # Pause Minikube if it is running
+    minikube pause -p $MINIKUBE_PROFILE_NAME
+fi

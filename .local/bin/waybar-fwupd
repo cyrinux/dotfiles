@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 updates="$(fwupdmgr get-updates 2>/dev/null)"
 updates=$(printf "${updates}" | perl -pe 's/\n/\\n/g' | perl -pe 's/(?:\\n)+$//')

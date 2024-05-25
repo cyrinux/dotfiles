@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 SEARCH="tag:inbox AND not tag:archive AND not tag:calendar AND text/calendar"
 

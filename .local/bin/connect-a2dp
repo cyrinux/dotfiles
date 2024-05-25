@@ -1,14 +1,14 @@
-#!/bin/bash
-set -ef -o pipefail
+#!/bin/sh
+set -eu
 
 usage() {
-	echo "$(basename $0) bluetooth_mac 00:11:22:33:44:55 [name]"
+	echo "$(basename "$0") bluetooth_mac 00:11:22:33:44:55 [name]"
 	exit 1
 }
 
 connect() {
-	bluetooth on
-	bluetoothctl connect $1
+	bluetoothctl power on
+	bluetoothctl connect "$1"
 }
 
 if [ -z "$1" ]; then

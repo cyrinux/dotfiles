@@ -3,7 +3,7 @@
 pkill -x wf-recorder -SIGINT
 
 [ $? -ne 0 ] && {
-	systemctl --user stop sway-inactive-window-transparency.service
+	# systemctl --user stop sway-inactive-window-transparency.service
 
 	path="/tmp/record_$(date +%s)"
 	notify-send -t 2000 'GIF recording' 'Select an area to start the recording...'
@@ -13,8 +13,8 @@ pkill -x wf-recorder -SIGINT
 	pkill -RTMIN+3 -x waybar
 	notify-send -t 2000 'GIF recording' "Encoding to GIF format..."
 	ffmpeg -i "$path.mkv" -vf "fps=15,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" "$path.gif"
-	wl-copy -t image/gif <"$path.gif"
+	wl-copy -t image/gif < "$path.gif"
 	notify-send 'GIF recording' "Recording is ready: $path.gif"
 
-	systemctl --user start sway-inactive-window-transparency.service
+	# systemctl --user start sway-inactive-window-transparency.service
 } &

@@ -1,7 +1,9 @@
 #!/bin/sh
 
-if obs-cli stream status | grep -q "Streaming: true"; then
-	printf '{"text": "  "}\n'
+cli="obs-cli -H localhost -P 4444 -p randompassword"
+
+if $cli stream status 2>/dev/null | grep -q started; then
+	printf "{\"text\": \" <span foreground='#928374'> </span> \"}\n"
 else
 	printf '{"text": ""}\n'
 fi

@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Get the battery percentage from KDE Connect
+BATTERY_LEVEL="$(dbus-send --session --print-reply --dest=org.kde.kdeconnect /modules/kdeconnect/devices/$(kdeconnect-cli -a --id-only)/battery org.freedesktop.DBus.Properties.Get string:org.kde.kdeconnect.device.battery string:charge | awk '/int32/ {print $3}')"
+IS_CHARGING="$(dbus-send --session --print-reply --dest=org.kde.kdeconnect /modules/kdeconnect/devices/$(kdeconnect-cli -a --id-only)/battery org.freedesktop.DBus.Properties.Get string:org.kde.kdeconnect.device.battery string:isCharging | awk '/bool/ {print $3}')"
+
+# Check if battery level is under 50%
+if [ "$IS_CHARGING" = "true" ] && [ $BATTERY_LEVEL -lt 50 ]; then
+    echo "{\"text\": \" $BATTERY_LEVEL%\", \"class\": \"charging\", \"tooltip\": \"charging...\"}"
+elif [ $BATTERY_LEVEL -lt 50 ]; then
+    echo "{\"text\": \" $BATTERY_LEVEL%\", \"class\": \"critical\", \"tooltip\": \"discharging...\"}"
+else
+    echo "{\"text\": \"\", \"class\": \"normal\"}"
+fi

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-TYPE=$1
+TYPE=${1:-kali}
 
 export HACKENV_CORES=4
 export HACKENV_MEMORY=4194304

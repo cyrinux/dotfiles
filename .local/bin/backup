@@ -1,8 +1,13 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 
-SOURCE=".dotfiles .cache/mail* .cache/tarsnap.key library/contacts library/calendars .dotfiles .dotfiles-private .ssh .gnupg library/documents .zsh*"
-# BACKUP_PATH=("/home/cyril/Vault/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/PortableSSD/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/SURVIVOR/backup_cyril_laptop_DONTREMOVE")
-BACKUP_PATH=("/run/media/cyril/PortableSSD/backup_cyril_laptop_DONTREMOVE" "/run/media/cyril/SURVIVOR/backup_cyril_laptop_DONTREMOVE")
+SOURCE=".dotfiles $XDG_CACHE_HOME/mail* $XDG_CACHE_HOME/tarsnap.key library/contacts library/calendars .dotfiles .dotfiles-private .ssh .gnupg .mail $XDG_DATA_HOME/aurutils $XDG_DATA_HOME/wl-clipboard-manager .zsh-history .zsh_history Vault .password-store .kube .azure"
+
+BACKUP_PATH=("/run/media/${USER}/PortableSSD/backup_${USER}_laptop_DONTREMOVE" "/run/media/${USER}/SURVIVOR/backup_${USER}_laptop_DONTREMOVE")
+
+error() {
+	echo >&2 "$@"
+	exit 1
+}
 
 for backup_path in "${BACKUP_PATH[@]}"; do
 	if [ ! -d $backup_path ]; then
@@ -15,17 +20,17 @@ for backup_path in "${BACKUP_PATH[@]}"; do
 		read -p "Backup directory '$BACKUP_DIR' already exists, merge? [y/n] " -n 1 -r
 		echo
 		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-			echo "Aborted."
-			exit 1
+			error "Aborted."
 		fi
 	fi
 
 	while true; do
-		[ -f ~/Vault/.lock ] && break
+		[ -f $HOME/Vault/.lock ] && break
 		sleep 1
 	done
 
 	cd "$HOME"
+
 	echo -e "\nBackup STARTED\n\nSource(s):   $SOURCE\nDestination: $BACKUP_DIR\n"
 	rsync -a --delete --info=progress2 $SOURCE $BACKUP_DIR
 	exitcode=$?

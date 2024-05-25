@@ -1,19 +1,28 @@
 #!/bin/sh
 #
-# Clean up branches deleted at origin.
+# Clean up branches deleted at a given branch.
 
 set -e
 
-git fetch -p
+if [ -z "$1" ]; then
+  echo "Usage: $(basename "$0") REMOTE"
+  exit 1
+fi
+
+git fetch -p "$1"
 
 # Delete branches that have been deleted upstream.
 branches=$(git branch -vv | grep ': gone]' | awk '{print $1}')
 for branch in $branches; do
-	git branch -d "$branch"
+  # Don't bail if one of these failed (hint: error gets printed).
+  git branch -d "$branch" 2>&1 |
+    sed 's/^error: The branch/Deleted upstream:/' |
+    grep -v "If you are sure you want to delete it" ||
+    true
 done
 
 # Delete branches that are merged into the current branch
-branches=$(git branch --merged | grep -Pv "^\*")
+branches=$(git branch --merged | grep -v "^\*")
 for branch in $branches; do
-	git branch -d "$branch"
+  git branch -d "$branch"
 done

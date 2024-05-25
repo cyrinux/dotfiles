@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/code --enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --new-window "$1"

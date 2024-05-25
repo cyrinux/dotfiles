@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 query="$@"
 
@@ -24,4 +24,4 @@ parallel -j4 job {} ::: < \
 			--stream \
 			'fromstream(1 | truncate_stream(inputs))' |
 		jq -r '.. | .filename? //empty | @tsv') |
-	pv -l -s $(notmuch count "${query}") >/dev/null
+	pv -l -s "$(notmuch count ${query})" > /dev/null

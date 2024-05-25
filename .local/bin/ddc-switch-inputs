@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Usage: ddc-switch-inputs 1
 case $1 in
 1)

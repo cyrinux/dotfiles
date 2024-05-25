@@ -1,0 +1,10 @@
+#!/bin/sh
+set -e
+
+if ! grep -q cloud "$HOME/.netrc" 2> /dev/null; then
+    notify-send "Bootstrap nextcloud-sync"
+    pass personal/nextcloud-sync >> "$HOME/.netrc"
+    chmod 400 "$HOME/.netrc"
+fi
+
+exec /usr/bin/nextcloudcmd --silent --non-interactive -n "$HOME/Nextcloud" "https://$(awk '/cloud/ {print $2}' $HOME/.netrc)"

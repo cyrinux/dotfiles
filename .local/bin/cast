@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
+
+{ sleep 5 && pkill -RTMIN+3 -x waybar; } &
+
+cli="obs-cli -H localhost -P 4444 -p randompassword"
+
+case ${1:-} in
+	start | toggle-stream)
+		pgrep -x obs || cglaunch obs &
+		sleep 1
+		$cli stream toggle
+		;;
+	toggle-recording)
+		pgrep -x obs || cglaunch obs &
+		sleep 1
+		$cli record toggle
+		;;
+	preview)
+		mpv https://twitch.tv/cyrinux
+		;;
+	stop)
+		$cli stream stop > /dev/null 2>&1
+		$cli record stop > /dev/null 2>&1
+		killall obs 2> /dev/null
+		;;
+	status)
+		$cli stream status
+		$cli record status
+		;;
+	*)
+		echo "Help: $0 toggle-stream|toggle-recording|preview|start|stop|status"
+		;;
+esac

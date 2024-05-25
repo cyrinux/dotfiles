@@ -1,49 +1,25 @@
-#!/bin/bash
-# pass edit work/works-url-patterns
-# then edit rules
-# with format:
-# *.example.com@work
-# *.work.org/.*@work
-#
-# first match win
+#!/bin/sh
+
 url="$1"
+url_encoded="$(jq -nr --arg input "$url" '$input|@uri')"
+containers="$(jq -r '.identities[] | select (.public) | .name' $HOME/.mozilla/firefox/default/containers.json 2> /dev/null | awk 'BEGIN{print ""} {print "firefox ("$0")"}')"
+menu=$(printf "firefox temp$containers\nchromium\ncopy to clipboard\nplay" | grep -v AWS | dmenu -p browser)
 
-list="$XDG_CACHE_HOME/works-url-patterns"
-[ -s "$list" ] || pass work/works-url-patterns > $list
-
-# echo $url
-if [ -s "${list}" ]; then
-	while read line; do
-		rule=$(echo ${line} | cut -d'@' -f1)
-		echo ${url} | grep -q -E "^${rule}"
-		if [ $? -eq 0 ]; then
-			container=$(echo ${line} | cut -d'@' -f2)
-			break
-		fi
-	done < $list
-fi
-
-if [ -z $container ]; then
-	container=$(echo -e "personal\nwork\nshopping\ndisposable\nchromium\nclipboard\nmpv" | dmenu -p "browser")
-fi
-
-case $container in
-	"personal")
-		cglaunch qbpm launch personal "$url" &
+case $menu in
+	"firefox temp")
+		firefox "ext+container:name=%NEW_TEMP_CONTAINER%&url=$url_encoded" &
 		;;
-	"work")
-		cglaunch qbpm launch work "$url" &
-		;;
-	"shopping")
-		cglaunch qbpm launch shopping "$url" &
-		;;
-	"clipboard")
-		echo "$url" | wl-copy &
+	"firefox "*)
+		container=$(echo "$menu" | awk -F'[()]' '{print $2}')
+		firefox "ext+container:name=$container&url=$url_encoded" &
 		;;
 	"chromium")
-		chromium-incognito "$url" &
+		chromium-browser "$url_encoded" &
 		;;
-	"mpv")
-		cglaunch mpv "$url" &
+	"copy to clipboard")
+		echo "$url" | wl-copy
+		;;
+	"play")
+		mpv "$url" &
 		;;
 esac

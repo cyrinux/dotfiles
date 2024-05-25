@@ -1,2 +1,2 @@
 #!/bin/sh
-chmod +x "$1"
+chmod +x $@

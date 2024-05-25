@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+  echo "Usage: xdg-make-default APPLICATION_NAME"
+  exit 1
+fi
+
+if [ -f "$HOME/.local/share/applications/$1.desktop" ]; then
+  ENTRY="$HOME/.local/share/applications/$1.desktop"
+elif [ -f "/usr/local/share/applications/$1.desktop" ]; then
+  ENTRY="/usr/local/share/applications/$1.desktop"
+elif [ -f "/usr/share/applications/$1.desktop" ]; then
+  ENTRY="/usr/share/applications/$1.desktop"
+else
+  echo "Entry $1 not found."
+  exit 2
+fi
+
+TYPES=$(grep 'MimeType=' "$ENTRY" | sed -e 's/.*=//' -e 's/;/ /g')
+
+# shellcheck disable=SC2086
+xdg-mime default ${1}.desktop $TYPES
+

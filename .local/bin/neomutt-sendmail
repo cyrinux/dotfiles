@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 for ((i = 1; i < "$#"; i++)); do
 	if [[ "${!i}" == "-f" ]]; then

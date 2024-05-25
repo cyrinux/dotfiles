@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 class=$(playerctl metadata --player=MellowPlayer --format '{{lc(status)}}' 2>/dev/null)
 icon=""

@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
+
 lock="${XDG_CACHE_HOME}/waybar-decrypted.lock"
 
 output() {

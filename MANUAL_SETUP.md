@@ -87,3 +87,15 @@ https://github.com/drduh/YubiKey-Guide
 ```
 sudo pacman -S ccid pcsclite
 ```
+
+# Distrobox
+
+```
+distrobox create --image ghcr.io/ublue-os/obs-studio-portable:latest --name obs --pull
+```
+
+# system yubikey enroll luks
+
+```
+sudo systemd-cryptenroll  --fido2-device=auto /dev/nvme0n1p11
+```

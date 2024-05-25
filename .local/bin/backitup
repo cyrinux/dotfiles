@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Execute a user-specified command if a certain amount of time has passed.
 #

@@ -1,0 +1,7 @@
+#       Serial: 20286563, Slot: 1
+#         Name: age identity 488aadcd
+#      Created: Mon, 20 May 2024 20:38:12 +0000
+#   PIN policy: Once   (A PIN is required once per session, if set)
+# Touch policy: Always (A physical touch is required for every decryption)
+#    Recipient: age1yubikey1qvygkcxt7z7wrjws2u32hwv40qhcygmtswnl75txt0qdwwtq39kd2w82jkk
+AGE-PLUGIN-YUBIKEY-1VWXR2QVZFZ92MNGTCVWKN

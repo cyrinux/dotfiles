@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 trap 'pkill -P $$ && pkill -RTMIN+3 -x waybar' EXIT
 

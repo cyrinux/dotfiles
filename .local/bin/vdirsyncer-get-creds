@@ -1,5 +1,5 @@
 #!/bin/sh
 
-[ ! -f ~/.cache/mail.levis.name.gpg ] && echo "Data are store in 'pass personal/mailservers', create ~/.cache/mail.levis.name.gpg with data from it." && exit 1
+[ ! -f ~/.cache/mail.levis.name.gpg ] && notify-send "Data are store in 'pass personal/mailservers', create ~/.cache/mail.levis.name.gpg with data from it." && exit 1
 
 gpg --quiet --decrypt ~/.cache/mail.levis.name.gpg | grep $1 | head -1 | cut -d':' -f2-3

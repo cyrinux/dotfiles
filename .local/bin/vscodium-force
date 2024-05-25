@@ -1,0 +1,24 @@
+#!/bin/sh
+
+while true; do
+    # Launch the main instance - it will run in background if you don't use tray
+    vscodium > /dev/null 2>&1 &
+    pid=$!
+
+    # Launch a second instance - it will exit, bringing the main instance to foreground
+    sleep 1
+    vscodium > /dev/null
+
+    # Move mouse cursor over the Signal window to trigger an intermittent segfault
+    sleep 1
+    ydotool mousemove 3 0
+
+    # Check if the main process has crashed
+    sleep 1
+    if kill -0 $pid 2> /dev/null; then
+        echo "VSCodium has finally launched!"
+        exit 0
+    else
+        echo "VSCodium has crashed, let's try again..."
+    fi
+done

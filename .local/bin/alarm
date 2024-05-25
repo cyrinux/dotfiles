@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -e
+set -eu
 
 DEFAULT_TITLE="Alarm!"
 time="$1"
@@ -14,17 +14,17 @@ function convert_time_to_sec() {
 }
 
 function convert_sec_to_sec() {
-	local date_command_format=$(echo $1 | sed "s/s/ second/g")
+	local date_command_format=${1//s/ second}
 	convert_time_to_sec "$date_command_format"
 }
 
 function convert_min_to_sec() {
-	local date_command_format=$(echo $1 | sed "s/m/ minute/g")
+	local date_command_format=${1//m/ minute}
 	convert_time_to_sec "$date_command_format"
 }
 
 function convert_hour_to_sec() {
-	local date_command_format=$(echo $1 | sed "s/h/ hour/g")
+	local date_command_format=${1//h/ hour}
 	convert_time_to_sec "$date_command_format"
 }
 
@@ -33,17 +33,17 @@ function convert_datetime_from_unix_time() {
 }
 
 if [[ $time == *:* ]]; then
-	SEC=$(convert_time_to_sec $time)
+	SEC=$(convert_time_to_sec "$time")
 elif [[ $time == *s ]]; then
-	SEC=$(convert_sec_to_sec $time)
+	SEC=$(convert_sec_to_sec "$time")
 elif [[ $time == *m ]]; then
-	SEC=$(convert_min_to_sec $time)
+	SEC=$(convert_min_to_sec "$time")
 elif [[ $time == *h ]]; then
-	SEC=$(convert_hour_to_sec $time)
+	SEC=$(convert_hour_to_sec "$time")
 else
 	SEC=$time
 fi
 
 echo "alert after $SEC sec [$(convert_datetime_from_unix_time "$SEC")]"
 
-nohup bash -c "sleep $SEC && notify-send -i bell "$DEFAULT_TITLE" "$DEFAULT_MSG" -u critical" >/dev/null 2>&1 &
+nohup bash -c "sleep $SEC && notify-send -i call-incoming-symbolic \"$DEFAULT_TITLE\" \"$DEFAULT_MSG\" -u critical" > /dev/null 2>&1 &

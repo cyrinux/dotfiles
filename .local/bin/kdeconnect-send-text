@@ -1,0 +1,14 @@
+#!/bin/sh
+# https://userbase.kde.org/KDE_Connect/Tutorials/Useful_commands
+
+ANDROID_DEVICE="$(kdeconnect-cli -a --id-only)"
+
+notify-send -i phone "Sent to android device" "$ANDROID_DEVICE"
+
+regex='(https?|ftp|file)://[-[:alnum:]\+&@#/%?=~_|!:,.;]*[-[:alnum:]\+&@#/%=~_|]'
+
+if [[ $1 =~ $regex ]]; then
+    kdeconnect-cli -d "$ANDROID_DEVICE" --share "$1"
+else
+    kdeconnect-cli -d "$ANDROID_DEVICE" --share-text "$1"
+fi

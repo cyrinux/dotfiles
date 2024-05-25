@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This script allows you to chroot ("work on")
 # the raspbian sd card as if it's the raspberry pi
@@ -57,7 +57,7 @@ echo "Issue 'exit' when you are done."
 echo "Issue 'su pi' if you need to work as the user pi."
 
 # chroot to raspbian
-chroot /mnt/raspbian /bin/bash
+chroot /mnt/raspbian /bin/sh
 
 # ----------------------------
 # Clean up

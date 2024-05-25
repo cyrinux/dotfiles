@@ -2,7 +2,9 @@
 
 [[ "$TTY" == /dev/tty* ]] || return 0
 
+export old_path=$PATH
 export $(systemctl --user show-environment)
+export PATH=$PATH:$old_path
 
 export GPG_TTY="$TTY"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh"

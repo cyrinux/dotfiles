@@ -7,7 +7,7 @@ local function setup()
                     messages = {
                         {
                             BashExecSilently = [===[
-                                dir="$(echo "${XPLR_INPUT_BUFFER:?}" | sed 's|~|/home/maximbaz|g')"
+                                dir="$(echo "${XPLR_INPUT_BUFFER:?}" | sed 's|~|/home/cyril|g')"
                                 echo "FocusPath: $dir" >> "${XPLR_PIPE_MSG_IN:?}"
                             ]===],
                         },

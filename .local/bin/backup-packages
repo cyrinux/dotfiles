@@ -1,7 +1,8 @@
-#!/usr/bin/bash
+#!/bin/sh
 
-comm -23 <(pacman -Qnqe | sort) <(echo cyrinux) >~/.dotfiles/packages/unknown.list
-pacman -Dk 2>~/.dotfiles/packages/removed.list >/dev/null
-pacman -Qdttq >~/.dotfiles/packages/obsolete.list
+dnf -qC repoquery --userinstalled --queryformat '%{NAME}' 2> /dev/null | grep -vE 'cyrinux|cyrinux-base' > ~/.dotfiles/packages/unknown.list
+dnf -qC repoquery --unneeded --queryformat '%{NAME}' > ~/.dotfiles/packages/obsolete.list
+kubectl krew list > ~/.dotfiles/packages/kubectl-krew.list
+asdf plugin list > ~/.dotfiles/packages/asdf-plugin.list
 
 exit 0

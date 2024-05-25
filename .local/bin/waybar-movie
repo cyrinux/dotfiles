@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 marker="/tmp/waybar-movie"
 
 show() {
@@ -14,7 +14,7 @@ on() {
 	touch "$marker"
 	systemctl --user stop screen-off
 	systemctl --user stop wluma
-	light -S 100
+	brightnessctl set -- 100%
 	pkill -RTMIN+4 -x waybar
 }
 
@@ -30,8 +30,8 @@ toggle() {
 }
 
 case "$1" in
-on) on ;;
-off) off ;;
-toggle) toggle ;;
-*) show ;;
+	on) on ;;
+	off) off ;;
+	toggle) toggle ;;
+	*) show ;;
 esac

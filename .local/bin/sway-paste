@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 dir="${XDG_CACHE_HOME:-$HOME/.cache}/clipboard-history"
 mkdir -p "$dir"

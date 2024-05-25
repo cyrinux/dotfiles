@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/etc/profiles/per-user/cyril/bin/signal-desktop --enable-features=UseOzonePlatform --ozone-platform=wayland "$@"
