@@ -37,7 +37,7 @@
     gcr
     pinentry-gnome3
     firefox-wayland
-    #chromium
+    chromium
     qutebrowser
 
     mysql-client
@@ -188,7 +188,7 @@
     (pkgs.writeShellScriptBin "cglaunch" (builtins.readFile ../../.local/bin/cglaunch))
     (pkgs.writeShellScriptBin "cgtoggle" (builtins.readFile ../../.local/bin/cgtoggle))
     #(pkgs.writeShellScriptBin "checkmail" (builtins.readFile ../../.local/bin/checkmail))
-    (pkgs.writeShellScriptBin "chromium-browser" (builtins.readFile ../../.local/bin/chromium-browser))
+    # (pkgs.writeShellScriptBin "chromium-browser" (builtins.readFile ../../.local/bin/chromium-browser))
     (pkgs.writeShellScriptBin "dmenu" (builtins.readFile ../../.local/bin/dmenu))
     (pkgs.writeShellScriptBin "dmenu-wl" (builtins.readFile ../../.local/bin/dmenu))
     (pkgs.writeShellScriptBin "emoji-bootstrap" (builtins.readFile ../../.local/bin/emoji-bootstrap))

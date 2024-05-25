@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
+    # ./ssh
     ./sway
     ./packages.nix
   ];

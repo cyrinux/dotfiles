@@ -32,11 +32,11 @@
             ./nix/default.nix
           ];
         };
+    };
 
-      agenix-rekey = agenix-rekey.configure {
-        userFlake = self;
-        nodes = self.nixosConfigurations;
-      };
+    agenix-rekey = agenix-rekey.configure {
+      userFlake = self;
+      nodes = self.nixosConfigurations;
     };
   };
 

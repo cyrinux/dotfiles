@@ -1,7 +1,0 @@
-tun-prod
-br-*
-virbr[0,1]
-venet[0,1]
-vnet[1,2]
-nasux
-docker*
