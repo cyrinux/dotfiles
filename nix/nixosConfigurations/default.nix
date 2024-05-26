@@ -1,5 +1,14 @@
 { pkgs, config, ... }:
 {
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      input-fonts.acceptLicense = true;
+    };
+    overlays = [ (import ./overlays.nix) ];
+  };
+
   age.rekey = {
     hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB+YjFIEjwwtNHH3xnun5NjREL5dbB55ornRnG6hY7sA";
     masterIdentities = [ ../age-yubikey-5c.pub ];
@@ -7,7 +16,12 @@
     localStorageDir = ../../.secrets/${config.networking.hostName};
   };
 
+  imports = [
+    ./network
+  ];
+
   boot = {
+    initrd.systemd.enable = true;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = false;
@@ -15,11 +29,11 @@
     extraModprobeConfig = ''
       options hid_apple swap_opt_cmd=1 swap_fn_leftctrl=1 iso_layout=1
     '';
-    initrd.systemd.enable = true;
+    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback.out ];
+    kernelModules = [ "v4l2loopback" ];
   };
 
-  sound.enable = true;
-  time.timeZone = "Europe/Paris";
+  # time.timeZone = "Europe/Paris"; # localtimed is use instead
   console.keyMap = "azerty";
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -29,27 +43,10 @@
     ];
   };
 
-  networking = {
-    hostName = "home-nixos";
-    useDHCP = false;
-    networkmanager.enable = true;
-    networkmanager.wifi.backend = "iwd";
-  };
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  nixpkgs = {
-    config = {
-      allowUnfree = true;
-      input-fonts.acceptLicense = true;
-    };
-    overlays = [ (import ./overlays.nix) ];
-  };
-
   users.users.cyril = {
     password = "cyrinux";
     isNormalUser = true;
-    extraGroups = [ "wheel" "video" ];
+    extraGroups = [ "wheel" "video" "networkmanager" "adbusers" ];
     shell = pkgs.zsh;
   };
 
@@ -68,7 +65,7 @@
 
     sessionVariables.NIXOS_OZONE_WL = "1";
 
-    variables.EDITOR = "hx";
+    variables.EDITOR = "${pkgs.helix}/bin/hx";
   };
 
   services.udev.packages = [ pkgs.yubikey-personalization ];
@@ -87,6 +84,7 @@
   programs.waybar.enable = false;
   programs.zsh.enable = true;
   programs.adb.enable = true;
+  programs.command-not-found.enable = false;
 
   security = {
     rtkit.enable = true;
@@ -107,7 +105,8 @@
     localtimed.enable = true;
     pcscd.enable = true;
     openssh.enable = true;
-    #   fstrim.enable = true;
+    # flatpak.enable = true;
+    # fstrim.enable = true;
   };
 
   swapDevices = [{
@@ -152,10 +151,9 @@
     setSocketVariable = true;
   };
 
-
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-
+  sound.enable = true;
 
   system.stateVersion = "24.05";
 }

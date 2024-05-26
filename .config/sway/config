@@ -408,6 +408,6 @@ exec_always "cggrep neomutt || cglaunch --term neomutt"
 exec_always "cggrep signal-desktop || cglaunch signal-desktop"
 exec_always /usr/libexec/gsd-xsettings
 exec_always "darkman set dark"
-# exec_always cglaunch waybar
+exec_always "cggrep waybar || cglaunch waybar"
 
 # vi:ft=i3

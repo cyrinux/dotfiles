@@ -14,29 +14,28 @@
     libnotify
     polkit_gnome
     libreoffice
-    zathura
 
     asahi-bless
-    (kakoune.override
-      {
-        plugins = with kakounePlugins; [ kakoune-lsp ];
-      })
     helix
     vscode
+
+    xplr
+    ncdu
+    cinnamon.nemo
+    nfs-utils
 
     ffmpeg
     android-tools
     android-udev-rules
 
     wl-clipboard
-    kitty
 
     meld
     pam_u2f
     gnupg
     gcr
     pinentry-gnome3
-    firefox-wayland
+    # firefox-wayland
     chromium
     qutebrowser
 
@@ -56,9 +55,9 @@
     inotify-tools
     rsync
     signal-desktop
+    element-desktop
     ripgrep
     fd
-    bat
     bfs
     brightnessctl
     jq
@@ -68,11 +67,12 @@
     direnv
     dos2unix
     doggo
+    nix-output-monitor
     dua
     earlyoom
     editorconfig-core-c
     eza
-    ff2mpv
+    ff2mpv-rust
     mpv
     mpvScripts.mpris
     playerctl
@@ -123,7 +123,7 @@
     nftables
     iptables-nftables-compat
 
-    arc-theme
+    webwormhole
 
     biome
     cargo
@@ -131,7 +131,6 @@
     docker-compose-language-service
     dockerfile-language-server-nodejs
     gcc
-    go
     golangci-lint
     golangci-lint-langserver
     gopls
@@ -175,6 +174,10 @@
     krew
     stern
 
+    restic
+
+    acpi
+
 
     (pkgs.writeShellScriptBin "cglaunch" (builtins.readFile ../../.local/bin/cglaunch))
     (pkgs.writeShellScriptBin "audio" (builtins.readFile ../../.local/bin/audio))
@@ -188,7 +191,6 @@
     (pkgs.writeShellScriptBin "cglaunch" (builtins.readFile ../../.local/bin/cglaunch))
     (pkgs.writeShellScriptBin "cgtoggle" (builtins.readFile ../../.local/bin/cgtoggle))
     #(pkgs.writeShellScriptBin "checkmail" (builtins.readFile ../../.local/bin/checkmail))
-    # (pkgs.writeShellScriptBin "chromium-browser" (builtins.readFile ../../.local/bin/chromium-browser))
     (pkgs.writeShellScriptBin "dmenu" (builtins.readFile ../../.local/bin/dmenu))
     (pkgs.writeShellScriptBin "dmenu-wl" (builtins.readFile ../../.local/bin/dmenu))
     (pkgs.writeShellScriptBin "emoji-bootstrap" (builtins.readFile ../../.local/bin/emoji-bootstrap))
@@ -197,7 +199,6 @@
     (pkgs.writeShellScriptBin "git-submodule-remove" (builtins.readFile ../../.local/bin/git-submodule-remove))
     (pkgs.writeShellScriptBin "gitui" (builtins.readFile ../../.local/bin/gitui))
     (pkgs.writeShellScriptBin "gnome-terminal" (builtins.readFile ../../.local/bin/gnome-terminal))
-    (pkgs.writeShellScriptBin "kak-man-pager" (builtins.readFile ../../.local/bin/kak-man-pager))
     (pkgs.writeShellScriptBin "mockbuild" (builtins.readFile ../../.local/bin/mockbuild))
     (pkgs.writeShellScriptBin "neomutt-sendmail" (builtins.readFile ../../.local/bin/neomutt-sendmail))
     (pkgs.writeShellScriptBin "pass-gen" (builtins.readFile ../../.local/bin/pass-gen))
